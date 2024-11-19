@@ -1,0 +1,34 @@
+1.2.1 - L1 Ensure Do Not Show Data Extraction Options When Opening Corrupt Workbooks is set to Enabled
+1.4.1.2 - L1 Ensure Ask to Update Automatic Links is set to Enabled
+1.4.1.1.2 - L1 Ensure Load Pictures from Web Pages Not Created in Excel is set to Disabled
+1.4.5.1.1 - L1 Ensure Internet and Network Paths as Hyperlinks is set to Disabled
+1.4.6.1 - L1 Ensure Do Not Show AutoRepublish Warning Alert is set to Disabled
+1.4.6.2 - L1 Ensure Default File Format is set to Enabled
+1.4.6.3 - L1 Ensure Disable AutoRepublish is set to Enabled
+1.4.7.3 - L1 Ensure Turn Off File Validation is set to Disabled
+1.4.7.4 - L1 Ensure Force File Extension to Match File Type is set to EnabledAlways match file type 
+1.4.7.5 - L1 Ensure Scan Encrypted Macros in Excel Open XML Workbooks is set to Enable Scan encrypted macros default
+1.4.7.2.4 - L1 Ensure Trust Access To Visual Basic Project is set to Disabled
+1.4.7.2.5 - L1 Ensure Disable Trust Bar Notification For Unsigned Application Add-ins And Block Them is set to Enabled
+1.4.7.2.6 - L1 Ensure Require That Application Add-ins are Signed By Trusted Publisher is set to Enabled
+1.4.7.2.7 - L1 Ensure VBA Macro Notification Settings is set to Enabled Disable all Except Digitally Signed Macros
+1.4.7.2.8 - L1 Ensure Store Macro In Personal Macro Workbook by Default is set to Enabled
+1.4.7.2.1.1 - L1 Ensure Excel 2 Macrosheets and Add-in Files is set to EnabledOpenSave blocked use open policy
+1.4.7.2.1.2 - L1 Ensure Excel 3 Macrosheets and Add-in Files is set to EnabledOpenSave blocked use open policy
+1.4.7.2.1.3 - L1 Ensure Excel 95-97 Workbooks and Templates  is set to EnabledOpenSave Blocked Use Open Policy
+1.4.7.2.1.4 - L1 Ensure Excel 2 Worksheets is set to EnabledOpenSave blocked use open policy
+1.4.7.2.1.5 - L1 Ensure Excel 4 Worksheets is set to EnabledOpenSave blocked use open policy
+1.4.7.2.1.6 - L1 Ensure Excel 3 Worksheets is set to Enabled OpenSave blocked use open policy
+1.4.7.2.1.7 - L1 Ensure dBase III IV Files is set to Enable OpenSave blocked use open policy
+1.4.7.2.1.8 - L1 Ensure Web Pages and Excel 2003 XML Spreadsheets is set to Enabled OpenSave blocked use open policy
+1.4.7.2.1.9 - L1 Ensure Excel 95 Workbooks is set to Enabled OpenSave Blocked Use Open Policy
+1.4.7.2.1.10 - L1 Ensure Default File Block Behavior is set to Enabled Blocked files are not opened
+1.4.7.2.1.11 - L1 Ensure Excel 4 Macrosheets and Add-in Files is set to Enabled Enabled OpenSave blocked use open policy
+1.4.7.2.1.12 - L1 Ensure Excel 4 Workbooks is set to Enabled Enabled OpenSave blocked use open policy
+1.4.7.2.1.13 - L1 Ensure Dif and Sylk Files is set to Enabled OpenSave blocked use open policy
+1.4.7.2.2.1 - L1 Ensure Turn Off Protected View For Attachments Opened from Outlook is set to Disabled
+1.4.7.2.2.2 - L1 Ensure Do Not Open Files From The Internet Zone in Protected View is set to Disabled
+1.4.7.2.2.3 - L1 Ensure Do Not Open Files in Unsafe Locations in Protected View is set to Disabled
+1.4.7.2.2.4 - L1 Ensure Document Behavior if File Validation Fails is set to Enabled Open in Protected View and Unchecked for Do not allow edit
+1.4.7.2.3.1 - L1 Ensure Allow Trusted Locations on The Network to Disabled
+1.4.7.2.3.2 - L1 Ensure Disabled all Trusted Locations is set to Enabled

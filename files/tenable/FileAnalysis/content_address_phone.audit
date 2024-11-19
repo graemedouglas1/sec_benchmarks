@@ -1,0 +1,55 @@
+#TRUSTED 71e9f898efb81e2d3020037a31eb10068905d3a4667ca39b95e9a322094005e7d40f63cd5382eb1b392e158a1ea26930b0aa3272d746b2f8f768e951331dfd0c6b919a43eaf9c746a3c50c2d193b2e1ad016ad316263b1a5be4eb7288aa9722437092fa8aaf490f24957192c5a9757d643ca175c8a8f3b3669e04211321c50d8c0c31397dd19750cc00d126e08a6274fd3f4d6a0d0b8f2457c4d79b12c72fb0a57f57dd2b76d5516bb600000f8d2f7aa9ab5145a3d61300c4e3b95f771a40940ec7715633de18c80c62e7cf9b2ed333bd7eeb74da0adc3979b27c1cb37f783af418569c0c57aa0882ddc6199498afcc2ff441ce767916a3f1029f61c03b69924ba748bc0e71e98ad079e01a9c18cb726bdd414579191ea8d90d90a2787ec5d67270c9ac8d88df75a771cbfb54426a87af652f951380dfdb093962c852bd7b9e87ab818b64325f2df8b4af6967d017cdac703dfecbe12c428d066a6bfb8f1f15931da64f93b6b5d09a45348d9a84fb6a866bebdbdffc8b3d5b7799d7fb15c5d01a21bc67234561ae51fac4cbec86ca40fbdfbd8e2c40dd174eb2d8925f425ffe635b882315c6f76927d279c463cc762eb4b8787b408c3ad0e951c7b2b1dee2f789be22902dc8394c74c2f55b9b272aa9377bde66fbee4e68144678a8df3a3a1cd0724afccaed343306316908707260c25f943661128dc05c041a7173c20d75449
+#TRUST-RSA-SHA256 347a8f646901c3857b293fcf0b85144cbf963debf15473d6f974654a7d5241b04c525a381fb01cb3dd470118bc9debbea2688e05dba8a0f54a5975e69a57beee24d474c748f4d0d8ae34624a043b60557774c9b3dea281e54a385ae28d93c052e98eee9c2e12128c817e4bda9d9444ae2b032fcee11e699103ddc29024399b99958e9c3adee20a465847e099fe9f963fecc68ca5905e26ae614fae1c8e35e561dd0bd4da7d96189aa546a87000341d774f7c3c88bdc50761564141cc4095b92a6996eefad37246323a51705a3b25bc22cca6c9e170d007ee26f31d776c1313d42a0bcc45e880f8c33d57677b53422a714f8275d178ecde7e005a92863442cb3305dd385e3e68ac40692f1fe514a724dc9358726e6906ec32095c88d73fc34a69feb16686846cce61436b6c595ceaa716edcf056ce71faeaa405f67304abfc52e98d1d92705101e7795288f00f5040bbbe9eda9c5b518b30045136eee5e290d902affa2a9cc5643906e7c7404666817058e4a3c751d9daede0c73a0bc1a645e95de3daea83246e90e7eb659a944147bb8fd5924259101fdb240cd54a64fa0e0e04336d14c479abdc23575ae72e915e84b479fb982ad290e0ac9f4333c63f25db50bfe15ea9c441ddcd045d6db57ac26952de1ab279b66a20d53cb56d8b34c05389bf83ad2268ff95456af76bd4618b96e174dc60b16184c66be1d26bf6d3a39e2
+#
+# This script is Copyright (C) 2004-2023 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.9 $
+# $Date: 2023/03/07 $
+#
+# This audit file looks for documents containing common
+# keywords to identify the classification or sensitivity
+# level of the information within the document.
+#
+# This file should be edited to search for the data classification
+# terms used in your organization.
+#
+#<ui_metadata>
+#<display_name>TNS File Analysis - Phone No. and  Address Info</display_name>
+#<spec>
+#  <type>TNS</type>
+#  <name>File Analysis - Phone No. and  Address Info</name>
+#  <version>1.0.0</version>
+#</spec>
+#<labels>filecontent,content,address,phone,update_20230227</labels>
+#</ui_metadata>
+
+<check_type:"FileContent">
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "PII - Determine if the server hosts physical address information."
+  file_extension : "pdf" | "doc" | "xls" | "xlsx" | "xlsm" | "xlsb" | "xml" | "xltx" | "xltm" | "docx" | "docm" | "dotx" | "dot"
+  regex          : "[A-za-z ]{5,50}, {1,3}[A-Z]{2} {1,3}[0-9]{5}"
+  expect         : "[Aa]ddress" | "[Ll]ocation"
+  max_size       : "2k"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "PII - Determine if the server hosts phone contact information."
+  file_extension : "pdf" | "doc" | "xls" | "xlsx" | "xlsm" | "xlsb" | "xml" | "xltx" | "xltm" | "docx" | "docm" | "dotx" | "dot"
+  regex          : "[0-9]{3}[ \.\-][0-9]{3}[ \.\-][0-9]{4}"
+  expect         : "FAX" | "Fax" | "Phone" | "PHONE" | "CELL" | "Cell" | "Mobile" | "MOBILE"
+  max_size       : "2k"
+</item>
+
+</check_type>

@@ -1,0 +1,75 @@
+1.1.2.3 - L1 Ensure Authentication with Exchange server.  is set to  EnabledKerberosNTLM Password Authentication
+1.1.2.4 - L1 Ensure Automatically configure profile based on Active Directory Primary SMTP address  is set to Enabled
+1.1.2.5 - L1 Ensure Do not allow users to change permissions on folders is set to Enabled
+1.1.2.6 - L1 Ensure Enable RPC encryption is set to Enabled
+1.1.5.1 - L1 Ensure Automatically download attachments is set to Disabled
+1.1.5.2 - L1 Ensure Do not include Internet Calendar integration in Outlook is set to Enabled
+1.1.6.1 - L1 Ensure Download full text of articles as HTML attachments is set to Disabled
+1.1.6.2 - L1 Ensure Synchronize Outlook RSS Feeds with Common Feed List is set to Disabled
+1.1.6.3 - L1 Ensure Turn Off RSS Feature is set to Enabled
+1.6.1 - L1 Ensure Check to disable users from adding entries to server list is set to EnabledPublish default disallow others
+1.8.2.1 - L1 Ensure PST Null Data On Delete is set to Enabled
+1.9.11 - L1 Ensure Internet and Network Paths into Hyperlinks is set to Disabled
+1.9.4.4 - L1 Ensure Do not allow signatures for e-mail messages to Disabled
+1.9.4.2.2 - L1 Ensure  Outlook Rich Text Options is set to Enabled
+1.9.4.2.3 - L1 Ensure Plain Text Options is set to Disabled
+1.9.6.3 - L1 Ensure Make Outlook the default program for E-mail Contacts and Calendar is set to Enabled
+1.9.6.1.2 - L1 Ensure Do not allow folders in non-default stores to be set as folder home pages is set to Enabled
+1.9.6.1.3 - L1 Ensure Do not allow Outlook object model scripts to run for public folders is set to Enabled
+1.9.6.1.4 - L1 Ensure Do not allow Outlook object model scripts to run for shared folders is set to Enabled
+1.9.6.1.5 - L1 Ensure Use Unicode format when dragging e-mail message to file system is set to Disabled
+1.9.8.1.2.1 - L1 Ensure Access to published calendars is set to Enabled
+1.9.8.1.2.2 - L1 Ensure Prevent publishing to a DAV server is set to Enabled
+1.9.8.1.2.3 - L1 Ensure Prevent publishing to Office.com is set to Enabled
+1.9.8.1.2.4 - L1 Ensure Restrict level of calendar details users can publish is set to EnabledDisables Full details and Limited details
+1.9.8.1.2.5 - L1 Ensure Restrict upload method is set to Enabled
+1.9.8.3.3 - L1 Ensure Read e-mail as plain text is set to Enabled
+1.9.8.3.4 - L1 Ensure Read signed e-mail as plain text is set to Enabled
+1.9.8.4.1 - L1 Ensure Add e-mail recipients to users Safe Senders Lists is set to Disabled
+1.9.8.4.2 - L1 Ensure Hide Junk Mail UI is set to Disabled
+1.9.8.4.3 - L1 Ensure Junk E-mail protection level Select level is set to EnabledHigh
+1.9.8.4.4 - L1 Ensure Trust e-mail from contacts is set to Enabled
+1.10.1 - L1 Ensure Do Not Download Photos from Active Directory is set to Enabled
+1.10.2 - L1 Ensure Turn Off Outlook Social Connector is set to Enabled
+1.13.5 - L1 Ensure Allow Active X One Off Forms is set to EnabledLoad only Outlook Controls
+1.13.6 - L1 Ensure Configure Add-In Trust Level is set to EnabledTrust all loaded and installed COM addins
+1.13.7 - L1 Ensure Disable Remember password for Internet e-mail accounts is set to Enabled
+1.13.8 - L1 Ensure Do not automatically sign replies is set to Enabled
+1.13.9 - L1 Ensure Prevent users from customizing attachment security settings is set to Enabled
+1.13.10 - L1 Ensure Prompt User To Choose Security Settings If Default settings Fail is set to Disabled
+1.13.1.1 - L1 Ensure Automatically download content for e-mail from people in Safe Senders and Safe Recipients Lists is set to Disabled
+1.13.1.2 - L1 Ensure Block Trusted Zones is set to Enabled
+1.13.1.3 - L1 Ensure Display pictures and external content in HTML e-mail is set to Enabled
+1.13.1.4 - L1 Ensure Do not permit download of content from safe zones is set to Disabled
+1.13.2.2 - L1 Ensure Do not display Publish to GAL button is set to Enabled
+1.13.2.3 - L1 Ensure Do not provide Continue option on Encryption warning dialog boxes is set to Enabled
+1.13.2.4 - L1 Ensure Message Formats is set to EnabledSMIME and Fortezza
+1.13.2.5 - L1 Ensure Minimum Encryption Settings is set to Enabled168
+1.13.2.6 - L1 Ensure SMIME interoperability with external clients is set to EnabledHandle internally
+1.13.2.7 - L1 Ensure SMIME receipt requests behavior is set to EnabledNever send SMIME receipts
+1.13.2.8 - L1 Ensure Send all signed messages as clear signed messages is set to Enabled
+1.13.2.9 - L1 Ensure Signature Warning is set to EnabledAlways warn about invalid signatures
+1.13.2.1.1 - L1 Ensure Attachment Secure Temporary Folder is set to Disabled
+1.13.2.1.2 - L1 Ensure Missing CRLs is set to EnabledError
+1.13.2.1.3 - L1 Ensure Missing Root Certificates is set to EnabledWarning
+1.13.2.1.4 - L1 Ensure Promote Level 2 errors as errors not warnings is set to Disabled
+1.13.2.1.5 - L1 Ensure Retrieving CRLs Certificate Revocation Lists is set to EnabledWhen online always retrieve the CRL
+1.13.3.4 - L1 Ensure Outlook Security Mode is set to Enabled
+1.13.3.1.1 - L1 Ensure Allow users to demote attachments to Level 2 is set to Disabled
+1.13.3.1.2 - L1 Ensure Display Level 1 attachments is set to Disabled
+1.13.3.1.3 - L1 Ensure Do not prompt about Level 1 attachments when closing an item is set to Disabled
+1.13.3.1.4 - L1 Ensure Do not prompt about Level 1 attachments when sending an item is set to Disabled
+1.13.3.1.5 - L1 Ensure Remove file extensions blocked as Level 1 is set to Disabled
+1.13.3.1.6 - L1 Ensure Remove file extensions blocked as Level 2 is set to Disabled
+1.13.3.2.1 - L1 Ensure Allow scripts in one-off Outlook forms is set to Disabled
+1.13.3.2.2 - L1 Ensure Outlook Object Model Custom Actions Execution Prompt is set to EnabledAutomatically Deny
+1.13.3.3.2 - L1 Ensure Configure Outlook object model prompt when accessing an address book Guard behavior is set to EnabledAutomatically Deny
+1.13.3.3.3 - L1 Ensure Configure Outlook object model prompt When accessing the Formula property of a UserProperty object Guard behavior is set to EnabledAutomatically Deny
+1.13.3.3.4 - L1 Ensure Configure Outlook object model prompt when executing Save As Guard behavior is set to EnabledAutomatically Deny
+1.13.3.3.5 - L1 Ensure Configure Outlook object model prompt when reading address information Guard behavior is set to EnabledAutomatically Deny
+1.13.3.3.6 - L1 Ensure Configure Outlook object model prompt when responding to meeting and task requests Guard behavior is set to EnabledAutomatically Deny
+1.13.3.3.7 - L1 Ensure Configure Outlook object model prompt when sending mail Guard behavior is set to EnabledAutomatically Deny
+1.13.3.3.1.1 - L1 Ensure Configure Trusted Add-ins to Disabled
+1.13.4.1 - L1 Ensure Allow hyperlinks in suspected phishing e-mail messages is set to Disabled
+1.13.4.2 - L1 Ensure Apply macro security settings to macros add-ins and additional actions is set to Enabled
+1.13.4.3 - L1 Ensure Security Ensureting for Macros is set to EnabledNever warn disable all

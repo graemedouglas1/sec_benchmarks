@@ -1,0 +1,214 @@
+#TRUSTED 56550e3af5d0de971c72e6c6a25944f8cf0bf84653c38cd50653056491bb2b60c79c826ff0b16fca06cc14e01e62d5b6073fccc2dd9177caad91c8274fe3a20be09413499b1657991a36674235b050a13eb733273e702a53c27081da6e1f0b27a8d3c857058bb6d11b7fdec2d38aa9f487329b92ae8924d95621567b22d8efef0a86036af04f396844671a8f9ce866b15942a59a49d6b6325d3d5100c2666073911a165c9aa2ae681b03f277da5c5ae353e42f47fb0f3bbf5078658ffdae6e2640df9b02dbd2111f0b2e03555c609a9fad3d77ae102512cf1e43fa22ea8ff63f29fce99ed24e1c72ea5dd65378bdc355fc799c59b7b27c54f2fed5814cdf1f6152693a4a84d45a71fe6d34b93cb70e2b617766197987073f977be69442d7fd2adba3b674ed1c4efba9ba0a02f1656c79f63bb12a6fd9ad89b0646877d8d719958372fbb039d097d6b1c6505eea53927500bc6881707bb8798d8f6eb3559395ed38c205f47e96e4bab5790c1362d51accccda4537ffd6bb1f46babaffb379a9c808199c0eabf412eaf7a4e1a2342f066121f79a95dcf3261b5d827d8ec7b96d9aa8a2c5ce4230d0bfc3f7635ab2d4492d39c7b66e3c6fbbfc2569205102053997e81894bbf3914cef024f5b38382c6d3b5b6c4c0f979339e80386a8178e4410bf5ebf0e686796cec833d830cf85822ae11021fc1d396a8c95577facdea004a4af
+#TRUST-RSA-SHA256 6b1bcde1b73dec0a676530f928667a82384f225310f35cc45054098e21f3c47dcecc40417a4d7e6e271e67f74f334f5ea9d960d948df36a8ba1c6dddb847aa7a511576747928ecc2faea52b0808e709beee8c717ce27921d4983c793725ef79f2b8c4057ebc3fc47d6cb0caa5dbaad53c9952477d96891066dfcc5dc3e94fca691d95a1253be176b9f707fe80101624bd48c8d2e59a112d8379767d78065d912a32fcf2a98ea2d126b26879129a13dcf6a2a04cfb55b6ae8114c45fa982d3c2d0b5e609dd5e48bbaa48e0ab1927fff5ae91e0d832051449feb2dbdcd03cad67f413c5d3724b25ba1f76fc74b72e7422d663072d196573858ca51db1e27e952549fda1f93e2262dedab08a73561663a215a50acc90639cd6c339d2ca26803d8c1452fc748204d2d5e367b8ea583ac97cecbecd983188091183da48468e902b83deb26c04a2ade863aa57587589156648aa1a78f5d942ee75ffdd207ee128f8f399ec3c5d2950eb22dc5f7993c9547a14981e41c9afa15a9adf3ed4bf3e03f66fa501873b81bb43155771a1c5518aeea03b9dc132318d3971507e405ad149235f618993b29f3a65013c9078668da90366229864393f8fdd5ba1e89c80ba15ab9f661040c3f6eb34c3a7d8424954dcf8f2ecebbdc50b4107c987c2f941af694875a9a608945ce46b6b715ee8df58b4a4f8c40a596218a60cb256fc287ea11f160b3
+#
+# This script is Copyright (C) 2004-2023 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+#
+# $Revision: 1.9 $
+# $Date: 2023/04/12 $
+#
+# Description : This .audit is designed to query the Microsoft Groove 2013
+#               as defined by DISA in the Microsoft Groove 2013 STIG, v1r3
+#
+#               https://iasecontent.disa.mil/stigs/zip/U_MS_Groove_2013_V1R3_STIG.zip
+#
+#<ui_metadata>
+#<display_name>DISA STIG Microsoft Groove 2013 v1r3</display_name>
+#<spec>
+#  <type>DISA STIG</type>
+#  <name>Microsoft Groove 2013</name>
+#  <version>1.3.0</version>
+#  <link>https://iasecontent.disa.mil/stigs/zip/U_MS_Groove_2013_V1R3_STIG.zip</link>
+#</spec>
+#<labels>disa,ms_onedrive_2013,update_20230227</labels>
+#<benchmark_refs>CAT,CCE,CCI,DISA_Benchmark,Group-ID,Rule-ID,STIG-ID,STIG-Legacy,Vuln-ID</benchmark_refs>
+#</ui_metadata>
+
+<check_type:"Windows" version:"2">
+<group_policy:"MS Groove 2013">
+
+<if>
+  <condition type:"AND">
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "Check if OneDrive for Business 2013 is installed"
+      value_type  : POLICY_TEXT
+      value_data  : ".+"
+      reg_key     : "HKLM\Software\Microsoft\Office\15.0\Groove\Installroot"
+      reg_item    : "Path"
+      reg_option  : MUST_EXIST
+      check_type  : CHECK_REGEX
+    </custom_item>
+  </condition>
+
+  <then>
+    <report type:"PASSED">
+      description : "DISA_STIG_Microsoft_Groove_2013_v1r3.audit from DISA STIG Microsoft Groove 2013 v1r3"
+    </report>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO104 - Disabling of user name and password syntax from being used in URLs must be enforced."
+      info        : "The Uniform Resource Locator (URL) standard allows user authentication to be included in URL strings in the form http://username:password@example.com. A malicious user might use this URL syntax to create a hyperlink that appears to open a legitimate website but actually opens a deceptive (spoofed) website. For example, the URL http://www.wingtiptoys.com@example.com appears to open http://www.wingtiptoys.com but actually opens http://example.com. To protect users from such attacks, Internet Explorer usually blocks any URLs using this syntax.
+
+This functionality can be controlled separately for instances of Internet Explorer spawned by Office applications (for example, if a user clicks a link in an Office document or selects a menu option that loads a web page). If user names and passwords in URLs are allowed, users could be diverted to dangerous web pages, which could pose a security risk."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2013 (Machine) -> Security Settings -> IE Security 'Disable user name and password' to 'Enabled' and place a check in the 'groove.exe' check box."
+      reference   : "800-171|3.13.13,800-53|SC-18(4),800-53r5|SC-18(4),CAT|II,CCI|CCI-001170,CSF|DE.CM-5,DISA_Benchmark|Microsoft_Groove_2013,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(4),NIAv2|SU3,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-52824r1_rule,STIG-ID|DTOO104,Vuln-ID|V-40766"
+      see_also    : "https://iasecontent.disa.mil/stigs/zip/U_MS_Groove_2013_V1R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Http_Username_Password_Disable"
+      reg_item    : "groove.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO111 - The Internet Explorer Bind to Object functionality must be enabled."
+      info        : "Internet Explorer performs a number of safety checks before initializing an ActiveX control. It will not initialize a control if the kill bit for the control is set in the registry, or if the security settings for the zone in which the control is located do not allow it to be initialized.
+This functionality can be controlled separately for instances of Internet Explorer spawned by Office applications (for example, if a user clicks a link in an Office document or selects a menu option that loads a web page). A security risk could occur if potentially dangerous controls are allowed to load."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2013 (Machine) -> Security Settings -> IE Security 'Bind to Object' to 'Enabled' and place a check in the 'groove.exe' check box."
+      reference   : "800-171|3.13.13,800-53|SC-18(3),800-53r5|SC-18(3),CAT|II,CCI|CCI-001695,CSF|DE.CM-5,DISA_Benchmark|Microsoft_Groove_2013,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(3),NIAv2|NS26f,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-52825r1_rule,STIG-ID|DTOO111,Vuln-ID|V-40767"
+      see_also    : "https://iasecontent.disa.mil/stigs/zip/U_MS_Groove_2013_V1R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Safe_Bindtoobject"
+      reg_item    : "groove.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO117 - The Saved from URL mark must be selected to enforce Internet zone processing."
+      info        : "Typically, when Internet Explorer loads a web page from a Universal Naming Convention (UNC) share that contains a Mark of the Web (MOTW) comment, indicating the page was saved from a site on the Internet, Internet Explorer runs the page in the Internet security zone instead of the less restrictive Local Intranet security zone. This functionality can be controlled separately for instances of Internet Explorer spawned by Office applications (for example, if a user clicks a link in an Office document or selects a menu option that loads a web page). If Internet Explorer does not evaluate the page for a MOTW, potentially dangerous code could be allowed to run."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2013 (Machine) -> Security Settings -> IE Security 'Saved from URL' to 'Enabled' and place a check in the 'groove.exe' check box."
+      reference   : "800-171|3.13.13,800-53|SC-18(4),800-53r5|SC-18(4),CAT|II,CCI|CCI-001170,CSF|DE.CM-5,DISA_Benchmark|Microsoft_Groove_2013,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(4),NIAv2|SU3,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-52826r1_rule,STIG-ID|DTOO117,Vuln-ID|V-40768"
+      see_also    : "https://iasecontent.disa.mil/stigs/zip/U_MS_Groove_2013_V1R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Unc_Savedfilecheck"
+      reg_item    : "groove.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO123 - Navigation to URLs embedded in Office products must be blocked."
+      info        : "To protect users from attacks, Internet Explorer usually does not attempt to load malformed URLs. This functionality can be controlled separately for instances of Internet Explorer spawned by Office applications (for example, if a user clicks a link in an Office document or selects a menu option that loads a web page). If Internet Explorer attempts to load a malformed URL, a security risk could occur."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2013 (Machine) -> Security Settings -> IE Security 'Navigate URL' to 'Enabled' and place a check in the 'groove.exe' check box."
+      reference   : "800-171|3.13.13,800-53|SC-18(4),800-53r5|SC-18(4),CAT|II,CCI|CCI-001170,CSF|DE.CM-5,DISA_Benchmark|Microsoft_Groove_2013,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(4),NIAv2|SU3,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-52827r1_rule,STIG-ID|DTOO123,Vuln-ID|V-40769"
+      see_also    : "https://iasecontent.disa.mil/stigs/zip/U_MS_Groove_2013_V1R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : "1"
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Validate_Navigate_Url"
+      reg_item    : "groove.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO124 - Scripted Window Security must be enforced."
+      info        : "Malicious websites often try to confuse or trick users into giving a site permission to perform an action allowing the site to take control of the users' computers in some manner. Disabling or not configuring this setting allows unknown websites to:
+-Create browser windows appearing to be from the local operating system.
+-Draw active windows displaying outside of the viewable areas of the screen capturing keyboard input.
+-Overlay parent windows with their own browser windows to hide important system information, choices or prompts."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2013 (Machine) -> Security Settings -> IE Security 'Scripted Window Security Restrictions' to 'Enabled' and 'groove.exe' is checked."
+      reference   : "800-171|3.13.13,800-53|SC-18(3),800-53r5|SC-18(3),CAT|II,CCI|CCI-001695,CSF|DE.CM-5,DISA_Benchmark|Microsoft_Groove_2013,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(3),NIAv2|NS26f,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-52828r1_rule,STIG-ID|DTOO124,Vuln-ID|V-40770"
+      see_also    : "https://iasecontent.disa.mil/stigs/zip/U_MS_Groove_2013_V1R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Window_Restrictions"
+      reg_item    : "groove.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO126 - Add-on Management functionality must be allowed."
+      info        : "Internet Explorer add-ons are pieces of code, run in Internet Explorer, to provide additional functionality. Rogue add-ons may contain viruses or other malicious code. Disabling or not configuring this setting could allow malicious code or users to become active on user computers or the network. For example, a malicious user can monitor and then use keystrokes users type into Internet Explorer. Even legitimate add-ons may demand resources, compromising the performance of Internet Explorer, and the operating systems for user computers."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2013 (Machine) -> Security Settings -> IE Security 'Add-on Management' to 'Enabled' and  'groove.exe' is checked."
+      reference   : "800-171|3.13.13,800-53|SC-18(1),800-53r5|SC-18(1),CAT|II,CCI|CCI-001662,CSF|DE.CM-5,DISA_Benchmark|Microsoft_Groove_2013,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(1),NIAv2|SU3,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-52829r1_rule,STIG-ID|DTOO126,Vuln-ID|V-40771"
+      see_also    : "https://iasecontent.disa.mil/stigs/zip/U_MS_Groove_2013_V1R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Addon_Management"
+      reg_item    : "groove.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO129 - Links that invoke instances of IE from within an Office product must be blocked."
+      info        : "The Pop-up Blocker feature in Internet Explorer can be used to block most unwanted pop-up and pop-under windows from appearing. This functionality can be controlled separately for instances of Internet Explorer spawned by Office applications (for example, if a user clicks a link in an Office document or selects a menu option that loads a web page). If the Pop-up Blocker is disabled, disruptive and potentially dangerous pop-up windows could load and present a security risk."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2013 (Machine) -> Security Settings -> IE Security 'Block popups' to 'Enabled' and select 'groove.exe'."
+      reference   : "800-171|3.13.13,800-53|SC-18(1),800-53r5|SC-18(1),CAT|II,CCI|CCI-001662,CSF|DE.CM-5,DISA_Benchmark|Microsoft_Groove_2013,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(1),NIAv2|SU3,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-52830r1_rule,STIG-ID|DTOO129,Vuln-ID|V-40772"
+      see_also    : "https://iasecontent.disa.mil/stigs/zip/U_MS_Groove_2013_V1R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Weboc_Popupmanagement"
+      reg_item    : "groove.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO132 - File downloads must be configured for proper restrictions."
+      info        : "Disabling this setting allows websites to present file download prompts via code without the user specifically initiating the download.  User preferences may also allow the download to occur without prompting or interaction with the user.  Even if Internet Explorer prompts the user to accept the download, some websites abuse this functionality.  Malicious websites may continually prompt users to download a file or present confusing dialog boxes to trick users into downloading or running a file.  If the download occurs and it contains malicious code, the code could become active on user computers or the network."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2013 (Machine) -> Security Settings -> IE Security 'Restrict File Download' to 'Enabled' and 'groove.exe' is checked."
+      reference   : "800-171|3.13.13,800-53|SC-18(3),800-53r5|SC-18(3),CAT|II,CCI|CCI-001169,CSF|DE.CM-5,DISA_Benchmark|Microsoft_Groove_2013,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(3),NIAv2|NS26f,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-52831r1_rule,STIG-ID|DTOO132,Vuln-ID|V-40773"
+      see_also    : "https://iasecontent.disa.mil/stigs/zip/U_MS_Groove_2013_V1R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Restrict_Filedownload"
+      reg_item    : "groove.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO209 - Protection from zone elevation must be enforced."
+      info        : "Internet Explorer places restrictions on each web page users can use the browser to open. Web pages on a user's local computer have the fewest security restrictions and reside in the Local Machine zone, making this security zone a prime target for malicious users and code. Disabling or not configuring this setting could allow pages in the Internet zone to navigate to pages in the Local Machine zone to then run code to elevate privileges. This could allow malicious code or users to become active on user computers or the network."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2013 (Machine) -> Security Settings -> IE Security 'Protection From Zone Elevation' to 'Enabled' and 'groove.exe' is checked."
+      reference   : "800-171|3.13.13,800-53|SC-18(3),800-53r5|SC-18(3),CAT|II,CCI|CCI-001695,CSF|DE.CM-5,DISA_Benchmark|Microsoft_Groove_2013,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(3),NIAv2|NS26f,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-52832r1_rule,STIG-ID|DTOO209,Vuln-ID|V-40774"
+      see_also    : "https://iasecontent.disa.mil/stigs/zip/U_MS_Groove_2013_V1R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Zone_Elevation"
+      reg_item    : "groove.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO211 - ActiveX installs must be configured for proper restrictions."
+      info        : "Microsoft ActiveX controls allow unmanaged, unprotected code to run on the user computers. ActiveX controls do not run within a protected container in the browser like the other types of HTML or Microsoft Silverlight-based controls. Disabling or not configuring this setting does not block prompts for ActiveX control installations and these prompts display to users. This could allow malicious code to become active on user computers or the network."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2013 (Machine) -> Security Settings -> IE Security 'Restrict ActiveX Install' to 'Enabled' and 'groove.exe' is checked."
+      reference   : "800-171|3.13.13,800-53|SC-18(4),800-53r5|SC-18(4),CAT|II,CCI|CCI-002460,CSF|DE.CM-5,DISA_Benchmark|Microsoft_Groove_2013,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(4),NIAv2|SU3,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-52833r1_rule,STIG-ID|DTOO211,Vuln-ID|V-40775"
+      see_also    : "https://iasecontent.disa.mil/stigs/zip/U_MS_Groove_2013_V1R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Restrict_Activexinstall"
+      reg_item    : "groove.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+  </then>
+
+  <else>
+    <report type:"WARNING">
+      description : "DISA_STIG_Microsoft_Groove_2013_v1r3.audit from DISA STIG Microsoft Groove 2013 v1r3"
+      info        : "NOTE: Nessus has not identified that the chosen audit applies to the target device."
+    </report>
+  </else>
+</if>
+
+</group_policy>
+</check_type>

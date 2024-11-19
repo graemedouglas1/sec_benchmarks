@@ -1,0 +1,203 @@
+#TRUSTED 76f6e59d2bf39077e5eafa5fee7dc2a45dfdeb2f11a05312669e905cff8983642941cf1c218b1adc40515a0c96a5c83f57084b6085cf7ee7c5dbefc2f5b203e42ccde2cd2fb15a39e473f6cbb15f676aef446ec32d7176228d5948e07f8520558da04ef19f8618f44af3232d9736c67477b113af179c2ebd26e0e78e638b4999f58d197d7b61b5410711c1f181355d239733b11f038abd7f6393d853f75df686e65e39960295a732f8efffd67926dac962062dda6dff656a7ddfb3848f19990296ee4676bb80cc07b11ca39901eac922592a6633bfa97e61565cd084173e7735538bd454abdb70e4a16a9eadff90d728812e50ce11648adaf40c9f178beb70f6726ffd830786a17b0653159b523bd9bb1440e12b68474ba2a68731b0003368cfeafc85732e4ee1a9f1366c2f23eb7bdf86b3dcc21bd46cd92d556c60fe05e63cfd1de05329f5456b6c2f23dbe26a76c8e48da8b63476d6836235a16741e7efe96849b836465a7930344c67af9733394a4fde1866234c5f72c0050d77036eb863e3a84d159e0b3e1aa9c6f5859d6b0be391161c51a91c8a0223667be382f3384d15ff0b97ea34f4475c8abd7d7be52c1a3855cdca7d9ea650d6c5a054b638b09c1c1e2dbdbade6290ef56625e3cfab30e7ba7c2a13a8a6c5e4091f96ba15a333b538441ad4f2da28a506128702575b92c6caa2f9abcd389f87e28f05570b402b8
+#TRUST-RSA-SHA256 0cc939871e28dbf065100a98e40a89c6eb2b30f2a767250fd45b3c1f9d0f3a95ae9eb9667986c75cc2e3efafd209bf7998dcbfa73b6efd789dbf3db199e7721504a977492781ff60b2ab40b58242b4e2d993b31dc18bc637903aec4bad2a09b05f7825c14e5a297cd283bd55ffdd2c8b6cc00d9fd5392053c26518699f8a285c65b74826d3018ea13b2e432ed20ce08aa63321577958c174abdf18026db60c3a50414121bd97d4e8e519ca1dc602a18234210b203313b452daa69ee442a260abd06bea53ade0e94ab623bacd59049933f95bfac90826f6f5d6ba0864a65c1d6a2812e7cf34bdb5be964e55d16c09362b3f695cbd5b941323c63d866ce4962865226d5e04e8a1404460305f9a93e3f0a17639f325c3c1ba3ebbfa0f324e00f5bc3d54147ef4cc02dd89a176ecee2de99aa37fbcc809545e3f8e7005ba02d212a033607db481f712c026947c82156701e929146cdecb4b5014693da037595eb3d1cbd24d692c4ca437a8a9e4b3163bd686934ab3cf5254f97bdc72dde687a25ba578809806413df6ea1d71b954120c81e7c794cab432e7248f0265210b3b9ef395c285dfd3726c4b7fc2e5a284b2d15cb7e491c4a56fd3b7cee5ef9b815c8bf35ebff14141c7ea87560e121047fda4227286fd762fc319402c113ebe93483f5f6b1de89e87446cdb08026f46001030a4ff650b29d5a9773c65a96488053b59d37c
+#
+# This script is Copyright (C) 2004-2024 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.16 $
+# $Date: 2024/06/17 $
+#
+# description : This document implements the security configuration as recommended by the
+#               CIS Microsoft Office Access 2016 Benchmark v1.0.1
+#
+#               https://workbench.cisecurity.org/files/567
+#
+#<ui_metadata>
+#<display_name>CIS Microsoft Office Access 2016 v1.0.1</display_name>
+#<spec>
+#  <type>CIS</type>
+#  <name>Microsoft Office Access 2016</name>
+#  <profile>L1</profile>
+#  <version>1.0.1</version>
+#  <link>https://workbench.cisecurity.org/files/567</link>
+#</spec>
+#<labels>cis,ms_office_access_2016,update_20230227</labels>
+#<benchmark_refs>CCE,CIS_Recommendation,CSCv6,CSCv7,CSCv8,LEVEL</benchmark_refs>
+#</ui_metadata>
+
+<check_type:"Windows" version:"2">
+<group_policy:"Microsoft Office Access 2016">
+
+<if>
+  <condition type:"AND">
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "Check if Access 2016 is installed"
+      value_type  : POLICY_TEXT
+      value_data  : ".+"
+      reg_key     : "HKLM\Software\Microsoft\Office\16.0\Access\Installroot"
+      reg_item    : "Path"
+      reg_option  : MUST_EXIST
+      check_type  : CHECK_REGEX
+    </custom_item>
+  </condition>
+
+  <then>
+    <report type:"PASSED">
+      description : "CIS_Microsoft_Office_Access_2016_v1.0.1_Level_1.audit from CIS Microsoft Office Access 2016 Benchmark v1.0.1"
+    </report>
+
+    <custom_item>
+      type                 : REGISTRY_SETTING
+      description          : "1.1.3.2.1.1 Ensure 'Allow Trusted Locations on the network' is set to Disabled"
+      info                 : "This policy setting controls whether trusted locations on the network can be used. The recommended state for this setting is: Disabled.  By default, files located in trusted locations and specified in the Trust Center are assumed to be safe. Content, code, and add-ins are allowed to load from trusted locations with minimal security and without prompting the user for permission. By default, users can specify trusted locations on network shares or in other remote locations that are not under their direct control by selecting the Allow Trusted Locations on my network (not recommended) check box in the Trusted Locations section of the Trust Center. If a dangerous file is opened from a trusted location, it will not be subject to typical security measures and could affect users' computers or data."
+      solution             : "To implement the recommended configuration state, set the following Group Policy setting to Disabled. User Configuration\Administrative Templates\Microsoft Access 2016\Application Settings\Security\Trust Center\Trusted Locations\Allow Trusted Locations on the network Impact: Disabling this setting will cause disruption for users who add network locations to the Trusted Locations list. However, this practice is discouraged (as the Allow Trusted Locations on my network (not recommended) check box itself states), so in practice it should be possible to disable this setting in most situations without causing significant usability issues for most users."
+      reference            : "800-171|3.4.2,800-53|CM-6b.,800-53r5|CM-6b.,CN-L3|8.1.10.6(d),CSF|PR.IP-1,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6b.,LEVEL|1A,NESA|T3.2.1,SWIFT-CSCv1|2.3"
+      see_also             : "https://workbench.cisecurity.org/files/567"
+      value_type           : POLICY_DWORD
+      value_data           : 0
+      reg_key              : "HKU\Software\Policies\Microsoft\Office\16.0\Access\Security\Trusted Locations"
+      reg_item             : "allownetworklocations"
+      reg_ignore_hku_users : "S-1-5-18,S-1-5-19,S-1-5-20"
+      reg_option           : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type                 : REGISTRY_SETTING
+      description          : "1.1.3.2.1.2 Ensure 'Disable all trusted locations' is set to Enabled"
+      info                 : "This policy setting allows administrators to disable all trusted locations in the specified applications. Trusted locations specified in the Trust Center are used to define file locations that are assumed to be safe. Content, code, and add-ins are allowed to load from trusted locations with a minimal amount of security, without prompting the users for permission. If a dangerous file is opened from a trusted location, it will not be subject to standard security measures and could harm users' computers or data. The recommended state for this setting is: Enabled.  Trusted locations specified in the Trust Center are used to define file locations that are assumed to be safe. Content, code, and add-ins are allowed to load from trusted locations with a minimal amount of security, without prompting the users for permission. If a dangerous file is opened from a trusted location, it will not be subject to standard security measures and could harm users' computers or data. By default, files located in trusted locations (those specified in the Trust Center) are assumed to be safe."
+      solution             : "To implement the recommended configuration state, set the following Group Policy setting to Enabled. User Configuration\Administrative Templates\Microsoft Access 2016\Application Settings\Security\Trust Center\Trusted Locations\Disable all trusted locations Impact: If there are business-critical reasons to access some files in a more trusted environment, disabling trusted locations could cause usability problems."
+      reference            : "800-171|3.4.2,800-53|CM-6b.,800-53r5|CM-6b.,CN-L3|8.1.10.6(d),CSF|PR.IP-1,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6b.,LEVEL|1A,NESA|T3.2.1,SWIFT-CSCv1|2.3"
+      see_also             : "https://workbench.cisecurity.org/files/567"
+      value_type           : POLICY_DWORD
+      value_data           : 1
+      reg_key              : "HKU\Software\Policies\Microsoft\Office\16.0\Access\Security\Trusted Locations"
+      reg_item             : "alllocationsdisabled"
+      reg_ignore_hku_users : "S-1-5-18,S-1-5-19,S-1-5-20"
+      reg_option           : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type                 : REGISTRY_SETTING
+      description          : "1.1.3.2.2 Ensure 'Require that application add-ins are signed by Trusted Publisher' is set to Enabled"
+      info                 : "This policy setting controls whether add-ins for this applications must be digitally signed by a trusted publisher. The recommended state for this setting is: Enabled.  By default, Office applications do not check the digital signature on application add-ins before opening them. Disabling or not configuring this setting may allow an application to load a dangerous add-in. As a result, malicious code could become active on user computers or the network."
+      solution             : "To implement the recommended configuration state, set the following Group Policy setting to Enabled . User Configuration\Microsoft Access 2016\Application Settings\Security\Trust Center\Require that application add-ins are signed by trusted publisher Impact: Enabling this setting could cause disruptions for users who rely on add-ins that are not signed by trusted publishers. These users will either have to obtain signed versions of such add-ins or stop using them. Office stores certificates for trusted publishers in the Internet Explorer trusted publisher store. Earlier versions of Office stored trusted publisher certificate information (specifically, the certificate thumbprint) in a special Office trusted publisher store. Office still reads trusted publisher certificate information from the Office trusted publisher store, but does not write information to this store. Therefore, if you created a list of trusted publishers in a previous version of Office and you upgrade to the Office release, your trusted publisher list will still be recognized. However, any trusted publisher certificates that you add to the list will be stored in the Internet Explorer trusted publisher store."
+      reference            : "800-53|SI-7(15),800-53r5|SI-7(15),CSF|PR.DS-6,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(c)(1),HIPAA|164.312(c)(2),HIPAA|164.312(e)(2)(i),ITSG-33|SI-7,ITSG-33|SI-7a.,LEVEL|1A,NESA|T3.4.1,NESA|T7.3.2,NESA|T7.3.3,PCI-DSSv3.2.1|10.5.5,QCSC-v1|3.2"
+      see_also             : "https://workbench.cisecurity.org/files/567"
+      value_type           : POLICY_DWORD
+      value_data           : 1
+      reg_key              : "HKU\Software\Policies\Microsoft\Office\16.0\Access\Security"
+      reg_item             : "requireaddinsig"
+      reg_ignore_hku_users : "S-1-5-18,S-1-5-19,S-1-5-20"
+      reg_option           : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type                 : REGISTRY_SETTING
+      description          : "1.1.3.2.3 Ensure 'VBA Macro Notification Settings' is set to Enabled (Disable all Except Digitally Signed Macros)"
+      info                 : "This policy setting controls how the specified applications warn users when Visual Basic for Applications (VBA) macros are present. The recommended state for this setting is: Enabled. ( Disable all Except Digitally Signed Macros)  By default, when users open files in Access that contain VBA macros, Access opens the files with the macros disabled, and displays the Trust Bar with a warning that macros are present and have been disabled. Users may then enable these macros by clicking Options on the Trust Bar and selecting the option to enable them. Disabling or not configuring this setting may allow dangerous macros to become active on user computers or the network."
+      solution             : "To implement the recommended configuration state, set the following Group Policy setting to Enabled. User Configuration\Administrative Templates\Microsoft Access 2016\Application Settings\Security\Trust Center\VBA Macro Notification Settings Impact: This configuration causes documents and templates that contain unsigned macros to lose any functionality supplied by those macros. To prevent this loss of functionality, users can install the macros in a trusted location, unless the Disable all trusted locations setting is configured to Enabled, which will block them from doing so. If your organization does not use any officially sanctioned macros, consider choosing No Warnings for all macros but disable all macros for even stronger security."
+      reference            : "800-171|3.13.13,800-53|SC-18(4),800-53r5|SC-18(4),CSF|DE.CM-5,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(4),LEVEL|1A,NIAv2|SU3,QCSC-v1|3.2,QCSC-v1|8.2.1"
+      see_also             : "https://workbench.cisecurity.org/files/567"
+      value_type           : POLICY_DWORD
+      value_data           : 3
+      reg_key              : "HKU\Software\Policies\Microsoft\Office\16.0\Access\Security"
+      reg_item             : "vbawarnings"
+      reg_ignore_hku_users : "S-1-5-18,S-1-5-19,S-1-5-20"
+      reg_option           : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type                 : REGISTRY_SETTING
+      description          : "1.1.3.2.4 Ensure Set 'Disable Trust Bar Notification for unsigned application add-ins ' is set to Enabled"
+      info                 : "This policy setting controls whether the specified Office application notifies users when unsigned application add-ins are loaded or silently disable such add-ins without notification. This policy setting only applies if you enable the 'Require that application add-ins are signed by Trusted Publisher' policy setting, which prevents users from changing this policy setting. The recommended state for this setting is: Enabled.  By default, if an application is configured to require that all add-ins be signed by a trusted publisher, any unsigned add-ins the application loads will be disabled and the application will display the Trust Bar at the top of the active window. The Trust Bar contains a message that informs users about the unsigned add-in."
+      solution             : "To implement the recommended configuration state, set the following Group Policy setting to Enabled. User Configuration\Administrative Templates\Microsoft Access 2016\Application Settings\Security\Trust Center\Disable Trust Bar Notification for unsigned application add-ins and block them Impact: This setting only applies if the Office application is configured to require that all add-ins are signed by a trusted publisher. By default, users can configure this requirement themselves in the Add-ins category of the Trust Center for the application. To enforce this requirement, you must enable the Require that application add-ins are signed by Trusted Publisher setting in Group Policy, which prevents users from changing the setting themselves."
+      reference            : "800-171|3.13.13,800-53|SC-18(4),800-53r5|SC-18(4),CSF|DE.CM-5,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(4),LEVEL|1A,NIAv2|SU3,QCSC-v1|3.2,QCSC-v1|8.2.1"
+      see_also             : "https://workbench.cisecurity.org/files/567"
+      value_type           : POLICY_DWORD
+      value_data           : 1
+      reg_key              : "HKU\Software\Policies\Microsoft\Office\16.0\Access\Security"
+      reg_item             : "notbpromptunsignedaddin"
+      reg_ignore_hku_users : "S-1-5-18,S-1-5-19,S-1-5-20"
+      reg_option           : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type                 : REGISTRY_SETTING
+      description          : "1.1.4.1.1 Ensure 'Underline hyperlinks' is set to Enabled"
+      info                 : "This policy setting controls whether hyperlinks in Access tables, queries, forms, and reports are underlined. The recommended state for this setting is: Enabled.  By default, Access underlines hyperlinks that appear in tables, queries, forms, and reports. If this configuration is changed, users might click on dangerous hyperlinks without realizing it, which could pose a security risk."
+      solution             : "To implement the recommended configuration state, set the following Group Policy setting to Enabled. User Configuration\Administrative Templates\Microsoft Access 2016\Application Settings\Web Options...\General\Underline hyperlinks Impact: If this setting is Enabled, Access underlines all hyperlinks in tables, queries, forms, and reports when they are created, overriding any configuration changes on the users' computers."
+      reference            : "800-171|3.4.2,800-53|CM-6b.,800-53r5|CM-6b.,CN-L3|8.1.10.6(d),CSF|PR.IP-1,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6b.,LEVEL|1A,NESA|T3.2.1,SWIFT-CSCv1|2.3"
+      see_also             : "https://workbench.cisecurity.org/files/567"
+      value_type           : POLICY_DWORD
+      value_data           : 0
+      reg_key              : "HKU\Software\Policies\Microsoft\Office\16.0\Access\Internet"
+      reg_item             : "donotunderlinehyperlinks"
+      reg_ignore_hku_users : "S-1-5-18,S-1-5-19,S-1-5-20"
+      reg_option           : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type                 : REGISTRY_SETTING
+      description          : "1.4.1 Ensure 'Do not prompt to convert older databases' is set to Disabled"
+      info                 : "This policy setting controls whether Access prompts users to convert older databases when they are opened. The recommended state for this setting is: Disabled.  By default, when users open databases that were created in the Access 97 file format, Access prompts them to convert the database to a newer file format. Users can choose to convert the database or leave it in the older format. If this configuration is changed, Access will leave Access 97-format databases unchanged. Access informs the user that the database is in the older format, but does not provide the user with an option to convert the database. Some features introduced in more recent versions of Access will not be available, and the user will not be able to make any design changes to the database."
+      solution             : "To implement the recommended configuration state, set the following Group Policy setting to Disabled. User Configuration\Administrative Templates\Microsoft Access 2016\Miscellaneous\Do not prompt to convert older databases Impact: Disabling this setting enforces the default configuration in Access, and is therefore unlikely to cause usability issues for most users."
+      reference            : "800-171|3.4.2,800-53|CM-6b.,800-53r5|CM-6b.,CN-L3|8.1.10.6(d),CSF|PR.IP-1,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6b.,LEVEL|1A,NESA|T3.2.1,SWIFT-CSCv1|2.3"
+      see_also             : "https://workbench.cisecurity.org/files/567"
+      value_type           : POLICY_DWORD
+      value_data           : 0
+      reg_key              : "HKU\Software\Policies\Microsoft\Office\16.0\Access\Settings"
+      reg_item             : "noconvertdialog"
+      reg_ignore_hku_users : "S-1-5-18,S-1-5-19,S-1-5-20"
+      reg_option           : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type                 : REGISTRY_SETTING
+      description          : "1.4.2 Ensure 'Default file format' is set to Enabled (Access 2007)"
+      info                 : "This policy setting controls whether new database files are created in the new Access format or in a format used by earlier versions of Access. The recommended state for this setting is: Enabled. (Access 2007)  By default, when users create new database files, Access saves them in the new Access format. Users can change this functionality by clicking the Office button, clicking Access Options, and then selecting a file format from the Default file format list. Disabling this setting allows users to choose from any of the available default file formats. If a new workbook is created in an earlier format, some users may not be unable to open or use the file, or they may choose a format that is less secure than the Access format."
+      solution             : "To implement the recommended configuration state, set the following Group Policy setting to Enabled. User Configuration\Administrative Templates\Microsoft Access 2016\Miscellaneous\Default file format Impact: Enabling this setting does not prevent users from choosing a different file format for a new Access file, and therefore, it is unlikely to affect usability for most users."
+      reference            : "800-171|3.4.2,800-53|CM-6b.,800-53r5|CM-6b.,CN-L3|8.1.10.6(d),CSF|PR.IP-1,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6b.,LEVEL|1A,NESA|T3.2.1,SWIFT-CSCv1|2.3"
+      see_also             : "https://workbench.cisecurity.org/files/567"
+      value_type           : POLICY_DWORD
+      value_data           : 12
+      reg_key              : "HKU\Software\Policies\Microsoft\Office\16.0\Access\settings"
+      reg_item             : "default file format"
+      reg_ignore_hku_users : "S-1-5-18,S-1-5-19,S-1-5-20"
+      reg_option           : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type                 : REGISTRY_SETTING
+      description          : "1.5.2 Ensure 'Modal Trust Decision Only' is set to Disabled"
+      info                 : "This policy setting controls how Access notifies users about untrusted components. The recommended state for this setting is: Disabled.  By default, when users open an untrusted Access database that contains user-programmed executable components, Access opens the database with the components disabled and displays the Message Bar with a warning that database content has been disabled. Users can inspect the contents of the database, but cannot use any disabled functionality until they enable it by clicking Options on the Message Bar and selecting the appropriate action. The default configuration can be changed so that users see a dialog box when they open an untrusted database with executable components. Users must then choose whether to enable or disable the components before working with the database. In these circumstances users frequently enable the components, even if they do not require them. Executable components can be used to launch an attack against a computer environment."
+      solution             : "To implement the recommended configuration state, set the following Group Policy setting to Disabled. User Configuration\Administrative Templates\Microsoft Access 2016\Tools | Security\Modal Trust Decision Only Impact: Disabling this setting enforces the default configuration for Access, and so is unlikely to cause usability issues. However, this functionality has changed from previous versions of Access."
+      reference            : "800-171|3.4.7,800-53|CM-7(2),800-53r5|CM-7(2),CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-7(2),LEVEL|1A,NIAv2|SS15a,PCI-DSSv3.2.1|2.2.2,QCSC-v1|3.2,SWIFT-CSCv1|2.3"
+      see_also             : "https://workbench.cisecurity.org/files/567"
+      value_type           : POLICY_DWORD
+      value_data           : 0
+      reg_key              : "HKU\Software\Policies\Microsoft\Office\16.0\Access\Security"
+      reg_item             : "modaltrustdecisiononly"
+      reg_ignore_hku_users : "S-1-5-18,S-1-5-19,S-1-5-20"
+      reg_option           : CAN_NOT_BE_NULL
+    </custom_item>
+  </then>
+
+  <else>
+    <report type:"WARNING">
+      description : "CIS_Microsoft_Office_Access_2016_v1.0.1_Level_1.audit from CIS Microsoft Office Access 2016 Benchmark v1.0.1"
+      info        : "NOTE: Nessus has not identified that the chosen audit applies to the target device."
+    </report>
+  </else>
+</if>
+
+</group_policy>
+</check_type>

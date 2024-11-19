@@ -1,0 +1,62 @@
+1.1 - Remove extraneous files and directories - manual
+1.2 - Disable Unused Connectors - manual
+2.1 - Alter the Advertised server.info String - manual
+2.2 - Alter the Advertised server.number String - manual
+2.3 - Alter the Advertised server.built Date - manual
+2.4 - Disable X-Powered-By HTTP Header and Rename the Server Value for all Connectors
+2.5 - Disable client facing Stack Traces - manual
+2.6 - Turn off TRACE - manual
+2.7 - Ensure Sever Header is Modified To Prevent Information Disclosure - manual
+3.1 - Set a nondeterministic Shutdown command value
+3.2 - Disable the Shutdown port
+4.1 - Restrict access to CATALINA HOME
+4.2 - Restrict access to CATALINA BASE
+4.3 - Restrict access to Tomcat configuration directory
+4.4 - Restrict access to Tomcat logs directory
+4.5 - Restrict access to Tomcat temp directory
+4.6 - Restrict access to Tomcat bin directory
+4.7 - Restrict access to Tomcat web application directory
+4.8 - Restrict access to Tomcat catalina.properties
+4.9 - Restrict access to Tomcat catalina.policy
+4.10 - Restrict access to Tomcat context.xml
+4.11 - Restrict access to Tomcat logging.properties
+4.12 - Restrict access to Tomcat server.xml
+4.13 - Restrict access to Tomcat tomcat-users.xml
+4.14 - Restrict access to Tomcat web.xml
+4.15 - Restrict access to jaspic-providers.xml
+5.1 - Use secure Realms - manual
+5.2 - Use LockOut Realms - manual
+6.1 - Setup Client-cert Authentication - manual
+6.2 - Ensure SSLEnabled is set to True for Sensitive Connectors
+6.3 - Ensure scheme is set accurately
+6.4 - Ensure secure is set to true only for SSL-enabled Connectors - manual
+6.5 - Ensure sslProtocol is Configured Correctly for Secure Connectors - manual
+7.1 - Application specific logging - manual
+7.2 - Specify file handler in logging.properties files
+7.3 - Ensure className is set correctly in context.xml
+7.4 - Ensure directory in context.xml is a secure location - manual
+7.5 - Ensure pattern in context.xml is correct - manual
+7.6 - Ensure directory in logging.properties is a secure location - manual
+8.1 - Restrict runtime access to sensitive packages - manual
+9.1 - Starting Tomcat with Security Manager - manual
+9.2 - Disabling auto deployment of applications
+9.3 - Disable deploy on startup of applications
+10.1 - Ensure Web content directory is on a separate partition from the Tomcat system files - manual
+10.2 - Restrict access to the web administration application
+10.3 - Restrict manager application - manual
+10.4 - Force SSL when accessing the manager application via HTTP - manual
+10.5 - Rename the manager application - manual
+10.6 - Enable strict servlet Compliance - manual
+10.7 - Turn off session facade recycling - manual
+10.8 - Do not allow additional path delimiters - manual
+10.9 - Configure connectionTimeout
+10.10 - Configure maxHttpHeaderSize
+10.11 - Force SSL for all applications
+10.12 - Do not allow symbolic linking - manual
+10.13 - Do not run applications as privileged
+10.14 - Do not allow cross context requests
+10.15 - Do not resolve hosts on logging valves
+10.16 - Enable memory leak listener
+10.17 - Setting Security Lifecycle Listener - manual
+10.18 - Use the logEffectiveWebXml and metadata-complete settings for deploying applications in production - manual
+10.19 - Ensure Manager Application Passwords are Encrypted - manual

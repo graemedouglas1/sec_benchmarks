@@ -1,0 +1,44 @@
+1.4 - Maintain Detailed Asset Inventory - manual
+1.6 - Address Unauthorized Assets - manual
+2.1 - Maintain Inventory of Authorized Software - manual
+2.2 - Ensure Software is Supported by Vendor - manual
+2.6 - Address Unapproved Software - manual
+3.4 - Deploy Automated Operating System Patch Management Tools - manual
+3.5 - Deploy Automated Software Patch Management Tools - manual
+4.2 - Change Default Passwords - manual
+4.3 - Ensure the Use of Dedicated Administrative Accounts - manual
+5.1 - Establish Secure Configurations - manual
+6.2 - Activate Audit Logging - manual
+7.1 - Ensure Use of Only Fully Supported Browsers and Email Clients - manual
+7.7 - Use of DNS Filtering Services - manual
+8.2 - Ensure Anti-Malware Software and Signatures are Updated - manual
+8.4 - Configure Anti-Malware Scanning of Removable Media - manual
+8.5 - A Configure Devices to Not Auto-Run Content - manual
+8.5 - B Configure Devices to Not Auto-Run Content - manual
+9.4 - Apply Host-Based Firewalls or Port Filtering - manual
+10.1 - Ensure Regular Automated Backups - manual
+10.2 - Perform Complete System Backups - manual
+10.4 - Protect Backups - manual
+10.5 - Ensure All Backups Have at Least One Offline Backup Destination - manual
+11.4 - Install the Latest Stable Version of Any Security-Related Updates on All Network Devices - manual
+12.1 - Maintain an Inventory of Network Boundaries - manual
+12.4 - Deny Communication Over Unauthorized Ports - manual
+13.1 - Maintain an Inventory of Sensitive Information - manual
+13.2 - Remove Sensitive Data or Systems Not Regularly Accessed by Organization - manual
+13.6 - Encrypt Mobile Device Data - manual
+14.6 - Protect Information Through Access Control Lists - manual
+15.7 - Leverage the Advanced Encryption Standard to Encrypt Wireless Data - manual
+15.10 - Create Separate Wireless Network for Personal and Untrusted Devices - manual
+16.8 - Disable Any Unassociated Accounts - manual
+16.9 - Disable Dormant Accounts - manual
+16.11 - Lock Workstation Sessions After Inactivity - manual
+17.3 - Implement a Security Awareness Program - manual
+17.5 - Train Workforce on Secure Authentication - manual
+17.6 - Train Workforce on Identifying Social Engineering Attacks - manual
+17.7 - Train Workforce on Sensitive Data Handling - manual
+17.8 - Train Workforce on Causes of Unintentional Data Exposure - manual
+17.9 - Train Workforce Members on Identifying and Reporting Incidents - manual
+19.1 - Document Incident Response Procedures - manual
+19.3 - Designate Management Personnel to Support Incident Handling - manual
+19.5 - Maintain Contact Information for Reporting Security Incidents - manual
+19.6 - Publish Information Regarding Reporting Computer Anomalies and Incidents - manual

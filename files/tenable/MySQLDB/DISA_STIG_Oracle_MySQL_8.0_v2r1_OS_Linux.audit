@@ -1,0 +1,748 @@
+#TRUSTED 2b7083b62cbbde8d0c8c746d27f1e558864bbe031e4d6b82cffe3dec772022a781374ff83dada82a6bd6b7c6d74be678a4aedbcf2d945f7f6d4c16ec11082596ce320b8072ea82fabd5e48c99f5cd60ab09b08aac84d8f770536f7d769697d8669cf83a35d5cd0e62507ffeae6a893b673bb2bd6beac8f1b786e6e863e2197eeee58abfdca55c5cae6430d0895e126b99318fb86a376b452150015ed233e71b80771d81e8f91491ceccc20489447ca13de987aa303d5bed645247cbd97b4843eb6a0f3639fce632730bdddb54ac6f5bb587faf614abcff979140fa56f315885ae449a1abead69c168c983f4541fb8eb3aaff149c0e890e4f32529761f37e60a1d1c5a2ab5af830af3552219460e234333c36e998b6af4e453ab0e7b6139dcd6b2d1a6e702b560929bf22d306ec5bd55708b64c5382da3d0eff8d02cf4aafbb70d287972d68bc5289d1ca08b301bb40fb52e8b481833b86476d2404b809f8b40fe8e5580bef7a99375e5fc320217bf472f1a1337198e0b4acaf7395d816fc346bdedb152a6eb95b00d18bbb3d1b84754e069ed0aaafe0df7a2dab16e92f64d4f4592c95565b843c167f662a15a2479bcf54a36486bcf6c7e2b6abf49c7905a3fe3d9c32681cd86d236bbf6dfea30b9066215db1f53bedd929c1fa370ee2e1ad90e753f13f308f8f6c15e3fd0fa3f691abca496579110997580170df567f6e17a2
+#TRUST-RSA-SHA256 68b4f56a596c479db049692490b2e76f39a37bf10ecc0d1b1ad7d14e16f781844eabe05cac288953cc4128a8c83e88f1ec7c161c9d4f93dc02d5251b3c41c3e7cbe3e4e476ccf5f3d7f6baec95ddbe7cf365b9b2fa59c1d7e1f55ffee98a98945df3002c69ee0310c00589a5a6419e49923e7406284647c4ce559c46c69d66d000de8741570d439d73db4169f333acd6bb8491554e5ce1f0257f4c6e1083b8b7036bd3ba12244691ce861881b6bdc480034a4c7414c643b4271619f3cf3a734bee3ac974c77e186ce1f5d78d89eb642b8df7589bf0ab500e7e9f364080af9303976ce517f972f403a3c8182cbea9bf5c875c5682256fce56a2c7c095f347375a2632fd6d9255adce4e348bed980c396d7e5ea4383c2986546f4a6120fd0426600cc0055027852aee0e6255897b6eecaddfe06dddb93f388fc0bbd7c384cf5bbd647ede332285ad37fb145d9969794bef4f7fa4bd8cb9afbb772ea79a9d68da2bcec141401eeeaef5aa6d3959d67f818521842842b48cc8679aa8e4b33e3fbe8fcf27ae63a1fa0a62cc4cf8415525201754d12252f3b11abca06730b5581542f6606e57519a0dc6c0c0afd8e54317fffe64eddeaa53afea72734d33ceaa8a60b6556064261fc24b353a3e9a80582401d542e7a42542a515f0e5ddebcc9cde3d72295ecde550db1d5f4a78340e1dc920612a0ac4bc8fc5e6e4a1bf36e51665ea47
+#
+# This script is Copyright (C) 2004-2024 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.0 $
+# $Date: 2024/08/26 $
+#
+# Description : This document implements the security configuration as recommended by the
+#               DISA Oracle MySQL 8.0 v2r1 STIG.
+#
+#<ui_metadata>
+#<display_name>DISA Oracle MySQL 8.0 v2r1 OS Linux</display_name>
+#<spec>
+#  <type>DISA STIG</type>
+#  <name>Oracle MySQL 8.0</name>
+#  <profile>OS Linux</profile>
+#  <version>2.1.0</version>
+#  <link>https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Oracle_MySQL_8-0_V2R1_STIG.zip</link>
+#</spec>
+#<labels>distribution_independent_linux,disa,mysql,mysql_8,mysql_8.0,mysql_8.0_enterprise</labels>
+#<benchmark_refs>CAT,CCE,CCI,DISA_Benchmark,Group-ID,Rule-ID,STIG-ID,STIG-Legacy,Vuln-ID</benchmark_refs>
+#<variables>
+#  <variable>
+#    <name>AUDIT_LOG_FILE</name>
+#    <default>/var/lib/mysql/audit*log*</default>
+#    <description>Audit Log</description>
+#    <info>The absolute path and file for the audit log.</info>
+#    <value_type>UNIX_FILE_PATH</value_type>
+#  </variable>
+#  <variable>
+#    <name>DATA_DIR</name>
+#    <default>/var/lib/mysql</default>
+#    <description>Data Directory</description>
+#    <info>The absolute path to the data directory.</info>
+#    <value_type>UNIX_FILE_PATH</value_type>
+#  </variable>
+#  <variable>
+#    <name>PEM_FILE_DIR</name>
+#    <default>/var/lib/mysql</default>
+#    <description>PEM File Directory</description>
+#    <info>The absolute path to the PEM file directory. Defaults to the MySQL data directory.</info>
+#    <value_type>UNIX_FILE_PATH</value_type>
+#  </variable>
+#  <variable>
+#    <name>MY_CNF</name>
+#    <default>/etc/mysql/my.cnf</default>
+#    <description>MySQL Configuration File</description>
+#    <info>The absolute path and file for the MySQL configuration file.</info>
+#    <value_type>UNIX_FILE_PATH</value_type>
+#  </variable>
+#  <variable>
+#    <name>AUTO_CNF</name>
+#    <default>/var/lib/mysql/auto.cnf</default>
+#    <description>MySQL auto.cnf File</description>
+#    <info>The absolute path and file for the MySQL auto.cnf file which stores persistent variable settings.</info>
+#    <value_type>UNIX_FILE_PATH</value_type>
+#  </variable>
+#  <variable>
+#    <name>PEM_FILE</name>
+#    <default>/var/lib/mysql/server-cert.pem</default>
+#    <description>PEM File</description>
+#    <info>The absolute path to the PEM file which contains an issuer from a DoD-approved certificate authority.</info>
+#    <value_type>UNIX_FILE_PATH</value_type>
+#  </variable>
+#</variables>
+#</ui_metadata>
+
+<check_type:"Unix">
+
+<if>
+  <condition type:"AND">
+    <custom_item>
+      type        : CMD_EXEC
+      description : "Linux found"
+      cmd         : "uname -a"
+      expect      : "Linux"
+    </custom_item>
+  </condition>
+
+  <then>
+    <report type:"PASSED">
+      description : "DISA_STIG_Oracle_MySQL_8.0_v2r1_OS_Linux.audit from DISA Oracle MySQL 8.0 v2r1 STIG"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Oracle_MySQL_8-0_V2R1_STIG.zip"
+    </report>
+
+    <if>
+      <condition auto:"FAILED" type:"AND">
+        <custom_item>
+          type        : FILE_CHECK
+          description : "audit.log"
+          file        : "@AUDIT_LOG_FILE@"
+          owner       : "mysql" || "_mysql"
+          mask        : "027"
+          group       : "mysql" || "_mysql"
+        </custom_item>
+
+        <custom_item>
+          type        : FILE_CHECK
+          description : "data directory"
+          file        : "@DATA_DIR@"
+          owner       : "mysql" || "_mysql"
+          mask        : "027"
+          group       : "mysql" || "_mysql"
+        </custom_item>
+      </condition>
+
+      <then>
+        <report type:"PASSED">
+          description : "MYS8-00-000300 - MySQL Database Server 8.0  must produce audit records containing sufficient information to establish what type of events occurred."
+          info        : "Information system auditing capability is critical for accurate forensic analysis. Without establishing what type of event occurred, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.
+
+Audit record content that may be necessary to satisfy the requirement of this policy includes, for example, time stamps, user/process identifiers, event descriptions, success/fail indications, filenames involved, and access control or flow control rules invoked.
+
+Associating event types with detected events in the application and audit logs provides a means of investigating an attack; recognizing resource utilization or capacity thresholds; or identifying an improperly configured application.
+
+Database software is capable of a range of actions on data stored within the database. It is important, for accurate forensic analysis, to know exactly what actions were performed. This requires specific information regarding the event type to which an audit record refers. If event type information is not recorded and stored with the audit record, the record itself is of very limited use.
+
+MySQL provides auditing using the MySQL Enterprise Audit Log Plugin. When installed, the audit plugin enables MySQL Server to produce a log file containing an audit record of server activity. The log contents include when clients connect and disconnect, and what actions they perform while connected, such as which databases and tables they access."
+          solution    : "Configure DBMS auditing to audit standard and organization-defined auditable events, with the audit record to include what type of event occurred.
+
+Use this process to ensure auditable events are captured:
+
+Configure MySQL database server 8.0 for auditing and configure audit settings to include required events as part of the audit record.
+
+To install MySQL Enterprise Audit:
+Run the audit_log_filter_linux_install.sql script located in the sharedirectory of your MySQL installation. This can be determined by running - select @@basedir;
+For example if the basedir is /usr/local/mysql
+shell> bin/mysql -u root -p < /usr/local/mysql/share/audit_log_filter_linux_install.sql
+
+Verify the plugin installation by running:
+SELECT PLUGIN_NAME, PLUGIN_STATUS
+       FROM INFORMATION_SCHEMA.PLUGINS
+       WHERE PLUGIN_NAME LIKE 'audit%';
+The value for audit_log should return ACTIVE.
+
+To prevent the plugin from being removed at runtime, add the --audit-log option under the [mysqld] option group in the MySQL configuration file (/etc/my.cnf) with a setting of FORCE_PLUS_PERMANENT.
+
+audit-log=FORCE_PLUS_PERMANENT
+
+Restart the server to apply the configuration change.
+
+By default, rule-based audit log filtering logs no auditable events for any users. To produce log-everything behavior with rule-based filtering, create a filter to enable logging of all events and assign it to the audit all accounts.
+
+Run the following statements to filter all activity for all users:
+SELECT audit_log_filter_set_filter('log_all', '{ 'filter': { 'log': true } }');
+SELECT audit_log_filter_set_user('%', 'log_all');
+SELECT audit_log_filter_set_user('%', 'log_all');"
+          reference   : "800-171|3.3.1,800-171|3.3.2,800-53|AU-3,800-53r5|AU-3a.,CAT|II,CCI|CCI-000130,CN-L3|7.1.2.3(a),CN-L3|7.1.2.3(b),CN-L3|7.1.3.3(a),CN-L3|8.1.4.3(b),CSF|PR.PT-1,CSF2.0|PR.PS-04,DISA_Benchmark|Oracle_MySQL_8.0_STIG,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ITSG-33|AU-3,NESA|T3.6.2,NIAv2|AM34a,NIAv2|AM34b,NIAv2|AM34c,NIAv2|AM34d,NIAv2|AM34e,NIAv2|AM34f,NIAv2|AM34g,PCI-DSSv3.2.1|10.3,PCI-DSSv3.2.1|10.3.1,PCI-DSSv3.2.1|10.3.2,PCI-DSSv3.2.1|10.3.3,PCI-DSSv3.2.1|10.3.4,PCI-DSSv3.2.1|10.3.5,PCI-DSSv3.2.1|10.3.6,PCI-DSSv4.0|10.2.2,QCSC-v1|8.2.1,QCSC-v1|13.2,Rule-ID|SV-235097r960891_rule,STIG-ID|MYS8-00-000300,SWIFT-CSCv1|6.4,Vuln-ID|V-235097"
+          see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Oracle_MySQL_8-0_V2R1_STIG.zip"
+          show_output : YES
+        </report>
+      </then>
+    </if>
+
+    <if>
+      <condition auto:"FAILED" type:"AND">
+        <custom_item>
+          type        : FILE_CHECK
+          description : "audit.log"
+          file        : "@AUDIT_LOG_FILE@"
+          owner       : "mysql" || "_mysql"
+          mask        : "027"
+          group       : "mysql" || "_mysql"
+        </custom_item>
+
+        <custom_item>
+          type        : FILE_CHECK
+          description : "data directory"
+          file        : "@DATA_DIR@"
+          owner       : "mysql" || "_mysql"
+          mask        : "027"
+          group       : "mysql" || "_mysql"
+        </custom_item>
+      </condition>
+
+      <then>
+        <report type:"PASSED">
+          description : "MYS8-00-001200 - The audit information produced by the MySQL Database Server 8.0 must be protected from unauthorized read access."
+          info        : "If audit data were to become compromised, then competent forensic analysis and discovery of the true source of potentially malicious system activity is difficult, if not impossible, to achieve. In addition, access to audit records provides information an attacker could potentially use to their advantage.
+
+To ensure the veracity of audit data, the information system and/or the application must protect audit information from any and all unauthorized access. This includes read, write, copy, etc.
+
+This requirement can be achieved through multiple methods, which will depend upon system architecture and design. Some commonly employed methods include ensuring log files enjoy the proper file system permissions utilizing file system protections and limiting log data location.
+
+Additionally, applications with user interfaces to audit records should not allow for the unfettered manipulation of or access to those records via the application. If the application provides access to the audit data, the application becomes accountable for ensuring that audit information is protected from unauthorized access.
+
+Audit information includes all information (e.g., audit records, audit settings, and audit reports) needed to successfully audit information system activity.
+
+If the value of audit_log_file is a relative path name, the plugin interprets it relative to the data directory. If the value is a full path name, the plugin uses the value as is. A full path name may be useful if it is desirable to locate audit files on a separate file system or directory. For security reasons, write the audit log file to a directory accessible only to the MySQL server and to users with a legitimate reason to view the log."
+          solution    : "Apply controls and modify permissions to protect database audit log data from unauthorized access, whether stored in the database itself or at the OS level.
+
+sudo vi /etc/my.cnf
+[mysqld]
+audit-log=FORCE_PLUS_PERMANENT
+audit-log-format=JSON
+audit-log-encryption=AES
+
+After changing the my.cnf, restart the server.
+
+If not performed already, set the audit log password.
+SELECT audit_log_encryption_password_set(password);
+
+Set appropriate permissions on the directory and audit files.
+sudo chown mysql <audit directory path>
+sudo chgrp mysql <audit directory path>
+Change permissions
+chmod 750 <directory path>"
+          reference   : "800-171|3.3.8,800-53|AU-9,800-53r5|AU-9a.,CAT|II,CCI|CCI-000162,CN-L3|7.1.2.3(d),CN-L3|7.1.3.3(f),CN-L3|8.1.3.5(c),CN-L3|8.1.4.3(c),CSF|PR.PT-1,CSF2.0|PR.DS-10,DISA_Benchmark|Oracle_MySQL_8.0_STIG,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ISO/IEC-27001|A.12.4.2,ITSG-33|AU-9,NESA|M5.2.3,NESA|M5.5.2,NESA|T3.6.4,NESA|T8.2.9,NIAv2|SM5,NIAv2|SM6,PCI-DSSv3.2.1|10.5,PCI-DSSv3.2.1|10.5.2,PCI-DSSv4.0|10.3.2,QCSC-v1|8.2.1,QCSC-v1|13.2,Rule-ID|SV-235099r960930_rule,STIG-ID|MYS8-00-001200,Vuln-ID|V-235099"
+          see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Oracle_MySQL_8-0_V2R1_STIG.zip"
+          show_output : YES
+        </report>
+      </then>
+    </if>
+
+    <if>
+      <condition auto:"FAILED" type:"AND">
+        <custom_item>
+          type        : FILE_CHECK
+          description : "audit.log"
+          file        : "@AUDIT_LOG_FILE@"
+          owner       : "mysql" || "_mysql"
+          mask        : "027"
+          group       : "mysql" || "_mysql"
+        </custom_item>
+
+        <custom_item>
+          type        : FILE_CHECK
+          description : "data directory"
+          file        : "@DATA_DIR@"
+          owner       : "mysql" || "_mysql"
+          mask        : "027"
+          group       : "mysql" || "_mysql"
+        </custom_item>
+      </condition>
+
+      <then>
+        <report type:"PASSED">
+          description : "MYS8-00-001300 - The audit information produced by the MySQL Database Server 8.0 must be protected from unauthorized modification."
+          info        : "If audit data were to become compromised, then competent forensic analysis and discovery of the true source of potentially malicious system activity is impossible to achieve.
+
+To ensure the veracity of audit data the information system and/or the application must protect audit information from unauthorized modification.
+
+This requirement can be achieved through multiple methods that will depend upon system architecture and design. Some commonly employed methods include ensuring log files enjoy the proper file system permissions and limiting log data locations.
+
+Applications providing a user interface to audit data will leverage user permissions and roles identifying the user accessing the data and the corresponding rights the user enjoys to make access decisions regarding the modification of audit data.
+
+Audit information includes all information (e.g., audit records, audit settings, and audit reports) needed to successfully audit information system activity.
+
+Modification of database audit data could mask the theft of, or the unauthorized modification of, sensitive data stored in the database."
+          solution    : "Apply controls and modify permissions to protect database audit log data from unauthorized access, whether stored in the database itself or at the OS level.
+
+sudo vi /etc/my.cnf
+[mysqld]
+audit-log=FORCE_PLUS_PERMANENT
+audit-log-format=JSON
+audit-log-encryption=AES
+
+After changing the my.cnf restart the server.
+
+If not performed already, set the audit log password.
+SELECT audit_log_encryption_password_set(password);
+
+Set appropriate permissions on the directory and audit files.
+sudo chown mysql <audit directory path>
+sudo chgrp mysql <audit directory path>
+Change permissions
+chmod 750 <directory path>"
+          reference   : "800-171|3.3.8,800-53|AU-9,800-53r5|AU-9a.,CAT|II,CCI|CCI-000163,CN-L3|7.1.2.3(d),CN-L3|7.1.3.3(f),CN-L3|8.1.3.5(c),CN-L3|8.1.4.3(c),CSF|PR.PT-1,CSF2.0|PR.DS-10,DISA_Benchmark|Oracle_MySQL_8.0_STIG,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ISO/IEC-27001|A.12.4.2,ITSG-33|AU-9,NESA|M5.2.3,NESA|M5.5.2,NESA|T3.6.4,NESA|T8.2.9,NIAv2|SM5,NIAv2|SM6,PCI-DSSv3.2.1|10.5,PCI-DSSv3.2.1|10.5.2,PCI-DSSv4.0|10.3.2,QCSC-v1|8.2.1,QCSC-v1|13.2,Rule-ID|SV-235100r960933_rule,STIG-ID|MYS8-00-001300,Vuln-ID|V-235100"
+          see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Oracle_MySQL_8-0_V2R1_STIG.zip"
+          show_output : YES
+        </report>
+      </then>
+    </if>
+
+    <if>
+      <condition auto:"FAILED" type:"AND">
+        <custom_item>
+          type        : FILE_CHECK
+          description : "audit.log"
+          file        : "@AUDIT_LOG_FILE@"
+          owner       : "mysql" || "_mysql"
+          mask        : "027"
+          group       : "mysql" || "_mysql"
+        </custom_item>
+
+        <custom_item>
+          type        : FILE_CHECK
+          description : "data directory"
+          file        : "@DATA_DIR@"
+          owner       : "mysql" || "_mysql"
+          mask        : "027"
+          group       : "mysql" || "_mysql"
+        </custom_item>
+      </condition>
+
+      <then>
+        <report type:"PASSED">
+          description : "MYS8-00-001400 - The audit information produced by the MySQL Database Server 8.0 must be protected from unauthorized deletion."
+          info        : "If audit data were to become compromised, then competent forensic analysis and discovery of the true source of potentially malicious system activity is impossible to achieve.
+
+To ensure the veracity of audit data, the information system and/or the application must protect audit information from unauthorized deletion. This requirement can be achieved through multiple methods, which will depend upon system architecture and design.
+
+Some commonly employed methods include ensuring log files enjoy the proper file system permissions utilizing file system protections; restricting access; and backing up log data to ensure log data is retained.
+
+Applications providing a user interface to audit data will leverage user permissions and roles identifying the user accessing the data and the corresponding rights the user enjoys in order make access decisions regarding the deletion of audit data.
+
+Audit information includes all information (e.g., audit records, audit settings, and audit reports) needed to successfully audit information system activity.
+
+Deletion of database audit data could mask the theft of, or the unauthorized modification of, sensitive data stored in the database."
+          solution    : "Apply controls and modify permissions to protect database audit log data from unauthorized access, whether stored in the database itself or at the OS level.
+
+sudo vi /etc/my.cnf
+[mysqld]
+audit-log=FORCE_PLUS_PERMANENT
+audit-log-format=JSON
+audit-log-encryption=AES
+
+After changing the my.cnf, restart the server.
+
+If not performed already, set the audit log password.
+SELECT audit_log_encryption_password_set(password);
+
+Set appropriate permissions on the directory and audit files.
+sudo chown mysql <audit directory path>
+sudo chgrp mysql <audit directory path>
+Change permissions
+chmod 750 <directory path>"
+          reference   : "800-171|3.3.8,800-53|AU-9,800-53r5|AU-9a.,CAT|II,CCI|CCI-000164,CN-L3|7.1.2.3(d),CN-L3|7.1.3.3(f),CN-L3|8.1.3.5(c),CN-L3|8.1.4.3(c),CSF|PR.PT-1,CSF2.0|PR.DS-10,DISA_Benchmark|Oracle_MySQL_8.0_STIG,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ISO/IEC-27001|A.12.4.2,ITSG-33|AU-9,NESA|M5.2.3,NESA|M5.5.2,NESA|T3.6.4,NESA|T8.2.9,NIAv2|SM5,NIAv2|SM6,PCI-DSSv3.2.1|10.5,PCI-DSSv3.2.1|10.5.2,PCI-DSSv4.0|10.3.2,QCSC-v1|8.2.1,QCSC-v1|13.2,Rule-ID|SV-235101r960936_rule,STIG-ID|MYS8-00-001400,Vuln-ID|V-235101"
+          see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Oracle_MySQL_8-0_V2R1_STIG.zip"
+          show_output : YES
+        </report>
+      </then>
+    </if>
+
+    <custom_item>
+      type        : CMD_EXEC
+      description : "MYS8-00-001800 - The MySQL Database Server 8.0 must be able to generate audit records when privileges/permissions are retrieved."
+      info        : "Under some circumstances, it may be useful to monitor who/what is reading privilege/permission/role information. Therefore, it must be possible to configure auditing to do this. Database Management Systems (DBMSs) typically make such information available through views or functions.
+
+This requirement addresses explicit requests for privilege/permission/role membership information. It does not refer to the implicit retrieval of privileges/permissions/role memberships that the DBMS continually performs to determine if any and every action on the database is permitted.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+      solution    : "If currently required, configure the MySQL Database Server to produce audit records when audit when privileges/permissions are retrieved.
+
+See the supplemental file 'MySQL80Audit.sql'."
+      reference   : "800-171|3.3.1,800-171|3.3.2,800-53|AU-12c.,800-53r5|AU-12c.,CAT|II,CCI|CCI-000172,CN-L3|7.1.3.3(a),CN-L3|7.1.3.3(b),CN-L3|7.1.3.3(c),CN-L3|8.1.3.5(a),CN-L3|8.1.3.5(b),CN-L3|8.1.4.3(a),CSF|DE.CM-1,CSF|DE.CM-3,CSF|DE.CM-7,CSF|PR.PT-1,CSF2.0|DE.CM-01,CSF2.0|DE.CM-03,CSF2.0|DE.CM-09,CSF2.0|PR.PS-04,DISA_Benchmark|Oracle_MySQL_8.0_STIG,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ISO/IEC-27001|A.12.4.1,ITSG-33|AU-12c.,NESA|T3.6.2,NESA|T3.6.5,NESA|T3.6.6,NIAv2|SM8,PCI-DSSv3.2.1|10.1,QCSC-v1|3.2,QCSC-v1|6.2,QCSC-v1|8.2.1,QCSC-v1|13.2,Rule-ID|SV-235105r960885_rule,STIG-ID|MYS8-00-001800,SWIFT-CSCv1|6.4,TBA-FIISB|45.1.1,Vuln-ID|V-235105"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Oracle_MySQL_8-0_V2R1_STIG.zip"
+      cmd         : "egrep proxies_priv @AUDIT_LOG_FILE@"
+      expect      : "ManualReviewRequired"
+      severity    : MEDIUM
+    </custom_item>
+
+    <custom_item>
+      type        : CMD_EXEC
+      description : "MYS8-00-001900 - The MySQL Database Server 8.0 must be able to generate audit records when unsuccessful attempts to retrieve privileges/permissions occur."
+      info        : "Under some circumstances, it may be useful to monitor who/what is reading privilege/permission/role information. Therefore, it must be possible to configure auditing to do this. Database Management Systems (DBMSs) typically make such information available through views or functions.
+
+This requirement addresses explicit requests for privilege/permission/role membership information. It does not refer to the implicit retrieval of  privileges/permissions/role memberships that the DBMS continually performs to determine if any and every action on the database is permitted.
+
+To aid in diagnosis, it is necessary to keep track of failed attempts in addition to the successful ones.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+      solution    : "If currently required, configure the MySQL Database Server to produce audit records when unsuccessful attempts to retrieve privileges/permissions occur.
+
+See the supplemental file 'MySQL80Audit.sql'."
+      reference   : "800-171|3.3.1,800-171|3.3.2,800-53|AU-12c.,800-53r5|AU-12c.,CAT|II,CCI|CCI-000172,CN-L3|7.1.3.3(a),CN-L3|7.1.3.3(b),CN-L3|7.1.3.3(c),CN-L3|8.1.3.5(a),CN-L3|8.1.3.5(b),CN-L3|8.1.4.3(a),CSF|DE.CM-1,CSF|DE.CM-3,CSF|DE.CM-7,CSF|PR.PT-1,CSF2.0|DE.CM-01,CSF2.0|DE.CM-03,CSF2.0|DE.CM-09,CSF2.0|PR.PS-04,DISA_Benchmark|Oracle_MySQL_8.0_STIG,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ISO/IEC-27001|A.12.4.1,ITSG-33|AU-12c.,NESA|T3.6.2,NESA|T3.6.5,NESA|T3.6.6,NIAv2|SM8,PCI-DSSv3.2.1|10.1,QCSC-v1|3.2,QCSC-v1|6.2,QCSC-v1|8.2.1,QCSC-v1|13.2,Rule-ID|SV-235106r960885_rule,STIG-ID|MYS8-00-001900,SWIFT-CSCv1|6.4,TBA-FIISB|45.1.1,Vuln-ID|V-235106"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Oracle_MySQL_8-0_V2R1_STIG.zip"
+      cmd         : "egrep proxies_priv @AUDIT_LOG_FILE@"
+      expect      : "ManualReviewRequired"
+      severity    : MEDIUM
+    </custom_item>
+
+    <custom_item>
+      type        : CMD_EXEC
+      description : "MYS8-00-002000 - The MySQL Database Server 8.0 must be able to generate audit records when security objects are accessed."
+      info        : "Changes to the security configuration must be tracked.
+
+This requirement applies to situations where security data is retrieved or modified via data manipulation operations, as opposed to via specialized security functionality.
+
+In SQL environment, types of access include, but are not necessarily limited to:
+SELECT
+INSERT
+UPDATE
+DELETE
+EXECUTE
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+      solution    : "If currently required, configure the MySQL Database Server to produce audit records when security objects are accessed.
+
+See the supplemental file 'MySQL80Audit.sql'."
+      reference   : "800-171|3.3.1,800-171|3.3.2,800-53|AU-12c.,800-53r5|AU-12c.,CAT|II,CCI|CCI-000172,CN-L3|7.1.3.3(a),CN-L3|7.1.3.3(b),CN-L3|7.1.3.3(c),CN-L3|8.1.3.5(a),CN-L3|8.1.3.5(b),CN-L3|8.1.4.3(a),CSF|DE.CM-1,CSF|DE.CM-3,CSF|DE.CM-7,CSF|PR.PT-1,CSF2.0|DE.CM-01,CSF2.0|DE.CM-03,CSF2.0|DE.CM-09,CSF2.0|PR.PS-04,DISA_Benchmark|Oracle_MySQL_8.0_STIG,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ISO/IEC-27001|A.12.4.1,ITSG-33|AU-12c.,NESA|T3.6.2,NESA|T3.6.5,NESA|T3.6.6,NIAv2|SM8,PCI-DSSv3.2.1|10.1,QCSC-v1|3.2,QCSC-v1|6.2,QCSC-v1|8.2.1,QCSC-v1|13.2,Rule-ID|SV-235107r961791_rule,STIG-ID|MYS8-00-002000,SWIFT-CSCv1|6.4,TBA-FIISB|45.1.1,Vuln-ID|V-235107"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Oracle_MySQL_8-0_V2R1_STIG.zip"
+      cmd         : "egrep proxies_priv @AUDIT_LOG_FILE@"
+      expect      : "ManualReviewRequired"
+      severity    : MEDIUM
+    </custom_item>
+
+    <custom_item>
+      type        : CMD_EXEC
+      description : "MYS8-00-002100 - The MySQL Database Server 8.0 must generate audit records when unsuccessful attempts to access security objects occur."
+      info        : "Changes to the security configuration must be tracked.
+
+This requirement applies to situations where security data is retrieved or modified via data manipulation operations, as opposed to via specialized security functionality.
+
+In a SQL environment, types of access include, but are not necessarily limited to:
+SELECT
+INSERT
+UPDATE
+DELETE
+EXECUTE
+
+To aid in diagnosis, it is necessary to keep track of failed attempts in addition to the successful ones.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+      solution    : "If currently required, configure the MySQL Database Server to produce audit records when unsuccessful attempts to retrieve privileges/permissions occur.
+
+See the supplemental file 'MySQL80Audit.sql'."
+      reference   : "800-171|3.3.1,800-171|3.3.2,800-53|AU-12c.,800-53r5|AU-12c.,CAT|II,CCI|CCI-000172,CN-L3|7.1.3.3(a),CN-L3|7.1.3.3(b),CN-L3|7.1.3.3(c),CN-L3|8.1.3.5(a),CN-L3|8.1.3.5(b),CN-L3|8.1.4.3(a),CSF|DE.CM-1,CSF|DE.CM-3,CSF|DE.CM-7,CSF|PR.PT-1,CSF2.0|DE.CM-01,CSF2.0|DE.CM-03,CSF2.0|DE.CM-09,CSF2.0|PR.PS-04,DISA_Benchmark|Oracle_MySQL_8.0_STIG,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ISO/IEC-27001|A.12.4.1,ITSG-33|AU-12c.,NESA|T3.6.2,NESA|T3.6.5,NESA|T3.6.6,NIAv2|SM8,PCI-DSSv3.2.1|10.1,QCSC-v1|3.2,QCSC-v1|6.2,QCSC-v1|8.2.1,QCSC-v1|13.2,Rule-ID|SV-235108r961791_rule,STIG-ID|MYS8-00-002100,SWIFT-CSCv1|6.4,TBA-FIISB|45.1.1,Vuln-ID|V-235108"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Oracle_MySQL_8-0_V2R1_STIG.zip"
+      cmd         : "egrep proxies_priv @AUDIT_LOG_FILE@"
+      expect      : "ManualReviewRequired"
+      severity    : MEDIUM
+    </custom_item>
+
+    <custom_item>
+      type        : CMD_EXEC
+      description : "MYS8-00-002200 - The MySQL Database Server 8.0 must generate audit records when categories of information (e.g., classification levels/security levels) are accessed."
+      info        : "Changes in categories of information must be tracked. Without an audit trail, unauthorized access to protected data could go undetected.
+
+For detailed information on categorizing information, refer to FIPS Publication 199, Standards for Security Categorization of Federal Information and Information Systems, and FIPS Publication 200, Minimum Security Requirements for Federal Information and Information Systems.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+      solution    : "If currently required, configure the MySQL Database Server with stored procedures that use selects that call audit_api_message_emit_udf() function to produce audit records when selection of categories of information occurs.
+Add security level details in an additional column.
+
+Add the component for adding information to the audit log.
+
+INSTALL COMPONENT 'file://component_audit_api_message_emit';
+create schema test_trigger;
+
+Modify selections adding the audit_api_message_emit_udf to be called, as well as providing the details for the audit event.
+
+Transparently enforcing the use of MySQL stored procedures is required.
+
+See the supplemental file 'MySQL80Audit.sql'."
+      reference   : "800-171|3.3.1,800-171|3.3.2,800-53|AU-12c.,800-53r5|AU-12c.,CAT|II,CCI|CCI-000172,CN-L3|7.1.3.3(a),CN-L3|7.1.3.3(b),CN-L3|7.1.3.3(c),CN-L3|8.1.3.5(a),CN-L3|8.1.3.5(b),CN-L3|8.1.4.3(a),CSF|DE.CM-1,CSF|DE.CM-3,CSF|DE.CM-7,CSF|PR.PT-1,CSF2.0|DE.CM-01,CSF2.0|DE.CM-03,CSF2.0|DE.CM-09,CSF2.0|PR.PS-04,DISA_Benchmark|Oracle_MySQL_8.0_STIG,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ISO/IEC-27001|A.12.4.1,ITSG-33|AU-12c.,NESA|T3.6.2,NESA|T3.6.5,NESA|T3.6.6,NIAv2|SM8,PCI-DSSv3.2.1|10.1,QCSC-v1|3.2,QCSC-v1|6.2,QCSC-v1|8.2.1,QCSC-v1|13.2,Rule-ID|SV-235109r961797_rule,STIG-ID|MYS8-00-002200,SWIFT-CSCv1|6.4,TBA-FIISB|45.1.1,Vuln-ID|V-235109"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Oracle_MySQL_8-0_V2R1_STIG.zip"
+      cmd         : "egrep sec_level_priv @AUDIT_LOG_FILE@"
+      expect      : "ManualReviewRequired"
+      severity    : MEDIUM
+    </custom_item>
+
+    <custom_item>
+      type        : CMD_EXEC
+      description : "MYS8-00-002300 - The MySQL Database Server 8.0 must generate audit records when unsuccessful attempts to access categories of information (e.g., classification levels/security levels) occur."
+      info        : "Changes in categories of information must be tracked. Without an audit trail, unauthorized access to protected data could go undetected.
+
+To aid in diagnosis, it is necessary to keep track of failed attempts in addition to the successful ones.
+
+For detailed information on categorizing information, refer to FIPS Publication 199, Standards for Security Categorization of Federal Information and Information Systems, and FIPS Publication 200, Minimum Security Requirements for Federal Information and Information Systems.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+      solution    : "If currently required, configure the MySQL Database Server with views that use selects that call audit_api_message_emit_udf() function to produce audit records when selection of categories of information occurs.
+Add security level details in an additional column if necessary.
+
+Add the component for adding information to the audit log.
+
+INSTALL COMPONENT 'file://component_audit_api_message_emit';
+
+To transparently enforce the use of MySQL view is required.
+
+See the supplemental file 'MySQL80Audit.sql'."
+      reference   : "800-171|3.3.1,800-171|3.3.2,800-53|AU-12c.,800-53r5|AU-12c.,CAT|II,CCI|CCI-000172,CN-L3|7.1.3.3(a),CN-L3|7.1.3.3(b),CN-L3|7.1.3.3(c),CN-L3|8.1.3.5(a),CN-L3|8.1.3.5(b),CN-L3|8.1.4.3(a),CSF|DE.CM-1,CSF|DE.CM-3,CSF|DE.CM-7,CSF|PR.PT-1,CSF2.0|DE.CM-01,CSF2.0|DE.CM-03,CSF2.0|DE.CM-09,CSF2.0|PR.PS-04,DISA_Benchmark|Oracle_MySQL_8.0_STIG,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ISO/IEC-27001|A.12.4.1,ITSG-33|AU-12c.,NESA|T3.6.2,NESA|T3.6.5,NESA|T3.6.6,NIAv2|SM8,PCI-DSSv3.2.1|10.1,QCSC-v1|3.2,QCSC-v1|6.2,QCSC-v1|8.2.1,QCSC-v1|13.2,Rule-ID|SV-235110r961797_rule,STIG-ID|MYS8-00-002300,SWIFT-CSCv1|6.4,TBA-FIISB|45.1.1,Vuln-ID|V-235110"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Oracle_MySQL_8-0_V2R1_STIG.zip"
+      cmd         : "egrep sec_level_H_ATTEMPTED_selected @AUDIT_LOG_FILE@"
+      expect      : "ManualReviewRequired"
+      severity    : MEDIUM
+    </custom_item>
+
+    <custom_item>
+      type        : CMD_EXEC
+      description : "MYS8-00-002800 - The MySQL Database Server 8.0 must generate audit records when security objects are modified."
+      info        : "Changes in the database objects (tables, views, procedures, functions) that record and control permissions, privileges, and roles granted to users and roles must be tracked. Without an audit trail, unauthorized changes to the security subsystem could go undetected. The database could be severely compromised or rendered inoperative.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+      solution    : "If currently required, configure the MySQL Database Server to produce audit records when security objects are modified.
+
+See the supplemental file 'MySQL80Audit.sql'."
+      reference   : "800-171|3.3.1,800-171|3.3.2,800-53|AU-12c.,800-53r5|AU-12c.,CAT|II,CCI|CCI-000172,CN-L3|7.1.3.3(a),CN-L3|7.1.3.3(b),CN-L3|7.1.3.3(c),CN-L3|8.1.3.5(a),CN-L3|8.1.3.5(b),CN-L3|8.1.4.3(a),CSF|DE.CM-1,CSF|DE.CM-3,CSF|DE.CM-7,CSF|PR.PT-1,CSF2.0|DE.CM-01,CSF2.0|DE.CM-03,CSF2.0|DE.CM-09,CSF2.0|PR.PS-04,DISA_Benchmark|Oracle_MySQL_8.0_STIG,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ISO/IEC-27001|A.12.4.1,ITSG-33|AU-12c.,NESA|T3.6.2,NESA|T3.6.5,NESA|T3.6.6,NIAv2|SM8,PCI-DSSv3.2.1|10.1,QCSC-v1|3.2,QCSC-v1|6.2,QCSC-v1|8.2.1,QCSC-v1|13.2,Rule-ID|SV-235115r961803_rule,STIG-ID|MYS8-00-002800,SWIFT-CSCv1|6.4,TBA-FIISB|45.1.1,Vuln-ID|V-235115"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Oracle_MySQL_8-0_V2R1_STIG.zip"
+      cmd         : "egrep global_grants @AUDIT_LOG_FILE@"
+      expect      : "ManualReviewRequired"
+      severity    : MEDIUM
+    </custom_item>
+
+    <custom_item>
+      type        : CMD_EXEC
+      description : "MYS8-00-002900 - The MySQL Database Server 8.0 must generate audit records when unsuccessful attempts to modify security objects occur."
+      info        : "Changes in the database objects (tables, views, procedures, functions) that record and control permissions, privileges, and roles granted to users and roles must be tracked. Without an audit trail, unauthorized changes to the security subsystem could go undetected. The database could be severely compromised or rendered inoperative.
+
+To aid in diagnosis, it is necessary to keep track of failed attempts in addition to the successful ones.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+      solution    : "If currently required, configure the MySQL Database Server to produce audit records when unsuccessful attempts to modify security objects occur.
+
+See the supplemental file 'MySQL80Audit.sql'."
+      reference   : "800-171|3.3.1,800-171|3.3.2,800-53|AU-12c.,800-53r5|AU-12c.,CAT|II,CCI|CCI-000172,CN-L3|7.1.3.3(a),CN-L3|7.1.3.3(b),CN-L3|7.1.3.3(c),CN-L3|8.1.3.5(a),CN-L3|8.1.3.5(b),CN-L3|8.1.4.3(a),CSF|DE.CM-1,CSF|DE.CM-3,CSF|DE.CM-7,CSF|PR.PT-1,CSF2.0|DE.CM-01,CSF2.0|DE.CM-03,CSF2.0|DE.CM-09,CSF2.0|PR.PS-04,DISA_Benchmark|Oracle_MySQL_8.0_STIG,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ISO/IEC-27001|A.12.4.1,ITSG-33|AU-12c.,NESA|T3.6.2,NESA|T3.6.5,NESA|T3.6.6,NIAv2|SM8,PCI-DSSv3.2.1|10.1,QCSC-v1|3.2,QCSC-v1|6.2,QCSC-v1|8.2.1,QCSC-v1|13.2,Rule-ID|SV-235116r961803_rule,STIG-ID|MYS8-00-002900,SWIFT-CSCv1|6.4,TBA-FIISB|45.1.1,Vuln-ID|V-235116"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Oracle_MySQL_8-0_V2R1_STIG.zip"
+      cmd         : "egrep global_grants @AUDIT_LOG_FILE@"
+      expect      : "ManualReviewRequired"
+      severity    : MEDIUM
+    </custom_item>
+
+    <if>
+      <condition auto:"FAILED" type:"AND">
+        <custom_item>
+          type        : FILE_CHECK
+          description : "public pem files"
+          file        : "@PEM_FILE_DIR@/*.pem"
+          owner       : "mysql" || "_mysql"
+          group       : "mysql" || "_mysql"
+          ignore      : "@PEM_FILE_DIR@/*key.pem"
+        </custom_item>
+
+        <custom_item>
+          type        : FILE_CHECK
+          description : "private pem files"
+          file        : "/var/lib/mysql/*-key.pem"
+          owner       : "mysql" || "_mysql"
+          group       : "mysql" || "_mysql"
+        </custom_item>
+      </condition>
+
+      <then>
+        <report type:"PASSED">
+          description : "MYS8-00-004800 - The MySQL Database Server 8.0 must enforce authorized access to all PKI private keys stored/utilized by the MySQL Database Server 8.0."
+          info        : "The DoD standard for authentication is DoD-approved PKI certificates. PKI certificate-based authentication is performed by requiring the certificate holder to cryptographically prove possession of the corresponding private key.
+
+If the private key is stolen, an attacker can use it to impersonate the certificate holder. In cases where the Database Management System (DBMS)-stored private keys are used to authenticate the DBMS to the system's clients, loss of the corresponding private keys would allow an attacker to successfully perform undetected man-in-the-middle attacks against the DBMS system and its clients.
+
+Both the holder of a digital certificate, and the issuing authority, must take careful measures to protect the corresponding private key. Private keys must always be generated and protected in FIPS 140-2 or 140-3 validated cryptographic modules.
+
+All access to the private key(s) of the DBMS must be restricted to authorized and authenticated users. If unauthorized users have access to one or more of the DBMS's private keys, an attacker could gain access to the key(s) and use them to impersonate the database on the network or otherwise perform unauthorized actions."
+          solution    : "Implement strong access and authentication controls to protect the database's private key.
+
+Configure the database to support Transport Layer Security (TLS) protocols and the put in place file systems permissions on authentication and signing credentials, including private keys.
+
+Put keys in place in the datadir, or define their locations using ssl_capath and ssl_crlpath.
+
+Ensure proper permissions are set to protect the private keys and certificates.
+
+Change directory ssl_capath, ssl_crlpath, or the default datadir path.
+
+To determine the file paths:
+select @@ssl_capath, @@ssl_crlpath, @@ssl_key, @@datadir;
+
+Ensure OS account mysql owns all the pem and key files.
+$ chown mysql *.pem
+$ chgrp mysql *.key
+$ chmod 600 *.key'
+$ chmod 600 *.pem
+
+Optionally, allow access to public keys.
+$ chmod 644 client-cert.pem client-key.pem
+$chmod 644 public_key.pem server-cert.pem
+
+If the server-key.pem has a password, provide this password when prompted during a console startup. The server will not start without this password if the server key is password protected.
+
+Edit the mysql configuration file.
+
+[mysqld]
+ssl-fips-mode=ON
+
+If the OpenSSL FIPS Object Module is not available, ssl_fips_mode to ON or STRICT at startup causes the server to produce an error message and exit."
+          reference   : "800-171|3.5.2,800-53|IA-5(2)(b),800-53r5|IA-5(2)(a)(1),CAT|I,CCI|CCI-000186,CSF|PR.AC-1,CSF2.0|PR.AA-01,CSF2.0|PR.AA-03,DISA_Benchmark|Oracle_MySQL_8.0_STIG,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(2)(i),HIPAA|164.312(d),ITSG-33|IA-5(2)(b),NESA|T5.2.3,QCSC-v1|5.2.2,QCSC-v1|13.2,Rule-ID|SV-235135r961041_rule,STIG-ID|MYS8-00-004800,Vuln-ID|V-235135"
+          see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Oracle_MySQL_8-0_V2R1_STIG.zip"
+          show_output : YES
+        </report>
+      </then>
+    </if>
+
+    <if>
+      <condition auto:"FAILED" type:"AND">
+        <custom_item>
+          type        : FILE_CONTENT_CHECK
+          description : "plugin-load-add"
+          file        : "@MY_CNF@"
+          regex       : "^[\\s]*plugin-load-add[\\s]*="
+          expect      : "^[\\s]*plugin-load-add[\\s]*=[\\s]*audit_log.so[\\s]*$"
+        </custom_item>
+
+        <custom_item>
+          type        : FILE_CONTENT_CHECK
+          description : "audit-log"
+          file        : "@MY_CNF@"
+          regex       : "^[\\s]*audit-log[\\s]*="
+          expect      : "^[\\s]*audit-log[\\s]*=[\\s]*FORCE_PLUS_PERMANENT[\\s]*$"
+        </custom_item>
+      </condition>
+
+      <then>
+        <report type:"PASSED">
+          description : "MYS8-00-007800 - The MySQL Database Server 8.0 must initiate session auditing upon startup."
+          info        : "Session auditing is for use when a user's activities are under investigation. To be sure of capturing all activity during those periods when session auditing is in use, it needs to be in operation for the whole time the Database Management System (DBMS) is running."
+          solution    : "Configure the MySQL Audit to automatically start during system startup.
+Add to the my.cnf:
+
+[mysqld]
+plugin-load-add=audit_log.so
+audit-log=FORCE_PLUS_PERMANENT
+audit-log-format=JSON"
+          reference   : "800-53|AU-14(1),800-53r5|AU-14(1),CAT|II,CCI|CCI-001464,CSF|PR.PT-1,DISA_Benchmark|Oracle_MySQL_8.0_STIG,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ITSG-33|AU-14,QCSC-v1|8.2.1,QCSC-v1|13.2,Rule-ID|SV-235159r960888_rule,STIG-ID|MYS8-00-007800,SWIFT-CSCv1|6.4,Vuln-ID|V-235159"
+          see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Oracle_MySQL_8-0_V2R1_STIG.zip"
+          show_output : YES
+        </report>
+      </then>
+    </if>
+
+    <if>
+      <condition auto:"FAILED" type:"AND">
+        <custom_item>
+          type        : FILE_CHECK
+          description : "my.cnf"
+          file        : "@MY_CNF@"
+          mask        : "133"
+        </custom_item>
+
+        <custom_item>
+          type        : FILE_CHECK
+          description : "auto.cnf"
+          file        : "@AUTO_CNF@"
+          mask        : "130"
+        </custom_item>
+      </condition>
+
+      <then>
+        <report type:"PASSED">
+          description : "MYS8-00-009200 - The MySQL Database Server 8.0 must enforce access restrictions associated with changes to the configuration of the MySQL Database Server 8.0 or database(s)."
+          info        : "Failure to provide logical access restrictions associated with changes to configuration may have significant effects on the overall security of the system.
+
+When dealing with access restrictions pertaining to change control, it should be noted that any changes to the hardware, software, and/or firmware components of the information system can potentially have significant effects on the overall security of the system.
+
+Accordingly, only qualified and authorized individuals should be allowed to obtain access to system components for the purposes of initiating changes, including upgrades and modifications."
+          solution    : "Configure the MySQL Database Server 8.0 to enforce access restrictions associated with changes to the configuration of the MySQL Database Server 8.0 or database(s).
+
+Check and change file permissions on the MySQL Configuration file so the mysql OS user owns and file and is the only user with read-write permissions. Use the SHOW GRANTS statements to audit who has SUPER permissions and remove any users with excess privileges.
+
+For my.cnf, change ownership and permissions to:
+File or Resource                Location        Owner   Directory Permissions   File Permissions
+MySQL configuration file        /etc/my.cnf     root    drwxr-xr-x              -rw-r--r--
+
+The mysqld-auto.cnf is created and managed by the mysql instance, as such permissions should be correct. If not correct, change 'owner' to 'mysql' and 'rw r' to '640'."
+          reference   : "800-171|3.4.5,800-53|CM-5(1),800-53r5|CM-5(1)(a),CAT|II,CCI|CCI-001813,CSF|PR.IP-1,CSF2.0|PR.PS-01,DISA_Benchmark|Oracle_MySQL_8.0_STIG,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-5(1),NESA|T5.1.1,NESA|T5.6.1,NESA|T7.5.3,QCSC-v1|7.2,Rule-ID|SV-235169r961461_rule,STIG-ID|MYS8-00-009200,Vuln-ID|V-235169"
+          see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Oracle_MySQL_8-0_V2R1_STIG.zip"
+          show_output : YES
+        </report>
+      </then>
+    </if>
+
+    <custom_item>
+      type        : CMD_EXEC
+      description : "MYS8-00-011500 - The MySQL Database Server 8.0 must use NSA-approved cryptography to protect classified information in accordance with the data owner's requirements."
+      info        : "Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to protect data. The application must implement cryptographic modules adhering to the higher standards approved by the federal government since this provides assurance they have been tested and validated.
+
+It is the responsibility of the data owner to assess the cryptography requirements in light of applicable federal laws, Executive Orders, directives, policies, regulations, and standards.
+
+NSA-approved cryptography for classified networks is hardware based. This requirement addresses the compatibility of a DBMS with the encryption devices.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+      solution    : "Configure cryptographic functions to use NSA-approved cryptography-compliant algorithms.
+
+Turn on MySQL FIPS mode.
+Edit my.cnf
+[mysqld]
+ssl_fips_mode=ON
+
+or
+[mysqld]
+ssl_fips_mode=STRICT
+
+To restrict TLS versions:
+
+[mysqld]
+tls_version='TLSv1.2,TLSv1.3'
+
+Example to define ciphers for TLSv1.2:
+
+[mysqld]
+ssl_ciphers='ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:DHE-DSS-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305'
+
+If TLSv1.3 is enabled, the 'tls_ciphersuites' setting must contain all or a subset of the following ciphers based on certificates being used by server and client. Enabling FIPS mode will limit the OpenSSL library to operate within the FIPS object module.
+
+Example to define TLS ciphers for TLSv1.3:
+
+[mysqld]
+tls_ciphersuites='TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_CCM_SHA256:TLS_AES_128_CCM_8_SHA256'
+
+After adding any entries to the my.cnf file, restart mysqld.
+
+Create and use DOD-approved certificates for asymmetric keys used by the database."
+      reference   : "800-171|3.13.11,800-53|SC-13,800-53r5|SC-13b.,CAT|II,CCI|CCI-002450,CSF|PR.DS-5,CSF2.0|PR.DS-01,CSF2.0|PR.DS-02,CSF2.0|PR.DS-10,DISA_Benchmark|Oracle_MySQL_8.0_STIG,GDPR|32.1.a,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(2)(iv),HIPAA|164.312(e)(2)(ii),ISO/IEC-27001|A.10.1.1,ITSG-33|SC-13,ITSG-33|SC-13a.,NESA|M5.2.6,NESA|T7.4.1,NIAv2|CY3,NIAv2|CY4,NIAv2|CY5b,NIAv2|CY5c,NIAv2|CY5d,NIAv2|CY7,NIAv2|NS5e,QCSC-v1|6.2,Rule-ID|SV-235187r962034_rule,STIG-ID|MYS8-00-011500,Vuln-ID|V-235187"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Oracle_MySQL_8-0_V2R1_STIG.zip"
+      cmd         : "openssl x509 -in @PEM_FILE@ -text -noout"
+      expect      : "ManualReviewRequired"
+      severity    : MEDIUM
+    </custom_item>
+
+    <custom_item>
+      type        : CMD_EXEC
+      description : "MYS8-00-011900 - The MySQL Database Server 8.0 must only accept end entity certificates issued by DoD PKI or DoD-approved PKI Certification Authorities (CAs) for the establishment of all encrypted sessions."
+      info        : "Only DoD-approved external PKIs have been evaluated to ensure they have security controls and identity vetting procedures in place that are sufficient for DoD systems to rely on the identity asserted in the certificate. PKIs lacking sufficient security controls and identity vetting procedures risk being compromised and issuing certificates that enable adversaries to impersonate legitimate users.
+
+The authoritative list of DoD-approved PKIs is published at https://cyber.mil/pki-pke/interoperability.
+
+This requirement focuses on communications protection for the DBMS session rather than for the network packet.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+      solution    : "Remove any certificate that was not issued by a valid DoD certificate authority.
+
+Contact the organization's certificate issuer and request a new certificate that is issued by a valid DoD certificate authorities."
+      reference   : "800-171|3.13.15,800-53|SC-23(5),800-53r5|SC-23(5),CAT|II,CCI|CCI-002470,DISA_Benchmark|Oracle_MySQL_8.0_STIG,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-23,ITSG-33|SC-23a.,NESA|T4.5.1,QCSC-v1|5.2.1,Rule-ID|SV-235191r961596_rule,STIG-ID|MYS8-00-011900,Vuln-ID|V-235191"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Oracle_MySQL_8-0_V2R1_STIG.zip"
+      cmd         : "openssl x509 -in @PEM_FILE@ -text | grep -i 'issuer'"
+      expect      : "ManualReviewRequired"
+      severity    : MEDIUM
+    </custom_item>
+  </then>
+
+  <else>
+    <report type:"WARNING">
+      description : "DISA_STIG_Oracle_MySQL_8.0_v2r1_OS_Linux.audit from DISA Oracle MySQL 8.0 v2r1 STIG"
+      info        : "NOTE: Nessus has not identified that the chosen audit applies to the target device."
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Oracle_MySQL_8-0_V2R1_STIG.zip"
+    </report>
+  </else>
+</if>
+
+</check_type>

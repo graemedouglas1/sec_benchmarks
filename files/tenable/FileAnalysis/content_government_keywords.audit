@@ -1,0 +1,91 @@
+#TRUSTED 25df7eb764b437dfac246757c099fd63b48e6f8fb59285249f9aaaa75c1de23d7f26f444bdf1a5bbb56a916a83f6c09f802f148e1b6d25219703f6c6a0f9def8cbe71c5f7dbeee4a3329dc8d0d3cd09500b31ac3f240449e0517b1ba066b371373ab1b2e386c2a66ba682357a4d30f6b585e40228da3a9abcbc0bc10c8f07184068a84aee6e3133f83bcb14fb4899715783d1c70298402faa144508089c41c934662c99e48ec5e76fa76e5c8927f1875ef03b4e5bb090eff8d021d59c173776c301566654e67a91188eceb718aa1ddb358b8b8c1adf0a5efd74abb58eb5524d26e1c238dd901ecb8b86de7b64b9e37bb1c0e82422fe689e6e02a32a4e600cb1f6661d273eff0a63c083ab5771f0f971d176eefcf175240f6ade493910aca13b79408e84d1be373901613e23d9aceeabc008ad815eb814b925a6985b7477c0f7434b0e674f89328a3450499c5bf000ca05f16a033b7d6f118f65a04af943d403959dca9c36ef3df98d8f8542ef0a1203464407e8e6d5ead43d2ddad9dc29b6adc0a2dfb6bdf0c27b1adc198e813ab427332465ce38725addab24fce229e64669e890bf06ae1ef72b2f82fd04059325494e8fa2af43c077bc7a2b2706ab9020000d36af80149376fa46a6af094e694f680142fea1394d0359b0060723815e3b05726fa877f0421bc0bd3934dd22493fa4a60521bc202be70bdbe266e31c28c165a
+#TRUST-RSA-SHA256 0de0bfa59ea002e995f2ac77968c1c9b8b5511aae761830faf72184ba4fe8f1af92639de96bd0db6319a47b9a9306e31c291a9d0e11bf9f23c9a97f21265995169deb7fc7bce7ef68ab796aefd32896dc2671772d7c7201bb96ccc243ded65671576fa653286384f076c0fe3bb5b65d69f27886cf1dffe56e8fa529e4ead3b00fdba4885e89b21c5de8243a3555d6da794e9e5b3f5fd2ef5e512286787e0318cb340b662e8846d00f5a74ffc9d85eb92d117b429cdf8aae003babab23417666829546724ea8b7b2da7b33d9a7136eedd2f55c90ada0b08ed38577b3316bf29bc5e45fe178fe6e17a9f38669d3dd20405003551fae61a1fc4403a5f87e44503367348a14c8e18fac3b93ba391da31117079508ac03f3890c2bf34809266961f873275b94b1e0d96084c062aea9ac891a09aa92fbf1ad06c0ba9a5abfd01fc8d80fa89f464d83d8ba362f205ed9e198e263d2875b684cf9f40a90311a4d611cadae5cbef5cc9884f684a941a15cf978fca54f0a580619b734904e1cf74b6e602eda1a0aabcc644aeeda5eedc55688334c9c5d0dfd7459f2b3e87b90a69e22585a55797f89ddb77b493e91885ecb9df7b3f5f3da790986e193c8f87a4fdbef0eb9e1a53ca0449012603779a1db5626434a624f22ed87d8d54a0364de66282086d150663959a321d7e7021395879cf154e9f95d097dd34291e711c110569e296f36e
+#
+# This script is Copyright (C) 2004-2023 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.9 $
+# $Date: 2023/03/07 $
+#
+# This audit file looks for documents containing common
+# keywords to identify the classification or sensitivity
+# level of the information within the document.
+#
+# This file should be edited to search for the data classifciation
+# terms used in your organization.
+#
+#<ui_metadata>
+#<display_name>TNS File Analysis - Classified Documents</display_name>
+#<spec>
+#  <type>TNS</type>
+#  <name>File Analysis - Classified Documents</name>
+#  <version>1.0.0</version>
+#</spec>
+#<labels>filecontent,content,government,keywords,update_20230227</labels>
+#</ui_metadata>
+
+<check_type:"FileContent">
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "DLP - Determine if server is hosting NATO SECRET level documents"
+  file_extension : "pdf" | "doc"
+  regex          : "NATO SECRET"
+  expect         : "NATO SECRET"
+  max_size       : "3k"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "DLP - Determine if server is hosting NATO TOP SECRET level documents"
+  file_extension : "pdf" | "doc"
+  regex          : "COSMIC TOP SECRET"
+  expect         : "COSMIC TOP SECRET"
+  max_size       : "3k"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "DLP - Determine if server is hosting NATO CONFIDENTIAL level documents"
+  file_extension : "pdf" | "doc"
+  regex          : "NATO CONFIDENTIAL"
+  expect         : "NATO CONFIDENTIAL"
+  max_size       : "3k"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "DLP - Determine if server is hosting TOP SECRET level documents"
+  file_extension : "pdf" | "doc"
+  regex          : "TOP SECRET"
+  expect         : "TOP SECRET"
+  max_size       : "3k"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "DLP - Determine if server is hosting NOFORN level documents"
+  file_extension : "pdf" | "doc"
+  regex          : "NOFORN"
+  expect         : "NOFORN"
+  max_size       : "3k"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "DLP - Determine if server is hosting NOCONTRACTOR level documents"
+  file_extension : "pdf" | "doc"
+  regex          : "NOCONTRACTOR"
+  expect         : "NOCONTRACTOR"
+  max_size       : "3k"
+</item>
+
+</check_type>

@@ -1,0 +1,1366 @@
+---
+
+inspec_rules:
+  "1.1":
+    title: '1.1 | Ensure All Apple-provided Software Is Current - manual'
+    section: 'Install Updates, Patches and Additional Security Software'
+    description: |
+        Software vendors release security patches and software updates for their products when security vulnerabilities are
+        discovered. There is no simple way to complete this action without a network connection to an Apple software repository.
+        Please ensure appropriate access for this control. This check is only for what Apple provides through software update.
+        Software updates should be run at minimum every 30 days. Run the following command to verify when software update was
+        previously run  /usr/bin/sudo defaults read /Library/Preferences/com.apple.SoftwareUpdate  grep e LastFullSuccessfulDate
+        .
+        The response should be in the last 30 days            Example
+                    LastFullSuccessfulDate  20200730 124525 0000
+    remediation: |
+        Run the following command to verify what packages need to be installed: % /usr/bin/sudo /usr/sbin/softwareupdate -l
+
+        The output will include the following:
+                       Software Update found the following new or updated software:
+                           Run the following command to install all the packages that need to be updated: To install all updates
+        run the command: % /usr/bin/sudo /usr/sbin/softwareupdate -i -a
+         Or run the following command to install individual packages: % /usr/bin/sudo /usr/sbin/softwareupdate -i '<package
+        name>'
+         Note:
+         If one of the software updates listed includes                Action: restart
+        , then you must attach the                -R
+         flag to force a system restart. If the system update is complete but no restart occurs, then the system is in an
+        unknown state that requires a future restart. It is advised to run updates and forced restarts during system downtime
+        and not while in active use.             example:
+        % /usr/bin/sudo /usr/sbin/softwareupdate -l
+
+        Software Update Tool
+
+        Finding available software
+        Software Update found the following new or updated software:
+        * Label: ProVideoFormats-2.2.7
+        	Title: Pro Video Formats, Version: 2.2.7, Size: 9693KiB, Recommended: YES,
+        * Label: Command Line Tools for Xcode-15.0
+        	Title: Command Line Tools for Xcode, Version: 15.0, Size: 721962KiB, Recommended: YES,
+
+        % /usr/bin/sudo /usr/sbin/softwareupdate -i 'ProVideoFormats-2.2.7'
+
+        Software Update Tool
+
+        Finding available software
+        Attempting to quit apps: (
+            "com.apple.Compressor"
+        )
+        Waiting for user to quit any relevant apps
+        Successfully quit all apps
+
+        Downloaded Pro Video Formats
+        Installing Pro Video Formats
+        Done with Pro Video Formats
+        Done.
+
+        In the above example, if a restart was required, the command to remediate would be                /usr/bin/sudo
+        /usr/sbin/softwareupdate -i 'ProVideoFormats-2.2.7' -R
+                           Impact: Installation of updates can be disruptive to the users especially if a restart is required.
+        Major updates need to be applied after creating an organizational patch policy. It is also advised to run updates and
+        forced restarts during system downtime and not while in active use.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2":
+    title: '1.2 | Ensure Auto Update Is Enabled - manual'
+    section: 'Install Updates, Patches and Additional Security Software'
+    description: |
+        Auto Update verifies that your system has the newest security patches and software updates. If Automatically check for
+        updates is not selected, background updates for new malware definition files from Apple for XProtect and Gatekeeper will
+        not occur. http//macops.ca/osxadminsyourclientsarenotgettingbackgroundsecurityupdates/
+        https//derflounder.wordpress.com/2014/12/17/forcingxprotectblacklistupdatesonmavericksandyosemite/
+    remediation: |
+        Run the following command to enable auto update: % /usr/bin/sudo /usr/bin/defaults write
+        /Library/Preferences/com.apple.SoftwareUpdate AutomaticCheckEnabled -bool true
+         Impact: Without automatic update, updates may not be made in a timely manner and the system will be exposed to
+        additional risk.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.2', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.3":
+    title: '1.3 | Ensure Download New Updates When Available Is Enabled - manual'
+    section: 'Install Updates, Patches and Additional Security Software'
+    description: |
+        In the GUI, both Install macOS updates and Install app updates from the App Store are dependent on whether Download new
+        updates when available is selected.
+    remediation: |
+        Run the following command to enable auto update: % /usr/bin/sudo /usr/bin/defaults write
+        /Library/Preferences/com.apple.SoftwareUpdate AutomaticDownload -bool true
+         Impact: If "Download new updates when available" is not selected, updates may not be made in a timely manner and the
+        system will be exposed to additional risk.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.3', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.4":
+    title: '1.4 | Ensure Install of macOS Updates Is Enabled - manual'
+    section: 'Install Updates, Patches and Additional Security Software'
+    description: |
+        Ensure that macOS updates are installed after they are available from Apple. This setting enables macOS updates to be
+        automatically installed. Some environments will want to approve and test updates before they are delivered. It is best
+        practice to test first where updates can and have caused disruptions to operations. Automatic updates should be turned
+        off where changes are tightly controlled and there are mature testing and approval processes. Automatic updates should
+        not be turned off simply to allow the administrator to contact users in order to verify installation. A dependable,
+        repeatable process involving a patch agent or remote management tool should be in place before autoupdates are turned
+        off.
+    remediation: |
+        Run the following command to to enable automatic checking and installing of macOS updates: % /usr/bin/sudo
+        /usr/bin/defaults write /Library/Preferences/com.apple.SoftwareUpdate AutomaticallyInstallMacOSUpdates -bool TRUE
+         Impact: Unpatched software may be exploited.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.4', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.5":
+    title: '1.5 | Ensure Install Application Updates from the App Store Is Enabled - manual'
+    section: 'Install Updates, Patches and Additional Security Software'
+    description: |
+        Ensure that application updates are installed after they are available from Apple. These updates do not require reboots
+        or administrator privileges for end users.
+    remediation: |
+        Run the following command to turn on App Store auto updating: % /usr/bin/sudo /usr/bin/defaults write
+        /Library/Preferences/com.apple.commerce AutoUpdate -bool TRUE
+         Impact: Unpatched software may be exploited.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.5', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.6":
+    title: '1.6 | Ensure Install Security Responses and System Files Is Enabled - manual'
+    section: 'Install Updates, Patches and Additional Security Software'
+    description: |
+        Ensure that system and security updates are installed after they are available from Apple. This setting enables
+        definition updates for XProtect and Gatekeeper. With this setting in place, new malware and adware that Apple has added
+        to the list of malware or untrusted software will not execute. These updates do not require reboots or end user admin
+        rights. Apple has introduced a security feature that allows for smaller downloads and the installation of security
+        updates when a reboot is not required. This feature is only available when the last regular update has already been
+        applied. This feature emphasizes that a Mac must be uptodate on patches so that Apples security tools can be used to
+        quickly patch when a rapid response is necessary.
+    remediation: |
+        Run the following commands to enable automatic checking of system data files and security updates:
+        % /usr/bin/sudo  /usr/bin/defaults write /Library/Preferences/com.apple.SoftwareUpdate ConfigDataInstall -bool true
+
+        % /usr/bin/sudo  /usr/bin/defaults write /Library/Preferences/com.apple.SoftwareUpdate CriticalUpdateInstall -bool true
+                     Impact: Unpatched software may be exploited.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.6', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.1.1":
+    title: '2.1.1 | Ensure Firewall Is Enabled - manual'
+    section: 'Network'
+    description: |
+        A firewall is a piece of software that blocks unwanted incoming connections to a system.
+    remediation: |
+        Run the following command to enable the firewall: % /usr/bin/sudo /usr/bin/defaults write
+        /Library/Preferences/com.apple.alf globalstate -int <value>
+
+        For the                  <value>
+        , use either                  1
+        , specific services, or                  2
+        , essential services only.               Impact: The firewall may block legitimate traffic. Applications that are
+        unsigned will require special handling.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.1.1', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.2.1.1":
+    title: '2.2.1.1 | Ensure Set Time and Date Automatically Is Enabled'
+    section: 'Date & Time'
+    description: |
+        Correct date and time settings are required for authentication protocols, file creation, modification dates, and log
+        entries. Note
+         If your organization has internal time servers, enter them here. Enterprise mobile devices may need to use a mix of
+        internal and external time servers. If multiple servers are required, use the Date  Time System Preference with each
+        server separated by a space.             Additional Note
+         The default Apple time server is time.apple.com. Variations include time.euro.apple.com. While it is certainly more
+        efficient to use internal time servers, there is no reason to block access to global Apple time servers or to add a
+        time.apple.com alias to internal DNS records. There are no reports that Apple gathers any information from NTP
+        synchronization, as the computers already phone home to Apple for Apple services including iCloud use and software
+        updates. Best practice is to allow DNS resolution to an authoritative time service for time.apple.com, preferably to
+        connect to Apple servers, but local servers are acceptable as well.
+    remediation: |
+        Run the following commands to enable the date and time setting automatically:
+        $ /usr/bin/sudo /usr/sbin/systemsetup -setnetworktimeserver <your.time.server>
+
+        setNetworkTimeServer: <your.time.server>
+
+        $ /usr/bin/sudo /usr/sbin/systemsetup -setusingnetworktime on
+
+        setUsingNetworkTime: On
+                         example
+        :
+        $ /usr/bin/sudo /usr/sbin/systemsetup -setnetworktimeserver time.apple.com
+
+        setNetworkTimeServer: time.apple.com
+
+        $ /usr/bin/sudo /usr/sbin/systemsetup -setusingnetworktime on
+
+        setUsingNetworkTime: On
+                         Run the following commands if you have not set, or need to set, a new time zone:
+        $ /usr/bin/sudo /usr/sbin/systemsetup -listtimezones
+
+        $ /usr/bin/sudo /usr/sbin/systemsetup -settimezone <selected time zone>
+                                 example
+        :
+        $ /usr/bin/sudo /usr/sbin/systemsetup -listtimezones
+
+        Time Zones:
+         Africa/Abidjan
+         Africa/Accra
+         Africa/Addis_Ababa
+         ...
+
+
+        $ /usr/bin/sudo /usr/sbin/systemsetup -settimezone America/New_York
+
+        Set TimeZone: America/New_York
+                         Impact:
+        The                      timed
+         service will periodically synchronize with named time servers and will make the computer time more accurate.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.1.1', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.2.1.2":
+    title: '2.2.1.2 | Ensure the Time Service Is Enabled - manual'
+    section: 'Date & Time'
+    description: |
+        In macOS 10.14, Apple replace                ntp
+         with                timed
+         for time services, and is used to ensure correct time is kept. Correct date and time settings are required for
+        authentication protocols, file creation, modification dates and log entries.
+    remediation: |
+        Terminal Method: Run the following commands to enable the timed service: $ /usr/bin/sudo /bin/launchctl load -w
+        /System/Library/LaunchDaemons/com.apple.timed.plist
+         Impact: Accurate time is required for many computer functions.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.1.2', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.2.2.1":
+    title: '2.2.2.1 | Ensure Remote Apple Events Is Disabled'
+    section: 'Sharing'
+    description: |
+        Apple Events is a technology that allows one program to communicate with other programs. Remote Apple Events allows a
+        program on one computer to communicate with a program on a different computer.
+    remediation: |
+        Run the following commands to set Remote Apple Events to Off:
+        % /usr/bin/sudo /usr/sbin/systemsetup -setremoteappleevents off
+
+        setremoteappleevents: Off
+                         Impact: With remote Apple events turned on, an AppleScript program running on another Mac can interact
+        with the local computer.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.2.1', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.2.2.2":
+    title: '2.2.2.2 | Ensure Content Caching Is Disabled - manual'
+    section: 'Sharing'
+    description: |
+        Starting with 10.13 macOS High Sierra, Apple introduced a service to make it easier to deploy data from Apple, including
+        software updates, where there are bandwidth constraints to the Internet and fewer constraints or greater bandwidth exist
+        on the local subnet. This capability can be very valuable for organizations that have throttled and possibly metered
+        Internet connections. In heterogeneous enterprise networks with multiple subnets, the effectiveness of this capability
+        would be determined by how many Macs were on each subnet at the time new, large updates were made available upstream.
+        This capability requires the use of mac OS clients as P2P nodes for updated Apple content. Unless there is a business
+        requirement to manage operational Internet connectivity and bandwidth, user endpoints should not store content and act
+        as a cluster to provision data. Content types supported by Content Caching in macOS
+    remediation: |
+        Run the following command to disable Content Caching: % /usr/bin/sudo /usr/bin/AssetCacheManagerUtil deactivate
+
+        The output will include                    Content caching deactivated
+                                 Impact: This setting will adversely affect bandwidth usage between local subnets and the
+        Internet.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_2.2.2.2', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.3.1":
+    title: '2.3.1 | Ensure Sending Diagnostic and Usage Data to Apple Is Disabled'
+    section: 'Privacy & Security'
+    description: |
+        Apple provides a mechanism to send diagnostic and analytics data back to Apple to help them improve the platform.
+        Information sent to Apple may contain internal organizational information that should be controlled and not available
+        for processing by Apple.
+        Turn off all Analytics and Improvements sharing. Share Mac Analytics Share with App Developers dependent on Mac Analytic
+        sharing Includes diagnostics, usage and location data Share iCloud Analytics Includes iCloud data and usage information
+    remediation: |
+        Run the following commands to disable the sending of diagnostic data to Apple:
+        % /usr/bin/sudo /usr/bin/defaults write /Library/Application\ Support/CrashReporter/DiagnosticMessagesHistory.plist
+        AutoSubmit -bool false
+
+        /usr/bin/sudo /usr/bin/defaults write /Library/Application\ Support/CrashReporter/DiagnosticMessagesHistory.plist
+        ThirdPartyDataSubmit -bool false
+
+        % /usr/bin/sudo /bin/chmod 644 /Library/Application\ Support/CrashReporter/DiagnosticMessagesHistory.plist
+
+        % /usr/bin/sudo /usr/bin/chgrp admin /Library/Application\ Support/CrashReporter/DiagnosticMessagesHistory.plist
+
+        % /usr/bin/sudo -u <username> /usr/bin/defaults write /Users/<username>/Library/Preferences/com.apple.assistant.support
+        "Siri Data Sharing Opt-In Status" -int 2
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_2.3.1', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.3.2":
+    title: '2.3.2 | Ensure Limit Ad Tracking Is Enabled'
+    section: 'Privacy & Security'
+    description: |
+        Apple provides a framework that allows advertisers to target Apple users and endusers with advertisements. While many
+        people prefer to see advertising that is relevant to them and their interests, the detailed information that is
+        collected, correlated, and available to advertisers in repositories via data mining is often disconcerting. This
+        information is valuable to both advertisers and attackers, and has been used with other metadata to reveal users
+        identities. Organizations should manage advertising settings on computers rather than allow users to configure the
+        settings. Apple Information Ad tracking should be limited on 10.15 and prior.
+    remediation: |
+        For each needed user, run the following command to enable limited ad tracking: % /usr/bin/sudo -u <username>
+        /usr/bin/defaults write /Users/<username>/Library/Preferences/com.apple.Adlib.plist allowApplePersonalizedAdvertising
+        -bool false
+         Impact: Uses will see generic advertising rather than targeted advertising. Apple warns that this will reduce the
+        number of relevant ads.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.3.2', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.3.3":
+    title: '2.3.3 | Ensure Gatekeeper Is Enabled'
+    section: 'Privacy & Security'
+    description: |
+        Gatekeeper is Apples application that utilizes allowlisting to restrict downloaded applications from launching. It
+        functions as a control to limit applications from unverified sources from running without authorization. In an update to
+        Gatekeeper in macOS 13 Ventura, Gatekeeper checks every application on every launch, not just quarantined apps.
+    remediation: |
+        Run the following command to enable Gatekeeper to allow applications from App Store and identified developers: %
+        /usr/bin/sudo /usr/sbin/spctl --global-enable
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.3.3', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.4.1":
+    title: '2.4.1 | Ensure an Inactivity Interval of 20 Minutes Or Less for the Screen Saver Is Enabled - manual'
+    section: 'Lock Screen'
+    description: |
+        A locking screen saver is one of the standard security controls to limit access to a computer and the current users
+        session when the computer is temporarily unused or unattended. In macOS, the screen saver starts after a value is
+        selected in the dropdown menu. 20 minutes or less is an acceptable value. Any value can be selected through the command
+        line or script, but a number that is not reflected in the GUI can be problematic. 20 minutes is the default for new
+        accounts.
+    remediation: |
+        Run the following command to verify that the idle time of the screen saver to 20 minutes of less (≤1200) % sudo -u
+        <username> defaults -currentHost write com.apple.screensaver idleTime -int <value ≤1200>
+         Note:
+         Issues arise if the command line is used to make the setting something other than what is available in the GUI Menu.
+        The GUI allows the options of 1 (60), 2 (120), 5 (300), 10 (600), or 20 (120) minutes, so use one of those values to
+        avoid any issues.               Impact: If the screen saver is not set, users may leave the computer available for an
+        unauthorized person to access information.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.4.1', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.4.2":
+    title: '2.4.2 | Ensure Require Password After Screen Saver Begins or Display Is Turned Off Is Enabled for 5 Seconds or Immediately - manual'
+    section: 'Lock Screen'
+    description: |
+        Sleep and screen saver modes are low power modes that reduce electrical consumption while the system is not in use.
+    remediation: |
+        Run the following command to require a password to unlock the computer after the screen saver engages or the computer
+        sleeps: % /usr/bin/sudo /usr/sbin/sysadminctl -screenLock immediate -password <administrator password>
+         or % /usr/bin/sudo /usr/sbin/sysadminctl -screenLock 5 seconds -password <administrator password>
+         Impact: Without a screenlock in place, anyone with physical access to the computer would be logged in and able to use
+        the active user's session.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.4.2', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.4.3":
+    title: '2.4.3 | Ensure a Custom Message for the Login Screen Is Enabled - manual'
+    section: 'Lock Screen'
+    description: |
+        An access warning informs the user that the system is reserved for authorized use only, and that the use of the system
+        may be monitored.
+    remediation: |
+        Run the following command to enable a custom login screen message: % /usr/bin/sudo /usr/bin/defaults write
+        /Library/Preferences/com.apple.loginwindow LoginwindowText -string "<custom message>"
+         Impact: If users are not informed of their responsibilities, unapproved activities may occur. Users that are not
+        approved for access may take the lack of a warning banner as implied consent to access.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.4.3', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.4.4":
+    title: '2.4.4 | Ensure Login Window Displays as Name and Password Is Enabled - manual'
+    section: 'Lock Screen'
+    description: |
+        The login window prompts a user for his/her credentials, verifies their authorization level, and then allows or denies
+        the user access to the system.
+    remediation: |
+        Run the following command to enable the login window to display name and password: % /usr/bin/sudo /usr/bin/defaults
+        write /Library/Preferences/com.apple.loginwindow SHOWFULLNAME -bool true
+         Note:
+         The GUI will not display the updated setting until the current user(s) logs out.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.4.4', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.4.5":
+    title: '2.4.5 | Ensure Show Password Hints Is Disabled - manual'
+    section: 'Lock Screen'
+    description: |
+        Password hints are usercreated text displayed when an incorrect password is used for an account.
+    remediation: |
+        Run the following command to disable password hints: % /usr/bin/sudo /usr/bin/defaults write
+        /Library/Preferences/com.apple.loginwindow RetriesUntilHint -int 0
+         Impact: The user can set the hint to any value, including the password itself or clues that allow trivial social
+        engineering attacks.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.4.5', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.5.1":
+    title: '2.5.1 | Ensure Users Accounts Do Not Have a Password Hint - manual'
+    section: 'Login Password'
+    description: |
+        Password hints help the user recall their passwords for various systems and/or accounts. In most cases, password hints
+        are simple and closely related to the users password.
+    remediation: |
+        Run the following command to remove a user's password hint: % /usr/bin/sudo /usr/bin/dscl . -list /Users hint . -delete
+        /Users/<username> hint
+         example
+        :
+        % /usr/bin/sudo /usr/bin/dscl . -list /Users hint . -delete /Users/firstuser hint
+
+        % /usr/bin/sudo /usr/bin/dscl . -list /Users hint . -delete /Users/seconduser hint
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.5.1', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.6.1":
+    title: '2.6.1 | Ensure Guest Account Is Disabled'
+    section: 'Users & Groups'
+    description: |
+        The guest account allows users access to the system without having to create an account or password. Guest users are
+        unable to make setting changes and cannot remotely login to the system. All files, caches, and passwords created by the
+        guest user are deleted upon logging out.
+    remediation: |
+        Run the following command to disable the guest account: % /usr/bin/sudo /usr/bin/defaults write
+        /Library/Preferences/com.apple.loginwindow GuestEnabled -bool false
+         Impact: A guest user can use that access to find out additional information about the system and might be able to use
+        privilege escalation vulnerabilities to establish greater access.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.6.1', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.6.2":
+    title: '2.6.2 | Ensure Guest Access to Shared Folders Is Disabled - manual'
+    section: 'Users & Groups'
+    description: |
+        Allowing guests to connect to shared folders enables users to access selected shared folders and their contents from
+        different computers on a network.
+    remediation: |
+        Run the following commands to verify that shared folders are not accessible to guest users: % /usr/bin/sudo
+        /usr/sbin/sysadminctl -smbGuestAccess off
+         Impact: Unauthorized users could access shared files on the system.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.6.2', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.6.3":
+    title: '2.6.3 | Ensure Automatic Login Is Disabled - manual'
+    section: 'Users & Groups'
+    description: |
+        The automatic login feature saves a users system access credentials and bypasses the login screen. Instead, the system
+        automatically loads to the users desktop screen.
+    remediation: |
+        Run the following command to disable automatic login: % /usr/bin/sudo /usr/bin/defaults delete
+        /Library/Preferences/com.apple.loginwindow autoLoginUser
+         Impact: If automatic login is not disabled, an unauthorized user could gain access to the system without supplying any
+        credentials.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.6.3', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.1":
+    title: '3.1 | Ensure Security Auditing Is Enabled - manual'
+    section: 'Logging and Auditing'
+    description: |
+        macOSs audit facility,            auditd
+        , receives notifications from the kernel when certain system calls, such as            open
+        ,            fork
+        , and            exit
+        , are made. These notifications are captured and written to an audit log.
+        Apple has deprecated            auditd
+         as of macOS 11.0 Big Sur. In macOS 14.0 Sonoma it is no longer enabled by default and it is suggested to use an
+        application that integrates with the EndpointSecurity API. These applications are 3rd party and not built into the
+        macOS. Until            auditd
+         is removed from macOS completely, running the binary is the best way to collect logging in macOS and the only one that
+        is part of the OS.
+    remediation: |
+        Run the following command to load auditd: % /usr/bin/sudo /bin/launchctl load -w
+        /System/Library/LaunchDaemons/com.apple.auditd.plist
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.1', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.2":
+    title: '3.2 | Ensure Security Auditing Flags For User-Attributable Events Are Configured Per Local Organizational Requirements - manual'
+    section: 'Logging and Auditing'
+    description: |
+        Auditing is the capture and maintenance of information about securityrelated events. Auditable events often depend on
+        differing organizational requirements.
+    remediation: |
+        Perform the following to set the required Security Auditing Flags:
+        Edit the                /etc/security/audit_control
+         file and add                -fm
+        ,                ad
+        ,                -ex
+        ,                aa
+        ,                -fr
+        ,                lo
+        , and                -fw
+         to                flags
+        . You can also substitute                -all
+         for                -fm
+        ,                -ex
+        ,                -fr
+        , and                -fw
+        .
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_3.2', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.3":
+    title: '3.3 | Ensure install.log Is Retained for 365 or More Days and No Maximum Size - manual'
+    section: 'Logging and Auditing'
+    description: |
+        macOS writes information pertaining to systemrelated events to the file            /var/log/install.log
+         and has a configurable retention policy for this file. The default logging setting limits the file size of the logs and
+        the maximum size for all logs. The default allows for an errant application to fill the log files and does not enforce
+        sufficient log retention. The Benchmark recommends a value based on standard use cases. The value should align with
+        local requirements within the organization.         The default value has an allmax file limitation, no reference to a
+        minimum retention, and a less precise rotation argument. The allmax flag control will remove old log entries based only
+        on the size of the log files. Log size can vary widely depending on how verbose installing applications are in their log
+        entries. The decision here is to ensure that logs go back a year, and depending on the applications a size restriction
+        could compromise the ability to store a full year. While this Benchmark is not scoring for a rotation flag, the default
+        rotation is sequential rather than using a timestamp. Auditors may prefer timestamps in order to simply review specific
+        dates where event information is desired. Please review the File Rotation section in the man page for more information.
+        man asl.conf
+         The maximum file size limitation string should be removed allmax An organization appropriate retention should be added
+        ttl The rotation should be set with timestamps rotateutc or rotatelocal
+    remediation: |
+        Perform the following to ensure that install logs are retained for at least 365 days:
+        Edit the                /etc/asl/com.apple.install
+         file and add or modify the                ttl
+         value to                365
+         or greater on the                file
+         line. Also, remove the                all_max=
+         setting and value from the                file
+         line.             Impact: Without log files system maintenance and security forensics cannot be properly performed.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.3', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.4":
+    title: '3.4 | Ensure Security Auditing Retention Is Enabled - manual'
+    section: 'Logging and Auditing'
+    description: |
+        The macOS audit capability contains important information to investigate security or operational issues. This resource
+        is only completely useful if it is retained long enough to allow technical staff to find the root cause of anomalies in
+        the records. Retention can be set to respect both size and longevity. To retain as much as possible under a certain
+        size, the recommendation is to use the following expireafter60d OR 5G This recomendation is based on minimum storage for
+        review and investigation. When a third party tool is in use to allow remote logging or the store and forwarding of logs,
+        this local storage requirement is not required.
+    remediation: |
+        Perform the following to set the audit retention length:
+        Edit the                /etc/security/audit_control
+         file so that                expire-after:
+         is at least                60d OR 5G
+                           Impact: The recommendation is that at least 60 days or 5 gigabytes of audit records are retained.
+        Systems that have very little remaining disk space may have issues retaining sufficient data.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.4', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.5":
+    title: '3.5 | Ensure Access to Audit Records Is Controlled - manual'
+    section: 'Logging and Auditing'
+    description: |
+        The audit system on macOS writes important operational and security information that can be both useful for an attacker
+        and a place for an attacker to attempt to obfuscate unwanted changes that were recorded. As part of defenseindepth, the
+        /etc/security/auditcontrol configuration and the files in /var/audit should be owned only by root with group wheel with
+        readonly rights and no other access allowed. macOS ACLs should not be used for these files.
+    remediation: |
+        Run the following to commands to set the audit records to the root user and wheel group:
+        % /usr/bin/sudo /usr/sbin/chown -R root:wheel /etc/security/audit_control
+
+        % /usr/bin/sudo /bin/chmod -R o-rw /etc/security/audit_control
+
+        % /usr/bin/sudo /usr/sbin/chown -R root:wheel /var/audit/
+
+        % /usr/bin/sudo /bin/chmod -R o-rw /var/audit/
+                     Note:
+         It is recommended to do a thorough verification process on why the audit logs have been changed before following the
+        remediation steps. If the system has different access controls on the audit logs, and the changes cannot be traced, a
+        new install may be prudent. Check for signs of file tampering as well as unapproved OS changes.             Impact: This
+        control is only checking the default configuration to ensure that unwanted access to audit records is not available.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.5', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.6":
+    title: '3.6 | Ensure Firewall Logging Is Enabled and Configured - manual'
+    section: 'Logging and Auditing'
+    description: |
+        The socketfilter Firewall is what is used when the Firewall is turned on in the Security  Privacy Preference Pane. In
+        order to appropriately monitor what access is allowed and denied, logging must be enabled.
+        The logging level must be set to detailed to be useful in monitoring connection attempts that the firewall detects.
+        Throttled login is not sufficient for examining Firewall connection attempts. Indepth log monitoring on macOS may
+        require changes to the EnablePrivateData key in SystemLogging.System to ensure more complete logging. Reviewing macOS
+        Unified Logs
+    remediation: |
+        Run the following command to enable logging of the firewall:
+        % /usr/bin/sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on
+
+        Turning on log mode
+
+        % /usr/bin/sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingopt detail
+
+        Setting detail log option
+                     Impact: Detailed logging may result in excessive storage.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.6', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.1":
+    title: '4.1 | Ensure Bonjour Advertising Services Is Disabled - manual'
+    section: 'Network Configurations'
+    description: |
+        Bonjour is an autodiscovery mechanism for TCP/IP devices which enumerates devices and services within a local subnet.
+        DNS on macOS is integrated with Bonjour and should not be turned off, but the Bonjour advertising service can be
+        disabled.
+    remediation: |
+        Run the following command to disable Bonjour Advertising services: % /usr/bin/sudo /usr/bin/defaults write
+        /Library/Preferences/com.apple.mDNSResponder.plist NoMulticastAdvertisements -bool true
+         Impact:
+        Some applications may not operate properly if the                  mDNSResponder
+         is turned off. This will also affect AirDrop functionality.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_4.1', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.2":
+    title: '4.2 | Ensure HTTP Server Is Disabled - manual'
+    section: 'Network Configurations'
+    description: |
+        macOS used to have a graphical frontend to the embedded Apache web server in the Operating System. Personal web sharing
+        could be enabled to allow someone on another computer to download files or information from the users computer. Personal
+        web sharing from a user endpoint has long been considered questionable, and Apple has removed that capability from the
+        GUI. Apache, however, is still part of the Operating System and can be easily turned on to share files and provide
+        remote connectivity to an enduser computer. Web sharing should only be done through hardened web servers and appropriate
+        cloud services.
+    remediation: |
+        Run the following command to disable the HTTP server services:
+        % /usr/bin/sudo /usr/sbin/apachectl stop
+
+        % /usr/bin/sudo /bin/launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist
+                     Impact: The web server is both a point of attack for the system and a means for unauthorized file
+        transfers.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.2', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.3":
+    title: '4.3 | Ensure NFS Server Is Disabled - manual'
+    section: 'Network Configurations'
+    description: |
+        macOS can act as an NFS fileserver. NFS sharing could be enabled to allow someone on another computer to mount shares
+        and gain access to information from the users computer. File sharing from a user endpoint has long been considered
+        questionable, and Apple has removed that capability from the GUI. NFSD is still part of the Operating System and can be
+        easily turned on to export shares and provide remote connectivity to an enduser computer. The etc/exports file contains
+        the list of NFS shared directories. If the file exists, it is likely that NFS sharing has been enabled in the past or
+        may be available periodically. As an additional check, the audit verifies that there is no /etc/exports file.
+    remediation: |
+        Run the following command to disable the nfsd fileserver services:
+        % /usr/bin/sudo /sbin/nfsd stop
+
+        % /usr/bin/sudo /bin/launchctl disable system/com.apple.nfsd
+                     Remove the exported Directory listing. % /usr/bin/sudo /bin/rm /etc/exports
+         Impact: The nfs server is both a point of attack for the system and a means for unauthorized file transfers.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.3', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.1.1":
+    title: '5.1.1 | Ensure Home Folders Are Secure - manual'
+    section: 'File System Permissions and Access Controls'
+    description: |
+        By default, macOS allows all valid users into the top level of every other users home folder and restricts access to the
+        Apple default folders within. Another user on the same system can see you have a Documents folder but cannot see inside
+        it. This configuration does work for personal file sharing but can expose user files to standard accounts on the system.
+        The best parallel for Enterprise environments is that everyone who has a Dropbox account can see everything that is at
+        the top level but cant see your pictures. Similarly with macOS, users can see into every new Directory that is created
+        because of the default permissions. Home folders should be restricted to access only by the user. Sharing should be used
+        on dedicated servers or cloud instances that are managing access controls. Some environments may encounter problems if
+        execute rights are removed as well as read and write. Either no access or execute only for group or others is
+        acceptable.
+    remediation: |
+        For each user, run the following command to secure all home folders: % /usr/bin/sudo /bin/chmod -R og-rwx
+        /Users/<username>
+         Alternately, run the following command if there needs to be executable access for a home folder: % /usr/bin/sudo
+        /bin/chmod -R og-rw /Users/<username>
+         Impact: If implemented, users will not be able to use the "Public" folders in other users' home folders. "Public"
+        folders with appropriate permissions would need to be set up in the /Shared folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.1.1', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.1.2":
+    title: '5.1.2 | Ensure Apple Mobile File Integrity AMFI Is Enabled - manual'
+    section: 'File System Permissions and Access Controls'
+    description: |
+        Apple Mobile File Integrity AMFI was first released in macOS 10.12. The daemon and service block attempts to run
+        unsigned code. AMFI uses launchd, code signatures, certificates, entitlements, and provisioning profiles to create a
+        filtered entitlement dictionary for an app. AMFI is the macOS kernel module that enforces codesigning and library
+        validation.
+    remediation: |
+        Run the following command to enable the Apple Mobile File Integrity service: % /usr/bin/sudo /usr/sbin/nvram boot-
+        args=""
+         Impact: Applications could be compromised with malicious code.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.1.2', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.1.3":
+    title: '5.1.3 | Ensure Signed System Volume SSV Is Enabled - manual'
+    section: 'File System Permissions and Access Controls'
+    description: |
+        Signed System Volume is a security feature introduced in macOS 11.0 Big Sur. During system installation, a SHA256
+        cryptographic hash is calculated for all immutable system files and stored in a Merkle tree which itself is hashed as
+        the Seal. Both are stored in the metadata of the snapshot created of the System volume. The seal is verified by the boot
+        loader at startup. macOS will not boot if system files have been tampered with. If validation fails, the user will be
+        instructed to reinstall the operating system. During read operations for files located in the Signed System Volume, a
+        hash is calculated and compared to the value stored in the Merkle tree.
+    remediation: |
+        If SSV has been disabled, assume that the operating system has been compromised. Back up any files, and do a clean
+        install to a known good Operating System. Impact: Apple Software that integrates with the operating system could become
+        compromised.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.1.3', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.1.4":
+    title: '5.1.4 | Ensure Appropriate Permissions Are Enabled for System Wide Applications - manual'
+    section: 'File System Permissions and Access Controls'
+    description: |
+        Applications in the System Applications Directory /Applications should be worldexecutable since that is their reason to
+        be on the system. They should not be worldwritable and allow any process or user to alter them for other processes or
+        users to then execute modified versions.
+    remediation: |
+        Run the following command to change the permissions for each application that does not meet the requirements:
+        % /usr/bin/sudo IFS=$'\n'
+        for apps in $( /usr/bin/find /System/Volumes/Data/Applications -iname "*\.app" -type d -perm -2 | grep -v Xcode.app );
+        do
+          /bin/chmod -R o-w "$apps"
+        done
+                       Note:
+         Global changes should not be performed where mission-critical applications are part of the improperly permissioned
+        applications.               Impact: Applications changed will no longer be world-writable. Depending on the environment,
+        there will be different risk tolerances on each non-conforming application. Global changes should not be performed where
+        mission-critical applications are misconfigured.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.1.4', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.1.5":
+    title: '5.1.5 | Ensure No World Writable Folders Exist in the System Folder - manual'
+    section: 'File System Permissions and Access Controls'
+    description: |
+        Software sometimes insists on being installed in the              /System/Volumes/Data/System
+         Directory and has inappropriate worldwritable permissions.           Macs with writable files in System should be
+        investigated forensically. A file with open writable permissions is a sign of at best a rogue application.  It could
+        also be a sign of a computer compromise and a persistent presence on the system.
+    remediation: |
+        Run the following command to set permissions so that folders are not world-writable in the /System folder:
+        % /usr/bin/sudo IFS=$'\n'
+        for sysPermissions in $( /usr/bin/sudo /usr/bin/find /System/Volumes/Data/System -type d -perm -2 | /usr/bin/grep -v
+        "downloadDir" ); do
+          /bin/chmod -R o-w "$sysPermissions"
+        done
+                       Impact: Changing file permissions could disrupt the use of applications that rely on files in the System
+        Folder with vulnerable permissions.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.1.5', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.1.6":
+    title: '5.1.6 | Ensure No World Writable Folders Exist in the Library Folder - manual'
+    section: 'File System Permissions and Access Controls'
+    description: |
+        Software sometimes insists on being installed in the              /System/Volumes/Data/Library Directory
+         and has inappropriate worldwritable permissions.
+    remediation: |
+        Run the following command to set permissions so that folders are not world-writable in the
+        /System/Volumes/Data/Library
+         folder:
+        % /usr/bin/sudo IFS=$'\n'
+        for libPermissions in $( /usr/bin/find /System/Volumes/Data/Library -type d -perm -2 | /usr/bin/grep -v Caches |
+        /usr/bin/grep -v /Preferences/Audio/Data ); do
+          /bin/chmod -R o-w "$libPermissions"
+        done
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_5.1.6', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2.1":
+    title: '5.2.1 | Ensure Password Account Lockout Threshold Is Configured - manual'
+    section: 'Password Management'
+    description: |
+        The account lockout threshold specifies the amount of times a user can enter an incorrect password before a lockout will
+        occur. Ensure that a lockout threshold is part of the password policy on the computer.
+    remediation: |
+        Run the following command to set the maximum number of failed login attempts to less than or equal to 5: % /usr/bin/sudo
+        /usr/bin/pwpolicy -n /Local/Default -setglobalpolicy "maxFailedLoginAttempts=<value≤5>"
+         Impact: The number of incorrect log on attempts should be reasonably small to minimize the possibility of a successful
+        password attack, while allowing for honest errors made during a normal user log on. The locked account will auto-unlock
+        after a few minutes when bad password attempts stop. The computer will accept the still-valid password if remembered or
+        recovered.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.1', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2.2":
+    title: '5.2.2 | Ensure Password Minimum Length Is Configured - manual'
+    section: 'Password Management'
+    description: |
+        A minimum password length is the fewest number of characters a password can contain to meet a systems requirements.
+        Ensure that a minimum of a 15character password is part of the password policy on the computer. Where the
+        confidentiality of encrypted information in FileVault is more of a concern, requiring a longer password or passphrase
+        may be sufficient rather than imposing additional complexity requirements that may be selfdefeating.
+    remediation: |
+        Run the following command to set the password length to greater than or equal to 15: % /usr/bin/sudo /usr/bin/pwpolicy
+        -n /Local/Default -setglobalpolicy "minChars=<value≥15>"
+         Impact: Short passwords can be easily attacked.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.2', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2.3":
+    title: '5.2.3 | Ensure Complex Password Must Contain Alphabetic Characters Is Configured - manual'
+    section: 'Password Management'
+    description: |
+        Complex passwords contain one character from each of the following classes English uppercase letters, English lowercase
+        letters, Westernized Arabic numerals, and nonalphanumeric characters. Ensure that an Alphabetic character is part of the
+        password policy on the computer.
+    remediation: |
+        Terminal Method: Run the following command to set that passwords must contain at least one letter: % /usr/bin/sudo
+        /usr/bin/pwpolicy -n /Local/Default -setglobalpolicy -setaccountpolicies "requiresAlpha=<value≥1>"
+         Impact: Password policy should be in effect to reduce the risk of exposed services being compromised easily through
+        dictionary attacks or other social engineering attempts.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_5.2.3', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2.4":
+    title: '5.2.4 | Ensure Complex Password Must Contain Numeric Character Is Configured - manual'
+    section: 'Password Management'
+    description: |
+        Complex passwords contain one character from each of the following classes English uppercase letters, English lowercase
+        letters, Westernized Arabic numerals, and nonalphanumeric characters. Ensure that a number or numeric value is part of
+        the password policy on the computer.
+    remediation: |
+        Run the following command to set passwords to require at least one number: % /usr/bin/sudo /usr/bin/pwpolicy -n
+        /Local/Default -setglobalpolicy -setaccountpolicies "requiresNumeric=<value≥1>"
+         Impact: Password policy should be in effect to reduce the risk of exposed services being compromised easily through
+        dictionary attacks or other social engineering attempts.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_5.2.4', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2.5":
+    title: '5.2.5 | Ensure Complex Password Must Contain Special Character Is Configured - manual'
+    section: 'Password Management'
+    description: |
+        Complex passwords contain one character from each of the following classes English uppercase letters, English lowercase
+        letters, Westernized Arabic numerals, and nonalphanumeric characters. Ensure that a special character is part of the
+        password policy on the computer.
+    remediation: |
+        Run the following command to set passwords to require at least one special character: % /usr/bin/sudo /usr/bin/pwpolicy
+        -n /Local/Default -setglobalpolicy -setaccountpolicies "requiresSymbol=<value≥1>"
+         Impact: Password policy should be in effect to reduce the risk of exposed services being compromised easily through
+        dictionary attacks or other social engineering attempts.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_5.2.5', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2.6":
+    title: '5.2.6 | Ensure Complex Password Must Contain Uppercase and Lowercase Characters Is Configured - manual'
+    section: 'Password Management'
+    description: |
+        Complex passwords contain one character from each of the following classes English uppercase letters, English lowercase
+        letters, Westernized Arabic numerals, and nonalphanumeric characters. Ensure that both uppercase and lowercase letters
+        are part of the password policy on the computer.
+    remediation: |
+        Run the following command to set passwords to require an upper and lower case letter: % /usr/bin/sudo /usr/bin/pwpolicy
+        -n /Local/Default -setglobalpolicy "requiresMixedCase=<value≥1>"
+         Impact: Password policy should be in effect to reduce the risk of exposed services being compromised easily through
+        dictionary attacks or other social engineering attempts.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_5.2.6', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2.7":
+    title: '5.2.7 | Ensure Password Age Is Configured - manual'
+    section: 'Password Management'
+    description: |
+        Over time, passwords can be captured by third parties through mistakes, phishing attacks, thirdparty breaches, or merely
+        bruteforce attacks. To reduce the risk of exposure and to decrease the incentives of password reuse passwords that are
+        not forced to be changed periodically generally are not ever changed, users should reset passwords periodically.
+        This control uses 365 days as the acceptable value. Some organizations may be more or less restrictive. This control
+        mainly exists to mitigate against password reuse of the macOS account password in other realms that may be more prone to
+        compromise. Attackers take advantage of exposed information to attack other accounts.
+    remediation: |
+        Run the following command to require that passwords expire after at most 365 days: % /usr/bin/sudo /usr/bin/pwpolicy -n
+        /Local/Default -setglobalpolicy "maxMinutesUntilChangePassword=<value≤525600>"
+         Impact: Required password changes will lead to some locked computers requiring admin assistance.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.7', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2.8":
+    title: '5.2.8 | Ensure Password History Is Configured - manual'
+    section: 'Password Management'
+    description: |
+        Over time, passwords can be captured by third parties through mistakes, phishing attacks, thirdparty breaches, or merely
+        bruteforce attacks. To reduce the risk of exposure and to decrease the incentives of password reuse passwords that are
+        not forced to be changed periodically generally are not ever changed, users must reset passwords periodically. This
+        control ensures that previous passwords are not reused immediately by keeping a history of previous password hashes.
+        Ensure that password history checks are part of the password policy on the computer. This control checks whether a new
+        password is different than the previous 15.
+        The latest NIST guidance based on exploit research referenced in this section details how one of the greatest risks is
+        password exposure rather than password cracking. Passwords should be changed to a new unique value whenever a password
+        might have been exposed to anyone other than the account holder. Attackers have maintained persistent control based on
+        predictable password change patterns and substantially different patterns should be used in case of a leak.
+    remediation: |
+        Run the following command to require that the password must be different from at least the last 15 passwords: %
+        /usr/bin/sudo /usr/bin/pwpolicy -n /Local/Default -setglobalpolicy "usingHistory=<value≥15>"
+         Impact: Required password changes will lead to some locked computers requiring admin assistance.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.8', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.3":
+    title: '5.3 | Ensure the Sudo Timeout Period Is Set to Zero - manual'
+    section: 'System Access, Authentication, and Authorization'
+    description: |
+        The sudo command allows the user to run programs as the root user. Working as the root user allows the user an extremely
+        high level of configurability within the system. This control, along with the control to use a separate timestamp for
+        each tty, limits the window where an unauthorized user, process, or attacker could utilize legitimate credentials that
+        are valid for longer than required.
+    remediation: |
+        Run the following command to edit the sudo settings: % /usr/bin/sudo /usr/sbin/visudo -f /etc/sudoers.d/<configuration
+        file name>
+         example: $ /usr/bin/sudo /usr/sbin/visudo -f /etc/sudoers.d/10_cissudoconfiguration Note:
+         Unlike other Unix and/or Linux distros, macOS will ignore configuration files in the sudoers.d folder that contain a
+        .
+         so do not add a file extension to the configuration file.
+        Add the line                Defaults timestamp_timeout=0
+         to the configuration file.             If /etc/sudoers.d/ is not owned by root or in the wheel group, run the following
+        to change ownership and group: % /usr/bin/sudo /usr/sbin/chown -R root:wheel /etc/security/sudoers.d/
+         Impact: This control has a serious impact where users often have to use sudo. It is even more of an impact where users
+        have to use sudo multiple times in quick succession as part of normal work processes. Organizations with that common use
+        case will likely find this control too onerous and are better to accept the risk of not requiring a 0 grace period. In
+        some ways the use of sudo -s, which is undesirable, is better than a long grace period since that use does change the
+        hash to show that it is a root shell rather than a normal shell where sudo commands will be implemented without a
+        password.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.3', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.4":
+    title: '5.4 | Ensure a Separate Timestamp Is Enabled for Each Usertty Combo - manual'
+    section: 'System Access, Authentication, and Authorization'
+    description: |
+        Using tty tickets ensures that a user must enter the sudo password in each Terminal session. With sudo versions 1.8 and
+        higher, introduced in 10.12, the default value is to have tty tickets for each interface so that root access is limited
+        to a specific terminal. The default configuration can be overwritten or not configured correctly on earlier versions of
+        macOS.
+    remediation: |
+        Run the following command to edit the sudo settings: % /usr/bin/sudo /usr/sbin/visudo -f /etc/sudoers.d/<configuration
+        file name>
+         example: % /usr/bin/sudo /usr/sbin/visudo -f /etc/sudoers.d/10_cissudoconfiguration Note:
+         Unlike other Unix and/or Linux distros, macOS will ignore configuration files in the sudoers.d folder that contain a
+        .
+         so do not add a file extension to the configuration file.
+        Add the line                Defaults timestamp_type=tty
+         to the configuration file.             Note:
+         The                Defaults timestamp_type=tty
+         line can be added to an existing configuration file or a new one. That will depend on your organization's preference
+        and works either way.             Impact: This control should have no user impact. Developers or installers may have
+        issues if background processes are spawned with different interfaces than where sudo was executed.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.4', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.5":
+    title: '5.5 | Ensure the root Account Is Disabled - manual'
+    section: 'System Access, Authentication, and Authorization'
+    description: |
+        The root account is a superuser account that has access privileges to perform any actions and read/write to any file on
+        the computer. With some versions of Linux, the system administrator may commonly use the root account to perform
+        administrative functions.
+    remediation: |
+        Run the following command to disable the root user:
+        % /usr/bin/sudo /usr/sbin/dsenableroot -d
+
+        username = root
+        user password:
+                     Impact: Some legacy POSIX software might expect an available root account.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.5', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.6":
+    title: '5.6 | Ensure an Administrator Account Cannot Login to Another Users Active and Locked Session'
+    section: 'System Access, Authentication, and Authorization'
+    description: |
+        macOS has a privilege that can be granted to any user that will allow that user to unlock active users sessions.
+    remediation: |
+        Run the following command to disable a user logging into another user's active and/or locked session:
+        % /usr/bin/sudo /usr/bin/security authorizationdb write system.login.screensaver authenticate-session-owner
+
+        YES (0)
+                     Impact: While Fast user switching is a workaround for some lab environments, especially where there is even
+        less of an expectation of privacy, this setting change may impact some maintenance workflows.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.6', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.7":
+    title: '5.7 | Ensure a Login Window Banner Exists - manual'
+    section: 'System Access, Authentication, and Authorization'
+    description: |
+        A Login window banner warning informs the user that the system is reserved for authorized use only. It enforces an
+        acknowledgment by the user that they have been informed of the use policy in the banner if required. The system
+        recognizes either the            .txt
+         and the            .rtf
+         formats.
+    remediation: |
+        Run the following commands to create or edit the login window text and set the proper permissions:
+        Edit (or create) a                PolicyBanner.txt
+         or                PolicyBanner.rtf
+         file, in the                /Library/Security/
+         folder, to include the required login window banner text.             Perform the following to set permissions on the
+        policy banner file:
+        % /usr/bin/sudo /usr/sbin/chown o+r /Library/Security/PolicyBanner.txt
+
+        % /usr/bin/sudo /usr/sbin/chown o+r /Library/Security/PolicyBanner.rtf
+                     Note:
+         If your organization uses an                .rtfd
+         file to set the policy banner, run                % /usr/bin/sudo /usr/sbin/chown -R o+rx
+        /Library/Security/PolicyBanner.rtfd
+         to update the permissions.             Impact: Users will have to click on the window with the Login text before
+        logging into the computer.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_5.7', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.8":
+    title: '5.8 | Ensure the Guest Home Folder Does Not Exist - manual'
+    section: 'System Access, Authentication, and Authorization'
+    description: |
+        In the previous two controls, the guest account login has been disabled and sharing to guests has been disabled, as
+        well. There is no need for the legacy Guest home folder to remain in the file system. When normal user accounts are
+        removed, you have the option to archive it, leave it in place, or delete. In the case of the guest folder, the folder
+        remains in place without a GUI option to remove it. If at some point in the future a Guest account is needed, it will be
+        recreated. The presence of the Guest home folder can cause automated audits to fail when looking for compliant settings
+        within all User folders, as well. Rather than ignoring the folders continued existence, it is best removed.
+    remediation: |
+        Run the following command to remove the Guest user home folder: % /usr/bin/sudo /bin/rm -R /Users/Guest
+         Impact: The Guest account should not be necessary after it is disabled, and it will be automatically re-created if the
+        Guest account is re-enabled
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.8', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.9":
+    title: '5.9 | Ensure XProtect Is Running and Updated - manual'
+    section: 'System Access, Authentication, and Authorization'
+    description: |
+        XProtect is Apples native signaturebased antivirus technology. XProtect both finds and blocks the execution of known
+        malware. There are many AV and Endpoint Threat Detection and Response ETDR tools available for Mac OS. The native Apple
+        provisioned tool looks for specific known malware is completely integrated into the OS. No matter what other tools are
+        being used, XProtect should have the latest signatures available.
+    remediation: |
+        Run the following command to enable and update XProtect:
+        % /usr/bin/sudo /bin/launchctl load -w /Library/Apple/System/Library/LaunchDaemons/com.apple.XProtect.daemon.scan.plist
+
+        % /usr/bin/sudo /bin/launchctl load -w
+        /Library/Apple/System/Library/LaunchDaemons/com.apple.XprotectFramework.PluginService.plist
+
+        % /usr/bin/sudo /usr/sbin/softwareupdate -l --background-critical
+
+        softwareupdate[97180]: Triggering a background check with forced scan (critical and config-data updates only) ...
+                     Note:
+         Xprotect can only be enabled/disabled if SIP (System Integrity Protection) is disabled. If Xprotect is disabled, the
+        system might be compromised and needs to be investigated.             Impact: Some organizations may have effective Mac
+        OS anti-malware tools that XProtect conflicts with.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.9', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.10":
+    title: '5.10 | Ensure Secure Keyboard Entry Terminal.app Is Enabled'
+    section: 'System Access, Authentication, and Authorization'
+    description: |
+        Secure Keyboard Entry prevents other applications on the system and/or network from detecting and recording what is
+        typed into Terminal. Unauthorized applications and malicious code could intercept keystrokes entered in the Terminal.
+    remediation: |
+        Run the following command to ensure keyboard entries are secure in Terminal for every user that is non-compliant: %
+        /usr/bin/sudo -u <username> /usr/bin/defaults write -app Terminal SecureKeyboardEntry -bool true
+         Impact: Enabling this in Terminal would prevent an application that is otherwise validly intercepting keyboard input
+        from intercepting that input in Terminal.app. This could impact productivity tools.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.10', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.11":
+    title: '5.11 | Ensure Show All Filename Extensions Setting is Enabled - manual'
+    section: 'System Access, Authentication, and Authorization'
+    description: |
+        A filename extension is a suffix added to a base filename that indicates the base filenames file format.
+    remediation: |
+        Run the following command to enable displaying of file extensions:
+        % /usr/bin/sudo -u <username> /usr/bin/defaults write /Users/<username>/Library/Preferences/.GlobalPreferences.plist
+        AppleShowAllExtensions -bool true
+
+        % /usr/bin/sudo killall Finder
+                     Impact: The user of the system can open files of unknown or unexpected filetypes if the extension is not
+        visible.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.11', 'cis_apple_macos_13.0_ventura_cloud-tailored_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:

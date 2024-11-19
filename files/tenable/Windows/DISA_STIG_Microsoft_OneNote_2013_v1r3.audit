@@ -1,0 +1,214 @@
+#TRUSTED 831832f0521647ae4e36317f380287903a4eee672e26c41dc635810c4151604ec58dc8a9bc363f063d4a77141af4e2fc49ae1407d55a57f2eb9aa75fea8796b020cb4289fe4a2074771e6032fc943398d9d9387c9ebe7cff25b6ed2fbd6a03f51ae1cd4c33ab77e7289f67d807945977c9215c9a60b696851f38d499c797db0aa5b7866fc14c66eb1dbb1fbd84cc3bcf0a84b44884adfeccd4b56732866c8e2b4e67f436386b5c102c130871fe2dd0b1962f3d0d9b43793e31c2f7602a444e77451c13c5f5a757c9336f66b212dc9cb4f0b53a68f883fa5f9a9b40ff259be57e7c0384ecda2693b36c35b92cf87101c375b188857713ec9b41c47bdbf562e989ec29ee2326676ad0bff1812185f602c1275907dbfd9151a42592ef57bbb973e146f13d6814b4babfcc1c817dd9d6ba4e684408e61eb0bea451a6587b7dc9fd02d63089f76417d78ffdf60a7c761a6241109550d92ca1e9d7c36c7e272a751b1c1deab89eed12af0dcd0a180b6f2ca31a9a7bf7d0d1c112b99e4ae84f0f03c506566368c03a24ad8ca65bfd3f691da3cfffa9f7fccfe3b175bf3aa4c75d48073c722f03c897bc354b4c717b27ba65f5e0979decf0e51da4193fd2c223c5052e4c20e8f1351d4c68c21798af5c333ac7eb3659165f4d533f6c89017da8cebaff417f76955ae11f236f2a36d4e29f0c32a1a6a68cc13323b1c3fd1a5ae375e0dda2
+#TRUST-RSA-SHA256 b04b4c7436b2e9597c7e94ae20d252af2f159c2ce54c3995f84b4c3c7758b0454a752b2a0aa0b1ff797b3154835348a51d513399c804fcb615d7aa5e35949ba18a5a163c5e82565642d62b658ba82841e4561e610a62983d6188bbeabd9c882263dbd20be93247d5e58eb0998968c54391132ac50294aef2f0d57d369d2d9836c0d2b8be0974c99268afa2c2d1d893dc724b533a67748b499d3ed5834dff2e90476789fa95ac6e361541f5c7120e47dd2f25b63606e90327c2ae21d736046d52b1c389d58659fac0c2a536b0a267cc6d99c3a7b659c19a795ca7fadd83e64bf10ce83b3e04847f704ed3d0bb7891d643467fa83aecad4d8c1f534e485a4141170c214780215d4e7d8a5d6b86f79bb8624f11c4fc974b79167161998d214b5939236c5affc35e241a9ac2401d8efc203d9fe04fcf74db38b5b7291bd654d8d8bc5b22a9579eb44f232ac0d4ae0161dca19e4902800372f1f12ad66e76ab4fdd19f9d221c271c965b7d7eaae05ebc41582787610fd1d0bf45284c017245e9b8dc5e1fdf119bf289d24f8cf450205b0715bcba5d2ea6cd2f181d6e00d3c91ccdfe2eceed2a5b7df6b6b8504a597e088b6d30127cfeda9d652cf746bccfdde658d931e496b663cbb7f0d29eb2746688c9198f60b65541476f2c41ab859f7801799901e94fc9b555096292be5b6422b1702c4f8aac139f910c24c155330c1ed2e1e45
+#
+# This script is Copyright (C) 2004-2023 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+#
+# $Revision: 1.8 $
+# $Date: 2023/04/12 $
+#
+# Description : This .audit is designed to query the Microsoft OneNote 2013
+#               as defined by DISA in the Microsoft OneNote 2013 STIG, v1r3
+#
+#               https://iasecontent.disa.mil/stigs/zip/U_MS_OneNote_2013_V1R3_STIG.zip
+#
+#<ui_metadata>
+#<display_name>DISA STIG Microsoft OneNote 2013 v1r3</display_name>
+#<spec>
+#  <type>DISA STIG</type>
+#  <name>Microsoft OneNote 2013</name>
+#  <version>1.3.0</version>
+#  <link>https://iasecontent.disa.mil/stigs/zip/U_MS_OneNote_2013_V1R3_STIG.zip</link>
+#</spec>
+#<labels>ms_onenote_2013,update_20230227</labels>
+#<benchmark_refs>CAT,CCE,CCI,DISA_Benchmark,Group-ID,Rule-ID,STIG-ID,STIG-Legacy,Vuln-ID</benchmark_refs>
+#</ui_metadata>
+
+<check_type:"Windows" version:"2">
+<group_policy:"MS OneNote 2013">
+
+<if>
+  <condition type:"AND">
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "Check if OneNote 2013 is installed"
+      value_type  : POLICY_TEXT
+      value_data  : ".+"
+      reg_key     : "HKLM\Software\Microsoft\Office\15.0\Onenote\Installroot"
+      reg_item    : "Path"
+      reg_option  : MUST_EXIST
+      check_type  : CHECK_REGEX
+    </custom_item>
+  </condition>
+
+  <then>
+    <report type:"PASSED">
+      description : "DISA_STIG_Microsoft_OneNote_2013_v1r3.audit for Microsoft OneNote 2013, from DISA STIG Microsoft OneNote 2013 v1r2"
+    </report>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO104 - Disabling of user name and password syntax from being used in URLs must be enforced."
+      info        : "The Uniform Resource Locator (URL) standard allows user authentication to be included in URL strings in the form http://username:password@example.com. A malicious user might use this URL syntax to create a hyperlink that appears to open a legitimate website but actually opens a deceptive (spoofed) Web site. For example, the URL http://www.wingtiptoys.com@example.com appears to open http://www.wingtiptoys.com but actually opens http://example.com. To protect users from such attacks, Internet Explorer usually blocks any URLs using this syntax.
+
+This functionality can be controlled separately for instances of Internet Explorer spawned by Office applications (for example, if a user clicks a link in an Office document or selects a menu option that loads a web page). If user names and passwords in URLs are allowed, users could be diverted to dangerous web pages, which could pose a security risk."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2013 (Machine) -> Security Settings -> IE Security 'Disable user name and password' to 'Enabled' and place a check in the 'onent.exe' check box."
+      reference   : "800-171|3.13.13,800-53|SC-18(4),800-53r5|SC-18(4),CAT|II,CCI|CCI-001170,CSF|DE.CM-5,DISA_Benchmark|Microsoft_OneNote_2013,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(4),NIAv2|SU3,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-52778r1_rule,STIG-ID|DTOO104,Vuln-ID|V-17173"
+      see_also    : "https://iasecontent.disa.mil/stigs/zip/U_MS_OneNote_2013_V1R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Http_Username_Password_Disable"
+      reg_item    : "onenote.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO111 - The Internet Explorer Bind to Object functionality must be enabled."
+      info        : "Internet Explorer performs a number of safety checks before initializing an ActiveX control. It will not initialize a control if the kill bit for the control is set in the registry, or if the security settings for the zone in which the control is located do not allow it to be initialized.
+This functionality can be controlled separately for instances of Internet Explorer spawned by Office applications (for example, if a user clicks a link in an Office document or selects a menu option that loads a web page). A security risk could occur if potentially dangerous controls are allowed to load."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2013 (Machine) -> Security Settings -> IE Security 'Bind to Object' to 'Enabled' and place a check in the 'onent.exe' check box."
+      reference   : "800-171|3.13.13,800-53|SC-18(3),800-53r5|SC-18(3),CAT|II,CCI|CCI-001695,CSF|DE.CM-5,DISA_Benchmark|Microsoft_OneNote_2013,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(3),NIAv2|NS26f,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-52779r1_rule,STIG-ID|DTOO111,Vuln-ID|V-17174"
+      see_also    : "https://iasecontent.disa.mil/stigs/zip/U_MS_OneNote_2013_V1R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Safe_Bindtoobject"
+      reg_item    : "onenote.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO117 - The Saved from URL mark must be selected to enforce Internet zone processing."
+      info        : "Typically, when Internet Explorer loads a web page from a Universal Naming Convention (UNC) share that contains a Mark of the Web (MOTW) comment, indicating the page was saved from a site on the Internet, Internet Explorer runs the page in the Internet security zone instead of the less restrictive Local Intranet security zone. This functionality can be controlled separately for instances of Internet Explorer spawned by Office applications (for example, if a user clicks a link in an Office document or selects a menu option that loads a web page). If Internet Explorer does not evaluate the page for a MOTW, potentially dangerous code could be allowed to run."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2013 (Machine) -> Security Settings -> IE Security 'Saved from URL' to 'Enabled' and place a check in the 'onent.exe' check box."
+      reference   : "800-171|3.13.13,800-53|SC-18(4),800-53r5|SC-18(4),CAT|II,CCI|CCI-001170,CSF|DE.CM-5,DISA_Benchmark|Microsoft_OneNote_2013,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(4),NIAv2|SU3,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-52780r1_rule,STIG-ID|DTOO117,Vuln-ID|V-17175"
+      see_also    : "https://iasecontent.disa.mil/stigs/zip/U_MS_OneNote_2013_V1R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Unc_Savedfilecheck"
+      reg_item    : "onenote.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO123 - Navigation to URLs embedded in Office products must be blocked."
+      info        : "To protect users from attacks, Internet Explorer usually does not attempt to load malformed URLs. This functionality can be controlled separately for instances of Internet Explorer spawned by Office applications (for example, if a user clicks a link in an Office document or selects a menu option that loads a web page). If Internet Explorer attempts to load a malformed URL, a security risk could occur."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2013 (Machine) -> Security Settings -> IE Security 'Navigate URL' to 'Enabled' and place a check in the 'onent.exe' check box."
+      reference   : "800-171|3.13.13,800-53|SC-18(4),800-53r5|SC-18(4),CAT|II,CCI|CCI-001170,CSF|DE.CM-5,DISA_Benchmark|Microsoft_OneNote_2013,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(4),NIAv2|SU3,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-52781r1_rule,STIG-ID|DTOO123,Vuln-ID|V-17183"
+      see_also    : "https://iasecontent.disa.mil/stigs/zip/U_MS_OneNote_2013_V1R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Validate_Navigate_Url"
+      reg_item    : "onenote.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO129 - Links that invoke instances of Internet Explorer from within an Office product must be blocked."
+      info        : "The Pop-up Blocker feature in Internet Explorer can be used to block most unwanted pop-up and pop-under windows from appearing. This functionality can be controlled separately for instances of Internet Explorer spawned by Office applications (for example, if a user clicks a link in an Office document or selects a menu option that loads a web page). If the Pop-up Blocker is disabled, disruptive and potentially dangerous pop-up windows could load and present a security risk."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2013 (Machine) -> Security Settings -> IE Security 'Block popups' to 'Enabled' and select 'onent.exe'."
+      reference   : "800-171|3.13.13,800-53|SC-18(1),800-53r5|SC-18(1),CAT|II,CCI|CCI-001662,CSF|DE.CM-5,DISA_Benchmark|Microsoft_OneNote_2013,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(1),NIAv2|SU3,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-52784r1_rule,STIG-ID|DTOO129,Vuln-ID|V-17184"
+      see_also    : "https://iasecontent.disa.mil/stigs/zip/U_MS_OneNote_2013_V1R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Weboc_Popupmanagement"
+      reg_item    : "onenote.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO126 - Add-on Management functionality must be allowed."
+      info        : "Internet Explorer add-ons are pieces of code, run in Internet Explorer, to provide additional functionality. Rogue add-ons may contain viruses or other malicious code. Disabling or not configuring this setting could allow malicious code or users to become active on user computers or the network. For example, a malicious user can monitor and then use keystrokes users type into Internet Explorer. Even legitimate add-ons may demand resources, compromising the performance of Internet Explorer, and the operating systems for user computers."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2013 (Machine) -> Security Settings -> IE Security 'Add-on Management' to 'Enabled' and 'onent.exe' is checked."
+      reference   : "800-171|3.13.13,800-53|SC-18(1),800-53r5|SC-18(1),CAT|II,CCI|CCI-001662,CSF|DE.CM-5,DISA_Benchmark|Microsoft_OneNote_2013,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(1),NIAv2|SU3,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-52783r1_rule,STIG-ID|DTOO126,Vuln-ID|V-26584"
+      see_also    : "https://iasecontent.disa.mil/stigs/zip/U_MS_OneNote_2013_V1R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Addon_Management"
+      reg_item    : "onenote.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO209 - Protection from zone elevation must be enforced."
+      info        : "Internet Explorer places restrictions on each web page users can use the browser to open. Web pages on a user's local computer have the fewest security restrictions and reside in the Local Machine zone, making this security zone a prime target for malicious users and code. Disabling or not configuring this setting could allow pages in the Internet zone to navigate to pages in the Local Machine zone to then run code to elevate privileges. This could allow malicious code or users to become active on user computers or the network."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2013 (Machine) -> Security Settings -> IE Security 'Protection From Zone Elevation' to 'Enabled' and 'onent.exe' is checked."
+      reference   : "800-171|3.13.13,800-53|SC-18(3),800-53r5|SC-18(3),CAT|II,CCI|CCI-001695,CSF|DE.CM-5,DISA_Benchmark|Microsoft_OneNote_2013,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(3),NIAv2|NS26f,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-52786r1_rule,STIG-ID|DTOO209,Vuln-ID|V-26585"
+      see_also    : "https://iasecontent.disa.mil/stigs/zip/U_MS_OneNote_2013_V1R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Zone_Elevation"
+      reg_item    : "onenote.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO211 - ActiveX Installs must be configured for proper restriction."
+      info        : "Microsoft ActiveX controls allow unmanaged, unprotected code to run on the user computers. ActiveX controls do not run within a protected container in the browser like the other types of HTML or Microsoft Silverlight-based controls. Disabling or not configuring this setting does not block prompts for ActiveX control installations and these prompts display to users. This could allow malicious code to become active on user computers or the network."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2013 (Machine) -> Security Settings -> IE Security 'Restrict ActiveX Install' to 'Enabled' and 'onent.exe' is checked."
+      reference   : "800-171|3.13.13,800-53|SC-18(4),800-53r5|SC-18(4),CAT|II,CCI|CCI-002460,CSF|DE.CM-5,DISA_Benchmark|Microsoft_OneNote_2013,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(4),NIAv2|SU3,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-52787r1_rule,STIG-ID|DTOO211,Vuln-ID|V-26586"
+      see_also    : "https://iasecontent.disa.mil/stigs/zip/U_MS_OneNote_2013_V1R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Restrict_Activexinstall"
+      reg_item    : "onenote.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO132 - File Downloads must be configured for proper restrictions."
+      info        : "Disabling this setting allows websites to present file download prompts via code without the user specifically initiating the download.  User preferences may also allow the download to occur without prompting or interaction with the user.  Even if Internet Explorer prompts the user to accept the download, some websites abuse this functionality.  Malicious websites may continually prompt users to download a file or present confusing dialog boxes to trick users into downloading or running a file.  If the download occurs and it contains malicious code, the code could become active on user computers or the network."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2013 (Machine) -> Security Settings -> IE Security 'Restrict File Download' to 'Enabled' and 'onent.exe' is checked."
+      reference   : "800-171|3.13.13,800-53|SC-18(3),800-53r5|SC-18(3),CAT|II,CCI|CCI-001169,CSF|DE.CM-5,DISA_Benchmark|Microsoft_OneNote_2013,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(3),NIAv2|NS26f,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-52785r1_rule,STIG-ID|DTOO132,Vuln-ID|V-26587"
+      see_also    : "https://iasecontent.disa.mil/stigs/zip/U_MS_OneNote_2013_V1R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Restrict_Filedownload"
+      reg_item    : "onenote.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO124 - Scripted Window Security must be enforced."
+      info        : "Malicious websites often try to confuse or trick users into giving a site permission to perform an action allowing the site to take control of the users' computers in some manner. Disabling or not configuring this setting allows unknown websites to:
+-Create browser windows appearing to be from the local operating system.
+-Draw active windows displaying outside of the viewable areas of the screen capturing keyboard input.
+-Overlay parent windows with their own browser windows to hide important system information, choices or prompts."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2013 (Machine) -> Security Settings -> IE Security 'Scripted Window Security Restrictions' to 'Enabled' and 'onent.exe' is checked."
+      reference   : "800-171|3.13.13,800-53|SC-18(3),800-53r5|SC-18(3),CAT|II,CCI|CCI-001695,CSF|DE.CM-5,DISA_Benchmark|Microsoft_OneNote_2013,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(3),NIAv2|NS26f,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-52782r1_rule,STIG-ID|DTOO124,Vuln-ID|V-26588"
+      see_also    : "https://iasecontent.disa.mil/stigs/zip/U_MS_OneNote_2013_V1R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Window_Restrictions"
+      reg_item    : "onenote.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+  </then>
+
+  <else>
+    <report type:"WARNING">
+      description : "DISA_STIG_Microsoft_OneNote_2013_v1r2.audit for Microsoft OneNote 2013, from DISA STIG Microsoft OneNote 2013 v1r3"
+      info        : "NOTE: Nessus has not identified that the chosen audit applies to the target device."
+    </report>
+  </else>
+</if>
+
+</group_policy>
+</check_type>

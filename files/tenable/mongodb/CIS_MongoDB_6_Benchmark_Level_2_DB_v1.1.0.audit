@@ -1,0 +1,169 @@
+#TRUSTED 1b83bceebb64b3e858f5e04bd48afac644d6f4cb3e7f246db0830e83586873d91af21b27ca1122ede2a288598b278cadad7b40ca604df648943cc82c45f01ea551eeab73a6ddcb1a318c8f76d828202790cff1de73474c3b27dc33608d78c2ec43617ab4723035f198b2edef052828d3916ec1bb73e19f2978a228cb8ed2382eb03f9ea440233fb93da8c8797651783f3f2443d2952758e7827b10de50adec774cb489172a921b4d3d9a03eb8921fe28c23f1411181eff256350da3db4254e8cb8d42fb979b73726e9bff7130ddab7744c4ab0bd0b8be290140fc2aeaccde36ebc8d2726e96b9d4fe7bf456f5faf5cd4af86c0a428f3a5de4fd3a67f0177c276e87e5cd3232680585699a3ec42750cc74d6747c66cfdae4f1d07d255b12350e4ceaf9ad8afa7b31c4fdea27f810ff272ac1191ed682b4083b1908ee2fe0d6d65d0253e59eb4992ffaabe9c5f9f33844d9f2f6edd0cb5eb0654ba5e617edc4c87abdaee58c1d5e905dc5071b6dfff831d97147cd6cd224f72163d19fe84d2e6d6bfd2d97545a71be32608c8bd48629eec1ce60cc15c98dd42ab45c17fdeb26efbcfbfe5e0b7fba1bd4e7596bec2485c31468d5df4da0b4a3d38dabf6f8e33972e0033c284b87aba6e0a69e61e678edb9b4acefd1ae501c7f8858790d6939e607fb8ae2a17ae955656f8e92f8e0eb5a3d2c1cb3da0148374530c25135e5697c38f
+#TRUST-RSA-SHA256 af339822108d33c98578dfcc46d3f9dadf65d3cc25da31a86b527ed031acb45dbc2c693d96baac31f9e13501bacfcb7599ea4cbdafea43c49fb597b9e15a1a4c4bb1a190765a3c1e93df867f3cc55da865f28613330ba249444a69e7e3f118a686619b3467eb0ba16542ee2988e85ce5c87f5192a88b1c81d45ad2684dedbdd149b28f09568f3ca5747a9e74aa2f6957098ddeb5c7d93fd7e3fafe6848c234fb8e1b58fffd8b0d095797788ee1028eadd0134a15bbab8d20f75a1f8ca4daf6a64bba3fdb12c48a61f0ba9f80712a2ca206b12002607aba39627425328cbf21a6d4875e7cfd6dc42494f8513f5db3b60d25da09132209236213ea3f41bcedfa9932fa4b2a0a84ebca941de77519e9d6b01de53c90fc26e3895aafbae7bda4b2761df4a98a60a81c0da60ace7fd7aaefcb986c9f23bf5a02484d615a0226a2539f2a0b2a22b87c7c61629b96737dd46c4c411552072dcfb20e14c15a97b019c86ac61274e594ae3e34942aebb5acf67c1643e45b4c8590354868f71bc16bac53a535c0e65bdf15f3ca13bc9525b3ad044411e8467e5108dbf8d7f3c3fc8b0009e50ea0359b6fd53a5905701d3090e5b82bc0e11247048c1f03a5cf73ece98a7bd82b9241e2cbd95abea69682e0f813f82ead43f4bd19142386912e241fb008388859b3e16c7ddc5279fd82f3c231f31fecffcf6163b1d4377d0f3963a94b5d6af1
+#
+# This script is Copyright (C) 2004-2024 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.1 $
+# $Date: 2024/06/17 $
+#
+# Description : This document implements the security configuration as recommended by the
+#               CIS MongoDB 6 benchmark v1.1.0
+#
+#<ui_metadata>
+#<display_name>CIS MongoDB 6 L2 DB v1.1.0</display_name>
+#<spec>
+#  <type>CIS</type>
+#  <name>MongoDB 6</name>
+#  <profile>L2 DB</profile>
+#  <version>1.1.0</version>
+#  <link>https://workbench.cisecurity.org/benchmarks/15135</link>
+#</spec>
+#<labels>mongodb,mongodb_6,cis,update_20230227</labels>
+#<benchmark_refs>CCE,CSCv6,CSCv7,CSCv8,LEVEL</benchmark_refs>
+#</ui_metadata>
+
+<check_type:"MongoDB">
+
+<custom_item>
+  description : "3.5 Review Superuser/Admin Roles - dbOwner"
+  info        : "Roles provide several advantages that make it easier to manage privileges in a database system. Security administrators can control access to their databases in a way that mirrors the structure of their organizations (they can create roles in the database that map directly to the job functions in their organizations). The assignment of privileges is simplified. Instead of granting the same set of privileges to each individual user in a particular job function, the administrator can grant this set of privileges to a role representing that job function and then grant that role to each user in that job function.
+
+Rationale:
+
+Reviewing the Superuser/Admin roles within a database helps minimize the possibility of privileged unwanted access.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+  solution    : "To remove a user from one or more roles on the current database."
+  reference   : "800-171|3.1.5,800-171|3.1.6,800-53|AC-6(2),800-53|AC-6(5),800-53r5|AC-6(2),800-53r5|AC-6(5),CN-L3|7.1.3.2(b),CN-L3|7.1.3.2(g),CN-L3|8.1.4.2(d),CN-L3|8.1.10.6(a),CSCv7|4.3,CSCv7|16.8,CSCv8|5.4,CSF|PR.AC-4,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ISO/IEC-27001|A.9.2.3,ITSG-33|AC-6(2),ITSG-33|AC-6(5),LEVEL|2M,NESA|T5.1.1,NESA|T5.2.2,NESA|T5.6.1,NIAv2|AM1,NIAv2|AM23f,NIAv2|AM32,NIAv2|AM33,NIAv2|SS13c,NIAv2|SS15c,NIAv2|VL3a,PCI-DSSv3.2.1|7.1.2,PCI-DSSv4.0|7.2.1,PCI-DSSv4.0|7.2.2,QCSC-v1|5.2.2,QCSC-v1|6.2,SWIFT-CSCv1|1.2,SWIFT-CSCv1|5.1,TBA-FIISB|31.4.2,TBA-FIISB|31.4.3"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+  regex       : ".*"
+  expect      : "Manual Review Required"
+  collection  : "admin.$cmd"
+  query       : '{"rolesInfo":"dbOwner"}'
+  severity    : MEDIUM
+</custom_item>
+
+<custom_item>
+  description : "3.5 Review Superuser/Admin Roles - userAdmin"
+  info        : "Roles provide several advantages that make it easier to manage privileges in a database system. Security administrators can control access to their databases in a way that mirrors the structure of their organizations (they can create roles in the database that map directly to the job functions in their organizations). The assignment of privileges is simplified. Instead of granting the same set of privileges to each individual user in a particular job function, the administrator can grant this set of privileges to a role representing that job function and then grant that role to each user in that job function.
+
+Rationale:
+
+Reviewing the Superuser/Admin roles within a database helps minimize the possibility of privileged unwanted access.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+  solution    : "To remove a user from one or more roles on the current database."
+  reference   : "800-171|3.1.5,800-171|3.1.6,800-53|AC-6(2),800-53|AC-6(5),800-53r5|AC-6(2),800-53r5|AC-6(5),CN-L3|7.1.3.2(b),CN-L3|7.1.3.2(g),CN-L3|8.1.4.2(d),CN-L3|8.1.10.6(a),CSCv7|4.3,CSCv7|16.8,CSCv8|5.4,CSF|PR.AC-4,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ISO/IEC-27001|A.9.2.3,ITSG-33|AC-6(2),ITSG-33|AC-6(5),LEVEL|2M,NESA|T5.1.1,NESA|T5.2.2,NESA|T5.6.1,NIAv2|AM1,NIAv2|AM23f,NIAv2|AM32,NIAv2|AM33,NIAv2|SS13c,NIAv2|SS15c,NIAv2|VL3a,PCI-DSSv3.2.1|7.1.2,PCI-DSSv4.0|7.2.1,PCI-DSSv4.0|7.2.2,QCSC-v1|5.2.2,QCSC-v1|6.2,SWIFT-CSCv1|1.2,SWIFT-CSCv1|5.1,TBA-FIISB|31.4.2,TBA-FIISB|31.4.3"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+  regex       : ".*"
+  expect      : "Manual Review Required"
+  collection  : "admin.$cmd"
+  query       : '{"rolesInfo":"userAdmin"}'
+  severity    : MEDIUM
+</custom_item>
+
+<custom_item>
+  description : "3.5 Review Superuser/Admin Roles - userAdminAnyDatabase"
+  info        : "Roles provide several advantages that make it easier to manage privileges in a database system. Security administrators can control access to their databases in a way that mirrors the structure of their organizations (they can create roles in the database that map directly to the job functions in their organizations). The assignment of privileges is simplified. Instead of granting the same set of privileges to each individual user in a particular job function, the administrator can grant this set of privileges to a role representing that job function and then grant that role to each user in that job function.
+
+Rationale:
+
+Reviewing the Superuser/Admin roles within a database helps minimize the possibility of privileged unwanted access.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+  solution    : "To remove a user from one or more roles on the current database."
+  reference   : "800-171|3.1.5,800-171|3.1.6,800-53|AC-6(2),800-53|AC-6(5),800-53r5|AC-6(2),800-53r5|AC-6(5),CN-L3|7.1.3.2(b),CN-L3|7.1.3.2(g),CN-L3|8.1.4.2(d),CN-L3|8.1.10.6(a),CSCv7|4.3,CSCv7|16.8,CSCv8|5.4,CSF|PR.AC-4,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ISO/IEC-27001|A.9.2.3,ITSG-33|AC-6(2),ITSG-33|AC-6(5),LEVEL|2M,NESA|T5.1.1,NESA|T5.2.2,NESA|T5.6.1,NIAv2|AM1,NIAv2|AM23f,NIAv2|AM32,NIAv2|AM33,NIAv2|SS13c,NIAv2|SS15c,NIAv2|VL3a,PCI-DSSv3.2.1|7.1.2,PCI-DSSv4.0|7.2.1,PCI-DSSv4.0|7.2.2,QCSC-v1|5.2.2,QCSC-v1|6.2,SWIFT-CSCv1|1.2,SWIFT-CSCv1|5.1,TBA-FIISB|31.4.2,TBA-FIISB|31.4.3"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+  regex       : ".*"
+  expect      : "Manual Review Required"
+  collection  : "admin.$cmd"
+  query       : '{"rolesInfo":"userAdminAnyDatabase"}'
+  severity    : MEDIUM
+</custom_item>
+
+<custom_item>
+  description : "3.5 Review Superuser/Admin Roles - readWriteAnyDatabase"
+  info        : "Roles provide several advantages that make it easier to manage privileges in a database system. Security administrators can control access to their databases in a way that mirrors the structure of their organizations (they can create roles in the database that map directly to the job functions in their organizations). The assignment of privileges is simplified. Instead of granting the same set of privileges to each individual user in a particular job function, the administrator can grant this set of privileges to a role representing that job function and then grant that role to each user in that job function.
+
+Rationale:
+
+Reviewing the Superuser/Admin roles within a database helps minimize the possibility of privileged unwanted access.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+  solution    : "To remove a user from one or more roles on the current database."
+  reference   : "800-171|3.1.5,800-171|3.1.6,800-53|AC-6(2),800-53|AC-6(5),800-53r5|AC-6(2),800-53r5|AC-6(5),CN-L3|7.1.3.2(b),CN-L3|7.1.3.2(g),CN-L3|8.1.4.2(d),CN-L3|8.1.10.6(a),CSCv7|4.3,CSCv7|16.8,CSCv8|5.4,CSF|PR.AC-4,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ISO/IEC-27001|A.9.2.3,ITSG-33|AC-6(2),ITSG-33|AC-6(5),LEVEL|2M,NESA|T5.1.1,NESA|T5.2.2,NESA|T5.6.1,NIAv2|AM1,NIAv2|AM23f,NIAv2|AM32,NIAv2|AM33,NIAv2|SS13c,NIAv2|SS15c,NIAv2|VL3a,PCI-DSSv3.2.1|7.1.2,PCI-DSSv4.0|7.2.1,PCI-DSSv4.0|7.2.2,QCSC-v1|5.2.2,QCSC-v1|6.2,SWIFT-CSCv1|1.2,SWIFT-CSCv1|5.1,TBA-FIISB|31.4.2,TBA-FIISB|31.4.3"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+  regex       : ".*"
+  expect      : "Manual Review Required"
+  collection  : "admin.$cmd"
+  query       : '{"rolesInfo":"readWriteAnyDatabase"}'
+  severity    : MEDIUM
+</custom_item>
+
+<custom_item>
+  description : "3.5 Review Superuser/Admin Roles - dbAdminAnyDatabase"
+  info        : "Roles provide several advantages that make it easier to manage privileges in a database system. Security administrators can control access to their databases in a way that mirrors the structure of their organizations (they can create roles in the database that map directly to the job functions in their organizations). The assignment of privileges is simplified. Instead of granting the same set of privileges to each individual user in a particular job function, the administrator can grant this set of privileges to a role representing that job function and then grant that role to each user in that job function.
+
+Rationale:
+
+Reviewing the Superuser/Admin roles within a database helps minimize the possibility of privileged unwanted access.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+  solution    : "To remove a user from one or more roles on the current database."
+  reference   : "800-171|3.1.5,800-171|3.1.6,800-53|AC-6(2),800-53|AC-6(5),800-53r5|AC-6(2),800-53r5|AC-6(5),CN-L3|7.1.3.2(b),CN-L3|7.1.3.2(g),CN-L3|8.1.4.2(d),CN-L3|8.1.10.6(a),CSCv7|4.3,CSCv7|16.8,CSCv8|5.4,CSF|PR.AC-4,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ISO/IEC-27001|A.9.2.3,ITSG-33|AC-6(2),ITSG-33|AC-6(5),LEVEL|2M,NESA|T5.1.1,NESA|T5.2.2,NESA|T5.6.1,NIAv2|AM1,NIAv2|AM23f,NIAv2|AM32,NIAv2|AM33,NIAv2|SS13c,NIAv2|SS15c,NIAv2|VL3a,PCI-DSSv3.2.1|7.1.2,PCI-DSSv4.0|7.2.1,PCI-DSSv4.0|7.2.2,QCSC-v1|5.2.2,QCSC-v1|6.2,SWIFT-CSCv1|1.2,SWIFT-CSCv1|5.1,TBA-FIISB|31.4.2,TBA-FIISB|31.4.3"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+  regex       : ".*"
+  expect      : "Manual Review Required"
+  collection  : "admin.$cmd"
+  query       : '{"rolesInfo":"dbAdminAnyDatabase"}'
+  severity    : MEDIUM
+</custom_item>
+
+<custom_item>
+  description : "3.5 Review Superuser/Admin Roles - clusterAdmin"
+  info        : "Roles provide several advantages that make it easier to manage privileges in a database system. Security administrators can control access to their databases in a way that mirrors the structure of their organizations (they can create roles in the database that map directly to the job functions in their organizations). The assignment of privileges is simplified. Instead of granting the same set of privileges to each individual user in a particular job function, the administrator can grant this set of privileges to a role representing that job function and then grant that role to each user in that job function.
+
+Rationale:
+
+Reviewing the Superuser/Admin roles within a database helps minimize the possibility of privileged unwanted access.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+  solution    : "To remove a user from one or more roles on the current database."
+  reference   : "800-171|3.1.5,800-171|3.1.6,800-53|AC-6(2),800-53|AC-6(5),800-53r5|AC-6(2),800-53r5|AC-6(5),CN-L3|7.1.3.2(b),CN-L3|7.1.3.2(g),CN-L3|8.1.4.2(d),CN-L3|8.1.10.6(a),CSCv7|4.3,CSCv7|16.8,CSCv8|5.4,CSF|PR.AC-4,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ISO/IEC-27001|A.9.2.3,ITSG-33|AC-6(2),ITSG-33|AC-6(5),LEVEL|2M,NESA|T5.1.1,NESA|T5.2.2,NESA|T5.6.1,NIAv2|AM1,NIAv2|AM23f,NIAv2|AM32,NIAv2|AM33,NIAv2|SS13c,NIAv2|SS15c,NIAv2|VL3a,PCI-DSSv3.2.1|7.1.2,PCI-DSSv4.0|7.2.1,PCI-DSSv4.0|7.2.2,QCSC-v1|5.2.2,QCSC-v1|6.2,SWIFT-CSCv1|1.2,SWIFT-CSCv1|5.1,TBA-FIISB|31.4.2,TBA-FIISB|31.4.3"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+  regex       : ".*"
+  expect      : "Manual Review Required"
+  collection  : "admin.$cmd"
+  query       : '{"rolesInfo":"clusterAdmin"}'
+  severity    : MEDIUM
+</custom_item>
+
+<custom_item>
+  description : "3.5 Review Superuser/Admin Roles - hostManager"
+  info        : "Roles provide several advantages that make it easier to manage privileges in a database system. Security administrators can control access to their databases in a way that mirrors the structure of their organizations (they can create roles in the database that map directly to the job functions in their organizations). The assignment of privileges is simplified. Instead of granting the same set of privileges to each individual user in a particular job function, the administrator can grant this set of privileges to a role representing that job function and then grant that role to each user in that job function.
+
+Rationale:
+
+Reviewing the Superuser/Admin roles within a database helps minimize the possibility of privileged unwanted access.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+  solution    : "To remove a user from one or more roles on the current database."
+  reference   : "800-171|3.1.5,800-171|3.1.6,800-53|AC-6(2),800-53|AC-6(5),800-53r5|AC-6(2),800-53r5|AC-6(5),CN-L3|7.1.3.2(b),CN-L3|7.1.3.2(g),CN-L3|8.1.4.2(d),CN-L3|8.1.10.6(a),CSCv7|4.3,CSCv7|16.8,CSCv8|5.4,CSF|PR.AC-4,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ISO/IEC-27001|A.9.2.3,ITSG-33|AC-6(2),ITSG-33|AC-6(5),LEVEL|2M,NESA|T5.1.1,NESA|T5.2.2,NESA|T5.6.1,NIAv2|AM1,NIAv2|AM23f,NIAv2|AM32,NIAv2|AM33,NIAv2|SS13c,NIAv2|SS15c,NIAv2|VL3a,PCI-DSSv3.2.1|7.1.2,PCI-DSSv4.0|7.2.1,PCI-DSSv4.0|7.2.2,QCSC-v1|5.2.2,QCSC-v1|6.2,SWIFT-CSCv1|1.2,SWIFT-CSCv1|5.1,TBA-FIISB|31.4.2,TBA-FIISB|31.4.3"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+  regex       : ".*"
+  expect      : "Manual Review Required"
+  collection  : "admin.$cmd"
+  query       : '{"rolesInfo":"hostManager"}'
+  severity    : MEDIUM
+</custom_item>
+
+</check_type>

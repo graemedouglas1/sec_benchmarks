@@ -1,0 +1,3828 @@
+---
+
+inspec_rules:
+  "1.1.1.1":
+    title: '1.1.1.1 | Ensure mounting of cramfs filesystems is disabled - manual'
+    section: 'Configure Filesystem Kernel Modules'
+    description: |
+        The                cramfs
+         filesystem type is a compressed readonly Linux filesystem embedded in small footprint systems. A                cramfs
+         image can be used without having to first decompress the image.
+    remediation: |
+        Run the following script to disable the                    cramfs
+         module:                 If the module is available in the running kernel:
+        Create a file with                      install cramfs /bin/false
+         in the                      /etc/modprobe.d/
+         directory
+        Create a file with                      blacklist cramfs
+         in the                      /etc/modprobe.d/
+         directory
+        Unload                      cramfs
+         from the kernel                   If available in ANY installed kernel:
+        Create a file with                      blacklist cramfs
+         in the                      /etc/modprobe.d/
+         directory                   If the kernel module is not available on the system or pre-compiled into the kernel: No
+        remediation is necessary
+        #!/usr/bin/env bash
+
+        {
+           l_mname="cramfs" # set module name
+           l_mtype="fs" # set module type
+           l_mpath="/lib/modules/**/kernel/$l_mtype"
+           l_mpname="$(tr '-' '_' <<< "$l_mname")"
+           l_mndir="$(tr '-' '/' <<< "$l_mname")"
+
+           module_loadable_fix()
+           {
+              # If the module is currently loadable, add "install {MODULE_NAME} /bin/false" to a file in "/etc/modprobe.d"
+              l_loadable="$(modprobe -n -v "$l_mname")"
+              [ "$(wc -l <<< "$l_loadable")" -gt "1" ] && l_loadable="$(grep -P -- "(^\h*install|\b$l_mname)\b" <<<
+        "$l_loadable")"
+              if ! grep -Pq -- '^\h*install \/bin\/(true|false)' <<< "$l_loadable"; then
+                 echo -e "\n - setting module: \"$l_mname\" to be not loadable"
+                 echo -e "install $l_mname /bin/false" >> /etc/modprobe.d/"$l_mpname".conf
+              fi
+           }
+           module_loaded_fix()
+           {
+              # If the module is currently loaded, unload the module
+              if lsmod | grep "$l_mname" > /dev/null 2>&1; then
+                 echo -e "\n - unloading module \"$l_mname\""
+                 modprobe -r "$l_mname"
+              fi
+           }
+           module_deny_fix()
+           {
+              # If the module isn't deny listed, denylist the module
+              if ! modprobe --showconfig | grep -Pq -- "^\h*blacklist\h+$l_mpname\b"; then
+                 echo -e "\n - deny listing \"$l_mname\""
+                 echo -e "blacklist $l_mname" >> /etc/modprobe.d/"$l_mpname".conf
+              fi
+           }
+           # Check if the module exists on the system
+           for l_mdir in $l_mpath; do
+              if [ -d "$l_mdir/$l_mndir" ] && [ -n "$(ls -A $l_mdir/$l_mndir)" ]; then
+                 echo -e "\n - module: \"$l_mname\" exists in \"$l_mdir\"\n - checking if disabled..."
+                 module_deny_fix
+                 if [ "$l_mdir" = "/lib/modules/$(uname -r)/kernel/$l_mtype" ]; then
+                    module_loadable_fix
+                    module_loaded_fix
+                 fi
+              else
+                 echo -e "\n - module: \"$l_mname\" doesn't exist in \"$l_mdir\"\n"
+              fi
+           done
+           echo -e "\n - remediation of module: \"$l_mname\" complete\n"
+        }
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.1.1', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == cramfs:fs'
+
+  "1.1.2.1":
+    title: '1.1.2.1 | Ensure tmp is a separate partition'
+    section: 'Configure /tmp'
+    description: |
+        The                /tmp
+         directory is a worldwritable directory used for temporary storage by all users and some applications.
+    remediation: |
+        First ensure that systemd is correctly configured to ensure that                    /tmp
+         will be mounted at boot time.                 # systemctl unmask tmp.mount
+
+        For specific configuration requirements of the                    /tmp
+         mount for your environment, modify                    /etc/fstab
+        .
+        Example of using                    tmpfs
+         with specific mount options:                 tmpfs	/tmp	tmpfs     defaults,rw,nosuid,nodev,noexec,relatime,size=2G  0 0
+         Example of using a volume or disk with specific mount options. The source location of the volume or disk will vary
+        depending on your environment. <device> /tmp    <fstype>    defaults,nodev,nosuid,noexec   0 0
+         Impact:
+        By design files saved to                      /tmp
+         should have no expectation of surviving a reboot of the system.                      tmpfs
+         is ram based and all files stored to                      tmpfs
+         will be lost when the system is rebooted.
+        If files need to be persistent through a reboot, they should be saved to                      /var/tmp
+         not                      /tmp
+        .
+        Since the                      /tmp
+         directory is intended to be world-writable, there is a risk of resource exhaustion if it is not bound to
+        tmpfs
+         or a separate partition. Running out of                      /tmp
+         space is a problem regardless of what kind of filesystem lies under it, but in a configuration where
+        /tmp
+         is not a separate file system it will essentially have the whole disk available, as the default installation only
+        creates a single                      /
+         partition. On the other hand, a RAM-based                      /tmp
+         (as with                      tmpfs
+        ) will almost certainly be much smaller, which can lead to applications filling up the filesystem much more easily.
+        Another alternative is to create a dedicated partition for                      /tmp
+         from a separate volume or disk. One of the downsides of a disk-based dedicated partition is that it will be slower than
+        tmpfs
+         which is RAM-based.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.2.1', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.1.2.2":
+    title: '1.1.2.2 | Ensure nodev option set on tmp partition'
+    section: 'Configure /tmp'
+    description: |
+        The                nodev
+         mount option specifies that the filesystem cannot contain special devices.
+    remediation: |
+        Edit the                    /etc/fstab
+         file and add                    nodev
+         to the fourth field (mounting options) for the                    /tmp
+         partition.                 Example: <device> /tmp    <fstype>     defaults,rw,nosuid,nodev,noexec,relatime  0 0
+
+        Run the following command to remount                    /tmp
+         with the configured options:                 # mount -o remount /tmp
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.2.2', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.1.2.3":
+    title: '1.1.2.3 | Ensure nosuid option set on tmp partition'
+    section: 'Configure /tmp'
+    description: |
+        The                nosuid
+         mount option specifies that the filesystem cannot contain                setuid
+         files.
+    remediation: |
+        Edit the                    /etc/fstab
+         file and add                    nosuid
+         to the fourth field (mounting options) for the                    /tmp
+         partition.                 Example: <device> /tmp    <fstype>     defaults,rw,nosuid,nodev,noexec,relatime  0 0
+
+        Run the following command to remount                    /tmp
+         with the configured options:                 # mount -o remount /tmp
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.2.3', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.1.4":
+    title: '1.1.4 | Disable Automounting'
+    section: 'Filesystem Configuration'
+    description: |
+        autofs
+         allows automatic mounting of devices, typically including CD/DVDs and USB drives.
+    remediation: |
+        If there are no other packages that depends on                  autofs
+        , remove the package with:               # dnf remove autofs
+
+        Run the following command to disable                  autofs
+         if it is required:               # systemctl --now disable autofs
+         Impact: The use of portable hard drives is very common for workstation users. If your organization allows the use of
+        portable storage or media on workstations and physical access controls to workstations is considered adequate there is
+        little value add in turning off automounting.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.4', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "1.1.8.1":
+    title: '1.1.8.1 | Ensure nodev option set on devshm partition'
+    section: 'Configure /dev/shm'
+    description: |
+        The                nodev
+         mount option specifies that the filesystem cannot contain special devices.
+    remediation: |
+        Edit the                    /etc/fstab
+         file and add                    nodev
+         to the fourth field (mounting options) for the                    /dev/shm
+          partition. See the                    fstab(5)
+         manual page for more information.                 Run the following command to remount /dev/shm using the updated
+        options from /etc/fstab: # mount -o remount /dev/shm
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.8.1', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.1.8.2":
+    title: '1.1.8.2 | Ensure nosuid option set on devshm partition'
+    section: 'Configure /dev/shm'
+    description: |
+        The                nosuid
+         mount option specifies that the filesystem cannot contain                setuid
+          files.
+    remediation: |
+        Edit the                    /etc/fstab
+         file and add                    nosuid
+         to the fourth field (mounting options) for the                    /dev/shm
+          partition. See the                    fstab(5)
+         manual page for more information.                 Run the following command to remount /dev/shm using the updated
+        options from /etc/fstab: # mount -o remount /dev/shm
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.8.2', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.2.1":
+    title: '1.2.1 | Ensure DNF gpgcheck is globally activated'
+    section: 'Configure Software Updates'
+    description: |
+        The              gpgcheck
+         option, found in the main section of the              /etc/dnf/dnf.conf
+         and individual              /etc/yum.repos.d/
+         files, determines if an RPM packages signature is checked prior to its installation.
+    remediation: |
+        Edit                  /etc/dnf/dnf.conf
+         and set                  gpgcheck=1
+         in the                  [main]
+         section.               Example: # sed -i 's/^gpgcheck\s*=\s*.*/gpgcheck=1/' /etc/dnf/dnf.conf
+
+        Edit any failing files in                  /etc/yum.repos.d/*
+         and set all instances starting with                  gpgcheck
+         to                  1
+        .               Example: # find /etc/yum.repos.d/ -name "*.repo" -exec echo "Checking:" {} \; -exec sed -i
+        's/^gpgcheck\s*=\s*.*/gpgcheck=1/' {} \;
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.2.1', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.2.2":
+    title: '1.2.2 | Ensure TDNF gpgcheck is globally activated'
+    section: 'Configure Software Updates'
+    description: |
+        The              gpgcheck
+         option, found in the main section of the              /etc/tdnf/tdnf.conf
+         and individual              /etc/yum.repos.d/
+         files, determines if an RPM packages signature is checked prior to its installation.
+    remediation: |
+        Edit                  /etc/dnf/dnf.conf
+         and set                  gpgcheck=1
+         in the                  [main]
+         section.               Example: # sed -i 's/^gpgcheck\s*=\s*.*/gpgcheck=1/' /etc/tdnf/tdnf.conf
+
+        Edit any failing files in                  /etc/yum.repos.d/*
+         and set all instances starting with                  gpgcheck
+         to                  1
+        .               Example: # find /etc/yum.repos.d/ -name "*.repo" -exec echo "Checking:" {} \; -exec sed -i
+        's/^gpgcheck\s*=\s*.*/gpgcheck=1/' {} \;
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.2.2', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.5.1":
+    title: '1.5.1 | Ensure core dump storage is disabled'
+    section: 'Additional Process Hardening'
+    description: |
+        A core dump is the memory of an executable program. It is generally used to determine why a program aborted. It can also
+        be used to glean confidential information from a core file.
+    remediation: |
+        Edit                  /etc/systemd/coredump.conf
+         and edit or add the following line:               Storage=none
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.5.1', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.5.2":
+    title: '1.5.2 | Ensure core dump backtraces are disabled'
+    section: 'Additional Process Hardening'
+    description: |
+        A core dump is the memory of an executable program. It is generally used to determine why a program aborted. It can also
+        be used to glean confidential information from a core file.
+    remediation: |
+        Edit or add the following line in                  /etc/systemd/coredump.conf
+        :               ProcessSizeMax=0
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.5.2', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.5.3":
+    title: '1.5.3 | Ensure address space layout randomization ASLR is enabled - manual'
+    section: 'Additional Process Hardening'
+    description: |
+        Address space layout randomization ASLR is an exploit mitigation technique which randomly arranges the address space of
+        key data areas of a process.
+    remediation: |
+        Set the following parameter in                  /etc/sysctl.conf
+         or a file in                  /etc/sysctl.d/
+         ending in                  .conf
+        :               kernel.randomize_va_space = 2 Example:
+        # printf "
+        kernel.randomize_va_space = 2
+        " >> /etc/sysctl.d/60-kernel_sysctl.conf
+                       Run the following command to set the active kernel parameter: # sysctl -w kernel.randomize_va_space=2
+         Note:
+         If these settings appear in a conically later file, or later in the same file, these settings will be overwritten
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.5.3', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == kernel.randomize_va_space=2'
+
+  "1.7.1":
+    title: '1.7.1 | Ensure local login warning banner is configured properly'
+    section: 'Command Line Warning Banners'
+    description: |
+        The contents of the              /etc/issue
+          file are displayed to users prior to login for local terminals.
+        Unixbased systems have typically displayed information about the OS release and patch level upon logging in to the
+        system. This information can be useful to developers who are developing software for a particular OS platform. If
+        mingetty8
+         supports the following options, they display operating system information              \m
+           machine architecture              \r
+           operating system release              \s
+           operating system name              \v
+           operating system version  or the operating systems name
+    remediation: |
+        Edit the                  /etc/issue
+          file with the appropriate contents according to your site policy, remove any instances of                  \m
+         ,                  \r
+         ,                  \s
+         ,                  \v
+         or references to the                  OS platform
+                              # echo "Authorized uses only. All activity may be monitored and reported." > /etc/issue
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.7.1', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.7.2":
+    title: '1.7.2 | Ensure remote login warning banner is configured properly'
+    section: 'Command Line Warning Banners'
+    description: |
+        The contents of the              /etc/issue.net
+          file are displayed to users prior to login for remote connections from configured services.
+        Unixbased systems have typically displayed information about the OS release and patch level upon logging in to the
+        system. This information can be useful to developers who are developing software for a particular OS platform. If
+        mingetty8
+         supports the following options, they display operating system information               \m
+           machine architecture              \r
+           operating system release              \s
+           operating system name              \v
+           operating system version
+    remediation: |
+        Edit the                  /etc/issue.net
+          file with the appropriate contents according to your site policy, remove any instances of                  \m
+         ,                  \r
+         ,                  \s
+         ,                  \v
+         or references to the                  OS platform
+                              # echo "Authorized uses only. All activity may be monitored and reported." > /etc/issue.net
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.7.2', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.7.3":
+    title: '1.7.3 | Ensure permissions on etcmotd are configured'
+    section: 'Command Line Warning Banners'
+    description: |
+        The contents of the              /etc/motd
+          file are displayed to users after login and function as a message of the day for authenticated users.
+    remediation: |
+        Run the following commands to set permissions on                  /etc/motd
+         :               # chown root:root /etc/motd
+         # chmod u-x,go-wx /etc/motd
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.7.3', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.7.4":
+    title: '1.7.4 | Ensure permissions on etcissue are configured'
+    section: 'Command Line Warning Banners'
+    description: |
+        The contents of the              /etc/issue
+          file are displayed to users prior to login for local terminals.
+    remediation: |
+        Run the following commands to set permissions on                  /etc/issue
+         :               # chown root:root /etc/issue
+         # chmod u-x,go-wx /etc/issue
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.7.4', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.7.5":
+    title: '1.7.5 | Ensure permissions on etcissue.net are configured'
+    section: 'Command Line Warning Banners'
+    description: |
+        The contents of the              /etc/issue.net
+          file are displayed to users prior to login for remote connections from configured services.
+    remediation: |
+        Run the following commands to set permissions on                  /etc/issue.net
+         :               # chown root:root /etc/issue.net
+         # chmod u-x,go-wx /etc/issue.net
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.7.5', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.1.1":
+    title: '2.1.1 | Ensure time synchronization is in use'
+    section: 'Configure Time Synchronization'
+    description: |
+        System time should be synchronized between all systems in an environment. This is typically done by establishing an
+        authoritative time server or set of servers and having all systems synchronize their clocks to them. Note
+         If another method for time synchronization is being used, this section may be skipped.
+    remediation: |
+        Run the following command to install                  chrony
+        :               # dnf install chrony
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.1.1', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.1.2":
+    title: '2.1.2 | Ensure chrony is configured'
+    section: 'Configure Time Synchronization'
+    description: |
+        chrony
+         is a daemon which implements the Network Time Protocol NTP and is designed to synchronize system clocks across a
+        variety of systems and use a source that is highly accurate. More information on              chrony
+         can be found at              http//chrony.tuxfamily.org/
+        .              chrony
+         can be configured to be a client and/or a server.
+    remediation: |
+        Add or edit server or pool lines to                  /etc/chrony.conf
+         as appropriate:               server <remote-server>
+
+        Add or edit the                  OPTIONS
+         in                  /etc/sysconfig/chronyd
+         to include '                 -u chrony
+        ':               OPTIONS="-u chrony"
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.1.2', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.2.1":
+    title: '2.2.1 | Ensure xinetd is not installed'
+    section: 'Configure Special Purpose Services'
+    description: |
+        The eXtended InterNET Daemon               xinetd
+          is an open source super daemon that replaced the original              inetd
+          daemon. The              xinetd
+         daemon listens for well known services and dispatches the appropriate daemon to properly respond to service requests.
+    remediation: |
+        Run the following command to remove                  xinetd
+        :               # dnf remove xinetd
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.1', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.2.2":
+    title: '2.2.2 | Ensure xorg-x11-server-common is not installed'
+    section: 'Configure Special Purpose Services'
+    description: |
+        The X Window System provides a Graphical User Interface GUI where users can have multiple windows in which to run
+        programs and various add on. The X Windows system is typically used on workstations where users login, but not on
+        servers where users typically do not login.
+    remediation: |
+        Run the following command to remove the X Windows Server packages: # dnf remove xorg-x11-server-common
+         Impact: Many Linux systems run applications which require a Java runtime.  Some Linux Java packages have a dependency
+        on specific X Windows xorg-x11-fonts.  One workaround to avoid this dependency is to use the "headless" Java packages
+        for your specific Java runtime.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.2', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.2.3":
+    title: '2.2.3 | Ensure avahi is not installed'
+    section: 'Configure Special Purpose Services'
+    description: |
+        Avahi is a free zeroconf implementation, including a system for multicast DNS/DNSSD service discovery. Avahi allows
+        programs to publish and discover services and hosts running on a local network with no specific configuration. For
+        example, a user can plug a computer into a network and Avahi automatically finds printers to print to, files to look at
+        and people to talk to, as well as network services running on the machine.
+    remediation: |
+        Run the following commands to stop, and remove                  avahi
+        :               # systemctl stop avahi-daemon.socket avahi-daemon.service
+         # dnf remove avahi
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.3', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.2.4":
+    title: '2.2.4 | Ensure a print server is not installed'
+    section: 'Configure Special Purpose Services'
+    description: |
+        The Common Unix Print System CUPS provides the ability to print to both local and network printers. A system running
+        CUPS can also accept print jobs from remote systems and print them to local printers. It also provides a web based
+        remote administration capability.
+    remediation: |
+        Run the following command to remove                  cups
+        :               # dnf remove cups
+         Impact: Disabling CUPS will prevent printing from the system, a common task for workstation systems.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.4', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.2.5":
+    title: '2.2.5 | Ensure a dhcp server is not installed'
+    section: 'Configure Special Purpose Services'
+    description: |
+        The Dynamic Host Configuration Protocol DHCP is a service that allows machines to be dynamically assigned IP addresses.
+    remediation: |
+        Run the following command to remove                  dhcp
+        :               # dnf remove dhcp-server
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.5', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.2.6":
+    title: '2.2.6 | Ensure a dns server is not installed'
+    section: 'Configure Special Purpose Services'
+    description: |
+        The Domain Name System DNS is a hierarchical naming system that maps names to IP addresses for computers, services and
+        other resources connected to a network.
+    remediation: |
+        Run the following command to remove                  bind
+        :               # dnf remove bind
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.6', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.2.7":
+    title: '2.2.7 | Ensure FTP client is not installed'
+    section: 'Configure Special Purpose Services'
+    description: |
+        FTP File Transfer Protocol is a traditional and widely used standard tool for transferring files between a server and
+        clients over a network, especially where no authentication is necessary permits anonymous users to connect to a server.
+    remediation: |
+        Run the following command to remove                  ftp
+        :               # dnf remove ftp
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.7', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.2.8":
+    title: '2.2.8 | Ensure an ftp server is not installed'
+    section: 'Configure Special Purpose Services'
+    description: |
+        FTP File Transfer Protocol is a traditional and widely used standard tool for transferring files between a server and
+        clients over a network, especially where no authentication is necessary permits anonymous users to connect to a server.
+    remediation: |
+        Run the following command to remove                  vsftpd
+        :               # dnf remove vsftpd
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.8', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.2.9":
+    title: '2.2.9 | Ensure a tftp server is not installed'
+    section: 'Configure Special Purpose Services'
+    description: |
+        Trivial File Transfer Protocol TFTP is a simple protocol for exchanging files between two TCP/IP machines. TFTP servers
+        allow connections from a TFTP Client for sending and receiving files.
+    remediation: |
+        Run the following command to remove                  tftp-server
+        :               # dnf remove tftp-server
+         Impact: TFTP is often used to provide files for network booting such as for PXE based installation of servers.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.9', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.2.10":
+    title: '2.2.10 | Ensure a web server is not installed'
+    section: 'Configure Special Purpose Services'
+    description: |
+        Web servers provide the ability to host web site content.
+    remediation: |
+        Run the following command to remove                  httpd
+         and                  nginx
+        :               # dnf remove httpd nginx
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.10', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.2.11":
+    title: '2.2.11 | Ensure IMAP and POP3 server is not installed'
+    section: 'Configure Special Purpose Services'
+    description: |
+        dovecot
+         is an open source IMAP and POP3 server for Linux based systems.
+    remediation: |
+        Run the following command to remove                  dovecot
+         and                  cyrus-imapd
+        :               # dnf remove dovecot cyrus-imapd
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.11', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.2.12":
+    title: '2.2.12 | Ensure Samba is not installed'
+    section: 'Configure Special Purpose Services'
+    description: |
+        The Samba daemon allows system administrators to configure their Linux systems to share file systems and directories
+        with Windows desktops. Samba will advertise the file systems and directories via the Server Message Block SMB protocol.
+        Windows desktop users will be able to mount these directories and file systems as letter drives on their systems.
+    remediation: |
+        Run the following command to remove                  samba
+        :               # dnf remove samba
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.12', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.2.13":
+    title: '2.2.13 | Ensure HTTP Proxy Server is not installed'
+    section: 'Configure Special Purpose Services'
+    description: |
+        Squid is a standard proxy server used in many distributions and environments.
+    remediation: |
+        Run the following command to remove the                  squid
+         package:               # dnf remove squid
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.13', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.2.14":
+    title: '2.2.14 | Ensure net-snmp is not installed or the snmpd service is not enabled'
+    section: 'Configure Special Purpose Services'
+    description: |
+        Simple Network Management Protocol SNMP is a widely used protocol for monitoring the health and welfare of network
+        equipment, computer equipment and devices like UPSs. NetSNMP is a suite of applications used to implement SNMPv1 RFC
+        1157, SNMPv2 RFCs 19011908, and SNMPv3 RFCs 34113418 using both IPv4 and IPv6. Support for SNMPv2 classic a.k.a. SNMPv2
+        historic  RFCs 14411452 was dropped with the 4.0 release of the UCDsnmp package. The Simple Network Management Protocol
+        SNMP server is used to listen for SNMP commands from an SNMP management system, execute the commands or collect the
+        information and then send results back to the requesting system.
+    remediation: |
+        Run the following command to remove                  net-snmpd
+        :               # dnf remove net-snmp
+         -OR-
+        Run the following commands to stop and mask the                  snmpd
+         service:
+        # systemctl stop snmpd
+        # systemctl mask snmpd
+                       Impact: There are packages that are dependent on the net-snmp package. If the net-snmp package is
+        removed, these packages will be removed as well. Before removing the net-snmp package, review any dependent packages to
+        determine if they are required on the system. If a dependent package is required, mask the snmpd service and leave the
+        net-snmp package installed.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.14', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == masked'
+
+  "2.2.15":
+    title: '2.2.15 | Ensure NIS server is not installed'
+    section: 'Configure Special Purpose Services'
+    description: |
+        The              ypserv
+         package provides the Network Information Service NIS.  This service, formally known as Yellow Pages, is a clientserver
+        directory service protocol for distributing system configuration files. The NIS server is a collection of programs that
+        allow for the distribution of configuration files.
+    remediation: |
+        Run the following command to remove                  ypserv
+        :               # dnf remove ypserv
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.15', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.2.16":
+    title: '2.2.16 | Ensure telnet-server is not installed'
+    section: 'Configure Special Purpose Services'
+    description: |
+        The              telnetserver
+         package contains the              telnet
+         daemon, which accepts connections from users from other systems via the              telnet
+         protocol.
+    remediation: |
+        Run the following command to remove the telnet-server package: # dnf remove telnet-server
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.16', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.2.17":
+    title: '2.2.17 | Ensure mail transfer agent is configured for local-only mode'
+    section: 'Configure Special Purpose Services'
+    description: |
+        Mail Transfer Agents MTA, such as sendmail and Postfix, are used to listen for incoming mail and transfer the messages
+        to the appropriate user or mail server. If the system is not intended to be a mail server, it is recommended that the
+        MTA be configured to only process local mail.
+    remediation: |
+        Edit                  /etc/postfix/main.cf
+         and add the following line to the RECEIVING MAIL section. If the line already exists, change it to look like the line
+        below:               inet_interfaces = loopback-only
+
+        Run the following command to restart                  postfix
+        :               # systemctl restart postfix
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.17', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.2.18":
+    title: '2.2.18 | Ensure nfs-utils is not installed or the  nfs-server service is masked'
+    section: 'Configure Special Purpose Services'
+    description: |
+        The Network File System NFS is one of the first and most widely distributed file systems in the UNIX environment. It
+        provides the ability for systems to mount file systems of other servers through the network.
+    remediation: |
+        Run the following command to remove                  nfs-utils
+        :               # dnf remove nfs-utils
+         OR
+        If the nfs-package is required as a dependency, run the following command to stop and mask the                  nfs-
+        server
+         service:               # systemctl --now mask nfs-server
+         Impact:
+        Many of the                    libvirt
+         packages used by Enterprise Linux virtualization are dependent on the                    nfs-utils
+         package. If the                    nfs-package
+         is required as a dependency, the                    nfs-server
+         should be disabled and masked to reduce the attack surface of the system.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.18', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == masked'
+
+  "2.2.19":
+    title: '2.2.19 | Ensure rsync-daemon is not installed or the rsyncd service is masked'
+    section: 'Configure Special Purpose Services'
+    description: |
+        The              rsyncd
+         service can be used to synchronize files between systems over network links.
+    remediation: |
+        Run the following command to remove the                  rsync
+         package:               # dnf remove rsync-daemon
+         OR
+        Run the following command to mask the                  rsyncd
+         service:               # systemctl --now mask rsyncd
+         Impact: There are packages that are dependent on the rsync package.  If the rsync package is removed, these packages
+        will be removed as well. Before removing the rsync package, review any dependent packages to determine if they are
+        required on the system.  If a dependent package is required, mask the rsyncd service and leave the rsync package
+        installed.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.19', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == masked'
+
+  "2.3.1":
+    title: '2.3.1 | Ensure NIS Client is not installed'
+    section: 'Service Clients'
+    description: |
+        The Network Information Service NIS, formerly known as Yellow Pages, is a clientserver directory service protocol used
+        to distribute system configuration files. The NIS client               ypbind
+          was used to bind a machine to an NIS server and receive the distributed configuration files.
+    remediation: |
+        Run the following command to remove the                  ypbind
+         package:               # dnf remove ypbind
+         Impact: Many insecure service clients are used as troubleshooting tools and in testing environments. Uninstalling them
+        can inhibit capability to test and troubleshoot. If they are required it is advisable to remove the clients after use to
+        prevent accidental or intentional misuse.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.3.1', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.3.2":
+    title: '2.3.2 | Ensure rsh client is not installed'
+    section: 'Service Clients'
+    description: |
+        The              rsh
+         package contains the client commands for the rsh services.
+    remediation: |
+        Run the following command to remove the                  rsh
+         package:               # dnf remove rsh
+         Impact: Many insecure service clients are used as troubleshooting tools and in testing environments. Uninstalling them
+        can inhibit capability to test and troubleshoot. If they are required it is advisable to remove the clients after use to
+        prevent accidental or intentional misuse.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.3.2', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.3.3":
+    title: '2.3.3 | Ensure talk client is not installed'
+    section: 'Service Clients'
+    description: |
+        The              talk
+         software makes it possible for users to send and receive messages across systems through a terminal session. The
+        talk
+         client, which allows initialization of talk sessions, is installed by default.
+    remediation: |
+        Run the following command to remove the                  talk
+         package:               # dnf remove talk
+         Impact: Many insecure service clients are used as troubleshooting tools and in testing environments. Uninstalling them
+        can inhibit capability to test and troubleshoot. If they are required it is advisable to remove the clients after use to
+        prevent accidental or intentional misuse.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.3.3', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.3.4":
+    title: '2.3.4 | Ensure telnet client is not installed'
+    section: 'Service Clients'
+    description: |
+        The              telnet
+         package contains the              telnet
+         client, which allows users to start connections to other systems via the telnet protocol.
+    remediation: |
+        Run the following command to remove the                  telnet
+         package:               # dnf remove telnet
+         Impact: Many insecure service clients are used as troubleshooting tools and in testing environments. Uninstalling them
+        can inhibit capability to test and troubleshoot. If they are required it is advisable to remove the clients after use to
+        prevent accidental or intentional misuse.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.3.4', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.3.5":
+    title: '2.3.5 | Ensure LDAP client is not installed'
+    section: 'Service Clients'
+    description: |
+        The Lightweight Directory Access Protocol LDAP was introduced as a replacement for NIS/YP. It is a service that provides
+        a method for looking up information from a central database.
+    remediation: |
+        Run the following command to remove the                  openldap-clients
+         package:               # dnf remove openldap-clients
+         Impact: Removing the LDAP client will prevent or inhibit using LDAP for authentication in your environment.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.3.5', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.3.6":
+    title: '2.3.6 | Ensure TFTP client is not installed'
+    section: 'Service Clients'
+    description: |
+        Trivial File Transfer Protocol TFTP is a simple protocol for exchanging files between two TCP/IP machines. TFTP servers
+        allow connections from a TFTP Client for sending and receiving files.
+    remediation: |
+        Run the following command to remove                  tftp
+        :               # dnf remove tftp
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.3.6', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.1":
+    title: '3.1.1 | Ensure IPv6 is enabled'
+    section: 'Disable unused network protocols and devices'
+    description: |
+        Internet Protocol Version 6 IPv6 is the most recent version of Internet Protocol IP. Its designed to supply IP
+        addressing and additional security to support the predicted growth of connected devices. IPv6 is based on 128bit
+        addressing and can support 340 undecillion addresses, which is 340 followed by 36 zeroes. Features of IPv6 Hierarchical
+        addressing and routing infrastructure Stateful and Stateless configuration Support for quality of service QoS An ideal
+        protocol for neighboring node interaction
+    remediation: |
+        Run the following script to comment out any occurrences of the following parameters in a kernel configuration file:
+        net.ipv6.conf.all.disable_ipv6=1 net.ipv6.conf.default.disable_ipv6=1
+        #!/usr/bin/env bash
+
+        {
+           a_kpar=("net.ipv6.conf.all.disable_ipv6=1" "net.ipv6.conf.default.disable_ipv6=1")
+           l_searchloc="/run/sysctl.d/*.conf /etc/sysctl.d/*.conf /usr/local/lib/sysctl.d/*.conf /usr/lib/sysctl.d/*.conf
+        /lib/sysctl.d/*.conf /etc/sysctl.conf $([ -f /etc/default/ufw ] && awk -F= '/^\s*IPT_SYSCTL=/ {print $2}'
+        /etc/default/ufw)"
+           for l_kpar in "${a_kpar[@]}"; do
+              while IFS='=' read -r l_kpn l_kpv; do
+                 l_kpn="${l_kpn// /}"; l_kpv="${l_kpv// /}"
+                 while read -r l_file; do
+                    echo -e " - \"$l_kpn\" is set to \"$l_kpv\" in \"$l_file\"\n  - Commenting out \"${l_kpn}=${l_kpv}\" in
+        \"$l_file\""
+                    sed -ri 's/^\s*'"$l_kpn"'/# &/' "$l_file"
+                 done < <(grep -Psl -- '^\h*'"$l_kpn"'\h*=\h*'"$l_kpv"'\b' $l_searchloc)
+              done <<< "$l_kpar"
+           done
+           unset a_kpar
+        }
+                       Run the following command to reboot the system: # shutdown -r now
+         Impact: When enabled, IPv6 will require additional configuration to reduce risk to the system.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.1.1', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.2.1":
+    title: '3.2.1 | Ensure packet redirect sending is disabled - manual'
+    section: 'Network Parameters (Host Only)'
+    description: |
+        ICMP Redirects are used to send routing information to other hosts. As a host itself does not act as a router in a host
+        only configuration, there is no need to send redirects.
+    remediation: |
+        Set the following parameters in                  /etc/sysctl.conf
+         or a file in                  /etc/sysctl.d/
+         ending in                  .conf
+        :               net.ipv4.conf.all.send_redirects = 0 net.ipv4.conf.default.send_redirects = 0 Example:
+        # printf "
+        net.ipv4.conf.all.send_redirects = 0
+        net.ipv4.conf.default.send_redirects = 0
+        " >> /etc/sysctl.d/60-netipv4_sysctl.conf
+                       Run the following command to set the active kernel parameters:
+        # {
+           sysctl -w net.ipv4.conf.all.send_redirects=0
+           sysctl -w net.ipv4.conf.default.send_redirects=0
+           sysctl -w net.ipv4.route.flush=1
+        }
+                       Note:
+         If these settings appear in a conically later file, or later in the same file, these settings will be overwritten
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.2.1', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == net.ipv4.conf.all.send_redirects=0'
+            - name: Undefined
+              rule: 'should cmp == net.ipv4.conf.default.send_redirects=0'
+
+  "3.3.1":
+    title: '3.3.1 | Ensure source routed packets are not accepted - manual'
+    section: 'Network Parameters (Host and Router)'
+    description: |
+        In networking, source routing allows a sender to partially or fully specify the route packets take through a network. In
+        contrast, nonsource routed packets travel a path determined by routers in the network. In some cases, systems may not be
+        routable or reachable from some locations e.g. private addresses vs. Internet routable, and so source routed packets
+        would need to be used.
+    remediation: |
+        Set the following parameters in                  /etc/sysctl.conf
+         or a file in                  /etc/sysctl.d/
+         ending in                  .conf
+        :               net.ipv4.conf.all.accept_source_route = 0 net.ipv4.conf.default.accept_source_route = 0 Example:
+        # printf "
+        net.ipv4.conf.all.accept_source_route = 0
+        net.ipv4.conf.default.accept_source_route = 0
+        " >> /etc/sysctl.d/60-netipv4_sysctl.conf
+                       Run the following command to set the active kernel parameters:
+        # {
+           sysctl -w net.ipv4.conf.all.accept_source_route=0
+           sysctl -w net.ipv4.conf.default.accept_source_route=0
+           sysctl -w net.ipv4.route.flush=1
+        }
+                       -IF-
+         IPv6 is enabled on the system:
+        Set the following parameters in                  /etc/sysctl.conf
+         or a file in                  /etc/sysctl.d/
+         ending in                  .conf
+        :               net.ipv6.conf.all.accept_source_route = 0 net.ipv6.conf.default.accept_source_route = 0 Example:
+        # printf "
+        net.ipv6.conf.all.accept_source_route = 0
+        net.ipv6.conf.default.accept_source_route = 0
+        " >> /etc/sysctl.d/60-netipv6_sysctl.conf
+                       Run the following command to set the active kernel parameters:
+        # {
+           sysctl -w net.ipv6.conf.all.accept_source_route=0
+           sysctl -w net.ipv6.conf.default.accept_source_route=0
+           sysctl -w net.ipv6.route.flush=1
+        }
+                       Note:
+         If these settings appear in a conically later file, or later in the same file, these settings will be overwritten
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.3.1', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == net.ipv4.conf.all.accept_source_route=0'
+            - name: Undefined
+              rule: 'should cmp == net.ipv4.conf.default.accept_source_route=0'
+            - name: Undefined
+              rule: 'should cmp == net.ipv6.conf.all.accept_source_route=0'
+            - name: Undefined
+              rule: 'should cmp == net.ipv6.conf.default.accept_source_route=0'
+
+  "3.3.2":
+    title: '3.3.2 | Ensure ICMP redirects are not accepted - manual'
+    section: 'Network Parameters (Host and Router)'
+    description: |
+        ICMP redirect messages are packets that convey routing information and tell your host acting as a router to send packets
+        via an alternate path. It is a way of allowing an outside routing device to update your system routing tables. By
+        setting              net.ipv4.conf.all.acceptredirects
+        ,              net.ipv4.conf.default.acceptredirects
+        ,              net.ipv6.conf.all.acceptredirects
+        , and              net.ipv6.conf.default.acceptredirects
+         to              0
+        , the system will not accept any ICMP redirect messages, and therefore, wont allow outsiders to update the systems
+        routing tables.
+    remediation: |
+        Set the following parameters in                  /etc/sysctl.conf
+         or a file in                  /etc/sysctl.d/
+         ending in                  .conf
+        :               net.ipv4.conf.all.accept_redirects = 0 net.ipv4.conf.default.accept_redirects = 0 Example:
+        # printf "
+        net.ipv4.conf.all.accept_redirects = 0
+        net.ipv4.conf.default.accept_redirects = 0
+        " >> /etc/sysctl.d/60-netipv4_sysctl.conf
+                       Run the following command to set the active kernel parameters:
+        # {
+           sysctl -w net.ipv4.conf.all.accept_redirects=0
+           sysctl -w net.ipv4.conf.default.accept_redirects=0
+           sysctl -w net.ipv4.route.flush=1
+        }
+                       -IF-
+         IPv6 is enabled on the system:
+        Set the following parameters in                  /etc/sysctl.conf
+         or a file in                  /etc/sysctl.d/
+         ending in                  .conf
+        :               net.ipv6.conf.all.accept_redirects = 0 net.ipv6.conf.default.accept_redirects = 0 Example:
+        # printf "
+        net.ipv6.conf.all.accept_redirects = 0
+        net.ipv6.conf.default.accept_redirects = 0
+        " >> /etc/sysctl.d/60-netipv6_sysctl.conf
+                       Run the following command to set the active kernel parameters:
+        # {
+           sysctl -w net.ipv6.conf.all.accept_redirects=0
+           sysctl -w net.ipv6.conf.default.accept_redirects=0
+           sysctl -w net.ipv6.route.flush=1
+        }
+                       Note:
+         If these settings appear in a conically later file, or later in the same file, these settings will be overwritten
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.3.2', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == net.ipv4.conf.all.accept_redirects=0'
+            - name: Undefined
+              rule: 'should cmp == net.ipv4.conf.default.accept_redirects=0'
+            - name: Undefined
+              rule: 'should cmp == net.ipv6.conf.all.accept_redirects=0'
+            - name: Undefined
+              rule: 'should cmp == net.ipv6.conf.default.accept_redirects=0'
+
+  "3.3.3":
+    title: '3.3.3 | Ensure secure ICMP redirects are not accepted - manual'
+    section: 'Network Parameters (Host and Router)'
+    description: |
+        Secure ICMP redirects are the same as ICMP redirects, except they come from gateways listed on the default gateway list.
+        It is assumed that these gateways are known to your system, and that they are likely to be secure.
+    remediation: |
+        Set the following parameters in                  /etc/sysctl.conf
+         or a file in                  /etc/sysctl.d/
+         ending in                  .conf
+        :               net.ipv4.conf.all.secure_redirects = 0 net.ipv4.conf.default.secure_redirects = 0 Example:
+        # printf "
+        net.ipv4.conf.all.secure_redirects = 0
+        net.ipv4.conf.default.secure_redirects = 0
+        " >> /etc/sysctl.d/60-netipv4_sysctl.conf
+                       Run the following commands to set the active kernel parameters:
+        # {
+           sysctl -w net.ipv4.conf.all.secure_redirects=0
+           sysctl -w net.ipv4.conf.default.secure_redirects=0
+           sysctl -w net.ipv4.route.flush=1
+        }
+                       Note:
+         If these settings appear in a conically later file, or later in the same file, these settings will be overwritten
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.3.3', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == net.ipv4.conf.all.secure_redirects=0'
+            - name: Undefined
+              rule: 'should cmp == net.ipv4.conf.default.secure_redirects=0'
+
+  "3.3.4":
+    title: '3.3.4 | Ensure suspicious packets are logged - manual'
+    section: 'Network Parameters (Host and Router)'
+    description: |
+        When enabled, this feature logs packets with unroutable source addresses to the kernel log.
+    remediation: |
+        Set the following parameters in                  /etc/sysctl.conf
+         or a file in                  /etc/sysctl.d/
+         ending in                  .conf
+        :               net.ipv4.conf.all.log_martians = 1 net.ipv4.conf.default.log_martians = 1 Example:
+        # printf "
+        net.ipv4.conf.all.log_martians = 1
+        net.ipv4.conf.default.log_martians = 1
+        " >> /etc/sysctl.d/60-netipv4_sysctl.conf
+                       Run the following command to set the active kernel parameters:
+        # {
+           sysctl -w net.ipv4.conf.all.log_martians=1
+           sysctl -w net.ipv4.conf.default.log_martians=1
+           sysctl -w net.ipv4.route.flush=1
+        }
+                       Note:
+         If these settings appear in a conically later file, or later in the same file, these settings will be overwritten
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.3.4', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == net.ipv4.conf.all.log_martians=1'
+            - name: Undefined
+              rule: 'should cmp == net.ipv4.conf.default.log_martians=1'
+
+  "3.3.5":
+    title: '3.3.5 | Ensure broadcast ICMP requests are ignored - manual'
+    section: 'Network Parameters (Host and Router)'
+    description: |
+        Setting              net.ipv4.icmpechoignorebroadcasts
+         to              1
+         will cause the system to ignore all ICMP echo and timestamp requests to broadcast and multicast addresses.
+    remediation: |
+        Set the following parameter in                  /etc/sysctl.conf
+         or a file in                  /etc/sysctl.d/
+         ending in                  .conf
+        :               net.ipv4.icmp_echo_ignore_broadcasts = 1 Example:
+        # printf "
+        net.ipv4.icmp_echo_ignore_broadcasts = 1
+        " >> /etc/sysctl.d/60-netipv4_sysctl.conf
+                       Run the following command to set the active kernel parameters:
+        # {
+           sysctl -w net.ipv4.icmp_echo_ignore_broadcasts=1
+           sysctl -w net.ipv4.route.flush=1
+        }
+                       Note:
+         If these settings appear in a conically later file, or later in the same file, these settings will be overwritten
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.3.5', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == net.ipv4.icmp_echo_ignore_broadcasts=1'
+
+  "3.3.6":
+    title: '3.3.6 | Ensure bogus ICMP responses are ignored - manual'
+    section: 'Network Parameters (Host and Router)'
+    description: |
+        Setting              net.ipv4.icmpignoreboguserrorresponses
+         to              1
+         prevents the kernel from logging bogus responses RFC1122 noncompliant from broadcast reframes, keeping file systems
+        from filling up with useless log messages.
+    remediation: |
+        Set the following parameter in                  /etc/sysctl.conf
+         or a file in                  /etc/sysctl.d/
+         ending in                  .conf
+        :               net.ipv4.icmp_ignore_bogus_error_responses = 1 Example:
+        # printf "
+        net.ipv4.icmp_ignore_bogus_error_responses = 1
+        " >> /etc/sysctl.d/60-netipv4_sysctl.conf
+                       Run the following command to set the active kernel parameters:
+        # {
+           sysctl -w net.ipv4.icmp_ignore_bogus_error_responses=1
+           sysctl -w net.ipv4.route.flush=1
+        }
+                       Note:
+         If these settings appear in a conically later file, or later in the same file, these settings will be overwritten
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.3.6', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == net.ipv4.icmp_ignore_bogus_error_responses=1'
+
+  "3.3.7":
+    title: '3.3.7 | Ensure Reverse Path Filtering is enabled - manual'
+    section: 'Network Parameters (Host and Router)'
+    description: |
+        Setting              net.ipv4.conf.all.rpfilter
+         and              net.ipv4.conf.default.rpfilter
+         to              1
+         forces the Linux kernel to utilize reverse path filtering on a received packet to determine if the packet was valid.
+        Essentially, with reverse path filtering, if the return packet does not go out the same interface that the corresponding
+        source packet came from, the packet is dropped and logged if              logmartians
+         is set.
+    remediation: |
+        Set the following parameters in                  /etc/sysctl.conf
+         or a file in                  /etc/sysctl.d/
+         ending in                  .conf
+        :               net.ipv4.conf.all.rp_filter = 1 net.ipv4.conf.default.rp_filter = 1 Example:
+        # printf "
+        net.ipv4.conf.all.rp_filter = 1
+        net.ipv4.conf.default.rp_filter = 1
+        " >> /etc/sysctl.d/60-netipv4_sysctl.conf
+                       Run the following commands to set the active kernel parameters:
+        # {
+           sysctl -w net.ipv4.conf.all.rp_filter=1
+           sysctl -w net.ipv4.conf.default.rp_filter=1
+           sysctl -w net.ipv4.route.flush=1
+        }
+                       Note:
+         If these settings appear in a conically later file, or later in the same file, these settings will be overwritten
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.3.7', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == net.ipv4.conf.all.rp_filter=1'
+            - name: Undefined
+              rule: 'should cmp == net.ipv4.conf.default.rp_filter=1'
+
+  "3.3.8":
+    title: '3.3.8 | Ensure TCP SYN Cookies is enabled - manual'
+    section: 'Network Parameters (Host and Router)'
+    description: |
+        When              net.ipv4.tcpsyncookies
+         is set to              1
+        , the kernel will handle TCP SYN packets normally until the halfopen connection queue is full, at which time, the SYN
+        cookie functionality kicks in. SYN cookies work by not using the SYN queue at all. Instead, the kernel simply replies to
+        the SYN with a SYNACK, but will include a specially crafted TCP sequence number that encodes the source and destination
+        IP address and port number and the time the packet was sent. A legitimate connection would send the ACK packet of the
+        three way handshake with the specially crafted sequence number. This allows the system to verify that it has received a
+        valid response to a SYN cookie and allow the connection, even though there is no corresponding SYN in the queue.
+    remediation: |
+        Set the following parameter in                  /etc/sysctl.conf
+         or a file in                  /etc/sysctl.d/
+         ending in                  .conf
+        :               net.ipv4.tcp_syncookies = 1 Example:
+        # printf "
+        net.ipv4.tcp_syncookies = 1
+        " >> /etc/sysctl.d/60-netipv4_sysctl.conf
+                       Run the following command to set the active kernel parameters:
+        # {
+           sysctl -w net.ipv4.tcp_syncookies=1
+           sysctl -w net.ipv4.route.flush=1
+        }
+                       Note:
+         If these settings appear in a conically later file, or later in the same file, these settings will be overwritten
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.3.8', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == net.ipv4.tcp_syncookies=1'
+
+  "3.3.9":
+    title: '3.3.9 | Ensure IPv6 router advertisements are not accepted - manual'
+    section: 'Network Parameters (Host and Router)'
+    description: |
+        This setting disables the systems ability to accept IPv6 router advertisements.
+    remediation: |
+        -IF-
+         IPv6 is enabled on the system:
+        Set the following parameters in                  /etc/sysctl.conf
+         or a file in                  /etc/sysctl.d/
+         ending in                  .conf
+        :               net.ipv6.conf.all.accept_ra = 0 net.ipv6.conf.default.accept_ra = 0 Example:
+        # printf "
+        net.ipv6.conf.all.accept_ra = 0
+        net.ipv6.conf.default.accept_ra = 0
+        " >> /etc/sysctl.d/60-netipv6_sysctl.conf
+                       Run the following command to set the active kernel parameters:
+        # {
+           sysctl -w net.ipv6.conf.all.accept_ra=0
+           sysctl -w net.ipv6.conf.default.accept_ra=0
+           sysctl -w net.ipv6.route.flush=1
+        }
+                       Note:
+         If these settings appear in a conically later file, or later in the same file, these settings will be overwritten
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.3.9', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == net.ipv6.conf.all.accept_ra=0'
+            - name: Undefined
+              rule: 'should cmp == net.ipv6.conf.default.accept_ra=0'
+
+  "3.4.3.1.1":
+    title: '3.4.3.1.1 | Ensure iptables package is installed'
+    section: 'Configure iptables software'
+    description: |
+        iptables is a utility program that allows a system administrator to configure the tables provided by the Linux kernel
+        firewall, implemented as different Netfilter modules, and the chains and rules it stores. Different kernel modules and
+        programs are used for different protocols iptables applies to IPv4, ip6tables to IPv6, arptables to ARP, and ebtables to
+        Ethernet frames.
+    remediation: |
+        Run the following command to install                      iptables
+        :                   # dnf install iptables
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.4.3.1.1', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.4.3.1.2":
+    title: '3.4.3.1.2 | Ensure nftables is not installed with iptables'
+    section: 'Configure iptables software'
+    description: |
+        nftables is a subsystem of the Linux kernel providing filtering and classification of network packets/datagrams/frames
+        and is the successor to iptables.
+    remediation: |
+        Run the following command to remove                      nftables
+        :                   # dnf remove nftables
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.4.3.1.2', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.4.3.1.3":
+    title: '3.4.3.1.3 | Ensure firewalld is either not installed or masked with iptables'
+    section: 'Configure iptables software'
+    description: |
+        firewalld Dynamic Firewall Manager provides a dynamically managed firewall with support for network/firewall zones to
+        assign a level of trust to a network and its associated connections, interfaces or sources. It has support for IPv4,
+        IPv6, Ethernet bridges and also for IPSet firewall settings. There is a separation of the runtime and permanent
+        configuration options.
+    remediation: |
+        Run the following command to remove                      firewalld
+                                    # yum remove firewalld
+         OR Run the following command to stop and mask firewalld # systemctl --now mask firewalld
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.4.3.1.3', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == masked'
+
+  "4.2":
+    title: '4.2 | Ensure logrotate is configured - manual'
+    section: 'Logging and Auditing'
+    description: |
+        The system includes the capability of rotating log files regularly to avoid filling up the system with logs or making
+        the logs unmanageably large. The file            /etc/logrotate.d/syslog
+         is the configuration file used to rotate log files created by            syslog
+         or            rsyslog
+        .
+    remediation: |
+        Edit                /etc/logrotate.conf
+         and                /etc/logrotate.d/*
+         to ensure logs are rotated according to site policy.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_4.2', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.2.1.1":
+    title: '4.2.1.1 | Ensure rsyslog is installed'
+    section: 'Configure rsyslog'
+    description: |
+        The                rsyslog
+         software is recommended in environments where                journald
+         does not meet operation requirements.
+    remediation: |
+        Run the following command to install                    rsyslog
+        :                 # dnf install rsyslog
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.2.1.1', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.2.1.2":
+    title: '4.2.1.2 | Ensure rsyslog service is enabled'
+    section: 'Configure rsyslog'
+    description: |
+        Once the                rsyslog
+          package is installed, ensure that the service is enabled.
+    remediation: |
+        Run the following command to enable                    rsyslog
+        :                 # systemctl --now enable rsyslog
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.2.1.2', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == enabled'
+
+  "4.2.1.3":
+    title: '4.2.1.3 | Ensure rsyslog default file permissions are configured'
+    section: 'Configure rsyslog'
+    description: |
+        RSyslog will create logfiles that do not already exist on the system. This setting controls what permissions will be
+        applied to these newly created files.
+    remediation: |
+        Edit either                    /etc/rsyslog.conf
+         or a dedicated                    .conf
+         file in                    /etc/rsyslog.d/
+         and set                    $FileCreateMode
+         to                    0640
+         or more restrictive:                 $FileCreateMode 0640
+         Restart the service: # systemctl restart rsyslog
+         Impact:
+        The systems global                      umask
+         could override, but only making the file permissions stricter, what is configured in RSyslog with the
+        FileCreateMode
+         directive. RSyslog  also has it's own                      $umask
+         directive that can alter the intended file creation mode. In addition, consideration should be given to how
+        FileCreateMode
+         is used.
+        Thus it is critical to ensure that the intended file creation mode is not overridden with less restrictive settings in
+        /etc/rsyslog.conf
+        ,                      /etc/rsyslog.d/*conf
+         files and that                      FileCreateMode
+         is set before any file is created.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.2.1.3', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.2.1.4":
+    title: '4.2.1.4 | Ensure rsyslog is not configured to receive logs from a remote client'
+    section: 'Configure rsyslog'
+    description: |
+        RSyslog supports the ability to receive messages from remote hosts, thus acting as a log server. Clients should not
+        receive data from other hosts.
+    remediation: |
+        Should there be any active log server configuration found in the auditing section, modify those file and remove the
+        specific lines highlighted by the audit. Ensure none of the following entries are present in any of
+        /etc/rsyslog.conf
+         or                    /etc/rsyslog.d/*.conf
+        .                 Old format
+        $ModLoad imtcp
+        $InputTCPServerRun
+                         New format
+        module(load="imtcp")
+        input(type="imtcp" port="514")
+                         Restart the service: # systemctl restart rsyslog
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.2.1.4', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.2.2":
+    title: '4.2.2 | Ensure all logfiles have appropriate access configured - manual'
+    section: 'Configure Logging'
+    description: |
+        Log files contain information from many services on the local system, or in the event of a centralized log server,
+        others systems logs as well. In general log files are found in              /var/log/
+        , although application can be configured to store logs elsewhere. Should your application store logs in another, ensure
+        to run the same test on that location.
+    remediation: |
+        Run the following script to update permissions and ownership on files in                  /var/log
+        .               Although the script is not destructive, ensure that the output is captured in the event that the
+        remediation causes issues.
+        #!/usr/bin/env bash
+
+        {
+           l_output2=""
+           l_auser="root|syslog"
+           l_agroup="root|adm"
+           l_fuser="root"
+           l_fgroup="root"
+           l_uidmin="$(awk '/^\s*UID_MIN/{print $2}' /etc/login.defs)"
+           file_test_fix()
+           {
+              l_op2=""
+              maxperm="$( printf '%o' $(( 0777 & ~$perm_mask)) )"
+              if [ "$l_uid" -lt "$l_uidmin" ] && [ -z "$(awk -v grp="$l_group" -F: '$1==grp {print $4}' /etc/group)" ]; then
+                 if [[ ! "$l_user" =~ ($l_auser) ]]; then
+                    l_auser="$l_auser|$l_user"
+                 fi
+                 if [[ ! "$l_group" =~ ($l_agroup) ]]; then
+                    l_tst=""
+                    while read -r l_duid; do
+                       if [ -n "$l_duid" ]; then
+                          [ "$l_duid" -ge "$l_uidmin" ] && l_tst=failed
+                       fi
+                    done <<< "$(awk -F: '$4=='"$l_gid"' {print $3}' /etc/passwd)"
+                    [ "$l_tst" != "failed" ] && l_agroup="$l_agroup|$l_group"
+                 fi
+              fi
+              if [ $(( $l_mode & $perm_mask )) -gt 0 ]; then
+                 l_op2="$l_op2\n  - Mode: \"$l_mode\" should be \"$maxperm\" or more restrictive\n  - Removing excess
+        permissions"
+                 chmod "$l_rperms" "$l_fname"
+              fi
+              if [[ ! "$l_user" =~ ($l_auser) ]]; then
+                 l_op2="$l_op2\n  - Owned by: \"$l_user\" and should be owned by \"${l_auser//|/ or }\"\n  - Changing ownership
+        to: \"$l_fuser\""
+                 chown "$l_fuser" "$l_fname"
+              fi
+              if [[ ! "$l_group" =~ ($l_agroup) ]]; then
+                 l_op2="$l_op2\n  - Group owned by: \"$l_group\" and should be group owned by \"${l_agroup//|/ or }\"\n  -
+        Changing group ownership to: \"$l_fgroup\""
+                 chgrp "$l_fgroup" "$l_fname"
+              fi
+              [ -n "$l_op2" ] && l_output2="$l_output2\n - File: \"$l_fname\" is:$l_op2\n"
+           }
+           unset a_file && a_file=() # clear and initialize array
+           while IFS= read -r -d $'\0' l_file; do # Loop to create array with stat of files that could possibly fail one of the
+        audits
+              [ -e "$l_file" ] && a_file+=("$(stat -Lc '%n^%#a^%U^%u^%G^%g' "$l_file")")
+           done < <(find -L /var/log -type f \( -perm /0137 -o ! -user root -o ! -group root \) -print0)
+           while IFS="^" read -r l_fname l_mode l_user l_uid l_group l_gid; do
+              l_bname="$(basename "$l_fname")"
+              case "$l_bname" in
+                 lastlog | lastlog.* | wtmp | wtmp.* | wtmp-* | README)
+                    perm_mask='0113'
+                    l_rperms="ug-x,o-wx"
+                    file_test_fix;;
+                 secure | auth.log | auth.log.* | syslog | syslog.* | messages | messages.* | *.journal | *.journal~ | kern.log
+        | kern.log.* | aide.log | aide.log.* | term.log | term.log.* | mail.log | mail.log.* | ufw.log | ufw.log.*)
+                    perm_mask='0137'
+                    l_rperms="u-x,g-wx,o-rwx"
+                    file_test_fix;;
+                 btmp | btmp.* | btmp-* | SSSD | sssd | gdm | gdm3)
+                    perm_mask='0117'
+                    l_rperms="ug-x,o-rwx"
+                    file_test_fix;;
+                 *)
+                    perm_mask='0133'
+                    l_rperms="u-x,go-wx"
+                    file_test_fix;;
+              esac
+           done <<< "$(printf '%s\n' "${a_file[@]}")"
+           unset a_file # Clear array
+           if [ -z "$l_output2" ]; then # If all files passed, then we report no changes
+              echo -e "\n- All files in \"/var/log/\" have appropriate permissions and ownership\n  - No changes required\n"
+           else
+              # print report of changes
+              echo -e "\n$l_output2"
+           fi
+        }
+                       Note:
+         You may also need to change the configuration for your logging software or services for any logs that had incorrect
+        permissions.               If there are services that log to other locations, ensure that those log files have the
+        appropriate access configured.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.2.2', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.1.1":
+    title: '5.1.1 | Ensure cron daemon is enabled'
+    section: 'Configure time-based job schedulers'
+    description: |
+        The              cron
+         daemon is used to execute batch jobs on the system.
+    remediation: |
+        Run the following command to enable                  cron
+        :               # systemctl --now enable crond
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.1.1', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == enabled'
+
+  "5.1.2":
+    title: '5.1.2 | Ensure permissions on etccrontab are configured'
+    section: 'Configure time-based job schedulers'
+    description: |
+        The              /etc/crontab
+         file is used by              cron
+         to control its own jobs. The commands in this item make sure that root is the user and group owner of the file and that
+        only the owner can access the file.
+    remediation: |
+        Run the following commands to set ownership and permissions on                  /etc/crontab
+         :
+        # chown root:root /etc/crontab
+        # chmod og-rwx /etc/crontab
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.1.2', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.1.3":
+    title: '5.1.3 | Ensure permissions on etccron.hourly are configured'
+    section: 'Configure time-based job schedulers'
+    description: |
+        This directory contains system              cron
+         jobs that need to run on an hourly basis. The files in this directory cannot be manipulated by the              crontab
+         command, but are instead edited by system administrators using a text editor. The commands below restrict read/write
+        and search access to user and group root, preventing regular users from accessing this directory.
+    remediation: |
+        Run the following commands to set ownership and permissions on                  /etc/cron.hourly
+         :
+        # chown root:root /etc/cron.hourly
+
+        # chmod og-rwx /etc/cron.hourly
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.1.3', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.1.4":
+    title: '5.1.4 | Ensure permissions on etccron.daily are configured'
+    section: 'Configure time-based job schedulers'
+    description: |
+        The              /etc/cron.daily
+         directory contains system cron jobs that need to run on a daily basis. The files in this directory cannot be
+        manipulated by the              crontab
+         command, but are instead edited by system administrators using a text editor. The commands below restrict read/write
+        and search access to user and group root, preventing regular users from accessing this directory.
+    remediation: |
+        Run the following commands to set ownership and permissions on                  /etc/cron.daily
+         :
+        # chown root:root /etc/cron.daily
+
+        # chmod og-rwx /etc/cron.daily
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.1.4', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.1.5":
+    title: '5.1.5 | Ensure permissions on etccron.weekly are configured'
+    section: 'Configure time-based job schedulers'
+    description: |
+        The              /etc/cron.weekly
+         directory contains system cron jobs that need to run on a weekly basis. The files in this directory cannot be
+        manipulated by the              crontab
+         command, but are instead edited by system administrators using a text editor. The commands below restrict read/write
+        and search access to user and group root, preventing regular users from accessing this directory.
+    remediation: |
+        Run the following commands to set ownership and permissions on                  /etc/cron.weekly
+         :
+        # chown root:root /etc/cron.weekly
+
+        # chmod og-rwx /etc/cron.weekly
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.1.5', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.1.6":
+    title: '5.1.6 | Ensure permissions on etccron.monthly are configured'
+    section: 'Configure time-based job schedulers'
+    description: |
+        The              /etc/cron.monthly
+         directory contains system cron jobs that need to run on a monthly basis. The files in this directory cannot be
+        manipulated by the              crontab
+         command, but are instead edited by system administrators using a text editor. The commands below restrict read/write
+        and search access to user and group root, preventing regular users from accessing this directory.
+    remediation: |
+        Run the following commands to set ownership and permissions on                  /etc/cron.monthly
+         :
+        # chown root:root /etc/cron.monthly
+
+        # chmod og-rwx /etc/cron.monthly
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.1.6', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.1.7":
+    title: '5.1.7 | Ensure permissions on etccron.d are configured'
+    section: 'Configure time-based job schedulers'
+    description: |
+        The              /etc/cron.d
+          directory contains system              cron
+         jobs that need to run in a similar manner to the hourly, daily weekly and monthly jobs from              /etc/crontab
+         , but require more granular control as to when they run. The files in this directory cannot be manipulated by the
+        crontab
+         command, but are instead edited by system administrators using a text editor. The commands below restrict read/write
+        and search access to user and group root, preventing regular users from accessing this directory.
+    remediation: |
+        Run the following commands to set ownership and permissions on                  /etc/cron.d
+         :
+        # chown root:root /etc/cron.d
+
+        # chmod og-rwx /etc/cron.d
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.1.7', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.1.8":
+    title: '5.1.8 | Ensure cron is restricted to authorized users'
+    section: 'Configure time-based job schedulers'
+    description: |
+        If              cron
+         is installed in the system, configure              /etc/cron.allow
+         to allow specific users to use these services. If              /etc/cron.allow
+         does not exist, then              /etc/cron.deny
+         is checked. Any user not specifically defined in those files is allowed to use cron. If both
+        /etc/cron.allow
+          and              /etc/cron.deny
+         exist, or only              /etc/cron.allow
+         exists, only users in              /etc/cron.allow
+         are allowed to use cron.           Note
+         Even though a given user is not listed in              cron.allow
+        , cron jobs can still be run as that user. The              cron.allow
+         file only controls administrative access to the crontab command for scheduling and modifying cron jobs.
+    remediation: |
+        Run the following script to remove                  /etc/cron.deny
+        , create                  /etc/cron.allow
+        , and set the file mode on                  /etc/cron.allow
+        :
+        #!/usr/bin/env bash
+
+        {
+           if rpm -q cronie >/dev/null; then
+              [ -e /etc/cron.deny ] && rm -f /etc/cron.deny
+              [ ! -e /etc/cron.allow ] && touch /etc/cron.allow
+              chown root:root /etc/cron.allow
+              chmod g-wx,o-rwx /etc/cron.allow
+           else
+              echo "cron is not installed on the system"
+           fi
+        }
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.1.8', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.1.9":
+    title: '5.1.9 | Ensure at is restricted to authorized users'
+    section: 'Configure time-based job schedulers'
+    description: |
+        If              at
+         is installed in the system, configure              /etc/at.allow
+         to allow specific users to use these services. If              /etc/at.allow
+         does not exist, then              /etc/at.deny
+         is checked. Any user not specifically defined in those files is allowed to use at. By removing the file, only users in
+        /etc/at.allow
+         are allowed to use at.           Note
+         Even though a given user is not listed in              at.allow
+        , at jobs can still be run as that user. The              at.allow
+         file only controls administrative access to the at command for scheduling and modifying at jobs.
+    remediation: |
+        Run the following script to remove                  /etc/at.deny
+        , create                  /etc/at.allow
+        , and set the file mode for                  /etc/at.allow
+        :
+        #!/usr/bin/env bash
+
+        {
+           if rpm -q at >/dev/null; then
+              [ -e /etc/at.deny ] && rm -f /etc/at.deny
+              [ ! -e /etc/at.allow ] && touch /etc/at.allow
+              chown root:root /etc/at.allow
+              chmod u-x,go-rwx /etc/at.allow
+           else
+              echo "at is not installed on the system"
+           fi
+        }
+                       OR
+         Run the following command to remove                  at
+        :               # dnf remove at
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.1.9', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.2.1":
+    title: '5.2.1 | Ensure permissions on etcsshsshd config are configured'
+    section: 'Configure SSH Server'
+    description: |
+        The file              /etc/ssh/sshdconfig
+        , and files ending in              .conf
+         in the              /etc/ssh/sshdconfig.d
+         directory, contain configuration specifications for              sshd
+        .
+    remediation: |
+        Run the following script to set ownership and permissions on                  /etc/ssh/sshd_config
+         and files ending in                  .conf
+         in the                  /etc/ssh/sshd_config.d
+         directory:
+        #!/usr/bin/env bash
+
+        {
+           chmod u-x,og-rwx /etc/ssh/sshd_config
+           chown root:root /etc/ssh/sshd_config
+           while IFS= read -r -d $'\0' l_file; do
+              if [ -e "$l_file" ]; then
+                 chmod u-x,og-rwx "$l_file"
+                 chown root:root "$l_file"
+              fi
+           done < <(find /etc/ssh/sshd_config.d -type f -print0)
+        }
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.1', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.2.2":
+    title: '5.2.2 | Ensure permissions on SSH private host key files are configured'
+    section: 'Configure SSH Server'
+    description: |
+        An SSH private key is one of two files used in SSH public key authentication.  In this authentication method, the
+        possession of the private key is proof of identity. Only a private key that corresponds to a public key will be able to
+        authenticate successfully. The private keys need to be stored and handled carefully, and no copies of the private key
+        should be distributed.
+    remediation: |
+        Run the following script to set mode, ownership, and group on the private SSH host key files:
+        #!/usr/bin/env bash
+
+        {
+           l_output="" l_output2=""
+           l_skgn="ssh_keys" # Group designated to own openSSH keys
+           l_skgid="$(awk -F: '($1 == "'"$l_skgn"'"){print $3}' /etc/group)" # Get gid of group
+           if [ -n "$l_skgid" ]; then
+              l_agroup="(root|$l_skgn)" && l_sgroup="$l_skgn" && l_mfix="u-x,g-wx,o-rwx"
+           else
+              l_agroup="root" && l_sgroup="root" && l_mfix="u-x,go-rwx"
+           fi
+           unset a_skarr && a_skarr=() # Clear and initialize array
+           while IFS= read -r -d $'\0' l_file; do # Loop to populate array
+              if grep -Pq ':\h+OpenSSH\h+private\h+key\b' <<< "$(file "$l_file")"; then
+                 a_skarr+=("$(stat -Lc '%n^%#a^%U^%G^%g' "$l_file")")
+              fi
+           done < <(find -L /etc/ssh -xdev -type f -print0)
+           while IFS="^" read -r l_file l_mode l_owner l_group l_gid; do
+              l_out2=""
+              [ "$l_gid" = "$l_skgid" ] && l_pmask="0137" || l_pmask="0177"
+              l_maxperm="$( printf '%o' $(( 0777 & ~$l_pmask )) )"
+              if [ $(( $l_mode & $l_pmask )) -gt 0 ]; then
+                 l_out2="$l_out2\n  - Mode: \"$l_mode\" should be mode: \"$l_maxperm\" or more restrictive\n   - Revoking excess
+        permissions"
+                 chmod "$l_mfix" "$l_file"
+              fi
+              if [ "$l_owner" != "root" ]; then
+                 l_out2="$l_out2\n  - Owned by: \"$l_owner\" should be owned by \"root\"\n   - Changing ownership to \"root\""
+                 chown root "$l_file"
+              fi
+              if [[ ! "$l_group" =~ $l_agroup ]]; then
+                 l_out2="$l_out2\n  - Owned by group \"$l_group\" should be group owned by: \"${l_agroup//|/ or }\"\n   -
+        Changing group ownership to \"$l_sgroup\""
+                 chgrp "$l_sgroup" "$l_file"
+              fi
+              [ -n "$l_out2" ] && l_output2="$l_output2\n - File: \"$l_file\"$l_out2"
+           done <<< "$(printf '%s\n' "${a_skarr[@]}")"
+           unset a_skarr
+           if [ -z "$l_output2" ]; then
+              echo -e "\n- No access changes required\n"
+           else
+              echo -e "\n- Remediation results:\n$l_output2\n"
+           fi
+        }
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.2', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.2.3":
+    title: '5.2.3 | Ensure permissions on SSH public host key files are configured'
+    section: 'Configure SSH Server'
+    description: |
+        An SSH public key is one of two files used in SSH public key authentication. In this authentication method, a public key
+        is a key that can be used for verifying digital signatures generated using a corresponding private key. Only a public
+        key that corresponds to a private key will be able to authenticate successfully.
+    remediation: |
+        Run the following script to set mode, ownership, and group on the public SSH host key files:
+        #!/usr/bin/env bash
+
+        {
+           l_pmask="0133"
+           l_maxperm="$( printf '%o' $(( 0777 & ~$l_pmask )) )"
+           awk '{print}' <<< "$(find -L /etc/ssh -xdev -type f -exec stat -Lc "%n %#a %U %G" {} +)" | (while read -r  l_file
+        l_mode l_owner l_group; do
+              if file "$l_file" | grep -Pq ':\h+OpenSSH\h+(\H+\h+)?public\h+key\b'; then
+                 echo -e " - Checking private key file: \"$l_file\""
+                 if [ $(( $l_mode & $l_pmask )) -gt 0 ]; then
+                    echo -e " - File: \"$l_file\" is mode \"$l_mode\" changing to mode: \"$l_maxperm\""
+                    chmod u-x,go-wx "$l_file"
+                 fi
+                 if [ "$l_owner" != "root" ]; then
+                    echo -e " - File: \"$l_file\" is owned by: \"$l_owner\" changing owner to \"root\""
+                    chown root "$l_file"
+                 fi
+                 if [ "$l_group" != "root" ]; then
+                    echo -e " - File: \"$l_file\" is owned by group \"$l_group\" changing to group \"root\""
+                    chgrp "root" "$l_file"
+                 fi
+              fi
+           done
+           )
+        }
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.3', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.2.4":
+    title: '5.2.4 | Ensure SSH access is limited'
+    section: 'Configure SSH Server'
+    description: |
+        There are several options available to limit which users and group can access the system via SSH. It is recommended that
+        at least one of the following options be leveraged AllowUsers
+
+
+        The                    AllowUsers
+         variable gives the system administrator the option of allowing specific users to                    ssh
+         into the system. The list consists of space separated user names. Numeric user IDs are not recognized with this
+        variable. If a system administrator wants to restrict user access further by only allowing the allowed users to log in
+        from a particular host, the entry can be specified in the form of userhost.
+                           AllowGroups
+
+
+        The                    AllowGroups
+         variable gives the system administrator the option of allowing specific groups of users to                    ssh
+         into the system. The list consists of space separated group names. Numeric group IDs are not recognized with this
+        variable.
+                           DenyUsers
+
+
+        The                    DenyUsers
+         variable gives the system administrator the option of denying specific users to                    ssh
+         into the system. The list consists of space separated user names. Numeric user IDs are not recognized with this
+        variable. If a system administrator wants to restrict user access further by specifically denying a users access from a
+        particular host, the entry can be specified in the form of userhost.
+                           DenyGroups
+
+
+        The                    DenyGroups
+         variable gives the system administrator the option of denying specific groups of users to                    ssh
+         into the system. The list consists of space separated group names. Numeric group IDs are not recognized with this
+        variable.
+    remediation: |
+        Edit the                  /etc/ssh/sshd_config
+         file to set one or more of the parameter above any                  Include
+         entries as follows:               AllowUsers <userlist>
+         OR AllowGroups <grouplist>
+         OR DenyUsers <userlist>
+         OR DenyGroups <grouplist>
+         Note:
+         First occurrence of a option takes precedence,                  Match
+         set statements withstanding. If                  Include
+         locations are enabled, used, and order of precedence is understood in your environment, the entry may be created in a
+        file in Include location. If the                  Include
+         location is not the default,                  /etc/ssh/sshd_config.d/*.conf
+        , the audit will need to be modified to account for the                  Include
+         location used.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.4', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^(allowusers|allowgroups|denyusers|denygroups)\s+(\S+).*$'
+
+  "5.2.5":
+    title: '5.2.5 | Ensure SSH LogLevel is appropriate'
+    section: 'Configure SSH Server'
+    description: |
+        INFO
+         level is the basic level that only records login activity of SSH users. In many situations, such as Incident Response,
+        it is important to determine when a particular user was active on a system. The logout record can eliminate those users
+        who disconnected, which helps narrow the field.           VERBOSE
+         level specifies that login and logout activity as well as the key fingerprint for any SSH key used for login will be
+        logged. This information is important for SSH key management, especially in legacy environments.
+    remediation: |
+        Edit the                  /etc/ssh/sshd_config
+         file to set the parameter above any                  Include
+         entries as follows:               LogLevel VERBOSE
+         OR LogLevel INFO
+         Note:
+         First occurrence of a option takes precedence,                  Match
+         set statements withstanding. If                  Include
+         locations are enabled, used, and order of precedence is understood in your environment, the entry may be created in a
+        file in                  Include
+         location.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.5', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*loglevel\h+"?(VERBOSE|INFO)"?\b'
+
+  "5.2.6":
+    title: '5.2.6 | Ensure SSH PAM is enabled'
+    section: 'Configure SSH Server'
+    description: |
+        The              UsePAM
+         directive enables the Pluggable Authentication Module PAM interface. If set to              yes
+         this will enable PAM authentication using              ChallengeResponseAuthentication
+         and              PasswordAuthentication
+         directives in addition to PAM account and session module processing for all authentication types.
+    remediation: |
+        Edit the                  /etc/ssh/sshd_config
+         file to set the parameter above any                  Include
+         entries as follows:               UsePAM yes
+         Note:
+         First occurrence of a option takes precedence. If                  Include
+         locations are enabled, used, and order of precedence is understood in your environment, the entry may be created in a
+        file in                  Include
+         location.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.6', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*usepam\h+"?yes"?\b'
+
+  "5.2.7":
+    title: '5.2.7 | Ensure SSH root login is disabled'
+    section: 'Configure SSH Server'
+    description: |
+        The              PermitRootLogin
+         parameter specifies if the root user can log in using SSH. The default is              prohibitpassword
+        .
+    remediation: |
+        Edit the                  /etc/ssh/sshd_config
+         file to set the parameter above any                  Include
+         entries as follows:               PermitRootLogin no
+         Note:
+         First occurrence of a option takes precedence,                  Match
+         set statements withstanding. If                  Include
+         locations are enabled, used, and order of precedence is understood in your environment, the entry may be created in a
+        file in                  Include
+         location.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.7', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*permitrootlogin\h+"?no"?\b'
+
+  "5.2.8":
+    title: '5.2.8 | Ensure SSH HostbasedAuthentication is disabled'
+    section: 'Configure SSH Server'
+    description: |
+        The              HostbasedAuthentication
+         parameter specifies if authentication is allowed through trusted hosts via the user of              .rhosts
+        , or              /etc/hosts.equiv
+        , along with successful public key client host authentication.
+    remediation: |
+        Edit the                  /etc/ssh/sshd_config
+         file to set the parameter above any                  Include
+         entries as follows:               HostbasedAuthentication no
+         Note:
+         First occurrence of a option takes precedence,                  Match
+         set statements withstanding. If                  Include
+         locations are enabled, used, and order of precedence is understood in your environment, the entry may be created in a
+        file in                  Include
+         location.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.8', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^hostbasedauthentication\s*no\s*$'
+
+  "5.2.9":
+    title: '5.2.9 | Ensure SSH PermitEmptyPasswords is disabled'
+    section: 'Configure SSH Server'
+    description: |
+        The              PermitEmptyPasswords
+         parameter specifies if the SSH server allows login to accounts with empty password strings.
+    remediation: |
+        Edit the                  /etc/ssh/sshd_config
+         file to set the parameter above any                  Include
+         entries as follows:               PermitEmptyPasswords no
+         Note:
+         First occurrence of a option takes precedence,                  Match
+         set statements withstanding. If                  Include
+         locations are enabled, used, and order of precedence is understood in your environment, the entry may be created in a
+        file in                  Include
+         location.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.9', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*permitemptypasswords\h+"?no\b'
+
+  "5.2.10":
+    title: '5.2.10 | Ensure SSH PermitUserEnvironment is disabled'
+    section: 'Configure SSH Server'
+    description: |
+        The              PermitUserEnvironment
+         option allows users to present environment options to the SSH daemon.
+    remediation: |
+        Edit the                  /etc/ssh/sshd_config
+         file to set the parameter above any Include entries as follows:               PermitUserEnvironment no
+         Note:
+         First occurrence of a option takes precedence. If                  Include
+         locations are enabled, used, and order of precedence is understood in your environment, the entry may be created in a
+        file in                  Include
+         location.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.10', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*permituserenvironment\h+"?no"?\b'
+
+  "5.2.11":
+    title: '5.2.11 | Ensure SSH IgnoreRhosts is enabled'
+    section: 'Configure SSH Server'
+    description: |
+        The              IgnoreRhosts
+         parameter specifies that              .rhosts
+         and              .shosts
+         files will not be used in              RhostsRSAAuthentication
+         or              HostbasedAuthentication
+        .
+    remediation: |
+        Edit the                  /etc/ssh/sshd_config
+         file to set the parameter above any Include entries as follows:               IgnoreRhosts yes
+         Note:
+         First occurrence of a option takes precedence,                  Match
+         set statements withstanding. If                  Include
+         locations are enabled, used, and order of precedence is understood in your environment, the entry may be created in a
+        file in                  Include
+         location.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.11', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*ignorerhosts\h+"?yes"?\b'
+
+  "5.2.12":
+    title: '5.2.12 | Ensure only strong Ciphers are used'
+    section: 'Configure SSH Server'
+    description: |
+        This variable limits the ciphers that SSH can use during communication. Note Some organizations may have stricter
+        requirements for approved ciphers. Ensure that ciphers used are in compliance with site policy.
+        The only strong ciphers currently FIPS 1402 compliant are
+                       aes256ctr aes192ctr aes128ctr
+    remediation: |
+        Edit the                  /etc/ssh/sshd_config
+         file add/modify the                  Ciphers
+         line to contain a comma separated list of the site approved ciphers above any                  Include
+         entries:               Example: Ciphers
+        chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+         Note:
+         First occurrence of a option takes precedence. If Include locations are enabled, used, and order of precedence is
+        understood in your environment, the entry may be created in a file in Include location.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.12', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*ciphers\h+([^#\n\r]+,)?(3des-cbc|aes128-cbc|aes192-cbc|aes256-cbc|arcfour|arcfour128|arcfour256|blowfish-cbc|cast128-cbc|rijndael-cbc@lysator.liu.se)\b'
+
+  "5.2.13":
+    title: '5.2.13 | Ensure only strong MAC algorithms are used'
+    section: 'Configure SSH Server'
+    description: |
+        This variable limits the types of MAC algorithms that SSH can use during communication. Notes Some organizations may
+        have stricter requirements for approved MACs. Ensure that MACs used are in compliance with site policy.
+        The only strong MACs currently FIPS 1402 approved are
+                       hmacsha2256 hmacsha2512
+    remediation: |
+        Edit the                  /etc/ssh/sshd_config
+         file and add/modify the MACs line to contain a comma separated list of the site approved MACs above any
+        Include
+         entries:               Example: MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-
+        sha2-256,umac-128-etm@openssh.com,umac-128@openssh.com
+         Note:
+         First occurrence of a option takes precedence. If Include locations are enabled, used, and order of precedence is
+        understood in your environment, the entry may be created in a file in Include location.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.13', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == (?i)^\h*macs\h+([^#\n\r]+,)?(hmac-md5|hmac-md5-96|hmac-ripemd160|hmac-sha1|hmac-sha1-96|umac-64@openssh\.com|hmac-md5-etm@openssh\.com|hmac-md5-96-etm@openssh\.com|hmac-ripemd160-etm@openssh\.com|hmac-sha1-etm@openssh\.com|hmac-sha1-96-etm@openssh\.com|umac-64-etm@openssh\.com)\b'
+
+  "5.2.14":
+    title: '5.2.14 | Ensure only strong Key Exchange algorithms are used'
+    section: 'Configure SSH Server'
+    description: |
+        Key exchange is any method in cryptography by which cryptographic keys are exchanged between two parties, allowing use
+        of a cryptographic algorithm. If the sender and receiver wish to exchange encrypted messages, each must be equipped to
+        encrypt messages to be sent and decrypt messages received Notes Kex algorithms have a higher preference the earlier they
+        appear in the list Some organizations may have stricter requirements for approved Key exchange algorithms Ensure that
+        Key exchange algorithms used are in compliance with site policy
+        The only Key Exchange Algorithms currently FIPS 1402 approved are
+                       ecdhsha2nistp256 ecdhsha2nistp384 ecdhsha2nistp521 diffiehellmangroupexchangesha256
+        diffiehellmangroup16sha512 diffiehellmangroup18sha512 diffiehellmangroup14sha256
+    remediation: |
+        Edit the /etc/ssh/sshd_config file add/modify the KexAlgorithms line to contain a comma separated list of the site
+        approved key exchange algorithms above any                  Include
+         entries:               Example: KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-
+        group14-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-
+        sha2-nistp256,diffie-hellman-group-exchange-sha256
+         Note:
+         First occurrence of a option takes precedence. If Include locations are enabled, used, and order of precedence is
+        understood in your environment, the entry may be created in a file in Include location.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.14', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == (?i)^\h*kexalgorithms\h+([^#\n\r]+,)?(diffie-hellman-group1-sha1|diffie-hellman-group14-sha1|diffie-hellman-group-exchange-sha1)\b'
+
+  "5.2.15":
+    title: '5.2.15 | Ensure SSH warning banner is configured'
+    section: 'Configure SSH Server'
+    description: |
+        The              Banner
+         parameter specifies a file whose contents must be sent to the remote user before authentication is permitted. By
+        default, no banner is displayed.
+    remediation: |
+        Edit the                  /etc/ssh/sshd_config
+         file to set the parameter above any                  Include
+         entries as follows:               Banner /etc/issue.net
+         Note:
+         First occurrence of a option takes precedence, Match set statements withstanding. If Include locations are enabled,
+        used, and order of precedence is understood in your environment, the entry may be created in a file in Include location.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.15', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == (?i)^\h*banner\h+\H+\b'
+
+  "5.2.16":
+    title: '5.2.16 | Ensure SSH MaxAuthTries is set to 4 or less'
+    section: 'Configure SSH Server'
+    description: |
+        The              MaxAuthTries
+         parameter specifies the maximum number of authentication attempts permitted per connection. When the login failure
+        count reaches half the number, error messages will be written to the              syslog
+         file detailing the login failure.
+    remediation: |
+        Edit the                  /etc/ssh/sshd_config
+         file to set the parameter above any                  Include
+         entries as follows:               MaxAuthTries 4
+         Note:
+         First occurrence of a option takes precedence, Match set statements withstanding. If Include locations are enabled,
+        used, and order of precedence is understood in your environment, the entry may be created in a file in Include location.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.16', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*maxauthtries\h+"?[0-4]\b'
+
+  "5.2.17":
+    title: '5.2.17 | Ensure SSH MaxStartups is configured'
+    section: 'Configure SSH Server'
+    description: |
+        The              MaxStartups
+         parameter specifies the  maximum number of concurrent unauthenticated connections to the SSH daemon.
+    remediation: |
+        Edit the                  /etc/ssh/sshd_config
+         file to set the parameter above any                  Include
+         entries as follows:               MaxStartups 10:30:100
+         Note:
+         First occurrence of a option takes precedence. If Include locations are enabled, used, and order of precedence is
+        understood in your environment, the entry may be created in a file in Include location.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.17', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == (?i)^\h*maxstartups\h+"?(10|[1-9])\:(30|[1-2][0-9]|[1-9])\:(100|[1-9][0-9]|[1-9])\b'
+
+  "5.2.18":
+    title: '5.2.18 | Ensure SSH LoginGraceTime is set to one minute or less'
+    section: 'Configure SSH Server'
+    description: |
+        The              LoginGraceTime
+         parameter specifies the time allowed for successful authentication to the SSH server. The longer the Grace period is
+        the more open unauthenticated connections can exist. Like other session controls in this session the Grace Period should
+        be limited to appropriate organizational limits to ensure the service is available for needed access.
+    remediation: |
+        Edit the                  /etc/ssh/sshd_config
+         file to set the parameter above any                  Include
+         entries as follows:               LoginGraceTime 60
+         Note:
+         First occurrence of a option takes precedence, Match set statements withstanding. If Include locations are enabled,
+        used, and order of precedence is understood in your environment, the entry may be created in a file in Include location.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.18', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^logingracetime\h+"?([1-9]|[1-5][0-9]|60|1m)\b'
+
+  "5.2.19":
+    title: '5.2.19 | Ensure SSH MaxSessions is set to 10 or less'
+    section: 'Configure SSH Server'
+    description: |
+        The              MaxSessions
+         parameter specifies the maximum number of open sessions permitted from a given connection.
+    remediation: |
+        Edit the                  /etc/ssh/sshd_config
+         file to set the parameter above any                  Include
+         entries as follows:               MaxSessions 10
+         Note:
+         First occurrence of a option takes precedence, Match set statements withstanding. If Include locations are enabled,
+        used, and order of precedence is understood in your environment, the entry may be created in a file in Include location.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.19', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^maxsessions\h+([1-9]|10)\b'
+
+  "5.2.20":
+    title: '5.2.20 | Ensure SSH Idle Timeout Interval is configured'
+    section: 'Configure SSH Server'
+    description: |
+        NOTE
+         To clarify, the two settings described below is only meant for idle connections from a protocol perspective and not
+        meant to check if the user is active or not. An idle user does not mean an idle connection. SSH does not and never had,
+        intentionally, the capability to drop idle users. In SSH versions before              8.2p1
+         there was a bug that caused these values to behave in such a manner that they where abused to disconnect idle users.
+        This bug has been resolved in              8.2p1
+         and thus it can no longer be abused disconnect idle users.
+        The two options              ClientAliveInterval
+         and              ClientAliveCountMax
+         control the timeout of SSH sessions. Taken directly from              man 5 sshdconfig
+                   ClientAliveInterval
+         Sets a timeout interval in seconds after which if no data has been received from the client, sshd8 will send a message
+        through the encrypted channel to request a response from the client. The default is 0, indicating that these messages
+        will not be sent to the client.               ClientAliveCountMax
+         Sets the number of client alive messages which may be sent without sshd8 receiving any messages back from the client.
+        If this threshold is reached while client alive messages are being sent, sshd will disconnect the client, terminating
+        the session.  It is important to note that the use of client alive messages is very different from TCPKeepAlive. The
+        client alive messages are sent through the encrypted channel and therefore will not be spoofable. The TCP keepalive
+        option enabled by TCPKeepAlive is spoofable. The client alive mechanism is valuable when the client or server depend on
+        knowing when a connection has become unresponsive.
+        The default value is 3. If ClientAliveInterval is set to 15, and ClientAliveCountMax is left at the default,
+        unresponsive SSH clients will be disconnected after approximately 45 seconds. Setting a zero ClientAliveCountMax
+        disables connection termination.
+    remediation: |
+        Edit the                  /etc/ssh/sshd_config
+         file to set the parameters above any                  Include
+         entries according to site policy.               Example:
+        ClientAliveInterval 15
+        ClientAliveCountMax 3
+                       Note:
+         First occurrence of a option takes precedence, Match set statements withstanding. If Include locations are enabled,
+        used, and order of precedence is understood in your environment, the entry may be created in a file in Include location.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.20', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^clientalivecountmax\h+[1-9][0-9]*m?\b'
+
+  "5.3.1":
+    title: '5.3.1 | Ensure sudo is installed'
+    section: 'Configure privilege escalation'
+    description: |
+        sudo
+         allows a permitted user to execute a command as the superuser or another user, as specified by the security policy.
+        The invoking users real not effective user ID is used to determine the user name with which to query the security
+        policy.
+    remediation: |
+        Run the following command to install sudo # dnf install sudo
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.3.1', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.3.2":
+    title: '5.3.2 | Ensure re-authentication for privilege escalation is not disabled globally'
+    section: 'Configure privilege escalation'
+    description: |
+        The operating system must be configured so that users must reauthenticate for privilege escalation.
+    remediation: |
+        Configure the operating system to require users to reauthenticate for privilege escalation.
+        Based on the outcome of the audit procedure, use                  visudo -f <PATH TO FILE>
+         to edit the relevant sudoers file.
+        Remove any occurrences of                  !authenticate
+         tags in the file(s).
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.3.2', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.3.3":
+    title: '5.3.3 | Ensure sudo authentication timeout is configured correctly'
+    section: 'Configure privilege escalation'
+    description: |
+        sudo
+         caches used credentials for a default of 5 minutes. This is for ease of use when there are multiple administrative
+        tasks to perform. The timeout can be modified to suit local security policies.
+    remediation: |
+        If the currently configured timeout is larger than 15 minutes, edit the file listed in the audit section with
+        visudo -f <PATH TO FILE>
+         and modify the entry                  timestamp_timeout=
+         to 15 minutes or less as per your site policy. The value is in minutes. This particular entry may appear on its own, or
+        on the same line as                  env_reset
+        . See the following two examples:               Defaults    env_reset, timestamp_timeout=15
+
+        Defaults    timestamp_timeout=15
+        Defaults    env_reset
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.3.3', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.4.1":
+    title: '5.4.1 | Ensure password creation requirements are configured'
+    section: 'Configure PAM'
+    description: |
+        The              pampwquality.so
+         module checks the strength of passwords. It performs checks such as making sure a password is not a dictionary word, it
+        is a certain length, contains a mix of characters e.g. alphabet, numeric, other and more. The following are definitions
+        of the              pampwquality.so
+         options.
+        The following options are set in the              /etc/security/pwquality.conf
+         file           Password Length minlen  14
+          password must be 14 characters or more             Password complexity minclass  4
+          The minimum number of required classes of characters for the new password digits, uppercase, lowercase, others
+        OR dcredit  1
+          provide at least one digit               ucredit  1
+          provide at least one uppercase character               ocredit  1
+          provide at least one special character               lcredit  1
+          provide at least one lowercase character
+        The following is set in the              /etc/pam.d/systempassword
+         and              /etc/pam.d/systemauth
+         files           tryfirstpass
+          retrieve the password from a previous stacked PAM module. If not available, then prompt the user for a password.
+        retry3
+          Allow 3 tries before sending back a failure.             The settings shown above are one possible policy. Alter these
+        values to conform to your own organizations password policies. Notes
+        Settings in                /etc/security/pwquality.conf
+         must use spaces around the
+         symbol.
+        Additional modules options may be set in the                /etc/pam.d/systempassword
+         and                /etc/pam.d/systemauth
+         files
+    remediation: |
+        Edit the file                  /etc/security/pwquality.conf
+         and add or modify the following line for password length to conform to site policy               minlen = 14
+
+        Edit the file                  /etc/security/pwquality.conf
+         and add or modify the following line for password complexity to conform to site policy               minclass = 4
+         -OR-
+        dcredit = -1
+        ucredit = -1
+        ocredit = -1
+        lcredit = -1
+
+        Edit the                  /etc/pam.d/system-password
+         and                  /etc/pam.d/system-auth
+         files to include the appropriate options for                  pam_pwquality.so
+         and to conform to site policy:               password requisite pam_pwquality.so retry=3
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.4.1', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.4.2":
+    title: '5.4.2 | Ensure lockout for failed password attempts is configured'
+    section: 'Configure PAM'
+    description: |
+        Lock out users after              n
+         unsuccessful consecutive login attempts.           denyn
+          Number of attempts before the account is locked             unlocktimen
+          Time in seconds before the account is unlocked             Note
+         The maximum configurable value for              unlocktime
+         is              604800
+    remediation: |
+        Set password lockouts and unlock times to conform to site policy. deny should be not greater than                  5
+         and unlock_time should be                  0
+         (never), or                  900
+         seconds or greater.
+        Edit the files                  /etc/pam.d/system-auth
+         and                  /etc/pam.d/system-password
+         and add the following lines:
+        Modify the                  deny=
+         and                  unlock_time=
+         parameters to conform to local site policy, Not to be greater than                  deny=5
+        :
+        Add the following lines to the                  auth
+         section:
+        auth        required      pam_faillock.so preauth silent audit deny=5 unlock_time=900
+        auth        [default=die] pam_faillock.so authfail audit deny=5 unlock_time=900
+
+        The                  auth
+         sections should look similar to the following example:               Note:
+         The ordering on the lines in the auth section is important. The                  preauth
+         line needs to below the line                  auth        required      pam_env.so
+         and above all password validation lines.  The                  authfail
+         line needs to be after all password validation lines such as                  pam_sss.so
+        . Incorrect order can cause you to be locked out of the system               Example:
+        auth        required      pam_env.so
+        auth        required      pam_faillock.so preauth silent audit deny=5 unlock_time=900 # <- Under "auth required
+        pam_env.so"
+        auth        sufficient    pam_unix.so nullok try_first_pass
+        auth        [default=die] pam_faillock.so authfail audit deny=5 unlock_time=900 # <- Last auth line before "auth
+        requisite  pam_succeed_if.so"
+        auth        requisite     pam_succeed_if.so uid >= 1000 quiet_success
+        auth        required      pam_deny.so
+
+        Add the following line to the                  account
+         section:               account     required      pam_faillock.so
+         Example:
+        account     required     pam_faillock.so
+        account     required     pam_unix.so
+        account     sufficient   pam_localuser.so
+        account     sufficient   pam_pam_succeed_if.so uid < 1000 quiet
+        account     required     pam_permit.so
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.4.2', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.4.3":
+    title: '5.4.3 | Ensure password hashing algorithm is SHA-512'
+    section: 'Configure PAM'
+    description: |
+        The commands below change password encryption from              md5
+         to              sha512
+         a much stronger hashing algorithm. All existing accounts will need to perform a password change to upgrade the stored
+        hashes to the new algorithm.           Note These changes only apply to accounts configured on the local system.
+        Additional module options may be set, recommendation only covers those listed here.
+    remediation: |
+        Edit the                  /etc/pam.d/system-password
+         and                  /etc/pam.d/system-auth
+         files to include                  sha512
+         option and remove the                  md5
+         option for                  pam_unix.so
+        :               password sufficient pam_unix.so sha512
+         Note: Any system accounts that need to be expired should be carefully done separately by the system administrator to
+        prevent any potential problems. If it is determined that the password algorithm being used is not SHA-512, once it is
+        changed, it is recommended that all user ID's be immediately expired and forced to change their passwords on next login,
+        In accordance with local site policies.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.4.3', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.4.4":
+    title: '5.4.4 | Ensure password reuse is limited'
+    section: 'Configure PAM'
+    description: |
+        The              /etc/security/opasswd
+         file stores the users old passwords and can be checked to ensure that users are not recycling recent passwords.
+    remediation: |
+        Edit                  both
+         the                  /etc/pam.d/system-password
+         and                  /etc/pam.d/system-auth
+         files to include the remember option and conform to site policy as shown:               Note:
+         Add or modify the line containing the                  pam_pwhistory.so
+
+        after the first occurrence of                    password requisite
+        :
+                              password    requisite      pam_pwhistory.so remember=5
+         Example:
+         (                 Second line is modified
+        )
+        password    requisite     pam_pwquality.so try_first_pass local_users_only authtok_type=
+        password    requisite      pam_pwhistory.so use_authtok remember=5 retry=3
+        password    sufficient    pam_unix.so sha512 shadow try_first_pass use_authtok
+        password    required      pam_deny.so
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.4.4', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.5.1.1":
+    title: '5.5.1.1 | Ensure password expiration is 365 days or less'
+    section: 'Set Shadow Password Suite Parameters'
+    description: |
+        The                PASSMAXDAYS
+         parameter in                /etc/login.defs
+         allows an administrator to force passwords to expire once they reach a defined age.  It is recommended that the
+        PASSMAXDAYS
+         parameter be set to less than or equal to 365 days.
+    remediation: |
+        Set the                    PASS_MAX_DAYS
+         parameter to conform to site policy in                    /etc/login.defs
+         :                 PASS_MAX_DAYS 365
+         Modify user parameters for all users with a password set to match: # chage --maxdays 365 <user>
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.5.1.1', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.5.1.2":
+    title: '5.5.1.2 | Ensure minimum days between password changes is configured'
+    section: 'Set Shadow Password Suite Parameters'
+    description: |
+        The                PASSMINDAYS
+         parameter in                /etc/login.defs
+         allows an administrator to prevent users from changing their password until a minimum number of days have passed since
+        the last time the user changed their password. It is recommended that                PASSMINDAYS
+         parameter be set to 1 or more days.
+    remediation: |
+        Set the                    PASS_MIN_DAYS
+          parameter to 1 in                    /etc/login.defs
+        :                 PASS_MIN_DAYS 1
+         Modify user parameters for all users with a password set to match: # chage --mindays 1 <user>
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.5.1.2', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.5.1.3":
+    title: '5.5.1.3 | Ensure password expiration warning days is 7 or more'
+    section: 'Set Shadow Password Suite Parameters'
+    description: |
+        The                PASSWARNAGE
+         parameter in                /etc/login.defs
+          allows an administrator to notify users that their password will expire in a defined number of days. It is recommended
+        that the                PASSWARNAGE
+         parameter be set to 7 or more days.
+    remediation: |
+        Set the                    PASS_WARN_AGE
+          parameter to 7 in                    /etc/login.defs
+         :                 PASS_WARN_AGE 7
+         Modify user parameters for all users with a password set to match: # chage --warndays 7 <user>
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.5.1.3', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.5.1.4":
+    title: '5.5.1.4 | Ensure inactive password lock is 30 days or less'
+    section: 'Set Shadow Password Suite Parameters'
+    description: |
+        User accounts that have been inactive for over a given period of time can be automatically disabled. It is recommended
+        that accounts that are inactive for 30 days after password expiration be disabled.
+    remediation: |
+        Run the following command to set the default password inactivity period to 30 days: # useradd -D -f 30
+         Modify user parameters for all users with a password set to match: # chage --inactive 30 <user>
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.5.1.4', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.5.1.5":
+    title: '5.5.1.5 | Ensure all users last password change date is in the past - manual'
+    section: 'Set Shadow Password Suite Parameters'
+    description: |
+        All users should have a password change date in the past.
+    remediation: |
+        Investigate any users with a password change date in the future and correct them.  Locking the account, expiring the
+        password, or resetting the password manually may be appropriate.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.5.1.5', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.5.2":
+    title: '5.5.2 | Ensure system accounts are secured - manual'
+    section: 'User Accounts and Environment'
+    description: |
+        There are a number of accounts provided with most distributions that are used to manage applications and are not
+        intended to provide an interactive shell.
+    remediation: |
+        Set the shell for any accounts returned by the audit to nologin: # usermod -s $(which nologin) <user>
+         Lock any non root accounts returned by the audit: # usermod -L <user>
+         The following script will: Set the shell for any accounts returned by the audit to nologin Lock any non root system
+        accounts returned by the audit:
+        #!/usr/bin/env bash
+
+        {
+           l_output="" l_output2=""
+           l_valid_shells="^($( awk -F\/ '$NF != "nologin" {print}' /etc/shells | sed -rn '/^\//{s,/,\\\\/,g;p}' | paste -s -d
+        '|' - ))$"
+           a_users=(); a_ulock=() # initialize arrays
+           while read -r l_user; do # change system accounts that have a valid login shell to nolog shell
+              echo -e " - System account \"$l_user\" has a valid logon shell, changing shell to \"$(which nologin)\""
+              usermod -s "$(which nologin)" "$l_user"
+           done < <(awk -v pat="$l_valid_shells" -F: '($1!~/(root|sync|shutdown|halt|^\+)/ && $3<'"$(awk '/^\s*UID_MIN/{print
+        $2}' /etc/login.defs)"' && $(NF) ~ pat) { print $1 }' /etc/passwd)
+           while read -r l_ulock; do # Lock system accounts that aren't locked
+              echo -e " - System account \"$l_ulock\" is not locked, locking account"
+              usermod -L "$l_ulock"
+           done < <(awk -v pat="$l_valid_shells" -F: '($1!~/(root|^\+)/ && $2!~/LK?/ && $3<'"$(awk '/^\s*UID_MIN/{print $2}'
+        /etc/login.defs)"' && $(NF) ~ pat) { print $1 }' /etc/passwd)
+        }
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.5.2', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.5.3":
+    title: '5.5.3 | Ensure default group for the root account is GID 0'
+    section: 'User Accounts and Environment'
+    description: |
+        The              usermod
+         command can be used to specify which group the              root
+         account belongs to. This affects permissions of files that are created by the              root
+         account.
+    remediation: |
+        Run the following command to set the                  root
+         account default group to GID                  0
+         :               # usermod -g 0 root
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.5.3', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.5.4":
+    title: '5.5.4 | Ensure default user umask is 027 or more restrictive'
+    section: 'User Accounts and Environment'
+    description: |
+        The user filecreation mode mask              umask
+         is use to determine the file permission for newly created directories and files. In Linux, the default permissions for
+        any newly created directory is 0777              rwxrwxrwx
+        , and for any newly created file it is 0666              rwrwrw
+        . The              umask
+         modifies the default Linux permissions by restricting masking these permissions. The              umask
+         is not simply subtracted, but is processed bitwise. Bits set in the              umask
+         are cleared in the resulting file mode.           umask
+         can be set with either              octal
+         or              Symbolic
+         values           Octal
+         Numeric Value  Represented by either three or four digits. ie                umask 0027
+         or                umask 027
+        .  If a four digit umask is used, the first digit is ignored. The remaining three digits effect the resulting
+        permissions for user, group, and world/other respectively.             Symbolic
+         Value  Represented by a comma separated list for User                u
+        , group                g
+        , and world/other                o
+        .  The permissions listed are not masked by                umask
+        . ie a                umask
+         set by                umask urwx,grx,o
+         is the                Symbolic
+         equivalent of the                Octal
+                              umask 027
+        .  This                umask
+         would set a newly created directory with file mode                drwxrx
+         and a newly created file with file mode                rwr
+        .
+        The default              umask
+         can be set to use the              pamumask
+         module or in a              System Wide Shell Configuration File
+        .  The user creating the directories or files has the discretion of changing the permissions via the chmod command, or
+        choosing a different default              umask
+         by adding the              umask
+         command into a              User Shell Configuration File
+        ,               .bashprofile
+         or              .bashrc
+        , in their home directory.           Setting the default umask
+        pamumask module
+
+        will set the umask according to the system default in                    /etc/login.defs
+         and user settings, solving the problem of different                    umask
+         settings with different shells, display managers, remote sessions etc.                 umaskmask
+         value in the                    /etc/login.defs
+         file is interpreted as Octal
+        Setting                    USERGROUPSENAB
+         to yes in                    /etc/login.defs
+         default
+
+        will enable setting of the                        umask
+         group bits to be the same as owner bits. examples 022  002, 077  007 for nonroot users, if the
+        uid
+         is the same as                        gid
+        , and                        username
+         is the same as the                        primary group name
+                                       userdel will remove the users group if it contains no more members, and useradd will
+        create by default a group with the name of the user
+
+                           System Wide Shell Configuration File
+
+                       /etc/profile
+          used to set system wide environmental variables on users shells. The variables are sometimes the same ones that are in
+        the                    .bashprofile
+        , however this file is used to set an initial PATH or PS1 for all shell users of the system.
+        is only executed for interactive                      login
+         shells, or shells executed with the login parameter.
+                                 /etc/profile.d
+                             /etc/profile
+         will execute the scripts within                    /etc/profile.d/.sh
+        . It is recommended to place your configuration in a shell script within                    /etc/profile.d
+         to set your own system wide environmental variables.                 /etc/bashrc
+          System wide version of                    .bashrc
+        .  In Fedora derived distributions,                    etc/bashrc
+         also invokes /etc/profile.d/.sh if                    nonlogin
+         shell, but redirects output to                    /dev/null
+         if                    noninteractive.
+
+        Is only executed for                      interactive
+         shells or if                      BASHENV
+         is set to                      /etc/bashrc
+        .
+
+                           User Shell Configuration Files /.bashprofile
+          Is executed to configure your shell before the initial command prompt.                Is only read by login shells.
+                           /.bashrc
+          Is executed for interactive shells.                only read by a shell thats both interactive and nonlogin
+    remediation: |
+        Review /etc/bashrc, /etc/profile, and all files ending in *.sh in the /etc/profile.d/ directory and remove or edit all
+        umask
+         entries to follow local site policy. Any remaining entries should be:                  umask 027
+        ,                  umask u=rwx,g=rx,o=
+         or more restrictive.
+        Configure                  umask
+         in                  one
+         of the following files:
+        A file in the                    /etc/profile.d/
+         directory ending in                    .sh
+                                 /etc/profile /etc/bashrc Example:
+        # vi /etc/profile.d/set_umask.sh
+
+        umask 027
+
+        Run the following command and remove or modify the                  umask
+         of any returned files:               # grep -RPi
+        '(^|^[^#]*)\s*umask\s+([0-7][0-7][01][0-7]\b|[0-7][0-7][0-7][0-6]\b|[0-7][01][0-7]\b|[0-7][0-7][0-6]\b|(u=[rwx]{0,3},)?(g=[rwx]{0,3},)?o=[rwx]+\b|(u=[rwx]{1,3},)?g=[^rx]{1,3}(,o=[rwx]{0,3})?\b)'
+        /etc/login.defs /etc/profile* /etc/bashrc*
+         Follow one of the following methods to set the default user umask:
+        Edit                  /etc/login.defs
+         and edit the                  UMASK
+         and                  USERGROUPS_ENAB
+         lines as follows:
+        UMASK 027
+
+        USERGROUPS_ENAB no
+
+        Edit the files                  /etc/pam.d/password-auth
+         and                   /etc/pam.d/system-auth
+         and add or edit the following:               session     optional      pam_umask.so
+         OR
+         Configure umask in one of the following files:
+        A file in the                    /etc/profile.d/
+         directory ending in .sh                 /etc/profile /etc/bashrc Example: /etc/profile.d/set_umask.sh umask 027
+         Note:
+         this method only applies to bash and shell. If other shells are supported on the system, it is recommended that their
+        configuration files also are checked.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.5.4', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.1.1":
+    title: '6.1.1 | Ensure permissions on etcpasswd are configured'
+    section: 'System File Permissions'
+    description: |
+        The              /etc/passwd
+         file contains user account information that is used by many system utilities and therefore must be readable for these
+        utilities to operate.
+    remediation: |
+        Run the following commands to remove excess permissions, set owner, and set group on                  /etc/passwd
+        :
+        # chmod u-x,go-wx /etc/passwd
+        # chown root:root /etc/passwd
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.1.1', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.1.2":
+    title: '6.1.2 | Ensure permissions on etcpasswd- are configured'
+    section: 'System File Permissions'
+    description: |
+        The              /etc/passwd
+         file contains backup user account information.
+    remediation: |
+        Run the following commands to remove excess permissions, set owner, and set group on                  /etc/passwd-
+        :
+        # chmod u-x,go-wx /etc/passwd-
+        # chown root:root /etc/passwd-
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.1.2', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.1.3":
+    title: '6.1.3 | Ensure permissions on etcgroup are configured'
+    section: 'System File Permissions'
+    description: |
+        The              /etc/group
+         file contains a list of all the valid groups defined in the system. The command below allows read/write access for root
+        and read access for everyone else.
+    remediation: |
+        Run the following commands to remove excess permissions, set owner, and set group on                  /etc/group
+        :
+        # chmod u-x,go-wx /etc/group
+        # chown root:root /etc/group
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.1.3', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.1.4":
+    title: '6.1.4 | Ensure permissions on etcgroup- are configured'
+    section: 'System File Permissions'
+    description: |
+        The              /etc/group
+         file contains a backup list of all the valid groups defined in the system.
+    remediation: |
+        Run the following commands to remove excess permissions, set owner, and set group on                  /etc/group-
+        :
+        # chmod u-x,go-wx /etc/group-
+        # chown root:root /etc/group-
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.1.4', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.1.5":
+    title: '6.1.5 | Ensure permissions on etcshadow are configured'
+    section: 'System File Permissions'
+    description: |
+        The              /etc/shadow
+         file is used to store the information about user accounts that is critical to the security of those accounts, such as
+        the hashed password and other security information.
+    remediation: |
+        Run the following commands to set owner, group, and permissions on                  /etc/shadow
+        :
+        # chown root:root /etc/shadow
+        # chmod u-wx,go-rwx /etc/shadow
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.1.5', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.1.6":
+    title: '6.1.6 | Ensure permissions on etcshadow- are configured'
+    section: 'System File Permissions'
+    description: |
+        The              /etc/shadow
+         file is used to store backup information about user accounts that is critical to the security of those accounts, such
+        as the hashed password and other security information.
+    remediation: |
+        Run the following commands to set owner, group, and permissions on                  /etc/shadow-
+        :
+        # chown root:root /etc/shadow-
+        # chmod u-wx,go-rwx /etc/shadow-
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.1.6', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.1.7":
+    title: '6.1.7 | Ensure permissions on etcgshadow are configured'
+    section: 'System File Permissions'
+    description: |
+        The              /etc/gshadow
+         file is used to store the information about groups that is critical to the security of those accounts, such as the
+        hashed password and other security information.
+    remediation: |
+        Run the following commands to set owner, group, and permissions on                  /etc/gshadow
+
+        # chown root:root /etc/gshadow
+        # chmod u-wx,go-rwx /etc/gshadow
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.1.7', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.1.8":
+    title: '6.1.8 | Ensure permissions on etcgshadow- are configured'
+    section: 'System File Permissions'
+    description: |
+        The              /etc/gshadow
+         file is used to store backup information about groups that is critical to the security of those accounts, such as the
+        hashed password and other security information.
+    remediation: |
+        Run the following commands to set owner, group, and permissions on                  /etc/gshadow-
+         :
+        # chown root:root /etc/gshadow-
+        # chmod u-wx,go-rwx /etc/gshadow-
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.1.8', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.1.9":
+    title: '6.1.9 | Ensure no unowned or ungrouped files or directories exist - manual'
+    section: 'System File Permissions'
+    description: |
+        Administrators may delete users or groups from the system and neglect to remove all files and/or directories owned by
+        those users or groups.
+    remediation: |
+        Remove or set ownership and group ownership of these files and/or directories to an active user on the system as
+        appropriate.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.1.9', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.1.10":
+    title: '6.1.10 | Ensure world writable files and directories are secured - manual'
+    section: 'System File Permissions'
+    description: |
+        World writable files are the least secure. Data in worldwritable files can be modified and compromised by any user on
+        the system. World writable files may also indicate an incorrectly written script or program that could potentially be
+        the cause of a larger compromise to the systems integrity. See the              chmod2
+         man page for more information.           Setting the sticky bit on world writable directories prevents users from
+        deleting or renaming files in that directory that are not owned by them.
+    remediation: |
+        World Writable Files:
+
+        It is recommended that write access is removed from                        other
+         with the command (                        chmod o-w <filename>
+         ), but always consult relevant vendor documentation to avoid breaking any application dependencies on a given file.
+
+        World Writable Directories:
+
+        Set the sticky bit on all world writable directories with the command (                        chmod a+t
+        <directory_name>
+         )
+                                 Run the following script to: Remove other write permission from any world writable files Add
+        the sticky bit to all world writable directories
+        #!/usr/bin/env bash
+
+        {
+           l_smask='01000'
+           a_path=(); a_arr=() # Initialize array
+           a_path=(! -path "/run/user/*" -a ! -path "/proc/*" -a ! -path "*/containerd/*" -a ! -path "*/kubelet/pods/*" -a !
+        -path "/sys/kernel/security/apparmor/*" -a ! -path "/snap/*" -a ! -path "/sys/fs/cgroup/memory/*")
+           while read -r l_bfs; do
+              a_path+=( -a ! -path ""$l_bfs"/*")
+           done < <(findmnt -Dkerno fstype,target | awk '$1 ~ /^\s*(nfs|proc|smb)/ {print $2}')
+           # Populate array with files
+           while IFS= read -r -d $'\0' l_file; do
+              [ -e "$l_file" ] && a_arr+=("$(stat -Lc '%n^%#a' "$l_file")")
+           done < <(find / \( "${a_path[@]}" \) \( -type f -o -type d \) -perm -0002 -print0 2>/dev/null)
+           while IFS="^" read -r l_fname l_mode; do # Test files in the array
+              if [ -f "$l_fname" ]; then # Remove excess permissions from WW files
+                 echo -e " - File: \"$l_fname\" is mode: \"$l_mode\"\n  - removing write permission on \"$l_fname\" from
+        \"other\""
+                 chmod o-w "$l_fname"
+              fi
+              if [ -d "$l_fname" ]; then
+                 if [ ! $(( $l_mode & $l_smask )) -gt 0 ]; then # Add sticky bit
+                    echo -e " - Directory: \"$l_fname\" is mode: \"$l_mode\" and doesn't have the sticky bit set\n  - Adding the
+        sticky bit"
+                    chmod a+t "$l_fname"
+                 fi
+              fi
+           done < <(printf '%s\n' "${a_arr[@]}")
+           unset a_path; unset a_arr # Remove array
+        }
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.1.10', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.2.1":
+    title: '6.2.1 | Ensure password fields are not empty'
+    section: 'User and Group Settings'
+    description: |
+        An account with an empty password field means that anybody may log in as that user without providing a password.
+    remediation: |
+        If any accounts in the                  /etc/shadow
+         file do not have a password, run the following command to lock the account until it can be determined why it does not
+        have a password:               # passwd -l <username>
+         Also, check to see if the account is logged in and investigate what it is being used for to determine if it needs to be
+        forced off.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.2.1', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.2":
+    title: '6.2.2 | Ensure all groups in etcpasswd exist in etcgroup - manual'
+    section: 'User and Group Settings'
+    description: |
+        Over time, system administration errors and changes can lead to groups being defined in              /etc/passwd
+         but not in              /etc/group
+         .
+    remediation: |
+        Analyze the output of the Audit step above and perform the appropriate action to correct any discrepancies found.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.2.2', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.2.3":
+    title: '6.2.3 | Ensure no duplicate UIDs exist'
+    section: 'User and Group Settings'
+    description: |
+        Although the              useradd
+         program will not let you create a duplicate User ID UID, it is possible for an administrator to manually edit the
+        /etc/passwd
+         file and change the UID field.
+    remediation: |
+        Based on the results of the audit script, establish unique UIDs and review all files owned by the shared UIDs to
+        determine which UID they are supposed to belong to.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.2.3', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.2.4":
+    title: '6.2.4 | Ensure no duplicate GIDs exist'
+    section: 'User and Group Settings'
+    description: |
+        Although the              groupadd
+         program will not let you create a duplicate Group ID GID, it is possible for an administrator to manually edit the
+        /etc/group
+         file and change the GID field.
+    remediation: |
+        Based on the results of the audit script, establish unique GIDs and review all files owned by the shared GID to
+        determine which group they are supposed to belong to.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.2.4', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.2.5":
+    title: '6.2.5 | Ensure no duplicate user names exist'
+    section: 'User and Group Settings'
+    description: |
+        Although the              useradd
+         program will not let you create a duplicate user name, it is possible for an administrator to manually edit the
+        /etc/passwd
+         file and change the user name.
+    remediation: |
+        Based on the results of the audit script, establish unique user names for the users. File ownerships will automatically
+        reflect the change as long as the users have unique UIDs.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.2.5', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.2.6":
+    title: '6.2.6 | Ensure no duplicate group names exist'
+    section: 'User and Group Settings'
+    description: |
+        Although the              groupadd
+         program will not let you create a duplicate group name, it is possible for an administrator to manually edit the
+        /etc/group
+         file and change the group name.
+    remediation: |
+        Based on the results of the audit script, establish unique names for the user groups. File group ownerships will
+        automatically reflect the change as long as the groups have unique GIDs.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.2.6', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.2.7":
+    title: '6.2.7 | Ensure root PATH Integrity - manual'
+    section: 'User and Group Settings'
+    description: |
+        The              root
+         user can execute any command on the system and could be fooled into executing programs unintentionally if the
+        PATH
+         is not set correctly.
+    remediation: |
+        Correct or justify any items discovered in the Audit step.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.2.7', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.2.8":
+    title: '6.2.8 | Ensure root is the only UID 0 account'
+    section: 'User and Group Settings'
+    description: |
+        Any account with UID 0 has superuser privileges on the system.
+    remediation: |
+        Remove any users other than                  root
+          with UID                  0
+          or assign them a new UID if appropriate.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.2.8', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.2.9":
+    title: '6.2.9 | Ensure all users home directories exist - manual'
+    section: 'User and Group Settings'
+    description: |
+        Users can be defined in              /etc/passwd
+          without a home directory or with a home directory that does not actually exist.
+    remediation: |
+        If any users' home directories do not exist, create them and make sure the respective user owns the directory. Users
+        without an assigned home directory should be removed or assigned a home directory as appropriate. The following script
+        will create a home directory for users with an interactive shell whose home directory doesn't exist:
+        #!/bin/bash
+
+        awk -F: '($1!~/(halt|sync|shutdown|nfsnobody)/ && $7!~/^(\/usr)?\/sbin\/nologin(\/)?$/ &&
+        $7!~/(\/usr)?\/bin\/false(\/)?$/) { print $1 " " $6 }' /etc/passwd | while read -r user dir; do
+           if [ ! -d "$dir" ]; then
+              mkdir "$dir"
+              chmod g-w,o-wrx "$dir"
+              chown "$user" "$dir"
+           fi
+        done
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.2.9', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.2.10":
+    title: '6.2.10 | Ensure users own their home directories - manual'
+    section: 'User and Group Settings'
+    description: |
+        The user home directory is space defined for the particular user to set local environment variables and to store
+        personal files.
+    remediation: |
+        Change the ownership of any home directories that are not owned by the defined user to the correct user. The following
+        script will create missing home directories, set the owner, and set the permissions for interactive users' home
+        directories:
+        #!/usr/bin/env bash
+
+        {
+           awk -F: '($1!~/(halt|sync|shutdown|nfsnobody)/ && $7!~/^(\/usr)?\/sbin\/nologin(\/)?$/ && $7!~/(\/usr)?
+          \/bin\/false(\/)?$/) { print $1 " " $6 }' /etc/passwd | while read -r user dir; do
+              if [ ! -d "$dir" ]; then
+                 echo "User: \"$user\" home directory: \"$dir\" does not exist, creating home directory"
+                 mkdir "$dir"
+                 chmod g-w,o-rwx "$dir"
+                 chown "$user" "$dir"
+              else
+                 owner=$(stat -L -c "%U" "$dir")
+                 if [ "$owner" != "$user" ]; then
+                    chmod g-w,o-rwx "$dir"
+                    chown "$user" "$dir"
+                 fi
+              fi
+           done
+        }
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.2.10', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.2.11":
+    title: '6.2.11 | Ensure users home directories permissions are 750 or more restrictive - manual'
+    section: 'User and Group Settings'
+    description: |
+        While the system administrator can establish secure permissions for users home directories, the users can easily
+        override these.
+    remediation: |
+        Making global modifications to user home directories without alerting the user community can result in unexpected
+        outages and unhappy users. Therefore, it is recommended that a monitoring policy be established to report user file
+        permissions and determine the action to be taken in accordance with site policy.
+        The following script can be used to remove permissions is excess of                  750
+         from users' home directories:
+        #!/bin/bash
+
+        awk -F: '($1!~/(halt|sync|shutdown|nfsnobody)/ && $7!~/^(\/usr)?\/sbin\/nologin(\/)?$/ &&
+        $7!~/(\/usr)?\/bin\/false(\/)?$/) {print $6}' /etc/passwd | while read -r dir; do
+           if [ -d "$dir" ]; then
+              dirperm=$(stat -L -c "%A" "$dir")
+              if [ "$(echo "$dirperm" | cut -c6)" != "-" ] || [ "$(echo "$dirperm" | cut -c8)" != "-" ] || [ "$(echo "$dirperm"
+        | cut -c9)" != "-" ] || [ "$(echo "$dirperm" | cut -c10)" != "-" ]; then
+                 chmod g-w,o-rwx "$dir"
+              fi
+           fi
+        done
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.2.11', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.2.12":
+    title: '6.2.12 | Ensure users dot files are not group or world writable - manual'
+    section: 'User and Group Settings'
+    description: |
+        While the system administrator can establish secure permissions for users dot files, the users can easily override
+        these.
+    remediation: |
+        Making global modifications to users' files without alerting the user community can result in unexpected outages and
+        unhappy users. Therefore, it is recommended that a monitoring policy be established to report user dot file permissions
+        and determine the action to be taken in accordance with site policy. The following script will remove excessive
+        permissions on dot files within interactive users' home directories.
+        #!/bin/bash
+
+        awk -F: '($1!~/(halt|sync|shutdown|nfsnobody)/ && $7!~/^(\/usr)?\/sbin\/nologin(\/)?$/ &&
+        $7!~/(\/usr)?\/bin\/false(\/)?$/) { print $6 }' /etc/passwd | while read -r dir; do
+           if [ -d "$dir" ]; then
+              for file in "$dir"/.*; do
+                 if [ ! -h "$file" ] && [ -f "$file" ]; then
+                    fileperm=$(stat -L -c "%A" "$file")
+                    if [ "$(echo "$fileperm" | cut -c6)" != "-" ] || [ "$(echo "$fileperm" | cut -c9)" != "-" ]; then
+                       chmod go-w "$file"
+                    fi
+                 fi
+              done
+           fi
+        done
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.2.12', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.2.13":
+    title: '6.2.13 | Ensure users .netrc Files are not group or world accessible - manual'
+    section: 'User and Group Settings'
+    description: |
+        While the system administrator can establish secure permissions for users              .netrc
+         files, the users can easily override these.
+    remediation: |
+        Making global modifications to users' files without alerting the user community can result in unexpected outages and
+        unhappy users. Therefore, it is recommended that a monitoring policy be established to report user
+        .netrc
+         files and determine the action to be taken in accordance with site policy.               The following script will
+        remove .netrc files from interactive users' home directories
+        #!/bin/bash
+
+        awk -F: '($1!~/(halt|sync|shutdown|nfsnobody)/ && $7!~/^(\/usr)?\/sbin\/nologin(\/)?$/ &&
+        $7!~/(\/usr)?\/bin\/false(\/)?$/) { print $6 }'  /etc/passwd | while read -r dir; do
+           if [ -d "$dir" ]; then
+              file="$dir/.netrc"
+              [ ! -h "$file" ] && [ -f "$file" ] && rm -f "$file"
+           fi
+        done
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.2.13', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.2.14":
+    title: '6.2.14 | Ensure no users have .forward files - manual'
+    section: 'User and Group Settings'
+    description: |
+        The              .forward
+         file specifies an email address to forward the users mail to.
+    remediation: |
+        Making global modifications to users' files without alerting the user community can result in unexpected outages and
+        unhappy users. Therefore, it is recommended that a monitoring policy be established to report user
+        .forward
+         files and determine the action to be taken in accordance with site policy.
+        The following script will remove                  .forward
+         files from interactive users' home directories
+        #!/bin/bash
+
+        awk -F: '($1!~/(halt|sync|shutdown|nfsnobody)/ && $7!~/^(\/usr)?\/sbin\/nologin(\/)?$/ &&
+        $7!~/(\/usr)?\/bin\/false(\/)?$/) { print $6 }' /etc/passwd | while read -r dir; do
+           if [ -d "$dir" ]; then
+              file="$dir/.forward"
+              [ ! -h "$file" ] && [ -f "$file" ] && rm -r "$file"
+           fi
+        done
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.2.14', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == .forward'
+
+  "6.2.15":
+    title: '6.2.15 | Ensure no users have .netrc files - manual'
+    section: 'User and Group Settings'
+    description: |
+        The              .netrc
+         file contains data for logging into a remote host for file transfers via FTP.
+    remediation: |
+        Making global modifications to users' files without alerting the user community can result in unexpected outages and
+        unhappy users. Therefore, it is recommended that a monitoring policy be established to report user
+        .netrc
+         files and determine the action to be taken in accordance with site policy.               The following script will
+        remove .netrc files from interactive users' home directories
+        #!/bin/bash
+
+        awk -F: '($1!~/(halt|sync|shutdown|nfsnobody)/ && $7!~/^(\/usr)?\/sbin\/nologin(\/)?$/ &&
+        $7!~/(\/usr)?\/bin\/false(\/)?$/) { print $6 }'  /etc/passwd | while read -r dir; do
+           if [ -d "$dir" ]; then
+              file="$dir/.netrc"
+              [ ! -h "$file" ] && [ -f "$file" ] && rm -f "$file"
+           fi
+        done
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.2.15', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == .netrc'
+
+  "6.2.16":
+    title: '6.2.16 | Ensure no users have .rhosts files - manual'
+    section: 'User and Group Settings'
+    description: |
+        While no              .rhosts
+         files are shipped by default, users can easily create them.
+    remediation: |
+        Making global modifications to users' files without alerting the user community can result in unexpected outages and
+        unhappy users. Therefore, it is recommended that a monitoring policy be established to report user
+        .rhosts
+         files and determine the action to be taken in accordance with site policy.
+        The following script will remove                  .rhosts
+         files from interactive users' home directories
+        #!/bin/bash
+
+        awk -F: '($1!~/(halt|sync|shutdown|nfsnobody)/ && $7!~/^(\/usr)?\/sbin\/nologin(\/)?$/ &&
+        $7!~/(\/usr)?\/bin\/false(\/)?$/) { print $6 }' /etc/passwd | while read -r dir; do
+           if [ -d "$dir" ]; then
+              file="$dir/.rhosts"
+              [ ! -h "$file" ] && [ -f "$file" ] && rm -r "$file"
+           fi
+        done
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.2.16', 'cis_aks_optimized_azure_linux_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == .rhosts'

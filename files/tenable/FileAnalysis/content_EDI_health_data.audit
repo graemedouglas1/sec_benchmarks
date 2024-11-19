@@ -1,0 +1,47 @@
+#TRUSTED b11fcf4ea47ac292ac26ace07675c74c7781acde3e3cded4c553f4ba9cfd89e864f6d78d8a1eeb213b26eacb36926df500c5ddbc21641396b9778316fc3b8811ea335f0179b0dc1e8647f4b9a043a48f40411f06841c8451a97f39988331435fd67a0ae2b4a6431d813f86842cfefefb20217e1dd6daa50131677dd32df90aa3c3e4102648468a29777c392c3e6077fd0d99cc918e7ee2bee1862e94754d9d3bc7a81e23c5114c240dae0fe00084f8bf93e54070c953cc4cabaeaaecc42a08d91b50962acfea34f50054138dbfdae108b928c4ac639017bda1688429a715737e2fb9096f5099bf52983fa8bde43cf30e28122fdc50286ba504bb113b11f238fb738d539a6fe4482d6807e9063754b542a94deef5d1b293eec11684c76c006a8b4f064e8391fe6700eb07e7c1724eeb9a7c600f103978ce7bb7e30a560fe15ce242c5786c20980364ba0aae43a8ec0ea9af53f5fae27ec093762b1ac271ca73c155832dffe1069f7071d14a8c66110935755b527cb8f197168d198cc5aaf60c33400b45fd183f9e0bfb3b25234015c6db46106f9257098c05d5f1c6307c5ee50e6acce4787bc02d47f4a497977e55c60ae87cc98edb66b3279ea14274278bab6b053211d20c81ea0d4d9207e931911ca9602ab8161298e63c9a351145f4050a145f78e0cbf26cdac440fe98c9e6e628623fc3b4d8a0f858f0c8379d46d3ae239b
+#TRUST-RSA-SHA256 84bd7aa0f8cd5b10691fa4b1244d4808eebf0ee78e715bdab82ac53283844fdf96b5fcd8eea253a63b81bf335e73e332c800e64d433bb618504ef96fcdeae9336fe2d5684ca28bd3f8beb155df26e2141ad42db523d28350dccd8ffa90e07030b16cc7b9cae682ff705425fe10052f12e1cec5aea781666846abd43987cf6d5de4802b97c2d773cbd350e289c2f35606805ee190b79b44a82a5bc6ceca2837b6b6952c1e4f8051e5cbdc15172083dff3dab023f8627e92adff82791b49ff3001b2882d850c5c49b03f1dc388d4fac0a91fe690577586e93feda44e65e5fe31b36647c5c5a466bb0b1337de823458f05d88f12d5de12d532c7f8ee091c249c68c0e7deb2a01559e7b28fa5d84e1581a094b4e4a9291eabf7b08a6125de307fd51a3e507b33fc0c91fe81dd73c0d4f0f09cf5102cbfa5e016728033116f77209d1483ce866ba51569b61955405f6c758ab194449d2da9e76d7584dfb2d6f48d0983a2c8f738c4b22af262884eb5de35fd89ffd2f7d999f0c9aace54ad4c7a864f60739e07e33af5ca56c58427292ddb338dbf64518e1a5549f8bb044008735530287eae08ff19f0f09ebffa6ff567b6dde6a529b8849a4d7fc20253b10bd4a808694e360a0a2755b131bffff7a4dffe9239e0a53efd3b9dc9a350b2f627427c48646f7458b9f6a5480140bcc46cd49d9e4c3f5bdff9c776c0cf7451a7dfae063ae
+#
+# This script is Copyright (C) 2004-2023 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.9 $
+# $Date: 2023/03/07 $
+#
+# This .audit file searches word, text and PDF files for evidence of
+# Health information sent via the EDI standard. The check below looks
+# for a "claim" record.
+#
+#<ui_metadata>
+#<display_name>TNS File Analysis - EDI Claim Information</display_name>
+#<spec>
+#  <type>TNS</type>
+#  <name>File Analysis - EDI Claim Information</name>
+#  <version>1.0.0</version>
+#</spec>
+#<labels>filecontent,content,edi,health,data,update_20230227</labels>
+#</ui_metadata>
+
+<check_type:"FileContent">
+
+#
+# Claim Information Sent via EDI
+#
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "PII - Determine if a file contains a EDI Claim Health Information"
+  file_extension : "txt" | "doc" | "xls" | "pdf" | "hml" | "rpt" | "sef" | "dat"
+  regex          : "((^CLM\*[0-9]{9}\*))"
+  expect         : "RMR\*AP\*"
+  max_size       : "50K"
+</item>
+
+</check_type>

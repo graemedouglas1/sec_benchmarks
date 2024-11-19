@@ -1,0 +1,2223 @@
+---
+
+inspec_rules:
+  "1.1":
+    title: '1.1 | Ensure packages are obtained from authorized repositories - manual'
+    section: 'Installation and Patches'
+    description: |
+        When obtaining and installing software packages typically via  yum , its imperative that packages are sourced only from
+        valid and authorized repositories. For PostgreSQL, a short list of valid repositories would include CentOS
+        www.centos.org  and the official PostgreSQL website  yum.postgresql.org .
+    remediation: |
+        Alter the configured repositories so they only include valid and authorized sources of packages. As an example of adding
+        an authorized repository, we will install the PGDG repository RPM from ' yum.postgresql.org ': [root@centos7 ~]# whoami
+        root [root@centos7 ~]# yum install https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-
+        latest.noarch.rpm Loaded plugins: fastestmirror pgdg-redhat-repo-latest.noarch.rpm
+        | 5.6 kB  00:00:00 Examining /var/tmp/yum-root-CubWbD/pgdg-redhat-repo-latest.noarch.rpm: pgdg-redhat-repo-42.0-4.noarch
+        Marking /var/tmp/yum-root-CubWbD/pgdg-redhat-repo-latest.noarch.rpm to be installed Resolving Dependencies --> Running
+        transaction check ---> Package pgdg-redhat-repo.noarch 0:42.0-4 will be installed --> Finished Dependency Resolution
+                              Dependencies Resolved
+        ====================================================================================================================
+        Package                     Arch              Version             Repository                                  Size
+        ====================================================================================================================
+        Installing:  pgdg-redhat-repo            noarch            42.0-4              /pgdg-redhat-repo-latest.noarch
+        6.8 k
+                              Transaction Summary
+        ====================================================================================================================
+        Install  1 Package
+                              Total size: 6.8 k Installed size: 6.8 k Is this ok [y/d/N]: y Downloading packages: Running
+        transaction check Running transaction test Transaction test succeeded Running transaction   Installing : pgdg-redhat-
+        repo-42.0-4.noarch                                                                   1/1   Verifying  : pgdg-redhat-
+        repo-42.0-4.noarch                                                                   1/1
+                              Installed:   pgdg-redhat-repo.noarch 0:42.0-4
+                              Complete!
+
+        Verify the repository has been added and is enabled:
+
+         [root@centos7 ~]# whoamiroot[root@centos7 ~]# yum repolist all | grep enabled:base/7/x86_64
+        CentOS-7 - Base           enabled: 10,019extras/7/x86_64                        CentOS-7 - Extras         enabled:
+        409pgdg10/7/x86_64                        PostgreSQL 10 7 - x86_64  enabled:    663pgdg11/7/x86_64
+        PostgreSQL 11 7 - x86_64  enabled:    487pgdg94/7/x86_64                        PostgreSQL 9.4 7 - x86_64 enabled:
+        746pgdg95/7/x86_64                        PostgreSQL 9.5 7 - x86_64 enabled:    732pgdg96/7/x86_64
+        PostgreSQL 9.6 7 - x86_64 enabled:    745updates/7/x86_64                       CentOS-7 - Updates        enabled:
+        1,945
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_1.1', 'cis_postgresql_11_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2":
+    title: '1.2 | Ensure Installation of Binary Packages'
+    section: 'Installation and Patches'
+    description: |
+        The PostgreSQL packages are installed on the Operating System from valid source.
+    remediation: |
+        If the version of PostgreSQL installed is not 11.x, the packages may be uninstalled using this command: $ whoami root $
+        yum remove $(rpm -qa|grep postgres)
+        The next recommendation "1.3 Ensure Installation of Community Packages" describes how to explicitly choose which version
+        of PostgreSQL to install, regardless of Linux distribution association.
+         Impact: If the PostgreSQL version shipped as part of the default binary installation associated with your Linux
+        distribution satisfies your requirements, this may be adequate  for development and testing purposes . However,  for
+        production instances  it's generally recommended to install the  latest stable release  of PostgreSQL.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_1.2', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.3":
+    title: '1.3 | Ensure Installation of Community Packages'
+    section: 'Installation and Patches'
+    description: |
+        Adding, and installing, the PostgreSQL community packages to the hosts package repository.
+    remediation: |
+        The following example adds the PGDG repository RPM for PostgreSQL, configures  yum  to prefer the PGDG packages for
+        version 11, and installs the client-server-contributions rpms to the host where you want to install the RDBMS. Using a
+        web browser, go to  http://yum.postgresql.org  and navigate to the repo download link for your OS and version. Copy the
+        URL to the repo file, and then tell  yum  to install it: [root@centos7 ~]# whoami root [root@centos7 ~]# yum install
+        https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm Loaded plugins:
+        fastestmirror pgdg-redhat-repo-latest.noarch.rpm                                                           | 5.6 kB
+        00:00:00 Examining /var/tmp/yum-root-CubWbD/pgdg-redhat-repo-latest.noarch.rpm: pgdg-redhat-repo-42.0-4.noarch Marking
+        /var/tmp/yum-root-CubWbD/pgdg-redhat-repo-latest.noarch.rpm to be installed Resolving Dependencies --> Running
+        transaction check ---> Package pgdg-redhat-repo.noarch 0:42.0-4 will be installed --> Finished Dependency Resolution
+                              Dependencies Resolved
+        ====================================================================================================================
+        Package                     Arch              Version             Repository                                  Size
+        ====================================================================================================================
+        Installing:  pgdg-redhat-repo            noarch            42.0-4              /pgdg-redhat-repo-latest.noarch
+        6.8 k
+                              Transaction Summary
+        ====================================================================================================================
+        Install  1 Package
+                              Total size: 6.8 k Installed size: 6.8 k Is this ok [y/d/N]: y Downloading packages: Running
+        transaction check Running transaction test Transaction test succeeded Running transaction   Installing : pgdg-redhat-
+        repo-42.0-4.noarch                                                                   1/1   Verifying  : pgdg-redhat-
+        repo-42.0-4.noarch                                                                   1/1
+                              Installed:   pgdg-redhat-repo.noarch 0:42.0-4
+                              Complete!
+
+        Now, configure `yum` to prefer the PGDG packages for version 11:
+
+         [root@centos7 ~]# yum -y install yum-prioritiesLoaded plugins: fastestmirrorLoading mirror speeds from cached hostfile
+        * base: mirror.sfo12.us.leaseweb.net * extras: mirror.umd.edu * updates: ftp.usf.eduResolving Dependencies--> Running
+        transaction check---> Package yum-plugin-priorities.noarch 0:1.1.31-50.el7 will be installed--> Finished Dependency
+        ResolutionDependencies
+        Resolved====================================================================================================================
+        Package                              Arch                  Version                       Repository
+        Size====================================================================================================================Installing:
+        yum-plugin-priorities                noarch                1.1.31-50.el7                 base                 29
+        kTransaction
+        Summary====================================================================================================================Install
+        1 PackageTotal download size: 29 kInstalled size: 28 kDownloading packages:yum-plugin-
+        priorities-1.1.31-50.el7.noarch.rpm                                               |  29 kB  00:00:00Running transaction
+        checkRunning transaction testTransaction test succeededRunning transaction  Installing : yum-plugin-
+        priorities-1.1.31-50.el7.noarch                                                       1/1  Verifying  : yum-plugin-
+        priorities-1.1.31-50.el7.noarch                                                       1/1Installed:  yum-plugin-
+        priorities.noarch 0:1.1.31-50.el7Complete![root@centos7 ~]# whoamiroot[root@centos7 ~]# vi /etc/yum.repos.d/pgdg-redhat-
+        all.repo[pgdg11]name=PostgreSQL 11 $releasever -
+        $basearchbaseurl=https://download.postgresql.org/pub/repos/yum/11/redhat/rhel-$releasever-$basearchenabled=1gpgcheck=1gpgkey=file:///etc/pki/rpm-
+        gpg/RPM-GPG-KEY-PGDGpriority=1  <-- add this line Finally, install the PostgreSQL packages: [root@centos7 ~]# whoami
+        root [root@centos7 ~]# yum -y groupinstall 'PostgreSQL Database Server 11 PGDG' Loaded plugins: fastestmirror,
+        priorities There is no installed groups file. Maybe run: yum groups mark convert (see man yum) Loading mirror speeds
+        from cached hostfile  * base: mirror.sfo12.us.leaseweb.net  * extras: mirror.umd.edu  * updates: ftp.usf.edu pgdg10
+        | 3.6 kB  00:00:00 pgdg11                                                                                       | 3.6 kB
+        00:00:00 pgdg94                                                                                       | 3.6 kB  00:00:00
+        pgdg95                                                                                       | 3.6 kB  00:00:00 pgdg96
+        | 3.6 kB  00:00:00 1401 packages excluded due to repository priority protections Resolving Dependencies --> Running
+        transaction check ---> Package postgresql11.x86_64 0:11.3-1PGDG.rhel7 will be installed --> Processing Dependency:
+        libicu for package: postgresql11-11.3-1PGDG.rhel7.x86_64 ---> Package postgresql11-contrib.x86_64 0:11.3-1PGDG.rhel7
+        will be installed --> Processing Dependency: libxslt.so.1(LIBXML2_1.0.22)(64bit) for package:
+        postgresql11-contrib-11.3-1PGDG.rhel7.x86_64 --> Processing Dependency: libxslt.so.1(LIBXML2_1.0.18)(64bit) for package:
+        postgresql11-contrib-11.3-1PGDG.rhel7.x86_64 --> Processing Dependency: libxslt.so.1(LIBXML2_1.0.11)(64bit) for package:
+        postgresql11-contrib-11.3-1PGDG.rhel7.x86_64 --> Processing Dependency: libxslt.so.1()(64bit) for package:
+        postgresql11-contrib-11.3-1PGDG.rhel7.x86_64 ---> Package postgresql11-libs.x86_64 0:11.3-1PGDG.rhel7 will be installed
+        ---> Package postgresql11-server.x86_64 0:11.3-1PGDG.rhel7 will be installed --> Running transaction check ---> Package
+        libicu.x86_64 0:50.1.2-17.el7 will be installed ---> Package libxslt.x86_64 0:1.1.28-5.el7 will be installed -->
+        Finished Dependency Resolution
+                              Dependencies Resolved
+        ====================================================================================================================
+        Package                            Arch                 Version                         Repository            Size
+        ====================================================================================================================
+        Installing for group install "PostgreSQL Database Server 11 PGDG":  postgresql11                       x86_64
+        11.3-1PGDG.rhel7                pgdg11               1.7 M  postgresql11-contrib               x86_64
+        11.3-1PGDG.rhel7                pgdg11               616 k  postgresql11-libs                  x86_64
+        11.3-1PGDG.rhel7                pgdg11               360 k  postgresql11-server                x86_64
+        11.3-1PGDG.rhel7                pgdg11               4.7 M Installing for dependencies:  libicu
+        x86_64               50.1.2-17.el7                   base                 6.9 M  libxslt
+        x86_64               1.1.28-5.el7                    base                 242 k
+                              Transaction Summary
+        ====================================================================================================================
+        Install  4 Packages (+2 Dependent packages)
+                              Total download size: 14 M Installed size: 55 M Downloading packages: (1/6):
+        libxslt-1.1.28-5.el7.x86_64.rpm                                                       | 242 kB  00:00:00 warning:
+        /var/cache/yum/x86_64/7/pgdg11/packages/postgresql11-11.3-1PGDG.rhel7.x86_64.rpm: Header V4 DSA/SHA1 Signature, key ID
+        442df0f8: NOKEY Public key for postgresql11-11.3-1PGDG.rhel7.x86_64.rpm is not installed (2/6):
+        postgresql11-11.3-1PGDG.rhel7.x86_64.rpm                                              | 1.7 MB  00:00:00 (3/6):
+        postgresql11-libs-11.3-1PGDG.rhel7.x86_64.rpm                                         | 360 kB  00:00:00 (4/6):
+        libicu-50.1.2-17.el7.x86_64.rpm                                                       | 6.9 MB  00:00:01 (5/6):
+        postgresql11-server-11.3-1PGDG.rhel7.x86_64.rpm                                       | 4.7 MB  00:00:00 (6/6):
+        postgresql11-contrib-11.3-1PGDG.rhel7.x86_64.rpm                                      | 616 kB  00:00:02
+        --------------------------------------------------------------------------------------------------------------------
+        Total                                                                               4.7 MB/s |  14 MB  00:00:03
+        Retrieving key from file:///etc/pki/rpm-gpg/RPM-GPG-KEY-PGDG Importing GPG key 0x442DF0F8:  Userid     : "PostgreSQL RPM
+        Building Project <pgsqlrpms-hackers@pgfoundry.org>"  Fingerprint: 68c9 e2b9 1a37 d136 fe74 d176 1f16 d2e1 442d f0f8
+        Package    : pgdg-redhat-repo-42.0-4.noarch (installed)  From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-PGDG Running
+        transaction check Running transaction test Transaction test succeeded Running transaction   Installing :
+        postgresql11-libs-11.3-1PGDG.rhel7.x86_64                                                        1/6   Installing :
+        libicu-50.1.2-17.el7.x86_64                                                                      2/6   Installing :
+        postgresql11-11.3-1PGDG.rhel7.x86_64                                                             3/6   Installing :
+        libxslt-1.1.28-5.el7.x86_64                                                                      4/6   Installing :
+        postgresql11-contrib-11.3-1PGDG.rhel7.x86_64                                                     5/6   Installing :
+        postgresql11-server-11.3-1PGDG.rhel7.x86_64                                                      6/6   Verifying  :
+        postgresql11-libs-11.3-1PGDG.rhel7.x86_64                                                        1/6   Verifying  :
+        postgresql11-server-11.3-1PGDG.rhel7.x86_64                                                      2/6   Verifying  :
+        libicu-50.1.2-17.el7.x86_64                                                                      3/6   Verifying  :
+        libxslt-1.1.28-5.el7.x86_64                                                                      4/6   Verifying  :
+        postgresql11-11.3-1PGDG.rhel7.x86_64                                                             5/6   Verifying  :
+        postgresql11-contrib-11.3-1PGDG.rhel7.x86_64                                                     6/6
+                              Installed:   postgresql11.x86_64 0:11.3-1PGDG.rhel7                  postgresql11-contrib.x86_64
+        0:11.3-1PGDG.rhel7   postgresql11-libs.x86_64 0:11.3-1PGDG.rhel7             postgresql11-server.x86_64
+        0:11.3-1PGDG.rhel7
+                              Dependency Installed:   libicu.x86_64 0:50.1.2-17.el7                            libxslt.x86_64
+        0:1.1.28-5.el7
+                              Complete!
+
+        **Note:** The above-mentioned example is referenced as an illustration only. Package names and versions may differ.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_1.3', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.4":
+    title: '1.4 | Ensure systemd Service Files Are Enabled'
+    section: 'Installation and Patches'
+    description: |
+        Confirm, and correct if necessary, the PostgreSQL  systemd  service is enabled.
+    remediation: |
+        Irrespective of package source, PostgreSQL services can be identified because it typically includes the text string
+        "postgresql". PGDG installs do not automatically register the service as a "want" of the default  systemd  target.
+        Multiple instances of PostgreSQL services often distinguish themselves using a version number. [root@centos7 ~]# whoami
+        root [root@centos7 ~]# systemctl enable postgresql-11 Created symlink from /etc/systemd/system/multi-
+        user.target.wants/postgresql-11.service to /usr/lib/systemd/system/postgresql-11.service. [root@centos7 ~]# systemctl
+        list-dependencies multi-user.target | grep -i postgres ● ├─postgresql-11.service [root@centos7 ~]#
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_1.4', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.5":
+    title: '1.5 | Ensure Data Cluster Initialized Successfully'
+    section: 'Installation and Patches'
+    description: |
+        First time installs of PostgreSQL requires the instantiation of the database cluster. A database cluster is a collection
+        of databases that are managed by a single server instance.
+    remediation: |
+        Attempting to instantiate a data cluster to an existing non-empty directory will fail: [root@centos7 ~]# whoami root
+        [root@centos7 ~]# PGSETUP_INITDB_OPTIONS="-k" /usr/pgsql-11/bin/postgresql-11-setup initdb Data directory is not empty!
+        In the case of a cluster instantiation failure, one must delete/remove the entire data cluster directory and repeat the
+        `initdb` command:
+         [root@centos7 ~]# whoamiroot[root@centos7 ~]# rm -rf ~postgres/10[root@centos7 ~]# PGSETUP_INITDB_OPTIONS="-k"
+        /usr/pgsql-11/bin/postgresql-11-setup initdbInitializing database ... OK
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_1.5', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.1":
+    title: '2.1 | Ensure the file permissions mask is correct - manual'
+    section: 'Directory and File Permissions'
+    description: |
+        Files are always created using a default set of permissions. File permissions can be restricted by applying a
+        permissions mask called the  umask . The  postgres  user account should use a umask of  077  to deny file access to all
+        user accounts except the owner.
+    remediation: |
+        Depending upon the  postgres  user's environment, the umask is typically set in the initialization file  .bash_profile ,
+        but may also be set in  .profile  or  .bashrc . To set the umask, add the following to the appropriate profile file: $
+        whoami postgres $ cd ~ $ ls -ld .{bash_profile,profile,bashrc} ls: cannot access .profile: No such file or directory ls:
+        cannot access .bashrc: No such file or directory -rwx------. 1 postgres postgres 267 Aug 14 12:59 .bash_profile $ echo
+        "umask 077" >> .bash_profile $ source .bash_profile $ umask 0077
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_2.1', 'cis_postgresql_11_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.2":
+    title: '2.2 | Ensure the PostgreSQL pg wheel group membership is correct - manual'
+    section: 'Directory and File Permissions'
+    description: |
+        The group  pgwheel  is explicitly created on a host where the PostgreSQL server is installed. Membership in this group
+        enables an ordinary user account to gain superuser access to a database cluster by using the  sudo  command See Ensure
+        sudo is configured correctly later in this benchmark. Only user accounts authorized to have superuser access should be
+        members of the  pgwheel  group.
+    remediation: |
+        If the  pg_wheel  group does not exist, use the following command to create it: $ whoami root $ groupadd pg_wheel &&
+        getent group pg_wheel pg_wheel:x:502:
+        **Note:** that your system's group number may not be 502. That's OK.
+
+        Adding the `postgres` user to the newly created group is done by issuing:
+         $ whoamiroot$ gpasswd -a postgres pg_wheelAdding user postgres to group pg_wheel$ # verify membership$ awk -F':'
+        '/pg_wheel/{print $4}' /etc/grouppostgres
+        Removing a user account from the 'pg_wheel' group is achieved by executing the following command: $ whoami root $
+        gpasswd -d pg_wheel postgres Removing user postgres from group pg_wheel $ # verify the user was removed $ awk -F':'
+        '/pg_wheel/{print $4}' /etc/group $
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_2.2', 'cis_postgresql_11_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.1.2":
+    title: '3.1.2 | Ensure the log destinations are set correctly'
+    section: 'PostgreSQL Logging'
+    description: |
+        PostgreSQL supports several methods for logging server messages, including  stderr ,  csvlog  and  syslog . On Windows,
+        eventlog  is also supported. One or more of these destinations should be set for server log output.
+    remediation: |
+        Execute the following SQL statements to remediate this setting (in this example, setting the log destination to  csvlog
+        ): postgres=# alter system set log_destination = 'csvlog'; ALTER SYSTEM postgres=# select pg_reload_conf();
+        pg_reload_conf ----------------  t (1 row)
+        **Note:** If more than one log destination is to be used, set this parameter to a list of desired log destinations
+        separated by commas (e.g. 'csvlog, stderr').
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_3.1.2', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.3":
+    title: '3.1.3 | Ensure the logging collector is enabled'
+    section: 'PostgreSQL Logging'
+    description: |
+        The logging collector is a background process that captures log messages sent to  stderr  and redirects them into log
+        files. The  loggingcollector  setting must be enabled in order for this process to run. It can only be set at server
+        start.
+    remediation: |
+        Execute the following SQL statement(s) to remediate this setting: postgres=# alter system set logging_collector = 'on';
+        ALTER SYSTEM
+        Unfortunately, this setting can only be changed at server (re)start. As root, restart the PostgreSQL service for this
+        change to take effect:
+         [root@centos7 ~]# whoamiroot[root@centos7 ~]# systemctl restart postgresql-11[root@centos7 ~]# systemctl status
+        postgresql-11|grep 'ago$'   Active: active (running) since ; 1s ago
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_3.1.3', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.4":
+    title: '3.1.4 | Ensure the log file destination directory is set correctly'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  logdirectory  setting specifies the destination directory for log files when  logdestination  is  stderr  or
+        csvlog . It can be specified as relative to the cluster data directory  PGDATA  or as an absolute path.  logdirectory
+        should be set according to your organizations logging policy.
+    remediation: |
+        Execute the following SQL statement(s) to remediate this setting: postgres=# alter system set
+        log_directory='/var/log/postgres/11'; ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf ----------------
+        t (1 row) postgres=# show log_directory;  log_directory ---------------  /var/log/postgres/11 (1 row)
+        **Note:** The use of `/var/log/postgres/11`, above, is an example. This should be set to an appropriate path as defined
+        by your organization's logging requirements. Having said that, it **is** a good idea to have the logs outside of your
+        PGDATA dir so that they are not included by things like `pg_basebackup` or `pgBackRest`.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_3.1.4', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.5":
+    title: '3.1.5 | Ensure the filename pattern for log files is set correctly'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  logfilename  setting specifies the filename pattern for log files. The value for  logfilename  should match your
+        organizations logging policy. The value is treated as a  strftime  pattern, so  escapes  can be used to specify
+        timevarying filenames. The supported  escapes  are similar to those listed in the Open Groups  strftime  specification.
+        If you specify a filename without escapes, you should plan to use a log rotation utility to avoid eventually filling the
+        partition that contains  logdirectory . If there are any timezonedependent  escapes , the computation is done in the
+        zone specified by  logtimezone . Also, the systems  strftime  is not used directly, so platformspecific nonstandard
+        extensions do not work. If CSVformat output is enabled in  logdestination ,  .csv  will be appended to the log filename.
+        If  logfilename  ends in  .log , the suffix is replaced instead.
+    remediation: |
+        Execute the following SQL statement(s) to remediate this setting: postgres=# alter system set
+        log_filename='postgresql-%Y%m%d.log'; ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf ----------------
+        t (1 row) postgres=# show log_filename;    log_filename -------------------  postgresql-%Y%m%d.log (1 row)
+        **Note:** In this example, a new logfile will be created for each day (e.g. postgresql-20180901.log)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_3.1.5', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.6":
+    title: '3.1.6 | Ensure the log file permissions are set correctly'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  logfilemode  setting determines the file permissions for log files when  loggingcollector  is enabled. The
+        parameter value is expected to be a numeric mode specification in the form accepted by the  chmod  and  umask  system
+        calls. To use the customary octal format, the number must start with a  0  zero. The permissions should be set to allow
+        only the necessary access to authorized personnel. In most cases the best setting is  0600 , so that only the server
+        owner can read or write the log files. The other commonly useful setting is  0640 , allowing members of the owners group
+        to read the files, although to make use of that, you will need to alter the  logdirectory  setting to store the log
+        files outside the cluster data directory.
+    remediation: |
+        Execute the following SQL statement(s) to remediate this setting (with the example assuming a desired value of  0600 ):
+        postgres=# alter system set log_file_mode = '0600'; ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf
+        ----------------  t (1 row) postgres=# show log_file_mode;  log_file_mode ---------------  0600 (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_3.1.6', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.7":
+    title: '3.1.7 | Ensure log truncate on rotation is enabled'
+    section: 'PostgreSQL Logging'
+    description: |
+        Enabling the  logtruncateonrotation  setting when  loggingcollector  is enabled causes PostgreSQL to truncate overwrite
+        existing log files with the same name during log rotation instead of appending to them. For example, using this setting
+        in combination with a  logfilename  setting value like  postgresqlH.log  would result in generating 24 hourly log files
+        and then cyclically overwriting them postgresql00.log postgresql01.log ... postgresql23.log
+        Note Truncation will occur only when a new file is being opened due to timebased rotation, not during server startup or
+        sizebased rotation see later in this benchmark for sizebased rotation details.
+    remediation: |
+        Execute the following SQL statement(s) to remediate this setting: postgres=# alter system set log_truncate_on_rotation =
+        'on'; ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf ----------------  t (1 row) postgres=# show
+        log_truncate_on_rotation;  log_truncate_on_rotation --------------------------  on (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_3.1.7', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.8":
+    title: '3.1.8 | Ensure the maximum log file lifetime is set correctly'
+    section: 'PostgreSQL Logging'
+    description: |
+        When  loggingcollector  is enabled, the  logrotationage  parameter determines the maximum lifetime of an individual log
+        file depending on the value of  logfilename . After this many minutes have elapsed, a new log file will be created via
+        automatic log file rotation. Current best practices advise log rotation  at least  daily, but your organizations logging
+        policy should dictate your rotation schedule.
+    remediation: |
+        Execute the following SQL statement(s) to remediate this setting (in this example, setting it to one hour): postgres=#
+        alter system set log_rotation_age='1h'; ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf
+        ----------------  t (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_3.1.8', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.9":
+    title: '3.1.9 | Ensure the maximum log file size is set correctly'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  logrotationsize  setting determines the maximum size of an individual log file. Once the maximum size is reached,
+        automatic log file rotation will occur.
+    remediation: |
+        Execute the following SQL statement(s) to remediate this setting (in this example, setting it to 1GB): postgres=# alter
+        system set log_rotation_size = '1GB'; ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf ----------------
+        t (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_3.1.9', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.10":
+    title: '3.1.10 | Ensure the correct syslog facility is selected'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  syslogfacility  setting specifies the syslog facility to be used when logging to  syslog  is enabled. You can
+        choose from any of the local facilities LOCAL0 LOCAL1 LOCAL2 LOCAL3 LOCAL4 LOCAL5 LOCAL6 LOCAL7 Your organizations
+        logging policy should dictate which facility to use based on the  syslog  daemon in use.
+    remediation: |
+        Execute the following SQL statement(s) to remediate this setting (in this example, setting it to the  LOCAL1  facility):
+        postgres=# alter system set syslog_facility = 'LOCAL1'; ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf
+        ----------------  t (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_3.1.10', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.11":
+    title: '3.1.11 | Ensure the program name for PostgreSQL syslog messages is correct'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  syslogident  setting specifies the program name used to identify PostgreSQL messages in syslog logs. An example of
+        a possible program name is postgres.
+    remediation: |
+        Execute the following SQL statement(s) to remediate this setting (in this example, assuming a program name of "pg11"):
+        postgres=# alter system set syslog_ident = 'pg11'; ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf
+        ----------------  t (1 row) postgres=# show syslog_ident;  syslog_ident --------------  pg11 (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_3.1.11', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.12":
+    title: '3.1.12 | Ensure the correct messages are written to the server log'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  logminmessages  setting specifies the message levels that are written to the server log. Each level includes all
+        the levels that follow it. The lower the level vertically, below, the fewer messages are sent. Valid values are DEBUG5
+        exceedingly chatty DEBUG4 DEBUG3 DEBUG2 DEBUG1 INFO NOTICE WARNING ERROR LOG FATAL PANIC           practically mute
+        WARNING  is considered the best practice unless indicated otherwise by your organizations logging policy.
+    remediation: |
+        Execute the following SQL statement(s) as superuser to remediate this setting (in this example, to set it to  warning ):
+        postgres=# alter system set log_min_messages = 'warning'; ALTER SYSTEM postgres=# select pg_reload_conf();
+        pg_reload_conf ----------------  t (1 row)
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_3.1.12', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.13":
+    title: '3.1.13 | Ensure the correct SQL statements generating errors are recorded'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  logminerrorstatement  setting causes all SQL statements generating errors at or above the specified severity level
+        to be recorded in the server log. Each level includes all the levels that follow it. The lower the level vertically,
+        below, the fewer messages are recorded. Valid values are DEBUG5          exceedingly chatty DEBUG4 DEBUG3 DEBUG2 DEBUG1
+        INFO NOTICE WARNING ERROR LOG FATAL PANIC           practically mute ERROR  is considered the best practice setting.
+        Changes should only be made in accordance with your organizations logging policy. Note  To effectively turn off logging
+        of failing statements, set this parameter to  PANIC .
+    remediation: |
+        Execute the following SQL statement(s) as superuser to remediate this setting (in the example, to  error ): postgres=#
+        alter system set log_min_error_statement = 'error'; ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf
+        ----------------  t (1 row)
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_3.1.13', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.14":
+    title: '3.1.14 | Ensure debug print parse is disabled'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  debugprintparse  setting enables printing the resulting parse tree for each executed query. These messages are
+        emitted at the  LOG  message level. Unless directed otherwise by your organizations logging policy, it is recommended
+        this setting be disabled by setting it to  off .
+    remediation: |
+        Execute the following SQL statement(s) to remediate this setting: postgres=# alter system set debug_print_parse='off';
+        ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf ----------------  t (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_3.1.14', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.15":
+    title: '3.1.15 | Ensure debug print rewritten is disabled'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  debugprintrewritten  setting enables printing the query rewriter output for each executed query. These messages are
+        emitted at the  LOG  message level. Unless directed otherwise by your organizations logging policy, it is recommended
+        this setting be disabled by setting it to  off .
+    remediation: |
+        Execute the following SQL statement(s) to disable this setting: postgres=# alter system set debug_print_rewritten =
+        'off'; ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf ----------------  t (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_3.1.15', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.16":
+    title: '3.1.16 | Ensure debug print plan is disabled'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  debugprintplan  setting enables printing the execution plan for each executed query. These messages are emitted at
+        the  LOG  message level. Unless directed otherwise by your organizations logging policy, it is recommended this setting
+        be disabled by setting it to  off .
+    remediation: |
+        Execute the following SQL statement(s) to disable this setting: postgres=# alter system set debug_print_plan = 'off';
+        ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf ----------------  t (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_3.1.16', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.17":
+    title: '3.1.17 | Ensure debug pretty print is enabled'
+    section: 'PostgreSQL Logging'
+    description: |
+        Enabling  debugprettyprint  indents the messages produced by  debugprintparse ,  debugprintrewritten , or
+        debugprintplan  making them significantly easier to read.
+    remediation: |
+        Execute the following SQL statement(s) to enable this setting: postgres=# alter system set debug_pretty_print = 'on';
+        ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf ----------------  t (1 row)
+                              Impact: Be advised that the aforementioned  DEBUG  printing options are  disabled , but if your
+        organizational logging policy requires them to be  on  then this option comes into play.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_3.1.17', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.18":
+    title: '3.1.18 | Ensure log connections is enabled'
+    section: 'PostgreSQL Logging'
+    description: |
+        Enabling the  logconnections  setting causes each attempted connection to the server to be logged, as well as successful
+        completion of client authentication. This parameter cannot be changed after session start.
+    remediation: |
+        Execute the following SQL statement(s) to enable this setting: postgres=# alter system set log_connections = 'on'; ALTER
+        SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf ----------------  t (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_3.1.18', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.19":
+    title: '3.1.19 | Ensure log disconnections is enabled'
+    section: 'PostgreSQL Logging'
+    description: |
+        Enabling the  logdisconnections  setting logs the end of each session, including session duration. This parameter cannot
+        be changed after session start.
+    remediation: |
+        Execute the following SQL statement(s) to enable this setting: postgres=# alter system set log_disconnections = 'on';
+        ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf ----------------  t (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_3.1.19', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.20":
+    title: '3.1.20 | Ensure log error verbosity is set correctly'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  logerrorverbosity  setting specifies the verbosity amount of detail of logged messages. Valid values are TERSE
+        DEFAULT VERBOSE with each containing the fields of the level above it as well as additional fields. TERSE  excludes the
+        logging of  DETAIL ,  HINT ,  QUERY , and  CONTEXT  error information. VERBOSE  output includes the  SQLSTATE , error
+        code, and the source code file name, function name, and line number that generated the error. The appropriate value
+        should be set based on your organizations logging policy.
+    remediation: |
+        Execute the following SQL statement(s) as superuser to remediate this setting (in this example, to  verbose ):
+        postgres=# alter system set log_error_verbosity = 'verbose'; ALTER SYSTEM postgres=# select pg_reload_conf();
+        pg_reload_conf ----------------  t (1 row)
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_3.1.20', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.21":
+    title: '3.1.21 | Ensure log hostname is set correctly'
+    section: 'PostgreSQL Logging'
+    description: |
+        Enabling the  loghostname  setting causes the hostname of the connecting host to be logged  in addition  to the hosts IP
+        address for connection log messages. Disabling the setting causes only the connecting hosts IP address to be logged, and
+        not the hostname. Unless your organizations logging policy requires hostname logging, it is best to disable this setting
+        so as not to incur the overhead of DNS resolution for each statement that is logged.
+    remediation: |
+        Execute the following SQL statement(s) to remediate this setting (in this example, to  off ): postgres=# alter system
+        set log_hostname='off'; ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf ----------------  t (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_3.1.21', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.22":
+    title: '3.1.22 | Ensure log line prefix is set correctly'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  loglineprefix  setting specifies a  printf style string that is prefixed to each log line. If blank, no prefix is
+        used. You should configure this as recommended by the  pgBadger  development team unless directed otherwise by your
+        organizations logging policy.   characters begin escape sequences that are replaced with status information as outlined
+        below. Unrecognized escapes are ignored. Other characters are copied straight to the log line. Some escapes are only
+        recognized by session processes and will be treated as empty by background processes such as the main server process.
+        Status information may be aligned either left or right by specifying a numeric literal after the    and before the
+        option. A negative value will cause the status information to be padded on the right with spaces to give it a minimum
+        width, whereas a positive value will pad on the left. Padding can be useful to aid human readability in log files. Any
+        of the following escape sequences can be used Escape  Effect                                            Session only a
+        Application name                                  yes u      User name                                         yes d
+        Database name                                     yes r      Remote host name or IP address, and remote port   yes h
+        Remote host name or IP address                    yes p      Process ID                                        no t
+        Time stamp without milliseconds                   no m      Time stamp with milliseconds                      no i
+        Command tag type of sessions current command    yes e      SQLSTATE error code                               no c
+        Session ID see below                             no l      Number of the log line for each session          or process,
+        starting at 1                         no s      Process start time stamp                          no v      Virtual
+        transaction ID backendID/localXID       no x      Transaction ID 0 if none is assigned            no q      Produces no
+        output, but tells nonsession          processes to stop at this point in the string         ignored by session processes
+        no       Literal
+    remediation: |
+        Execute the following SQL statement(s) to remediate this setting: postgres=# alter system set log_line_prefix = '%m
+        [%p]: [%l-1] db=%d,user=%u,app=%a,client=%h '; ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf
+        ----------------  t (1 row)
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_3.1.22', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.23":
+    title: '3.1.23 | Ensure log statement is set correctly'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  logstatement  setting specifies the types of SQL statements that are logged. Valid values are none  off ddl mod all
+        all statements It is recommended this be set to  ddl  unless otherwise directed by your organizations logging policy.
+        ddl  logs all data definition statements CREATE ALTER DROP mod  logs all  ddl  statements, plus datamodifying statements
+        INSERT UPDATE DELETE TRUNCATE COPY FROM  PREPARE ,  EXECUTE , and  EXPLAIN ANALYZE  statements are also logged if their
+        contained command is of an appropriate type. For clients using extended query protocol, logging occurs when an Execute
+        message is received, and values of the Bind parameters are included with any embedded singlequote marks doubled.
+    remediation: |
+        Execute the following SQL statement(s) as superuser to remediate this setting: postgres=# alter system set
+        log_statement='ddl'; ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf ----------------  t (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_3.1.23', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.24":
+    title: '3.1.24 | Ensure log timezone is set correctly'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  logtimezone  setting specifies the time zone to use in timestamps within log messages. This value is clusterwide,
+        so that all sessions will report timestamps consistently. Unless directed otherwise by your organizations logging
+        policy, set this to either  GMT  or  UTC .
+    remediation: |
+        Execute the following SQL statement(s) to remediate this setting: postgres=# alter system set log_timezone = 'GMT';
+        ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf ----------------  t (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_3.1.24', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.2":
+    title: '3.2 | Ensure the PostgreSQL Audit Extension pgAudit is enabled'
+    section: 'Logging Monitoring And Auditing (Centos 6)'
+    description: |
+        The PostgreSQL Audit Extension  pgAudit  provides detailed session and/or object audit logging via the standard
+        PostgreSQL logging facility. The goal of pgAudit is to provide PostgreSQL users with the capability to produce audit
+        logs often required to comply with government, financial, or ISO certifications.
+    remediation: |
+        To install and enable pgAudit, simply install the appropriate rpm from the PGDG repo: [root@centos7 ~]# whoami root
+        [root@centos7 ~]# yum -y install pgaudit13_11 Loaded plugins: fastestmirror, priorities Loading mirror speeds from
+        cached hostfile  * base: centos.mirrors.tds.net  * extras: mirror.team-cymru.com  * updates:
+        mirror.sesp.northwestern.edu base                                                       | 3.6 kB  00:00:00 extras
+        | 3.4 kB  00:00:00 pgdg10                                                     | 3.6 kB  00:00:00 pgdg11
+        | 3.6 kB  00:00:00 pgdg94                                                     | 3.6 kB  00:00:00 pgdg95
+        | 3.6 kB  00:00:00 pgdg96                                                     | 3.6 kB  00:00:00 updates
+        | 3.4 kB  00:00:00 (1/6): pgdg11/7/x86_64/primary_db                          | 184 kB  00:00:00 (2/6):
+        pgdg95/7/x86_64/primary_db                          | 245 kB  00:00:00 (3/6): pgdg10/7/x86_64/primary_db
+        | 229 kB  00:00:01 (4/6): pgdg96/7/x86_64/primary_db                          | 248 kB  00:00:01 (5/6):
+        pgdg94/7/x86_64/primary_db                          | 254 kB  00:00:01 (6/6): updates/7/x86_64/primary_db
+        | 5.0 MB  00:00:08 1425 packages excluded due to repository priority protections Resolving Dependencies --> Running
+        transaction check ---> Package pgaudit13_11.x86_64 0:1.3.0-1.rhel7 will be installed --> Finished Dependency Resolution
+                              Dependencies Resolved
+                              =============================================================================  Package
+        Arch      Version           Repository      Size
+        ============================================================================= Installing:  pgaudit13_11    x86_64
+        1.3.0-1.rhel7     pgdg11          45 k
+                              Transaction Summary =============================================================================
+        Install  1 Package
+                              Total download size: 45 k Installed size: 85 k Downloading packages:
+        pgaudit13_11-1.3.0-1.rhel7.x86_64.rpm                      |  45 kB  00:00:00 Running transaction check Running
+        transaction test Transaction test succeeded Running transaction   Installing : pgaudit13_11-1.3.0-1.rhel7.x86_64
+        1/1   Verifying  : pgaudit13_11-1.3.0-1.rhel7.x86_64                          1/1
+                              Installed:   pgaudit13_11.x86_64 0:1.3.0-1.rhel7
+                              Complete!
+
+        pgAudit is now installed and ready to be configured. Next, we need to alter the `postgresql.conf` configuration file to:
+        * enable pgAudit as an extension in the `shared_preload_libraries` parameter
+        * indicate which classes of statements we want to log via the `pgaudit.log` parameter
+
+        and, finally, restart the PostgreSQL service:
+         $ vi ${PGDATA}/postgresql.conf
+        Find the  shared_preload_libraries  entry, and add 'pgaudit' to it (preserving any existing entries):
+        shared_preload_libraries = 'pgaudit'
+                              OR
+                              shared_preload_libraries = 'pgaudit,somethingelse'
+        Now, add a new `pgaudit`-specific entry:
+         for this example we are logging the ddl and write operationspgaudit.log='ddl,write' Restart the PostgreSQL server for
+        changes to take affect: [root@centos7 ~]# whoami root [root@centos7 ~]# systemctl restart postgresql-11 [root@centos7
+        ~]# systemctl status postgresql-11|grep 'ago$'    Active: active (running) since Thu 2019-05-30 13:33:37 EDT; 10s ago
+        [root@centos7 ~]#
+                           Impact: Depending on settings, it is possible for pgAudit to generate an  enormous volume of logging
+        . Be careful to determine exactly what needs to be audit logged in your environment to avoid logging too much.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_3.2', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == pgaudit'
+            - name: Undefined
+              rule: 'Undefined'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "4.1":
+    title: '4.1 | Ensure sudo is configured correctly - manual'
+    section: 'User Access and Authorization'
+    description: |
+        It is common to have more than one authorized individual administering the PostgreSQL service at the Operating System
+        level. It is also quite common to permit login privileges to individuals on a PostgreSQL host who otherwise are not
+        authorized to access the servers data cluster and files. Administering the PostgreSQL data cluster, as opposed to its
+        data, is to be accomplished via a localhost login of a regular UNIX user account. Access to the  postgres  superuser
+        account is restricted in such a manner as to interdict unauthorized access.  sudo  satisfies the requirements by
+        escalating ordinary user account privileges as the PostgreSQL RDBMS superuser.
+    remediation: |
+        As superuser  root , execute the command  visudo  to edit the  /etc/sudoers  file so the following line is present:
+        %pg_wheel ALL= /bin/su - postgres
+        This grants any Operating System user that is a member of the `pg_wheel` group to use `sudo` to become the `postgres`
+        user.
+
+        Ensure that all Operating System user's that need such access are members of the group as detailed earlier in this
+        benchmark.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_4.1', 'cis_postgresql_11_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.2":
+    title: '4.2 | Ensure excessive administrative privileges are revoked - manual'
+    section: 'User Access and Authorization'
+    description: |
+        With respect to PostgreSQL administrative SQL commands, only superusers should have elevated privileges. PostgreSQL
+        regular, or application, users should not possess the ability to create roles, create new databases, manage replication,
+        or perform any other action deemed privileged. Typically, regular users should only be granted the minimal set of
+        privileges commensurate with managing the application DDL create table, create view, create index, etc. DML select,
+        insert, update, delete Further, it has become best practice to create separate roles for DDL and DML. Given an
+        application called payroll, one would create the following users payrollowner payrolluser Any DDL privileges would be
+        granted to the payrollowner account only, while DML privileges would be given to the payrolluser account only. This
+        prevents accidental creation/altering/dropping of database objects by application code that run as the payrolluser
+        account.
+    remediation: |
+        If any regular or application users have been granted excessive administrative rights, those privileges should be
+        removed immediately via the PostgreSQL  ALTER ROLE  SQL command. Using the same example above, the following SQL
+        statements revoke all unnecessary elevated administrative privileges from the regular user  appuser : $ whoami postgres
+        $ psql -c "ALTER ROLE appuser NOSUPERUSER;" ALTER ROLE $ psql -c "ALTER ROLE appuser NOCREATEROLE;" ALTER ROLE $ psql -c
+        "ALTER ROLE appuser NOCREATEDB;" ALTER ROLE $ psql -c "ALTER ROLE appuser NOREPLICATION;" ALTER ROLE $ psql -c "ALTER
+        ROLE appuser NOBYPASSRLS;" ALTER ROLE $ psql -c "ALTER ROLE appuser NOINHERIT;" ALTER ROLE
+        Verify the appuser now passes your check by having no defined Attributes:
+         $ whoamipostgres$ psql -c "\du appuser"          List of rolesRole name | Attributes | Member
+        of----------+------------+-----------appuser   |            | {}
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_4.2', 'cis_postgresql_11_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.3":
+    title: '4.3 | Ensure excessive function privileges are revoked'
+    section: 'User Access and Authorization'
+    description: |
+        In certain situations, to provide required functionality, PostgreSQL needs to execute internal logic stored procedures,
+        functions, triggers, etc. and/or external code modules with elevated privileges. However, if the privileges required for
+        execution are at a higher level than the privileges assigned to organizational users invoking the functionality
+        applications/programs, those users are indirectly provided with greater privileges than assigned by their organization.
+        This is known as privilege elevation. Privilege elevation must be utilized only where necessary. Execute privileges for
+        application functions should be restricted to authorized users only.
+    remediation: |
+        Where possible, revoke  SECURITY DEFINER  on PostgreSQL functions. To change a  SECURITY DEFINER  function to  SECURITY
+        INVOKER , run the following SQL: $ whoami root $ sudo su - postgres $ psql -c "ALTER FUNCTION [functionname] SECURITY
+        INVOKER;"
+        If it is not possible to revoke `SECURITY DEFINER`, ensure the function can be executed by only the accounts that
+        absolutely need such functionality:
+         REVOKE EXECUTE ON FUNCTION delete_customer(integer,boolean) FROM appreader;REVOKE
+        Confirm that the  appreader  user may no longer execute the function: SELECT proname, proacl FROM pg_proc WHERE proname
+        = 'delete_customer';      proname     |                         proacl
+        -----------------+--------------------------------------------------------  delete_customer |
+        {=X/postgres,postgres=X/postgres,appwriter=X/postgres} (1 row)
+        Based on output above, `appreader=X/postgres` no longer exists in the `proacl` column results returned from query and
+        confirms `appreader` is no longer granted execute privilege on the function.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_4.3', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.4":
+    title: '4.4 | Ensure excessive DML privileges are revoked - manual'
+    section: 'User Access and Authorization'
+    description: |
+        DML insert, update, delete operations at the table level should be restricted to only authorized users. PostgreSQL
+        manages table level DML permissions via the GRANT statement.
+    remediation: |
+        If a given database user has been granted excessive DML privileges for a given database table, those privileges should
+        be revoked immediately using the  REVOKE  SQL command. Continuing with the example above, remove unauthorized grants for
+        appreader  user using the  REVOKE  statement and verify the Boolean values are now false. postgres=# REVOKE INSERT,
+        UPDATE, DELETE ON TABLE customer FROM appreader; REVOKE
+                              postgres=# select t.tablename, u.usename,        has_table_privilege(u.usename, t.tablename,
+        'select') as select,        has_table_privilege(u.usename, t.tablename, 'insert') as insert,
+        has_table_privilege(u.usename, t.tablename, 'update') as update,        has_table_privilege(u.usename, t.tablename,
+        'delete') as delete from   pg_tables t, pg_user u where  t.tablename = 'customer'  and    u.usename in
+        ('appwriter','appreader');
+                              tablename |  usename  | select | insert | update | delete
+        ----------+-----------+--------+--------+--------+-------- customer  | appwriter | t      | t      | t      | t customer
+        | appreader | t      | f      | f      | f (2 rows)
+        With the publication of [CVE-2018-1058](https://nvd.nist.gov/vuln/detail/CVE-2018-1058), it is also recommended that all
+        privileges be revoked from the `public` schema for all users on all databases:
+         postgres=# REVOKE CREATE ON SCHEMA public FROM PUBLIC;REVOKE
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_4.4', 'cis_postgresql_11_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.5":
+    title: '4.5 | Use pg permission extension to audit object permissions'
+    section: 'User Access and Authorization'
+    description: |
+        Using a PostgreSQL extension called  pgpermissions  it is possible to declare which DB users should have which
+        permissions on a given object and generate a report showing compliance/deviation.
+    remediation: |
+        At this time,  pg_permission  is not packaged by the PGDG packaging team. As such, download the latest from the
+        extension's  site , compile it, and then install it: [root@centos7 ~]# whoami root [root@centos7 ~]# yum -y install
+        postgresql11-devel Loaded plugins: fastestmirror, priorities Loading mirror speeds from cached hostfile  * base:
+        centos.mirrors.tds.net  * extras: mirror.team-cymru.com  * updates: mirrors.gigenet.com 1425 packages excluded due to
+        repository priority protections Resolving Dependencies --> Running transaction check ---> Package
+        postgresql11-devel.x86_64 0:11.3-1PGDG.rhel7 will be installed --> Processing Dependency: libicu-devel for package:
+        postgresql11-devel-11.3-1PGDG.rhel7.x86_64 --> Running transaction check ---> Package libicu-devel.x86_64
+        0:50.1.2-17.el7 will be installed --> Finished Dependency Resolution
+                              Dependencies Resolved
+                              =============================================================================  Package
+        Arch     Version              Repository            Size
+        ============================================================================= Installing:  postgresql11-devel  x86_64
+        11.3-1PGDG.rhel7     pgdg11               2.0 M Installing for dependencies:  libicu-devel        x86_64   50.1.2-17.el7
+        base                 702 k
+                              Transaction Summary =============================================================================
+        Install  1 Package (+1 Dependent package)
+                              Total download size: 2.7 M Installed size: 13 M Downloading packages: (1/2): libicu-
+        devel-50.1.2-17.el7.x86_64.rpm                                                 | 702 kB  00:00:00 (2/2):
+        postgresql11-devel-11.3-1PGDG.rhel7.x86_64.rpm                                        | 2.0 MB  00:00:01
+        ----------------------------------------------------------------------------- Total
+        1.9 MB/s | 2.7 MB  00:00:01 Running transaction check Running transaction test Transaction test succeeded Running
+        transaction   Installing : libicu-devel-50.1.2-17.el7.x86_64                          1/2   Installing :
+        postgresql11-devel-11.3-1PGDG.rhel7.x86_64                 2/2   Verifying  : postgresql11-devel-11.3-1PGDG.rhel7.x86_64
+        1/2   Verifying  : libicu-devel-50.1.2-17.el7.x86_64                          2/2
+                              Installed:   postgresql11-devel.x86_64 0:11.3-1PGDG.rhel7
+                              Dependency Installed:   libicu-devel.x86_64 0:50.1.2-17.el7
+                              Complete! [root@instance-1 ~]# curl -L -o pg_permission_1.1.tgz https://github.com/cybertec-
+        postgresql/pg_permission/archive/REL_1_1.tar.gz   % Total  % Received % Xferd  Average Speed   Time    Time     Time
+        Current                                Dload  Upload   Total   Spent    Left  Speed 100   142  0   142    0     0    581
+        0 --:--:-- --:--:-- --:--:--   579   0     0  0  9437    0     0  24799      0 --:--:-- --:--:-- --:--:-- 24799
+        [root@instance-1 ~]# tar xf pg_permission_1.1.tgz  [root@instance-1 ~]# cd pg_permission-REL_1_1/ [root@instance-1 ~]#
+        which pg_config /usr/bin/which: no pg_config in (/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin)
+        [root@instance-1 ~]# export PATH=/usr/pgsql-11/bin:$PATH [root@instance-1 ~]# which pg_config
+        /usr/pgsql-11/bin/pg_config [root@instance-1 ~]# make install /usr/bin/mkdir -p '/usr/pgsql-11/share/extension'
+        /usr/bin/mkdir -p '/usr/pgsql-11/share/extension' /usr/bin/mkdir -p '/usr/pgsql-11/doc/extension' /usr/bin/install -c -m
+        644 .//pg_permissions.control '/usr/pgsql-11/share/extension/' /usr/bin/install -c -m 644 .//pg_permissions--*.sql
+        '/usr/pgsql-11/share/extension/' /usr/bin/install -c -m 644 .//README.pg_permissions '/usr/pgsql-11/doc/extension/'
+        [root@instance-1 ~]# su - postgres bash-4.2$ whoami postgres bash-4.2$ psql -c "create extension pg_permissions;" CREATE
+        EXTENSION
+
+        Now you need to add entries to `permission_target` that correspond to your _desired permissions_.
+
+        Let's assume we have a schema `appschema`, and `appuser` should have `SELECT`, `UPDATE`, `DELETE`, and `INSERT`
+        permissions on all tables and views in that schema:
+
+         postgres=# INSERT INTO public.permission_targetpostgres=#   (id, role_name, permissions,postgres=#    object_type,
+        schema_name)postgres=# VALUESpostgres=#   (1, 'appuser', '{SELECT,INSERT,UPDATE,DELETE}',postgres=#    'TABLE',
+        'appschema');INSERT 0 1postgres=# INSERT INTO public.permission_targetpostgres=#   (id, role_name,
+        permissions,postgres=#    object_type, schema_name)postgres=# VALUESpostgres=#   (2, 'appuser',
+        '{SELECT,INSERT,UPDATE,DELETE}',postgres=#    'VIEW', 'appschema');INSERT 0 1 Of course, the user will need the  USAGE
+        privilege on the schema: postgres=# INSERT INTO public.permission_target postgres=#   (id, role_name, permissions,i
+        postgres=#    object_type, schema_name) postgres=# VALUES postgres=#   (3, 'appuser', '{USAGE}', postgres=#    'SCHEMA',
+        'appschema'); INSERT 0 1
+
+        The user also needs `USAGE` privileges on the `appseq` sequence in that schema:
+
+         postgres=# INSERT INTO public.permission_targetpostgres=#   (id, role_name, permissions,postgres=#    object_type,
+        schema_name, object_name)postgres=# VALUESpostgres=#   (4, 'appuser', '{USAGE}',postgres=#    'SEQUENCE', 'appschema',
+        'appseq');INSERT 0 1 Now we can review which permissions are missing and which additional permissions are granted:
+        postgres=# SELECT * FROM public.permission_diffs();
+                               missing | role_name | object_type | schema_name | object_name | column_name | permission
+        ---------+-----------+-------------+-------------+-------------+-------------+------------  f       | laurenz   | VIEW
+        | appschema   | appview     |             | SELECT  t       | appuser   | TABLE       | appschema   | apptable    |
+        | DELETE (2 rows)
+
+        That means that `appuser` is missing (missing is TRUE) the DELETE privilege on `appschema.apptable` which should be
+        `GRANT`ed, while user `laurenz` has the **additional** `SELECT` privilege on `appschema.appview` (missing is FALSE).
+
+        To review the actual permissions on an object, we can use the `_permissions` views:
+
+         postgres=# SELECT * FROM schema_permissionspostgres=#   WHERE role_name = 'appuser' AND schema_name = 'appschema' AND
+        granted IS TRUE; object_type | role_name | schema_name | object_name | column_name | permissions |
+        granted-------------+-----------+-------------+-------------+-------------+-------------+--------- SCHEMA      | appuser
+        | appschema   |             |             | USAGE       | t (1 row) For more details and examples, visit the online
+        documentation .
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_4.5', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.6":
+    title: '4.6 | Ensure Row Level Security RLS is configured correctly - manual'
+    section: 'User Access and Authorization'
+    description: |
+        In addition to the SQLstandard privilege system available through  GRANT , tables can have row security policies that
+        restrict, on a peruser basis, which individual rows can be returned by normal queries or inserted, updated, or deleted
+        by data modification commands. This feature is also known as Row Level Security RLS. By default, tables do not have any
+        policies, so if a user has access privileges to a table according to the SQL privilege system, all rows within it are
+        equally available for querying or updating. Row security policies can be specific to commands, to roles, or to both. A
+        policy can be specified to apply to  ALL  commands, or to any combination of  SELECT ,  INSERT ,  UPDATE , or  DELETE .
+        Multiple roles can be assigned to a given policy, and normal role membership and inheritance rules apply. If you use RLS
+        and apply restrictive policies to certain users, it is important that the  Bypass RLS  privilege not be granted to any
+        unauthorized users. This privilege overrides RLSenabled tables and associated policies. Generally, only superusers and
+        elevated users should possess this privilege.
+    remediation: |
+        Again, we are using the example from the PostgreSQL documentation using the example  passwd  table. We will create three
+        database roles to illustrate the workings of RLS: postgres=# CREATE ROLE admin; CREATE ROLE postgres=# CREATE ROLE bob;
+        CREATE ROLE postgres=# CREATE ROLE alice; CREATE ROLE
+        Now, we will insert known data into the `passwd` table:
+         postgres=# INSERT INTO passwd VALUES  ('admin','xxx',0,0,'Admin','111-222-3333',null,'/root','/bin/dash');INSERT 0
+        1postgres=# INSERT INTO passwd VALUES  ('bob','xxx',1,1,'Bob','123-456-7890',null,'/home/bob','/bin/zsh');INSERT 0
+        1postgres=# INSERT INTO passwd VALUES  ('alice','xxx',2,1,'Alice','098-765-4321',null,'/home/alice','/bin/zsh');INSERT 0
+        1
+        And we will enable RLS on the table: postgres=# ALTER TABLE passwd ENABLE ROW LEVEL SECURITY; ALTER TABLE
+        Now that RLS is enabled, we need to define one or more policies. Create the administrator policy and allow it access to
+        all rows:
+         postgres=# CREATE POLICY admin_all ON passwd TO admin USING (true) WITH CHECK (true);CREATE POLICY
+        Create a policy for normal users to  view  all rows: postgres=# CREATE POLICY all_view ON passwd FOR SELECT USING
+        (true); CREATE POLICY
+        Create a policy for normal users that allows them to update only their own rows and to limit what values can be set for
+        their login shell:
+         postgres=# CREATE POLICY user_mod ON passwd FOR UPDATE  USING (current_user = user_name)  WITH CHECK (    current_user
+        = user_name AND    shell IN ('/bin/bash','/bin/sh','/bin/dash','/bin/zsh','/bin/tcsh')  );CREATE POLICY
+        Grant all the normal rights on the table to the  admin  user: postgres=# GRANT SELECT, INSERT, UPDATE, DELETE ON passwd
+        TO admin; GRANT
+        Grant only select access on non-sensitive columns to everyone:
+         postgres=# GRANT SELECT  (user_name, uid, gid, real_name, home_phone, extra_info, home_dir, shell)  ON passwd TO
+        public;GRANT
+        Grant update to only the sensitive columns: postgres=# GRANT UPDATE   (pwhash, real_name, home_phone, extra_info, shell)
+        ON passwd TO public; GRANT
+        Ensure that no one has been granted `Bypass RLS` inadvertently, by running the `psql` display command `\du+`. If
+        unauthorized users do have `Bypass RLS` granted then resolve this using the `ALTER ROLE <user> NOBYPASSRLS;` command.
+
+        You can now verify that 'admin', 'bob', and 'alice' are properly restricted by querying the `passwd` table as each of
+        these roles.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_4.6', 'cis_postgresql_11_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.7":
+    title: '4.7 | Ensure the set user extension is installed'
+    section: 'User Access and Authorization'
+    description: |
+        PostgreSQL access to the superuser database role must be controlled and audited to prevent unauthorized access.
+    remediation: |
+        At the time this benchmark is being written,  set_user  is not available as a package in the PGDG repository. As such,
+        we will build it from source: [root@centos7 ~]# whoami root [root@centos7 ~]# yum -y install postgresql11-devel Loaded
+        plugins: fastestmirror, priorities Loading mirror speeds from cached hostfile  * base: centos.mirrors.tds.net  * extras:
+        mirror.team-cymru.com  * updates: mirrors.gigenet.com 1425 packages excluded due to repository priority protections
+        Resolving Dependencies --> Running transaction check ---> Package postgresql11-devel.x86_64 0:11.3-1PGDG.rhel7 will be
+        installed --> Finished Dependency Resolution
+                              Dependencies Resolved
+                              =============================================================================  Package
+        Arch     Version              Repository            Size
+        =============================================================================
+                              Installing:  postgresql11-devel  x86_64   11.3-1PGDG.rhel7     pgdg11               2.0 M
+                              Transaction Summary =============================================================================
+        Install  1 Package
+                              Total download size: 2.0 M Installed size: 9.3 M Downloading packages:
+        postgresql11-devel-11.3-1PGDG.rhel7.x86_64.rpm             | 2.0 MB  00:00:02 Running transaction check Running
+        transaction test Transaction test succeeded Running transaction   Installing :
+        postgresql11-devel-11.3-1PGDG.rhel7.x86_64                 1/1   Verifying  : postgresql11-devel-11.3-1PGDG.rhel7.x86_64
+        1/1
+                              Installed:   postgresql11-devel.x86_64 0:11.3-1PGDG.rhel7
+                              Complete!
+                           [root@centos7 ~]# yum install centos-release-sclLoaded plugins: fastestmirror, prioritiesLoading
+        mirror speeds from cached hostfile * base: centos.mirrors.tds.net * extras: mirror.team-cymru.com * updates:
+        mirrors.cmich.edu1425 packages excluded due to repository priority protectionsResolving Dependencies--> Running
+        transaction check---> Package centos-release-scl.noarch 0:2-3.el7.centos will be installed--> Processing Dependency:
+        centos-release-scl-rh for package: centos-release-scl-2-3.el7.centos.noarch--> Running transaction check---> Package
+        centos-release-scl-rh.noarch 0:2-3.el7.centos will be installed--> Finished Dependency ResolutionDependencies
+        Resolved============================================================================= Package               Arch
+        Version            Repository
+        Size=============================================================================Installing: centos-release-scl
+        noarch   2-3.el7.centos     extras                12 kInstalling for dependencies: centos-release-scl-rh noarch
+        2-3.el7.centos     extras                12 kTransaction
+        Summary=============================================================================Install  1 Package (+1 Dependent
+        package)Total download size: 24 kInstalled size: 39 kIs this ok [y/d/N]: yDownloading packages:(1/2): centos-release-
+        scl-rh-2-3.el7.centos.noarch.rpm     |  12 kB  00:00:00(2/2): centos-release-scl-2-3.el7.centos.noarch.rpm        |  12
+        kB  00:00:00-----------------------------------------------------------------------------Total
+        144 kB/s |  24 kB  00:00:00Running transaction checkRunning transaction testTransaction test succeededRunning
+        transaction  Installing : centos-release-scl-rh-2-3.el7.centos.noarch                1/2  Installing : centos-release-
+        scl-2-3.el7.centos.noarch                   2/2  Verifying  : centos-release-scl-2-3.el7.centos.noarch
+        1/2  Verifying  : centos-release-scl-rh-2-3.el7.centos.noarch                2/2Installed:  centos-release-scl.noarch
+        0:2-3.el7.centosDependency Installed:  centos-release-scl-rh.noarch 0:2-3.el7.centosComplete! [root@centos7 ~]# yum -y
+        install llvm-toolset-7-clang Loaded plugins: fastestmirror, priorities Loading mirror speeds from cached hostfile  *
+        base: centos.mirrors.tds.net  * centos-sclo-rh: mirror.genesisadaptive.com  * centos-sclo-sclo: mirror.jaleco.com  *
+        extras: mirror.team-cymru.com  * updates: mirror.jaleco.com 1425 packages excluded due to repository priority
+        protections Resolving Dependencies --> Running transaction check ---> Package llvm-toolset-7-clang.x86_64 0:5.0.1-4.el7
+        will be installed --> Processing Dependency: llvm-toolset-7-clang-libs(x86-64) = 5.0.1-4.el7 for package: llvm-
+        toolset-7-clang-5.0.1-4.el7.x86_64 --> Processing Dependency: llvm-toolset-7-runtime for package: llvm-
+        toolset-7-clang-5.0.1-4.el7.x86_64 --> Processing Dependency: libclang.so.5(LLVM_5.0)(64bit) for package: llvm-
+        toolset-7-clang-5.0.1-4.el7.x86_64 --> Processing Dependency: libLLVM-5.0.so(LLVM_5.0)(64bit) for package: llvm-
+        toolset-7-clang-5.0.1-4.el7.x86_64 --> Processing Dependency: libclangToolingCore.so.5()(64bit) for package: llvm-
+        toolset-7-clang-5.0.1-4.el7.x86_64 --> Processing Dependency: libclangTooling.so.5()(64bit) for package: llvm-
+        toolset-7-clang-5.0.1-4.el7.x86_64 --> Processing Dependency: libclangStaticAnalyzerFrontend.so.5()(64bit) for package:
+        llvm-toolset-7-clang-5.0.1-4.el7.x86_64 --> Processing Dependency: libclangSerialization.so.5()(64bit) for package:
+        llvm-toolset-7-clang-5.0.1-4.el7.x86_64 --> Processing Dependency: libclangRewriteFrontend.so.5()(64bit) for package:
+        llvm-toolset-7-clang-5.0.1-4.el7.x86_64 --> Processing Dependency: libclangRewrite.so.5()(64bit) for package: llvm-
+        toolset-7-clang-5.0.1-4.el7.x86_64 --> Processing Dependency: libclangParse.so.5()(64bit) for package: llvm-
+        toolset-7-clang-5.0.1-4.el7.x86_64 --> Processing Dependency: libclangLex.so.5()(64bit) for package: llvm-
+        toolset-7-clang-5.0.1-4.el7.x86_64 --> Processing Dependency: libclangIndex.so.5()(64bit) for package: llvm-
+        toolset-7-clang-5.0.1-4.el7.x86_64 --> Processing Dependency: libclangFrontendTool.so.5()(64bit) for package: llvm-
+        toolset-7-clang-5.0.1-4.el7.x86_64 --> Processing Dependency: libclangFrontend.so.5()(64bit) for package: llvm-
+        toolset-7-clang-5.0.1-4.el7.x86_64 --> Processing Dependency: libclangFormat.so.5()(64bit) for package: llvm-
+        toolset-7-clang-5.0.1-4.el7.x86_64 --> Processing Dependency: libclangDriver.so.5()(64bit) for package: llvm-
+        toolset-7-clang-5.0.1-4.el7.x86_64 --> Processing Dependency: libclangCodeGen.so.5()(64bit) for package: llvm-
+        toolset-7-clang-5.0.1-4.el7.x86_64 --> Processing Dependency: libclangBasic.so.5()(64bit) for package: llvm-
+        toolset-7-clang-5.0.1-4.el7.x86_64 --> Processing Dependency: libclangAST.so.5()(64bit) for package: llvm-
+        toolset-7-clang-5.0.1-4.el7.x86_64 --> Processing Dependency: libclang.so.5()(64bit) for package: llvm-
+        toolset-7-clang-5.0.1-4.el7.x86_64 --> Processing Dependency: libLLVM-5.0.so()(64bit) for package: llvm-
+        toolset-7-clang-5.0.1-4.el7.x86_64 --> Running transaction check ---> Package llvm-toolset-7-clang-libs.x86_64
+        0:5.0.1-4.el7 will be installed --> Processing Dependency: llvm-toolset-7-libomp(x86-64) >= 5.0.1 for package: llvm-
+        toolset-7-clang-libs-5.0.1-4.el7.x86_64 --> Processing Dependency: llvm-toolset-7-compiler-rt(x86-64) >= 5.0.1 for
+        package: llvm-toolset-7-clang-libs-5.0.1-4.el7.x86_64 --> Processing Dependency: devtoolset-7-libstdc++-devel for
+        package: llvm-toolset-7-clang-libs-5.0.1-4.el7.x86_64 --> Processing Dependency: devtoolset-7-gcc-c++ for package: llvm-
+        toolset-7-clang-libs-5.0.1-4.el7.x86_64 ---> Package llvm-toolset-7-llvm-libs.x86_64 0:5.0.1-8.el7 will be installed
+        ---> Package llvm-toolset-7-runtime.x86_64 0:5.0.1-4.el7 will be installed --> Processing Dependency: scl-utils for
+        package: llvm-toolset-7-runtime-5.0.1-4.el7.x86_64 --> Running transaction check ---> Package
+        devtoolset-7-gcc-c++.x86_64 0:7.3.1-5.15.el7 will be installed --> Processing Dependency: devtoolset-7-gcc =
+        7.3.1-5.15.el7 for package: devtoolset-7-gcc-c++-7.3.1-5.15.el7.x86_64 --> Processing Dependency: devtoolset-7-runtime
+        for package: devtoolset-7-gcc-c++-7.3.1-5.15.el7.x86_64 ---> Package devtoolset-7-libstdc++-devel.x86_64
+        0:7.3.1-5.15.el7 will be installed ---> Package llvm-toolset-7-compiler-rt.x86_64 0:5.0.1-2.el7 will be installed --->
+        Package llvm-toolset-7-libomp.x86_64 0:5.0.1-2.el7 will be installed ---> Package scl-utils.x86_64 0:20130529-19.el7
+        will be installed --> Running transaction check ---> Package devtoolset-7-gcc.x86_64 0:7.3.1-5.15.el7 will be installed
+        --> Processing Dependency: devtoolset-7-binutils >= 2.22.52.0.1 for package: devtoolset-7-gcc-7.3.1-5.15.el7.x86_64 --->
+        Package devtoolset-7-runtime.x86_64 0:7.1-4.el7 will be installed --> Processing Dependency: /usr/sbin/semanage for
+        package: devtoolset-7-runtime-7.1-4.el7.x86_64 --> Processing Dependency: /usr/sbin/semanage for package:
+        devtoolset-7-runtime-7.1-4.el7.x86_64 --> Running transaction check ---> Package devtoolset-7-binutils.x86_64
+        0:2.28-11.el7 will be installed ---> Package policycoreutils-python.x86_64 0:2.5-29.el7_6.1 will be installed -->
+        Processing Dependency: setools-libs >= 3.3.8-4 for package: policycoreutils-python-2.5-29.el7_6.1.x86_64 --> Processing
+        Dependency: libsemanage-python >= 2.5-14 for package: policycoreutils-python-2.5-29.el7_6.1.x86_64 --> Processing
+        Dependency: audit-libs-python >= 2.1.3-4 for package: policycoreutils-python-2.5-29.el7_6.1.x86_64 --> Processing
+        Dependency: python-IPy for package: policycoreutils-python-2.5-29.el7_6.1.x86_64 --> Processing Dependency:
+        libqpol.so.1(VERS_1.4)(64bit) for package: policycoreutils-python-2.5-29.el7_6.1.x86_64 --> Processing Dependency:
+        libqpol.so.1(VERS_1.2)(64bit) for package: policycoreutils-python-2.5-29.el7_6.1.x86_64 --> Processing Dependency:
+        libcgroup for package: policycoreutils-python-2.5-29.el7_6.1.x86_64 --> Processing Dependency:
+        libapol.so.4(VERS_4.0)(64bit) for package: policycoreutils-python-2.5-29.el7_6.1.x86_64 --> Processing Dependency:
+        checkpolicy for package: policycoreutils-python-2.5-29.el7_6.1.x86_64 --> Processing Dependency: libqpol.so.1()(64bit)
+        for package: policycoreutils-python-2.5-29.el7_6.1.x86_64 --> Processing Dependency: libapol.so.4()(64bit) for package:
+        policycoreutils-python-2.5-29.el7_6.1.x86_64 --> Running transaction check ---> Package audit-libs-python.x86_64
+        0:2.8.4-4.el7 will be installed ---> Package checkpolicy.x86_64 0:2.5-8.el7 will be installed ---> Package
+        libcgroup.x86_64 0:0.41-20.el7 will be installed ---> Package libsemanage-python.x86_64 0:2.5-14.el7 will be installed
+        ---> Package python-IPy.noarch 0:0.75-6.el7 will be installed ---> Package setools-libs.x86_64 0:3.3.8-4.el7 will be
+        installed --> Finished Dependency Resolution
+                              Dependencies Resolved
+                              =============================================================================  Package
+        Arch     Version         Repository      Size
+        ============================================================================= Installing:  llvm-toolset-7-clang
+        x86_64   5.0.1-4.el7     centos-sclo-rh   545 k Installing for dependencies:  audit-libs-python            x86_64
+        2.8.4-4.el7     base              76 k  checkpolicy                  x86_64   2.5-8.el7       base             295 k
+        devtoolset-7-binutils        x86_64   2.28-11.el7     centos-sclo-rh   5.3 M  devtoolset-7-gcc             x86_64
+        7.3.1-5.15.el7  centos-sclo-rh    29 M  devtoolset-7-gcc-c++         x86_64   7.3.1-5.15.el7  centos-sclo-rh    11 M
+        devtoolset-7-libstdc++-devel x86_64   7.3.1-5.15.el7  centos-sclo-rh   2.6 M  devtoolset-7-runtime         x86_64
+        7.1-4.el7       centos-sclo-rh    20 k  libcgroup                    x86_64   0.41-20.el7     base              66 k
+        libsemanage-python           x86_64   2.5-14.el7      base             113 k  llvm-toolset-7-clang-libs    x86_64
+        5.0.1-4.el7     centos-sclo-rh    13 M  llvm-toolset-7-compiler-rt   x86_64   5.0.1-2.el7     centos-sclo-rh   1.7 M
+        llvm-toolset-7-libomp        x86_64   5.0.1-2.el7     centos-sclo-rh   246 k  llvm-toolset-7-llvm-libs     x86_64
+        5.0.1-8.el7     centos-sclo-rh    13 M  llvm-toolset-7-runtime       x86_64   5.0.1-4.el7     centos-sclo-rh   1.1 M
+        policycoreutils-python       x86_64   2.5-29.el7_6.1  updates          456 k  python-IPy                   noarch
+        0.75-6.el7      base              32 k  scl-utils                    x86_64   20130529-19.el7 base              24 k
+        setools-libs                 x86_64   3.3.8-4.el7     base             620 k
+                              Transaction Summary =============================================================================
+        Install  1 Package (+18 Dependent packages)
+                              Total download size: 80 M Installed size: 261 M Downloading packages: (1/19): audit-libs-
+        python-2.8.4-4.el7.x86_64.rpm           |  76 kB  00:00:00 (2/19): checkpolicy-2.5-8.el7.x86_64.rpm                   |
+        295 kB  00:00:00 warning: /var/cache/yum/x86_64/7/centos-sclo-rh/packages/devtoolset-7-binutils-2.28-11.el7.x86_64.rpm:
+        Header V4 RSA/SHA1 Signature, key ID f2ee9d55: NOKEY Public key for devtoolset-7-binutils-2.28-11.el7.x86_64.rpm is not
+        installed (3/19): devtoolset-7-binutils-2.28-11.el7.x86_64.rpm       | 5.3 MB  00:00:04 (4/19):
+        devtoolset-7-gcc-c++-7.3.1-5.15.el7.x86_64.rpm     |  11 MB  00:00:04 (5/19): devtoolset-7-runtime-7.1-4.el7.x86_64.rpm
+        |  20 kB  00:00:00 (6/19): llvm-toolset-7-clang-5.0.1-4.el7.x86_64.rpm        | 545 kB  00:00:00 (7/19):
+        devtoolset-7-libstdc++-devel-7.3.1-5.15.el7.x86_64.rpm                               | 2.6 MB  00:00:01 (8/19):
+        libsemanage-python-2.5-14.el7.x86_64.rpm           | 113 kB  00:00:01 (9/19): libcgroup-0.41-20.el7.x86_64.rpm
+        |  66 kB  00:00:01 (10/19): llvm-toolset-7-compiler-rt-5.0.1-2.el7.x86_64.rpm | 1.7 MB  00:00:00 (11/19): llvm-
+        toolset-7-libomp-5.0.1-2.el7.x86_64.rpm      | 246 kB  00:00:00 (12/19): llvm-toolset-7-clang-
+        libs-5.0.1-4.el7.x86_64.rpm  |  13 MB  00:00:02 (13/19): llvm-toolset-7-runtime-5.0.1-4.el7.x86_64.rpm     | 1.1 MB
+        00:00:00 (14/19): python-IPy-0.75-6.el7.noarch.rpm                  |  32 kB  00:00:00 (15/19): scl-
+        utils-20130529-19.el7.x86_64.rpm              |  24 kB  00:00:00 (16/19): policycoreutils-
+        python-2.5-29.el7_6.1.x86_64.rpm  | 456 kB  00:00:00 (17/19): devtoolset-7-gcc-7.3.1-5.15.el7.x86_64.rpm        |  29 MB
+        00:00:10 (18/19): llvm-toolset-7-llvm-libs-5.0.1-8.el7.x86_64.rpm   |  13 MB  00:00:03 (19/19): setools-
+        libs-3.3.8-4.el7.x86_64.rpm               | 620 kB  00:00:02
+        ----------------------------------------------------------------------------- Total
+        7.4 MB/s |  80 MB  00:00:10
+                              Retrieving key from file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo Importing GPG key
+        0xF2EE9D55:  Userid     : "CentOS SoftwareCollections SIG (https://wiki.centos.org/SpecialInterestGroup/SCLo)
+        <security@centos.org>"  Fingerprint: c4db d535 b1fb ba14 f8ba 64a8 4eb8 4e71 f2ee 9d55  Package    : centos-release-scl-
+        rh-2-3.el7.centos.noarch (@extras)  From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo Running transaction check
+        Running transaction test Transaction test succeeded Running transaction   Installing : scl-utils-20130529-19.el7.x86_64
+        1/19   Installing : llvm-toolset-7-runtime-5.0.1-4.el7.x86_64                 2/19   Installing : llvm-toolset-7-llvm-
+        libs-5.0.1-8.el7.x86_64               3/19   Installing : llvm-toolset-7-libomp-5.0.1-2.el7.x86_64                  4/19
+        Installing : llvm-toolset-7-compiler-rt-5.0.1-2.el7.x86_64             5/19   Installing : setools-
+        libs-3.3.8-4.el7.x86_64                           6/19   Installing : checkpolicy-2.5-8.el7.x86_64
+        7/19   Installing : python-IPy-0.75-6.el7.noarch                              8/19   Installing : libsemanage-
+        python-2.5-14.el7.x86_64                      9/19   Installing : libcgroup-0.41-20.el7.x86_64
+        10/19   Installing : audit-libs-python-2.8.4-4.el7.x86_64                     11/19   Installing : policycoreutils-
+        python-2.5-29.el7_6.1.x86_64             12/19   Installing : devtoolset-7-runtime-7.1-4.el7.x86_64
+        13/19   Installing : devtoolset-7-libstdc++-devel-7.3.1-5.15.el7.x86_64       14/19   Installing :
+        devtoolset-7-binutils-2.28-11.el7.x86_64                 15/19   Installing : devtoolset-7-gcc-7.3.1-5.15.el7.x86_64
+        16/19   Installing : devtoolset-7-gcc-c++-7.3.1-5.15.el7.x86_64               17/19   Installing : llvm-toolset-7-clang-
+        libs-5.0.1-4.el7.x86_64             18/19   Installing : llvm-toolset-7-clang-5.0.1-4.el7.x86_64                  19/19
+        Verifying  : policycoreutils-python-2.5-29.el7_6.1.x86_64              1/19   Verifying  : audit-libs-
+        python-2.8.4-4.el7.x86_64                      2/19   Verifying  : llvm-toolset-7-clang-libs-5.0.1-4.el7.x86_64
+        3/19   Verifying  : devtoolset-7-libstdc++-devel-7.3.1-5.15.el7.x86_64        4/19   Verifying  : scl-
+        utils-20130529-19.el7.x86_64                          5/19   Verifying  : llvm-toolset-7-runtime-5.0.1-4.el7.x86_64
+        6/19   Verifying  : llvm-toolset-7-clang-5.0.1-4.el7.x86_64                   7/19   Verifying  :
+        libcgroup-0.41-20.el7.x86_64                              8/19   Verifying  : llvm-toolset-7-libomp-5.0.1-2.el7.x86_64
+        9/19   Verifying  : libsemanage-python-2.5-14.el7.x86_64                     10/19   Verifying  :
+        devtoolset-7-gcc-7.3.1-5.15.el7.x86_64                   11/19   Verifying  : devtoolset-7-binutils-2.28-11.el7.x86_64
+        12/19   Verifying  : llvm-toolset-7-llvm-libs-5.0.1-8.el7.x86_64              13/19   Verifying  : python-
+        IPy-0.75-6.el7.noarch                             14/19   Verifying  : devtoolset-7-runtime-7.1-4.el7.x86_64
+        15/19   Verifying  : checkpolicy-2.5-8.el7.x86_64                             16/19   Verifying  : llvm-
+        toolset-7-compiler-rt-5.0.1-2.el7.x86_64            17/19   Verifying  : setools-libs-3.3.8-4.el7.x86_64
+        18/19   Verifying  : devtoolset-7-gcc-c++-7.3.1-5.15.el7.x86_64               19/19
+                              Installed:   llvm-toolset-7-clang.x86_64 0:5.0.1-4.el7
+                              Dependency Installed:   audit-libs-python.x86_64 0:2.8.4-4.el7                 checkpolicy.x86_64
+        0:2.5-8.el7   devtoolset-7-binutils.x86_64 0:2.28-11.el7             devtoolset-7-gcc.x86_64 0:7.3.1-5.15.el7
+        devtoolset-7-gcc-c++.x86_64 0:7.3.1-5.15.el7           devtoolset-7-libstdc++-devel.x86_64 0:7.3.1-5.15.el7
+        devtoolset-7-runtime.x86_64 0:7.1-4.el7                libcgroup.x86_64 0:0.41-20.el7   libsemanage-python.x86_64
+        0:2.5-14.el7                 llvm-toolset-7-clang-libs.x86_64 0:5.0.1-4.el7   llvm-toolset-7-compiler-rt.x86_64
+        0:5.0.1-2.el7        llvm-toolset-7-libomp.x86_64 0:5.0.1-2.el7   llvm-toolset-7-llvm-libs.x86_64 0:5.0.1-8.el7
+        llvm-toolset-7-runtime.x86_64 0:5.0.1-4.el7   policycoreutils-python.x86_64 0:2.5-29.el7_6.1         python-IPy.noarch
+        0:0.75-6.el7   scl-utils.x86_64 0:20130529-19.el7                     setools-libs.x86_64 0:3.3.8-4.el7
+                              Complete!
+                           [root@centos7 ~]# yum -y install epel-releaseLoaded plugins: fastestmirror, prioritiesLoading mirror
+        speeds from cached hostfile * base: centos.mirrors.tds.net * centos-sclo-rh: mirror.genesisadaptive.com * centos-sclo-
+        sclo: mirror.atlanticmetro.net * extras: mirror.team-cymru.com * updates: mirror.sesp.northwestern.edu1425 packages
+        excluded due to repository priority protectionsResolving Dependencies--> Running transaction check---> Package epel-
+        release.noarch 0:7-11 will be installed--> Finished Dependency ResolutionDependencies
+        Resolved============================================================================= Package             Arch
+        Version              Repository
+        Size=============================================================================Installing: epel-release        noarch
+        7-11                 extras                15 kTransaction
+        Summary=============================================================================Install  1 PackageTotal download
+        size: 15 kInstalled size: 24 kDownloading packages:epel-release-7-11.noarch.rpm                               |  15 kB
+        00:00:00Running transaction checkRunning transaction testTransaction test succeededRunning transaction  Installing :
+        epel-release-7-11.noarch                                   1/1  Verifying  : epel-release-7-11.noarch
+        1/1Installed:  epel-release.noarch 0:7-11Complete! [root@centos7 ~]# yum -y install llvm5.0 Loaded plugins:
+        fastestmirror, priorities Loading mirror speeds from cached hostfile epel/x86_64/metalink
+        |  12 kB  00:00:00  * base: centos.mirrors.tds.net  * centos-sclo-rh: mirror.trouble-free.net  * centos-sclo-sclo:
+        mirror.jaleco.com  * epel: mirror.compevo.com  * extras: mirror.team-cymru.com  * updates: mirrors.gigenet.com epel
+        | 5.3 kB  00:00:00 (1/3): epel/x86_64/group_gz                                |  88 kB  00:00:00 (2/3):
+        epel/x86_64/updateinfo                              | 1.0 MB  00:00:00 (3/3): epel/x86_64/primary_db
+        | 6.7 MB  00:00:01 1447 packages excluded due to repository priority protections Resolving Dependencies --> Running
+        transaction check ---> Package llvm5.0.x86_64 0:5.0.1-7.el7 will be installed --> Processing Dependency:
+        llvm5.0-libs(x86-64) = 5.0.1-7.el7 for package: llvm5.0-5.0.1-7.el7.x86_64 --> Running transaction check ---> Package
+        llvm5.0-libs.x86_64 0:5.0.1-7.el7 will be installed --> Finished Dependency Resolution
+                              Dependencies Resolved
+                              =============================================================================  Package
+        Arch     Version              Repository           Size
+        ============================================================================= Installing:  llvm5.0             x86_64
+        5.0.1-7.el7          epel                 2.6 M Installing for dependencies:  llvm5.0-libs        x86_64   5.0.1-7.el7
+        epel                  13 M
+                              Transaction Summary =============================================================================
+        Install  1 Package (+1 Dependent package)
+                              Total download size: 16 M Installed size: 57 M Downloading packages: warning:
+        /var/cache/yum/x86_64/7/epel/packages/llvm5.0-5.0.1-7.el7.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 352c64e5:
+        NOKEY Public key for llvm5.0-5.0.1-7.el7.x86_64.rpm is not installed (1/2): llvm5.0-5.0.1-7.el7.x86_64.rpm
+        | 2.6 MB  00:00:00 (2/2): llvm5.0-libs-5.0.1-7.el7.x86_64.rpm                 |  13 MB  00:00:03
+        ----------------------------------------------------------------------------- Total
+        4.4 MB/s |  16 MB  00:00:03 Retrieving key from file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7 Importing GPG key 0x352C64E5:
+        Userid     : "Fedora EPEL (7) <epel@fedoraproject.org>"  Fingerprint: 91e9 7d7c 4a5e 96f1 7f3e 888f 6a2f aea2 352c 64e5
+        Package    : epel-release-7-11.noarch (@extras)  From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7 Running transaction
+        check Running transaction test Transaction test succeeded Running transaction   Installing :
+        llvm5.0-libs-5.0.1-7.el7.x86_64                            1/2   Installing : llvm5.0-5.0.1-7.el7.x86_64
+        2/2   Verifying  : llvm5.0-5.0.1-7.el7.x86_64                                 1/2   Verifying  :
+        llvm5.0-libs-5.0.1-7.el7.x86_64                            2/2
+                              Installed:   llvm5.0.x86_64 0:5.0.1-7.el7
+                              Dependency Installed:   llvm5.0-libs.x86_64 0:5.0.1-7.el7
+                              Complete!
+                           [root@centos7 ~]# yum -y install gccLoaded plugins: fastestmirror, langpacks, prioritiesLoading
+        mirror speeds from cached hostfile * base: repos-va.psychz.net * centos-sclo-rh: repos-va.psychz.net * centos-sclo-sclo:
+        repos-va.psychz.net * epel: mirror.cogentco.com * extras: mirror.vcu.edu * updates: repos-va.psychz.net1531 packages
+        excluded due to repository priority protectionsResolving Dependencies--> Running transaction check---> Package
+        gcc.x86_64 0:4.8.5-36.el7_6.2 will be installed--> Finished Dependency ResolutionDependencies
+        Resolved============================================================================= Package      Arch          Version
+        Repository            Size=============================================================================Installing: gcc
+        x86_64        4.8.5-36.el7_6.2      updates                16 MTransaction
+        Summary=============================================================================Install  1 PackageTotal download
+        size: 16 MInstalled size: 37 MDownloading packages:gcc-4.8.5-36.el7_6.2.x86_64.rpm                            |  16 MB
+        00:00     Running transaction checkRunning transaction testTransaction test succeededRunning transaction  Installing :
+        gcc-4.8.5-36.el7_6.2.x86_64                                1/1   Verifying  : gcc-4.8.5-36.el7_6.2.x86_64
+        1/1 Installed:  gcc.x86_64 0:4.8.5-36.el7_6.2                                                 Complete! $ curl -L
+        https://codeload.github.com/pgaudit/set_user/tar.gz/REL1_6_2 > set_user-1.6.2.tgz   % Total    % Received % Xferd
+        Average Speed   Time    Time     Time  Current                                  Dload  Upload   Total   Spent    Left
+        Speed 100 14916    0 14916    0     0  57215      0 --:--:-- --:--:-- --:--:--  184k
+                              $ tar xf set_user-1.6.2.tgz $ cd set_user-REL1_6_2 $ export PATH=/usr/pgsql-11/bin:$PATH
+        [root@centos7 set_user-REL1_6_2]# make USE_PGXS=1 install gcc -Wall -Wmissing-prototypes -Wpointer-arith -Wdeclaration-
+        after-statement -Wendif-labels -Wmissing-format-attribute -Wformat-security -fno-strict-aliasing -fwrapv -fexcess-
+        precision=standard -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-
+        size=4 -grecord-gcc-switches -m64 -mtune=generic -fPIC -I. -I./ -I/usr/pgsql-11/include/server
+        -I/usr/pgsql-11/include/internal  -D_GNU_SOURCE -I/usr/include/libxml2  -I/usr/include  -c -o set_user.o set_user.c gcc
+        -Wall -Wmissing-prototypes -Wpointer-arith -Wdeclaration-after-statement -Wendif-labels -Wmissing-format-attribute
+        -Wformat-security -fno-strict-aliasing -fwrapv -fexcess-precision=standard -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2
+        -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches -m64 -mtune=generic -fPIC
+        -L/usr/pgsql-11/lib -Wl,--as-needed -L/usr/lib64/llvm5.0/lib  -L/usr/lib64 -Wl,--as-needed
+        -Wl,-rpath,'/usr/pgsql-11/lib',--enable-new-dtags -lm  -shared -o set_user.so set_user.o /opt/rh/llvm-
+        toolset-7/root/usr/bin/clang -Wno-ignored-attributes -fno-strict-aliasing -fwrapv -O2  -I. -I./
+        -I/usr/pgsql-11/include/server -I/usr/pgsql-11/include/internal  -D_GNU_SOURCE -I/usr/include/libxml2  -I/usr/include
+        -flto=thin -emit-llvm -c -o set_user.bc set_user.c /usr/bin/mkdir -p '/usr/pgsql-11/share/extension' /usr/bin/mkdir -p
+        '/usr/pgsql-11/share/extension' /usr/bin/mkdir -p '/usr/pgsql-11/lib' /usr/bin/install -c -m 644 "set_user.h"
+        /usr/pgsql-11/include /usr/bin/install -c -m 644 .//set_user.control '/usr/pgsql-11/share/extension/' /usr/bin/install
+        -c -m 644 .//set_user--1.6.sql .//set_user--1.5--1.6.sql .//set_user--1.4--1.5.sql .//set_user--1.1--1.4.sql .//set_user
+        --1.0--1.1.sql  '/usr/pgsql-11/share/extension/' /usr/bin/install -c -m 755  set_user.so '/usr/pgsql-11/lib/'
+        /usr/bin/mkdir -p '/usr/pgsql-11/lib/bitcode/set_user' /usr/bin/mkdir -p '/usr/pgsql-11/lib/bitcode'/set_user/
+        /usr/bin/install -c -m 644 set_user.bc '/usr/pgsql-11/lib/bitcode'/set_user/./ cd '/usr/pgsql-11/lib/bitcode' &&
+        /usr/lib64/llvm5.0/bin/llvm-lto -thinlto -thinlto-action=thinlink -o set_user.index.bc set_user/set_user.bc
+        Now that `set_user` is installed, we need to tell PostgreSQL to load its library:
+         $ whoamiroot$ vi ~postgres/11/data/postgresql.conf# load set_user libs before anything elseshared_preload_libraries =
+        'set_user, other_libs'[root@centos7 ~]# systemctl restart postgresql-11[root@centos7 ~]# systemctl status
+        postgresql-11|grep 'ago$'   Active: active (running) since Thu 2019-05-30 15:13:02 EDT; 1s ago
+        And now, we can install the extension with SQL: postgres=# select * from pg_available_extensions where name =
+        'set_user';   name   | default_version | installed_version |                  comment
+        ---------+-----------------+-------------------+----------------------------- set_user | 1.6             |
+        | similar to SET ROLE but with          |                 |                   | added logging (1 row)
+                              postgres=# create extension set_user; CREATE EXTENSION postgres=# select * from
+        pg_available_extensions where name = 'set_user';   name   | default_version | installed_version |
+        comment ---------+-----------------+-------------------+----------------------------- set_user | 1.6             | 1.6
+        | similar to SET ROLE but with          |                 |                   | added logging
+                              (1 row)
+        Now, we use `GRANT` to configure each DBA role to allow it to use the `set_user` functions. In the example below, we
+        will configure my db user `doug`. (You would do this for each DBA's normal user role.)
+         postgres=# grant execute on function set_user(text) to doug;GRANTpostgres=# grant execute on function set_user_u(text)
+        to doug;GRANT
+        Connect to PostgreSQL as yourself and verify it works as expected: $ whoami psql $ psql -U doug -d postgres postgres=>
+        select set_user('postgres'); ERROR:  switching to superuser not allowed HINT:  Use 'set_user_u' to escalate. postgres=>
+        select set_user_u('postgres');  set_user_u ------------  OK (1 row)
+                              postgres=# select current_user, session_user;  current_user | session_user
+        --------------+--------------  postgres     | doug (1 row)
+                              postgres=# select reset_user();  reset_user ------------  OK (1 row)
+                              postgres=> select current_user, session_user;  current_user | session_user
+        --------------+--------------  doug         | doug (1 row)
+        Once all DBA's normal user accounts have been `GRANT`ed permission, revoke the ability to login as the `postgres`
+        (superuser) user:
+         postgres=# alter user postgres NOLOGIN;ALTER ROLE
+        Which results in: $ psql psql: FATAL:  role "postgres" is not permitted to log in $ psql -U doug -d postgres psql (11.3)
+        Make sure there are no other roles that are superuser's and can still login:
+         postgres=# SELECT rolname FROM pg_authid WHERE rolsuper and rolcanlogin; rolname---------(0 rows)
+        Verify there are no unprivileged roles that can login directly that are granted a superuser role even if it is multiple
+        layers removed: postgres=# DROP VIEW IF EXISTS roletree; NOTICE:  view "roletree" does not exist, skipping DROP VIEW
+        postgres=# CREATE OR REPLACE VIEW roletree AS postgres-# WITH RECURSIVE postgres-# roltree AS ( postgres(#   SELECT
+        u.rolname AS rolname, postgres(#          u.oid AS roloid, postgres(#          u.rolcanlogin, postgres(#
+        u.rolsuper, postgres(#          '{}'::name[] AS rolparents, postgres(#          NULL::oid AS parent_roloid, postgres(#
+        NULL::name AS parent_rolname postgres(#   FROM pg_catalog.pg_authid u postgres(#   LEFT JOIN pg_catalog.pg_auth_members
+        m on u.oid = m.member postgres(#   LEFT JOIN pg_catalog.pg_authid g on m.roleid = g.oid postgres(#   WHERE g.oid IS NULL
+        postgres(#   UNION ALL postgres(#   SELECT u.rolname AS rolname, postgres(#          u.oid AS roloid, postgres(#
+        u.rolcanlogin, postgres(#          u.rolsuper, postgres(#          t.rolparents || g.rolname AS rolparents, postgres(#
+        g.oid AS parent_roloid, postgres(#          g.rolname AS parent_rolname postgres(#   FROM pg_catalog.pg_authid u
+        postgres(#   JOIN pg_catalog.pg_auth_members m on u.oid = m.member postgres(#   JOIN pg_catalog.pg_authid g on m.roleid
+        = g.oid postgres(#   JOIN roltree t on t.roloid = g.oid postgres(# ) postgres-# SELECT postgres-#   r.rolname,
+        postgres-#   r.roloid, postgres-#   r.rolcanlogin, postgres-#   r.rolsuper, postgres-#   r.rolparents postgres-# FROM
+        roltree r postgres-# ORDER BY 1; CREATE VIEW postgres=# SELECT postgres-#   ro.rolname, postgres-#   ro.roloid,
+        postgres-#   ro.rolcanlogin, postgres-#   ro.rolsuper, postgres-#   ro.rolparents postgres-# FROM roletree ro postgres-#
+        WHERE (ro.rolcanlogin AND ro.rolsuper) postgres-# OR postgres-# ( postgres(#     ro.rolcanlogin AND EXISTS postgres(#
+        ( postgres(#       SELECT TRUE FROM roletree ri postgres(#       WHERE ri.rolname = ANY (ro.rolparents) postgres(#
+        AND ri.rolsuper postgres(#     ) postgres(# );  rolname | roloid | rolcanlogin | rolsuper | rolparents
+        ---------+--------+-------------+----------+------------ (0 rows)
+        If any roles are identified by this query, use `REVOKE` to correct.
+         Impact: Much like the venerable  sudo  does for the OS,  set_user  manages superuser access for PostgreSQL. Complete
+        configuration of  set_user  is documented at the extension's  website  and should be reviewed to ensure the logging
+        entries that your organization cares about are properly configured. Note that some external tools assume they can
+        connect as the  postgres  user by default and this is no longer true. You may find some tools need different options,
+        reconfigured, or even abandoned to compensate for this.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_4.7', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.8":
+    title: '4.8 | Make use of default roles'
+    section: 'User Access and Authorization'
+    description: |
+        PostgreSQL provides a set of default roles which provide access to certain, commonly needed, privileged capabilities and
+        information. Administrators can GRANT these roles to users and/or other roles in their environment, providing those
+        users with access to the specified capabilities and information.
+    remediation: |
+        If you've determined that one or more of the default roles can be used, simply  GRANT  it: postgres=# GRANT pg_monitor
+        TO doug; GRANT ROLE
+
+        And then remove `superuser` from the account:
+
+         postgres=# ALTER ROLE doug NOSUPERUSER;ALTER ROLEpostgres=# select rolname from pg_roles where rolsuper is true;
+        rolname  ---------- postgres(1 row)
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_4.8', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.1":
+    title: '5.1 | Ensure login via local UNIX Domain Socket is configured correctly - manual'
+    section: 'Connection and Login'
+    description: |
+        A remote host login, via ssh, is arguably the most secure means of remotely accessing and administering the PostgreSQL
+        server. Connecting with the  psql  client, via UNIX DOMAIN SOCKETS, using the  peer  authentication method is the most
+        secure mechanism available for local connections. Provided a database user account of the same name of the UNIX account
+        has already been defined in the database, even ordinary user accounts can access the cluster in a similarly highly
+        secure manner.
+    remediation: |
+        Creation of a database account that matches the local account allows PEER authentication: $ psql -c "CREATE ROLE user1
+        WITH LOGIN;" CREATE ROLE
+        Execute the following as the UNIX user account, the default authentication rules should now permit the login:
+         $ su - user1$ whoamiuser1$ psql -d postgrespsql (11.3)Type "help" for help.postgres=>
+        As per the host-based authentication rules in  $PGDATA/pg_hba.conf , all login attempts via UNIX DOMAIN SOCKETS are
+        processed on the line beginning with  local . This is the minimal rule that must be in place allowing PEER connections:
+        # TYPE  DATABASE        USER            ADDRESS                 METHOD local   all             postgres
+        peer
+        More traditionally, a rule like the following would be used to allow any local PEER connection:
+         TYPE  DATABASE        USER            ADDRESS                 METHODlocal   all             all
+        peer Once edited, the server process must reload the authentication file before it can take effect. Improperly
+        configured rules cannot update i.e. the old rules remain in place. The PostgreSQL logs will report the outcome of the
+        SIGHUP: postgres=# select pg_reload_conf();  pg_reload_conf ----------------  t (1 row)
+        The following examples illustrate other possible configurations. The resultant "rule" of success/failure depends upon
+        the first matching line:
+         allow postgres user logins locally via UNIX socket TYPE  DATABASE        USER            ADDRESS
+        METHODlocal   all             postgres                                peer # allow all local users via UNIX socket
+        # TYPE  DATABASE        USER            ADDRESS                 METHOD local   all             all
+        peer
+                           allow all local users, via UNIX socket, only if they are connecting to a db named the same as their
+        username# e.g. if user 'bob' is connecting to a db named 'bob'# TYPE  DATABASE        USER
+        METHODlocal   samerole        all                                     peer # allow only local users, via UNIX socket,
+        who are members of the 'rw' role in the db # TYPE  DATABASE        USER            ADDRESS                 METHOD local
+        all             +rw                                     peer
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_5.1', 'cis_postgresql_11_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2":
+    title: '5.2 | Ensure login via host TCPIP Socket is configured correctly - manual'
+    section: 'Connection and Login'
+    description: |
+        A large number of authentication METHODs are available for hosts connecting using TCP/IP sockets, including trust reject
+        md5 scramsha256 password gss sspi ident pam ldap radius cert METHODs  trust ,  password , and  ident  are  not  to be
+        used for remote logins. METHOD  md5  is the most popular and can be used in both encrypted and unencrypted
+        sessions,however,  it is vulnerable to packet replay attacks . It is recommended that  scramsha256  be used instead of
+        md5 . Use of the  gss ,  sspi ,  pam ,  ldap ,  radius , and  cert  METHODs, while more secure than  md5 , are dependent
+        upon the availability of external authenticating processes/services and thus are not covered in this benchmark.
+    remediation: |
+        Confirm a login attempt has been made by looking for a logged error message detailing the nature of the authenticating
+        failure. In the case of failed login attempts, whether encrypted or unencrypted, check the following: The server should
+        be sitting on a port exposed to the remote connecting host i.e. NOT ip address 127.0.0.1
+         listen_addresses = '*'
+
+                              An authenticating rule must exist in the file  pg_hba.conf
+                              This example permits only encrypted sessions for the  postgres  role and denies all unencrypted
+        session for the  postgres  role: # TYPE    DATABASE           USER            ADDRESS           METHOD hostssl    all
+        postgres         0.0.0.0/0          scram-sha-256 hostnossl  all             postgres         0.0.0.0/0          reject
+        The following examples illustrate other possible configurations. The resultant "rule" of success/failure depends upon
+        the **first matching line**.
+         allow 'postgres' user only from 'localhost/loopback' connections# and only if you know the password# TYPE    DATABASE
+        USER            ADDRESS                 METHODhost      all             postgres        127.0.0.1/32            scram-
+        sha-256# allow users to connect remotely only to the database named after them, # with the correct user password:#
+        (accepts both SSL and non-SSL connections)# TYPE    DATABASE        USER            ADDRESS                 METHODhost
+        samerole        all             0.0.0.0/0               scram-sha-256# allow only those users who are a member of the
+        'rw' role to connect# only to the database named after them, with the correct user password:# (accepts both SSL and non-
+        SSL connections)# TYPE    DATABASE        USER            ADDRESS                 METHODhost      samerole        +rw
+        0.0.0.0/0               scram-sha-256
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_5.2', 'cis_postgresql_11_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.1":
+    title: '6.1 | Ensure Attack Vectors Runtime Parameters are Configured - manual'
+    section: 'PostgreSQL Settings'
+    description: |
+        Understanding the vulnerability of PostgreSQL runtime parameters by the particular delivery method, or attack vector.
+    remediation: |
+        In the case of a changed parameter, the value is returned back to its default value. In the case of a successful exploit
+        of an already set runtime parameter then an analysis must be carried out determining the best approach mitigating the
+        risk. Impact: It can be difficult to totally eliminate risk. Once changed, detecting a miscreant parameter can become
+        problematic.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_6.1', 'cis_postgresql_11_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.2":
+    title: '6.2 | Ensure backend runtime parameters are configured correctly'
+    section: 'PostgreSQL Settings'
+    description: |
+        In order to serve multiple clients efficiently, the PostgreSQL server launches a new backend process for each client.
+        The runtime parameters in this benchmark section are controlled by the backend process. The servers performance, in the
+        form of slow queries causing a denial of service, and the RDBMs auditing abilities for determining root cause analysis
+        can be compromised via these parameters.
+    remediation: |
+        Once detected, the unauthorized/undesired change can be corrected by altering the configuration file and executing a
+        server restart. In the case where the parameter has been on the command line invocation of  pg_ctl  the  restart
+        invocation is insufficient and an explicit  stop  and  start  must instead be made. Query the view  pg_settings  and
+        compare with previous query outputs for any changes. Review configuration files  postgresql.conf  and
+        postgresql.auto.conf  and compare them with previously archived file copies for any changes. Examine the process output
+        and look for parameters that were used at server startup:
+         ps aux | grep -E '[p]ost' | grep -- '-[D]'
+
+                              Impact: All changes made on this level will affect the overall behavior of the server. These
+        changes can only be affected by a server restart after the parameters have been altered in the configuration files.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_6.2', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == off'
+            - name: Undefined
+              rule: 'Undefined'
+            - name: Undefined
+              rule: 'should cmp == on'
+            - name: Undefined
+              rule: 'Undefined'
+            - name: Undefined
+              rule: 'should cmp == on'
+            - name: Undefined
+              rule: 'Undefined'
+            - name: Undefined
+              rule: 'should eq 0'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.3":
+    title: '6.3 | Ensure Postmaster Runtime Parameters are Configured'
+    section: 'PostgreSQL Settings'
+    description: |
+        PostgreSQL runtime parameters that are executed by the postmaster process.
+    remediation: |
+        Once detected, the unauthorized/undesired change can be corrected by editing the altered configuration file and
+        executing a server restart. In the case where the parameter has been on the command line invocation of  pg_ctl  the
+        restart  invocation is insufficient and an explicit  stop  and  start  must instead be made. Detecting a change is
+        possible by one of the following methods: Query the view  pg_settings  and compare with previous query outputs for any
+        changes Review the configuration files  postgresql.conf  and  postgresql.auto.conf  and compare with previously archived
+        file copies for any changes Examine the process output and look for parameters that were used at server startup:
+         ps aux | grep -E 'postgres' | grep -- '-[D]'
+
+                              Impact: All changes made on this level will affect the overall behavior of the server. These
+        changes can be effected by editing the PostgreSQL configuration files and by either executing a server SIGHUP from the
+        command line or, as superuser  postgres , executing the SQL command  select pg_reload_conf() . A denial of service is
+        possible by the over-allocating of limited resources, such as RAM. Data can be corrupted by allowing damaged pages to
+        load or by changing parameters to reinterpret values in an unexpected fashion, e.g. changing the time zone. Client
+        messages can be altered in such a way as to interfere with the application logic. Logging can be altered and obfuscated
+        inhibiting root cause analysis.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_6.3', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.4":
+    title: '6.4 | Ensure SIGHUP Runtime Parameters are Configured'
+    section: 'PostgreSQL Settings'
+    description: |
+        PostgreSQL runtime parameters that are executed by the SIGHUP signal.
+    remediation: |
+        Restore all values in the PostgreSQL configuration files and invoke the server to reload the configuration files.
+        Impact: All changes made on this level will affect the overall behavior of the server. These changes can be effected by
+        editing the PostgreSQL configuration files and by either executing a server SIGHUP from the command line or, as
+        superuser  postgres , executing the SQL command  select pg_reload_conf() . A denial of service is possible by the over-
+        allocating of limited resources, such as RAM. Data can be corrupted by allowing damaged pages to load or by changing
+        parameters to reinterpret values in an unexpected fashion, e.g. changing the time zone. Client messages can be altered
+        in such a way as to interfere with the application logic. Logging can be altered and obfuscated inhibiting root cause
+        analysis.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_6.4', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.5":
+    title: '6.5 | Ensure Superuser Runtime Parameters are Configured'
+    section: 'PostgreSQL Settings'
+    description: |
+        PostgreSQL runtime parameters that can only be executed by the servers superuser, which is traditionally  postgres .
+    remediation: |
+        The exploit is made in the configuration files. These changes are effected upon server restart. Once detected, the
+        unauthorized/undesired change can be made by editing the altered configuration file and executing a server restart. In
+        the case where the parameter has been set on the command line invocation of  pg_ctl  the  restart  invocation is
+        insufficient and an explicit  stop  and  start  must instead be made. Detecting a change is possible by one of the
+        following methods: Query the view  pg_settings  and compare with previous query outputs for any changes. Review the
+        configuration files  postgreql.conf  and  postgreql.auto.conf  and compare with previously archived file copies for any
+        changes Examine the process output and look for parameters that were used at server startup:
+         ps aux | grep -E 'post' | grep -- '-[D]'
+
+                              Impact: All changes made on this level will affect the overall behavior of the server. These
+        changes can only be affected by a server restart after the parameters have been altered in the configuration files. A
+        denial of service is possible by the over allocating of limited resources, such as RAM. Data can be corrupted by
+        allowing damaged pages to load or by changing parameters to reinterpret values in an unexpected fashion, e.g. changing
+        the time zone. Client messages can be altered in such a way as to interfere with the application logic. Logging can be
+        altered and obfuscated inhibiting root cause analysis.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_6.5', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.6":
+    title: '6.6 | Ensure User Runtime Parameters are Configured'
+    section: 'PostgreSQL Settings'
+    description: |
+        These PostgreSQL runtime parameters are managed at the user account ROLE level.
+    remediation: |
+        In the matter of a user session, the login sessions must be validated that it is not executing undesired parameter
+        changes. In the matter of attributes that have been changed in entities, they must be manually reverted to its default
+        value(s). Impact: A denial of service is possible by the over-allocating of limited resources, such as RAM. Changing
+        VACUUM  parameters can force a server shutdown which is standard procedure preventing data corruption from transaction
+        ID wraparound. Data can be corrupted by changing parameters to reinterpret values in an unexpected fashion, e.g.
+        changing the time zone. Logging can be altered and obfuscated to inhibit root cause analysis.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_6.6', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.7":
+    title: '6.7 | Ensure FIPS 140-2 OpenSSL Cryptography Is Used - manual'
+    section: 'PostgreSQL Settings'
+    description: |
+        Install, configure, and use OpenSSL on a platform that has a NIST certified FIPS 1402 installation of OpenSSL. This
+        provides PostgreSQL instances the ability to generate and validate cryptographic hashes to protect unclassified
+        information requiring confidentiality and cryptographic protection, in accordance with the data owners requirements.
+    remediation: |
+        Configure OpenSSL to be FIPS compliant. PostgreSQL uses OpenSSL for cryptographic modules. To configure OpenSSL to be
+        FIPS 140-2 compliant, see the  official RHEL Documentation . Below is a general summary of the steps required: Install
+        the  dracut-fips  package
+         $ yum -y install dracut-fips    Loaded plugins: fastestmirror    Loading mirror speeds from cached hostfile    [snip]
+        Resolving Dependencies    --> Running transaction check    ---> Package dracut-fips.x86_64 0:033-554.el7 will be
+        installed    --> Processing Dependency: hmaccalc for package: dracut-fips-033-554.el7.x86_64    --> Running transaction
+        check    ---> Package hmaccalc.x86_64 0:0.9.13-4.el7 will be installed    --> Finished Dependency Resolution
+        Dependencies Resolved
+                                        Package                      Arch                    Version
+        Repository             Size
+                                       Installing:     dracut-fips                  x86_64                  033-554.el7
+        base                   61 k    Installing for dependencies:     hmaccalc                     x86_64
+        0.9.13-4.el7                     base                   26 k
+                                       Transaction Summary    Install  1 Package (+1 Dependent package)
+                                       Total download size: 87 k    Installed size: 107 k    Downloading packages:    [snip]
+        Running transaction check    Running transaction test    Transaction test succeeded    Running transaction
+        Installing : hmaccalc-0.9.13-4.el7.x86_64                                                                    1/2
+        Installing : dracut-fips-033-554.el7.x86_64                                                                  2/2
+        Verifying  : hmaccalc-0.9.13-4.el7.x86_64                                                                    1/2
+        Verifying  : dracut-fips-033-554.el7.x86_64                                                                     2/2
+                                       Installed:      dracut-fips.x86_64 0:033-554.el7
+                                       Dependency Installed:      hmaccalc.x86_64 0:0.9.13-4.el7
+                                       Complete!
+
+                              Recreate the  initramfs  file
+         $ dracut -f
+
+                              Modify the kernel command line, e.g.  GRUB_CMDLINE_LINUX , of the current kernel in the
+        /etc/default/grub  file by adding the following option:  fips=1
+                              Run one, or both if unsure how the machine is booting, of the following commands:
+         # If booting from BIOS    $ grub2-mkconfig -o /boot/grub2/grub.cfg
+                                       # If booting from EFI    $ grub2-mkconfig -o /boot/efi/EFI/centos/grub.cfg
+
+                              If you have prelink installed you will want to execute  prelink -u -a  prior to the next reboot.
+        Reboot the system for changes to take effect. Verify  fips_enabled  according to Audit Procedure above.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_6.7', 'cis_postgresql_11_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.8":
+    title: '6.8 | Ensure SSL is enabled and configured correctly'
+    section: 'PostgreSQL Settings'
+    description: |
+        SSL on a PostgreSQL server should be enabled set to  on  and configured to encrypt TCP traffic to and from the server.
+    remediation: |
+        For this example, and ease of illustration, we will be using a self-signed certificate for the server generated via
+        openssl , and the PostgreSQL defaults for file naming and location in the PostgreSQL  $PGDATA  directory. $ whoami
+        postgres $ # create new certificate and enter details at prompts $ openssl req -new -text -out server.req Generating a
+        2048 bit RSA private key .....................+++ ..................................................................+++
+        writing new private key to 'privkey.pem' Enter PEM pass phrase: Verifying - Enter PEM pass phrase: ----- You are about
+        to be asked to enter information that will be incorporated into your certificate request. What you are about to enter is
+        what is called a Distinguished Name or a DN. There are quite a few fields but you can leave some blank For some fields
+        there will be a default value, If you enter '.', the field will be left blank. ----- Country Name (2 letter code)
+        [XX]:US State or Province Name (full name) []:Ohio Locality Name (eg, city) [Default City]:Columbus Organization Name
+        (eg, company) [Default Company Ltd]:Me Inc Organizational Unit Name (eg, section) []:IT Common Name (eg, your name or
+        your server's hostname) []:my.me.inc Email Address []:me@meinc.com
+                              Please enter the following 'extra' attributes to be sent with your certificate request A challenge
+        password []: An optional company name []:
+                              $ # remove passphrase (required for automatic server start up) $ openssl rsa -in privkey.pem -out
+        server.key && rm privkey.pem Enter pass phrase for privkey.pem: writing RSA key
+                              $ # modify certificate to self signed, generate .key and .crt files $ openssl req -x509 -in
+        server.req -text -key server.key -out server.crt
+                              $ # copy .key and .crt files to appropriate location, here default $PGDATA $ cp server.key
+        server.crt $PGDATA
+                              $ # restrict file mode for server.key $ chmod og-rwx server.key
+        Edit the PostgreSQL configuration file `postgresql.conf` to ensure the following items are set. Again, we are using
+        defaults. Note that altering these parameters will require restarting the cluster.
+         (change requires restart)ssl = on# allowed SSL ciphersssl_ciphers = 'HIGH:MEDIUM:+3DES:!aNULL'# (change requires
+        restart)ssl_cert_file = 'server.crt'# (change requires restart)ssl_key_file = 'server.key'password_encryption =  scram-
+        sha-256 Finally, restart PostgreSQL and confirm  ssl  using commands outlined in Audit Procedures: postgres=# show ssl;
+        ssl -----  on (1 row)
+                           Impact: A self-signed certificate can be used for testing, but a certificate signed by a certificate
+        authority (CA) (either one of the global CAs or a local one) should be used in production so that clients can verify the
+        server's identity. If all the database clients are local to the organization, using a local CA is recommended. To
+        ultimately enable and enforce  ssl  authentication for the server, appropriate  hostssl  records must be added to the
+        pg_hba.conf  file. Be sure to  reload  PostgreSQL after any changes (restart not required). Note:  The  hostssl  record
+        matches connection attempts made using TCP/IP, but  only  when the connection is made with SSL encryption. The  host
+        record matches attempts made using TCP/IP, but allows both SSL and non-SSL connections. The  hostnossl  record matches
+        attempts made using TCP/IP, but only those  without  SSL.  Care should be taken to enforce SSL as appropriate.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_6.8', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.9":
+    title: '6.9 | Ensure the pgcrypto extension is installed and configured correctly'
+    section: 'PostgreSQL Settings'
+    description: |
+        PostgreSQL must implement cryptographic mechanisms to prevent unauthorized disclosure or modification of
+        organizationdefined information at rest to include, at a minimum, PII and classified information on organizationdefined
+        information system components.
+    remediation: |
+        The  pgcrypto  extension is included with the PostgreSQL 'contrib' package. Although included, it needs to be created in
+        the database. As the database administrator, run the following: postgres=# CREATE EXTENSION pgcrypto; CREATE EXTENSION
+        Verify `pgcrypto` is installed:
+         postgres=# SELECT * FROM pg_available_extensions WHERE name='pgcrypto';   name   | default_version | installed_version
+        |         comment----------+-----------------+-------------------+------------------------- pgcrypto | 1.3             |
+        1.3               | cryptographic functions(1 row) Impact: When considering or undertaking any form of encryption, it is
+        critical to understand the state of the encrypted data at all stages of the data lifecycle. The use of  pgcrypto
+        ensures that the data at rest in the tables (and therefore on disk) is encrypted, but for the data to be accessed by any
+        users or applications, said users/applications will, by necessity, have access to the encrypt and decrypt keys and the
+        data in question will be encrypted/decrypted in memory and then transferred to/from the user/application in that form.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_6.9', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "7.1":
+    title: '7.1 | Ensure a replication-only user is created and used for streaming replication'
+    section: 'Replication'
+    description: |
+        Create a new user specifically for use by streaming replication instead of using the superuser account.
+    remediation: |
+        It will be necessary to create a new role for replication purposes: postgres=# create user replication_user REPLICATION
+        encrypted password 'XXX'; CREATE ROLE postgres=# select rolname from pg_roles where rolreplication is true;      rolname
+        ------------------  postgres  replication_user (2 rows)
+        When using `pg_basebackup` (or other replication tools) and when configuring `recovery.conf` on your standby server, you
+        would use the `replication_user` (and its password).
+
+        Ensure you allow the new user via your `pg_hba.conf` file:
+         note that 'replication' in the 2nd column is required and is a special# keyword, not a real databasehostssl replication
+        replication_user       0.0.0.0/0               md5
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_7.1', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "7.2":
+    title: '7.2 | Ensure base backups are configured and functional - manual'
+    section: 'Replication'
+    description: |
+        A base backup is a copy of the PRIMARY hosts data cluster PGDATA and is used to create STANDBY hosts and for Point In
+        Time Recovery PITR mechanisms. Base backups should be copied across networks in a secure manner using an encrypted
+        transport mechanism. The PostgreSQL CLI  pgbasebackup  can be used, however, SSL encryption should be enabled on the
+        server as per section 6.8 of this benchmark. The pgBackRest tool detailed in section 8.3 of this benchmark can also be
+        used to create a base backup.
+    remediation: |
+        Executing base backups using  pg_basebackup  requires the following steps on the  standby  server: $ whoami postgres $
+        pg_basebackup -h name_or_IP_of_master \ -p 5432 \ -U replication_user \ -D ~postgres/11/data \ -P -v -R -Xs \
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_7.2', 'cis_postgresql_11_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "7.3":
+    title: '7.3 | Ensure WAL archiving is configured and functional'
+    section: 'Replication'
+    description: |
+        Write Ahead Log WAL Archiving, or Log Shipping, is the process of sending transaction log files from the PRIMARY host
+        either to one or more STANDBY hosts or to be archived on a remote storage device for later use, e.g.  PITR . There are
+        several utilities that can copy WALs including, but not limited to,  cp ,  scp ,  sftp , and  rynsc . Basically, the
+        server follows a set of runtime parameters which defines when the WAL should be copied using one of the aforementioned
+        utilities.
+    remediation: |
+        Change parameters and restart the server as required. Note:  SSH public keys must be generated and installed as per
+        industry standards.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_7.3', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "7.4":
+    title: '7.4 | Ensure streaming replication parameters are configured correctly'
+    section: 'Replication'
+    description: |
+        Streaming replication from a PRIMARY host transmits DDL, DML, passwords, and other potentially sensitive activities and
+        data. These connections should be protected with Secure Sockets Layer SSL.
+    remediation: |
+        Review prior sections in this benchmark regarding SSL certificates, replication user, and WAL archiving. Confirm the
+        file  recovery.conf  is present on the STANDBY host and contains lines similar to the following: standby_mode=on
+        primary_conninfo = 'user=replication_user password=mypassword host=mySrcHost port=5432 sslmode=require sslcompression=1'
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_7.4', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "8.1":
+    title: '8.1 | Ensure PostgreSQL configuration files are outside the data cluster'
+    section: 'Special Configuration Considerations'
+    description: |
+        PostgreSQL configuration files within the data clusters directory tree can be changed by anyone logging into the data
+        cluster as the superuser, i.e.  postgres . As a matter of default policy, configuration files such as  postgresql.conf ,
+        pghba.conf , and  pgident , are placed in the data clusters directory,  PGDATA . PostgreSQL can be configured to
+        relocate these files to locations outside the data cluster which cannot then be accessed by an ordinary superuser login
+        session. Consideration should also be given to include directives these are cluster subdirectories where one can locate
+        files containing additional configuration parameters. Include directives are meant to add more flexibility for unique
+        installs or large network environments while maintaining order and consistent architectural design.
+    remediation: |
+        Follow these steps to remediate the configuration file locations and permissions: Determine appropriate locations for
+        relocatable configuration files based on your organization's security policies. If necessary, relocate and/or rename
+        configuration files outside of the data cluster. Ensure their file permissions are restricted as much as possible, i.e.
+        only superuser read access. Change the settings accordingly in the  postgresql.conf  configuration file. Restart the
+        database cluster for the changes to take effect.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_8.1', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "8.2":
+    title: '8.2 | Ensure PostgreSQL subdirectory locations are outside the data cluster'
+    section: 'Special Configuration Considerations'
+    description: |
+        The PostgreSQL cluster is organized to carry out specific tasks in subdirectories. For the purposes of performance,
+        reliability, and security these subdirectories should be relocated outside the data cluster.
+    remediation: |
+        Perform the following steps to remediate the subdirectory locations and permissions: Determine appropriate data, log,
+        and tablespace directories and locations based on your organization's security policies. If necessary, relocate all
+        listed directories outside the data cluster. Ensure file permissions are restricted as much as possible, i.e. only
+        superuser read access. When directories are relocated to other partitions, ensure that they are of sufficient size to
+        mitigate against excessive space utilization. Lastly, change the settings accordingly in the  postgresql.conf
+        configuration file and restart the database cluster for changes to take effect.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_8.2', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "8.3":
+    title: '8.3 | Ensure the backup and restore tool pgBackRest is installed and configured - manual'
+    section: 'Special Configuration Considerations'
+    description: |
+        pgBackRest aims to be a simple, reliable backup and restore system that can seamlessly scale up to the largest databases
+        and workloads. Instead of relying on traditional backup tools like  tar  and  rsync , pgBackRest implements all backup
+        features internally and uses a custom protocol for communicating with remote systems. Removing reliance on  tar  and
+        rsync  allows for better solutions to databasespecific backup challenges. The custom remote protocol allows for more
+        flexibility and limits the types of connections that are required to perform a backup which increases security.
+    remediation: |
+        pgBackRest  is not installed nor configured for PostgreSQL by default, but instead is maintained as a GitHub project.
+        Fortunately, it is a part of the PGDG repository and can be easily installed: $ whoami root $ yum -y install pgbackrest
+        Loaded plugins: fastestmirror, priorities Loading mirror speeds from cached hostfile epel/x86_64/metalink
+        |  18 kB  00:00:00  * base: mirror.cisp.com  * centos-sclo-rh: mirror.cc.columbia.edu  * centos-sclo-sclo:
+        mirror.cisp.com  * epel: mirror.umd.edu  * extras: mirror.cisp.com  * updates: mirror.cisp.com base
+        | 3.6 kB  00:00:00 centos-sclo-rh                                             | 3.0 kB  00:00:00 centos-sclo-sclo
+        | 2.9 kB  00:00:00 epel                                                       | 5.3 kB  00:00:00 extras
+        | 3.4 kB  00:00:00 pgdg10                                                     | 3.6 kB  00:00:00 pgdg11
+        | 3.6 kB  00:00:00 pgdg94                                                     | 3.6 kB  00:00:00 pgdg95
+        | 3.6 kB  00:00:00 pgdg96                                                     | 3.6 kB  00:00:00 updates
+        | 3.4 kB  00:00:00 (1/7): epel/x86_64/updateinfo                              | 977 kB  00:00:00 (2/7):
+        pgdg11/7/x86_64/primary_db                          | 185 kB  00:00:00 (3/7): pgdg96/7/x86_64/primary_db
+        | 248 kB  00:00:00 (4/7): pgdg94/7/x86_64/primary_db                          | 258 kB  00:00:00 (5/7):
+        pgdg10/7/x86_64/primary_db                          | 230 kB  00:00:01 (6/7): pgdg95/7/x86_64/primary_db
+        | 247 kB  00:00:01 (7/7): epel/x86_64/primary_db                              | 6.7 MB  00:00:02
+                              1467 packages excluded due to repository priority protections Resolving Dependencies --> Running
+        transaction check ---> Package pgbackrest.x86_64 0:2.14-1.rhel7 will be installed --> Processing Dependency: perl-XML-
+        LibXML for package: pgbackrest-2.14-1.rhel7.x86_64 --> Processing Dependency: perl-JSON-PP for package:
+        pgbackrest-2.14-1.rhel7.x86_64 --> Processing Dependency: perl-IO-Socket-SSL for package: pgbackrest-2.14-1.rhel7.x86_64
+        --> Processing Dependency: perl-Digest-SHA for package: pgbackrest-2.14-1.rhel7.x86_64 --> Processing Dependency: perl-
+        DBD-Pg for package: pgbackrest-2.14-1.rhel7.x86_64 --> Running transaction check ---> Package perl-DBD-Pg.x86_64
+        0:2.19.3-4.el7 will be installed --> Processing Dependency: perl(DBI) >= 1.52 for package: perl-DBD-
+        Pg-2.19.3-4.el7.x86_64 --> Processing Dependency: perl(version) for package: perl-DBD-Pg-2.19.3-4.el7.x86_64 --->
+        Package perl-Digest-SHA.x86_64 1:5.85-4.el7 will be installed --> Processing Dependency: perl(Digest::base) for package:
+        1:perl-Digest-SHA-5.85-4.el7.x86_64 ---> Package perl-IO-Socket-SSL.noarch 0:1.94-7.el7 will be installed --> Processing
+        Dependency: perl-Net-SSLeay >= 1.55-5 for package: perl-IO-Socket-SSL-1.94-7.el7.noarch --> Processing Dependency:
+        perl(Net::SSLeay) >= 1.21 for package: perl-IO-Socket-SSL-1.94-7.el7.noarch --> Processing Dependency:
+        perl(IO::Socket::IP) >= 0.20 for package: perl-IO-Socket-SSL-1.94-7.el7.noarch --> Processing Dependency:
+        perl(Net::SSLeay) for package: perl-IO-Socket-SSL-1.94-7.el7.noarch --> Processing Dependency: perl(Net::LibIDN) for
+        package: perl-IO-Socket-SSL-1.94-7.el7.noarch --> Processing Dependency: perl(Mozilla::CA) for package: perl-IO-Socket-
+        SSL-1.94-7.el7.noarch ---> Package perl-JSON-PP.noarch 0:2.27202-2.el7 will be installed --> Processing Dependency:
+        perl(Data::Dumper) for package: perl-JSON-PP-2.27202-2.el7.noarch ---> Package perl-XML-LibXML.x86_64 1:2.0018-5.el7
+        will be installed --> Processing Dependency: perl(XML::SAX::Exception) for package: 1:perl-XML-
+        LibXML-2.0018-5.el7.x86_64 --> Processing Dependency: perl(XML::SAX::DocumentLocator) for package: 1:perl-XML-
+        LibXML-2.0018-5.el7.x86_64 --> Processing Dependency: perl(XML::SAX::Base) for package: 1:perl-XML-
+        LibXML-2.0018-5.el7.x86_64 --> Processing Dependency: perl(XML::NamespaceSupport) for package: 1:perl-XML-
+        LibXML-2.0018-5.el7.x86_64 --> Running transaction check ---> Package perl-DBI.x86_64 0:1.627-4.el7 will be installed
+        --> Processing Dependency: perl(RPC::PlServer) >= 0.2001 for package: perl-DBI-1.627-4.el7.x86_64 --> Processing
+        Dependency: perl(RPC::PlClient) >= 0.2000 for package: perl-DBI-1.627-4.el7.x86_64 ---> Package perl-Data-Dumper.x86_64
+        0:2.145-3.el7 will be installed ---> Package perl-Digest.noarch 0:1.17-245.el7 will be installed ---> Package perl-IO-
+        Socket-IP.noarch 0:0.21-5.el7 will be installed ---> Package perl-Mozilla-CA.noarch 0:20130114-5.el7 will be installed
+        ---> Package perl-Net-LibIDN.x86_64 0:0.12-15.el7 will be installed ---> Package perl-Net-SSLeay.x86_64 0:1.55-6.el7
+        will be installed ---> Package perl-XML-NamespaceSupport.noarch 0:1.11-10.el7 will be installed ---> Package perl-XML-
+        SAX.noarch 0:0.99-9.el7 will be installed --> Processing Dependency: perl(LWP::UserAgent) for package: perl-XML-
+        SAX-0.99-9.el7.noarch ---> Package perl-XML-SAX-Base.noarch 0:1.08-7.el7 will be installed ---> Package perl-
+        version.x86_64 3:0.99.07-3.el7 will be installed --> Running transaction check ---> Package perl-PlRPC.noarch
+        0:0.2020-14.el7 will be installed --> Processing Dependency: perl(Net::Daemon) >= 0.13 for package: perl-
+        PlRPC-0.2020-14.el7.noarch --> Processing Dependency: perl(Net::Daemon::Test) for package: perl-
+        PlRPC-0.2020-14.el7.noarch --> Processing Dependency: perl(Net::Daemon::Log) for package: perl-
+        PlRPC-0.2020-14.el7.noarch --> Processing Dependency: perl(Compress::Zlib) for package: perl-PlRPC-0.2020-14.el7.noarch
+        ---> Package perl-libwww-perl.noarch 0:6.05-2.el7 will be installed --> Processing Dependency: perl(WWW::RobotRules) >=
+        6 for package: perl-libwww-perl-6.05-2.el7.noarch --> Processing Dependency: perl(URI) >= 1.10 for package: perl-libwww-
+        perl-6.05-2.el7.noarch --> Processing Dependency: perl(Net::HTTP) >= 6.04 for package: perl-libwww-
+        perl-6.05-2.el7.noarch --> Processing Dependency: perl(LWP::MediaTypes) >= 6 for package: perl-libwww-
+        perl-6.05-2.el7.noarch --> Processing Dependency: perl(HTTP::Status) >= 6 for package: perl-libwww-
+        perl-6.05-2.el7.noarch --> Processing Dependency: perl(HTTP::Response) >= 6 for package: perl-libwww-
+        perl-6.05-2.el7.noarch --> Processing Dependency: perl(HTTP::Request::Common) >= 6 for package: perl-libwww-
+        perl-6.05-2.el7.noarch --> Processing Dependency: perl(HTTP::Request) >= 6 for package: perl-libwww-
+        perl-6.05-2.el7.noarch --> Processing Dependency: perl(HTTP::Negotiate) >= 6 for package: perl-libwww-
+        perl-6.05-2.el7.noarch --> Processing Dependency: perl(HTTP::Date) >= 6 for package: perl-libwww-perl-6.05-2.el7.noarch
+        --> Processing Dependency: perl(HTTP::Daemon) >= 6 for package: perl-libwww-perl-6.05-2.el7.noarch --> Processing
+        Dependency: perl(HTTP::Cookies) >= 6 for package: perl-libwww-perl-6.05-2.el7.noarch --> Processing Dependency:
+        perl(File::Listing) >= 6 for package: perl-libwww-perl-6.05-2.el7.noarch --> Processing Dependency: perl(URI::Heuristic)
+        for package: perl-libwww-perl-6.05-2.el7.noarch --> Processing Dependency: perl(URI::Escape) for package: perl-libwww-
+        perl-6.05-2.el7.noarch --> Processing Dependency: perl(HTML::HeadParser) for package: perl-libwww-perl-6.05-2.el7.noarch
+        --> Processing Dependency: perl(HTML::Entities) for package: perl-libwww-perl-6.05-2.el7.noarch --> Processing
+        Dependency: perl(Encode::Locale) for package: perl-libwww-perl-6.05-2.el7.noarch --> Processing Dependency:
+        perl(Digest::MD5) for package: perl-libwww-perl-6.05-2.el7.noarch --> Running transaction check ---> Package perl-
+        Digest-MD5.x86_64 0:2.52-3.el7 will be installed ---> Package perl-Encode-Locale.noarch 0:1.03-5.el7 will be installed
+        ---> Package perl-File-Listing.noarch 0:6.04-7.el7 will be installed ---> Package perl-HTML-Parser.x86_64 0:3.71-4.el7
+        will be installed --> Processing Dependency: perl(HTML::Tagset) >= 3 for package: perl-HTML-Parser-3.71-4.el7.x86_64
+        ---> Package perl-HTTP-Cookies.noarch 0:6.01-5.el7 will be installed ---> Package perl-HTTP-Daemon.noarch 0:6.01-8.el7
+        will be installed ---> Package perl-HTTP-Date.noarch 0:6.02-8.el7 will be installed --> Processing Dependency:
+        perl(Time::Zone) for package: perl-HTTP-Date-6.02-8.el7.noarch ---> Package perl-HTTP-Message.noarch 0:6.06-6.el7 will
+        be installed --> Processing Dependency: perl(IO::HTML) for package: perl-HTTP-Message-6.06-6.el7.noarch --> Processing
+        Dependency: perl(Compress::Raw::Zlib) for package: perl-HTTP-Message-6.06-6.el7.noarch ---> Package perl-HTTP-
+        Negotiate.noarch 0:6.01-5.el7 will be installed ---> Package perl-IO-Compress.noarch 0:2.061-2.el7 will be installed -->
+        Processing Dependency: perl(Compress::Raw::Bzip2) >= 2.061 for package: perl-IO-Compress-2.061-2.el7.noarch ---> Package
+        perl-LWP-MediaTypes.noarch 0:6.02-2.el7 will be installed --> Processing Dependency: mailcap for package: perl-LWP-
+        MediaTypes-6.02-2.el7.noarch ---> Package perl-Net-Daemon.noarch 0:0.48-5.el7 will be installed ---> Package perl-Net-
+        HTTP.noarch 0:6.06-2.el7 will be installed ---> Package perl-URI.noarch 0:1.60-9.el7 will be installed --> Processing
+        Dependency: perl(Business::ISBN) for package: perl-URI-1.60-9.el7.noarch ---> Package perl-WWW-RobotRules.noarch
+        0:6.02-5.el7 will be installed --> Running transaction check ---> Package mailcap.noarch 0:2.1.41-2.el7 will be
+        installed ---> Package perl-Business-ISBN.noarch 0:2.06-2.el7 will be installed --> Processing Dependency:
+        perl(Business::ISBN::Data) >= 20120719.001 for package: perl-Business-ISBN-2.06-2.el7.noarch ---> Package perl-Compress-
+        Raw-Bzip2.x86_64 0:2.061-3.el7 will be installed ---> Package perl-Compress-Raw-Zlib.x86_64 1:2.061-4.el7 will be
+        installed ---> Package perl-HTML-Tagset.noarch 0:3.20-15.el7 will be installed ---> Package perl-IO-HTML.noarch
+        0:1.00-2.el7 will be installed ---> Package perl-TimeDate.noarch 1:2.30-2.el7 will be installed --> Running transaction
+        check ---> Package perl-Business-ISBN-Data.noarch 0:20120719.001-2.el7 will be installed --> Finished Dependency
+        Resolution
+                              Dependencies Resolved
+                              =============================================================================  Package
+        Arch     Version             Repository     Size
+        ============================================================================= Installing:  pgbackrest
+        x86_64   2.14-1.rhel7        pgdg11        275 k Installing for dependencies:  mailcap                     noarch
+        2.1.41-2.el7        base           31 k  perl-Business-ISBN          noarch   2.06-2.el7          base           25 k
+        perl-Business-ISBN-Data     noarch   20120719.001-2.el7  base           24 k  perl-Compress-Raw-Bzip2     x86_64
+        2.061-3.el7         base           32 k  perl-Compress-Raw-Zlib      x86_64   1:2.061-4.el7       base           57 k
+        perl-DBD-Pg                 x86_64   2.19.3-4.el7        base          195 k  perl-DBI                    x86_64
+        1.627-4.el7         base          802 k  perl-Data-Dumper            x86_64   2.145-3.el7         base           47 k
+        perl-Digest                 noarch   1.17-245.el7        base           23 k  perl-Digest-MD5             x86_64
+        2.52-3.el7          base           30 k  perl-Digest-SHA             x86_64   1:5.85-4.el7        base           58 k
+        perl-Encode-Locale          noarch   1.03-5.el7          base           16 k  perl-File-Listing           noarch
+        6.04-7.el7          base           13 k  perl-HTML-Parser            x86_64   3.71-4.el7          base          115 k
+        perl-HTML-Tagset            noarch   3.20-15.el7         base           18 k  perl-HTTP-Cookies           noarch
+        6.01-5.el7          base           26 k  perl-HTTP-Daemon            noarch   6.01-8.el7          base           21 k
+        perl-HTTP-Date              noarch   6.02-8.el7          base           14 k  perl-HTTP-Message           noarch
+        6.06-6.el7          base           82 k  perl-HTTP-Negotiate         noarch   6.01-5.el7          base           17 k
+        perl-IO-Compress            noarch   2.061-2.el7         base          260 k  perl-IO-HTML                noarch
+        1.00-2.el7          base           23 k  perl-IO-Socket-IP           noarch   0.21-5.el7          base           36 k
+        perl-IO-Socket-SSL          noarch   1.94-7.el7          base          115 k  perl-JSON-PP                noarch
+        2.27202-2.el7       base           55 k  perl-LWP-MediaTypes         noarch   6.02-2.el7          base           24 k
+        perl-Mozilla-CA             noarch   20130114-5.el7      base           11 k  perl-Net-Daemon             noarch
+        0.48-5.el7          base           51 k  perl-Net-HTTP               noarch   6.06-2.el7          base           29 k
+        perl-Net-LibIDN             x86_64   0.12-15.el7         base           28 k  perl-Net-SSLeay             x86_64
+        1.55-6.el7          base          285 k  perl-PlRPC                  noarch   0.2020-14.el7       base           36 k
+        perl-TimeDate               noarch   1:2.30-2.el7        base           52 k  perl-URI                    noarch
+        1.60-9.el7          base          106 k  perl-WWW-RobotRules         noarch   6.02-5.el7          base           18 k
+        perl-XML-LibXML             x86_64   1:2.0018-5.el7      base          373 k  perl-XML-NamespaceSupport   noarch
+        1.11-10.el7         base           18 k  perl-XML-SAX                noarch   0.99-9.el7          base           63 k
+        perl-XML-SAX-Base           noarch   1.08-7.el7          base           32 k  perl-libwww-perl            noarch
+        6.05-2.el7          base          205 k  perl-version                x86_64   3:0.99.07-3.el7     base           84 k
+                              Transaction Summary =============================================================================
+        Install  1 Package (+41 Dependent packages)
+                              Total download size: 3.7 M Installed size: 9.5 M Downloading packages: (1/42): perl-Compress-Raw-
+        Zlib-2.061-4.el7.x86_64.rpm      |  57 kB  00:00:00 (2/42): perl-Business-ISBN-Data-20120719.001-2.el7.noarch.rpm |  24
+        kB  00:00:00 (3/42): perl-Compress-Raw-Bzip2-2.061-3.el7.x86_64.rpm     |  32 kB  00:00:00 (4/42): perl-Data-
+        Dumper-2.145-3.el7.x86_64.rpm            |  47 kB  00:00:00 (5/42): perl-Business-ISBN-2.06-2.el7.noarch.rpm           |
+        25 kB  00:00:00 (6/42): perl-Digest-1.17-245.el7.noarch.rpm                |  23 kB  00:00:00 (7/42): perl-DBD-
+        Pg-2.19.3-4.el7.x86_64.rpm                | 195 kB  00:00:00 (8/42): perl-Encode-Locale-1.03-5.el7.noarch.rpm
+        |  16 kB  00:00:00 (9/42): perl-Digest-SHA-5.85-4.el7.x86_64.rpm              |  58 kB  00:00:00 (10/42): perl-Digest-
+        MD5-2.52-3.el7.x86_64.rpm             |  30 kB  00:00:00 (11/42): perl-HTML-Tagset-3.20-15.el7.noarch.rpm           |
+        18 kB  00:00:00 (12/42): perl-HTML-Parser-3.71-4.el7.x86_64.rpm            | 115 kB  00:00:00 (13/42): perl-HTTP-
+        Daemon-6.01-8.el7.noarch.rpm            |  21 kB  00:00:00 (14/42): perl-File-Listing-6.04-7.el7.noarch.rpm           |
+        13 kB  00:00:00 (15/42): perl-HTTP-Date-6.02-8.el7.noarch.rpm              |  14 kB  00:00:00 (16/42): perl-HTTP-
+        Cookies-6.01-5.el7.noarch.rpm           |  26 kB  00:00:00 (17/42): perl-HTTP-Negotiate-6.01-5.el7.noarch.rpm         |
+        17 kB  00:00:00 (18/42): perl-IO-HTML-1.00-2.el7.noarch.rpm                |  23 kB  00:00:00 (19/42): perl-IO-Socket-
+        IP-0.21-5.el7.noarch.rpm           |  36 kB  00:00:00 (20/42): perl-IO-Socket-SSL-1.94-7.el7.noarch.rpm          | 115
+        kB  00:00:00 (21/42): perl-JSON-PP-2.27202-2.el7.noarch.rpm             |  55 kB  00:00:00 (22/42): perl-HTTP-
+        Message-6.06-6.el7.noarch.rpm           |  82 kB  00:00:00 (23/42): perl-LWP-MediaTypes-6.02-2.el7.noarch.rpm         |
+        24 kB  00:00:00 (24/42): perl-Net-Daemon-0.48-5.el7.noarch.rpm             |  51 kB  00:00:00 (25/42): perl-Mozilla-
+        CA-20130114-5.el7.noarch.rpm         |  11 kB  00:00:00 (26/42): perl-Net-HTTP-6.06-2.el7.noarch.rpm               |  29
+        kB  00:00:00 (27/42): perl-DBI-1.627-4.el7.x86_64.rpm                   | 802 kB  00:00:00 (28/42): perl-Net-
+        SSLeay-1.55-6.el7.x86_64.rpm             | 285 kB  00:00:00 (29/42): perl-Net-LibIDN-0.12-15.el7.x86_64.rpm            |
+        28 kB  00:00:00 (30/42): perl-PlRPC-0.2020-14.el7.noarch.rpm               |  36 kB  00:00:00 (31/42): perl-IO-
+        Compress-2.061-2.el7.noarch.rpm           | 260 kB  00:00:00 (32/42): perl-URI-1.60-9.el7.noarch.rpm
+        | 106 kB  00:00:00 (33/42): perl-XML-NamespaceSupport-1.11-10.el7.noarch.rpm  |  18 kB  00:00:00 (34/42): perl-WWW-
+        RobotRules-6.02-5.el7.noarch.rpm         |  18 kB  00:00:00 (35/42): perl-XML-SAX-0.99-9.el7.noarch.rpm                |
+        63 kB  00:00:00 (36/42): perl-TimeDate-2.30-2.el7.noarch.rpm               |  52 kB  00:00:00 (37/42):
+        mailcap-2.1.41-2.el7.noarch.rpm                   |  31 kB  00:00:01 (38/42): perl-XML-SAX-Base-1.08-7.el7.noarch.rpm
+        |  32 kB  00:00:00 (39/42): perl-version-0.99.07-3.el7.x86_64.rpm             |  84 kB  00:00:00 (40/42): perl-libwww-
+        perl-6.05-2.el7.noarch.rpm            | 205 kB  00:00:00 (41/42): perl-XML-LibXML-2.0018-5.el7.x86_64.rpm           |
+        373 kB  00:00:00 (42/42): pgbackrest-2.14-1.rhel7.x86_64.rpm                | 275 kB  00:00:01
+        ----------------------------------------------------------------------------- Total
+        1.3 MB/s | 3.7 MB  00:00:02
+                              Running transaction check Running transaction test Transaction test succeeded Running transaction
+        Installing : perl-Data-Dumper-2.145-3.el7.x86_64                       1/42   Installing : 1:perl-Compress-Raw-
+        Zlib-2.061-4.el7.x86_64               2/42   Installing : perl-Digest-1.17-245.el7.noarch                           3/42
+        Installing : perl-XML-SAX-Base-1.08-7.el7.noarch                       4/42   Installing : perl-IO-Socket-
+        IP-0.21-5.el7.noarch                       5/42   Installing : perl-Encode-Locale-1.03-5.el7.noarch
+        6/42   Installing : perl-XML-NamespaceSupport-1.11-10.el7.noarch              7/42   Installing : perl-Digest-
+        MD5-2.52-3.el7.x86_64                         8/42   Installing : 1:perl-Digest-SHA-5.85-4.el7.x86_64
+        9/42   Installing : perl-JSON-PP-2.27202-2.el7.noarch                        10/42   Installing : perl-HTML-
+        Tagset-3.20-15.el7.noarch                      11/42   Installing : perl-IO-HTML-1.00-2.el7.noarch
+        12/42   Installing : 1:perl-TimeDate-2.30-2.el7.noarch                        13/42   Installing : perl-HTTP-
+        Date-6.02-8.el7.noarch                         14/42   Installing : perl-File-Listing-6.04-7.el7.noarch
+        15/42   Installing : perl-Business-ISBN-Data-20120719.001-2.el7.noarch        16/42   Installing : perl-Business-
+        ISBN-2.06-2.el7.noarch                     17/42   Installing : perl-URI-1.60-9.el7.noarch
+        18/42   Installing : perl-WWW-RobotRules-6.02-5.el7.noarch                    19/42   Installing : perl-Net-
+        SSLeay-1.55-6.el7.x86_64                        20/42   Installing : 3:perl-version-0.99.07-3.el7.x86_64
+        21/42   Installing : perl-Mozilla-CA-20130114-5.el7.noarch                    22/42   Installing : perl-Net-
+        Daemon-0.48-5.el7.noarch                        23/42   Installing : perl-Compress-Raw-Bzip2-2.061-3.el7.x86_64
+        24/42   Installing : perl-IO-Compress-2.061-2.el7.noarch                      25/42   Installing : perl-
+        PlRPC-0.2020-14.el7.noarch                          26/42   Installing : perl-DBI-1.627-4.el7.x86_64
+        27/42   Installing : perl-DBD-Pg-2.19.3-4.el7.x86_64                          28/42   Installing : perl-Net-
+        LibIDN-0.12-15.el7.x86_64                       29/42   Installing : perl-IO-Socket-SSL-1.94-7.el7.noarch
+        30/42   Installing : perl-Net-HTTP-6.06-2.el7.noarch                          31/42   Installing :
+        mailcap-2.1.41-2.el7.noarch                              32/42   Installing : perl-LWP-MediaTypes-6.02-2.el7.noarch
+        33/42   Installing : perl-HTTP-Message-6.06-6.el7.noarch                      34/42   Installing : perl-HTTP-
+        Cookies-6.01-5.el7.noarch                      35/42   Installing : perl-HTML-Parser-3.71-4.el7.x86_64
+        36/42   Installing : perl-HTTP-Negotiate-6.01-5.el7.noarch                    37/42   Installing : perl-HTTP-
+        Daemon-6.01-8.el7.noarch                       38/42   Installing : perl-libwww-perl-6.05-2.el7.noarch
+        39/42   Installing : perl-XML-SAX-0.99-9.el7.noarch                           40/42   Installing : 1:perl-XML-
+        LibXML-2.0018-5.el7.x86_64                    41/42   Installing : pgbackrest-2.14-1.rhel7.x86_64
+        42/42   Verifying  : perl-IO-Compress-2.061-2.el7.noarch                       1/42   Verifying  : perl-Business-
+        ISBN-2.06-2.el7.noarch                      2/42   Verifying  : mailcap-2.1.41-2.el7.noarch
+        3/42   Verifying  : perl-HTTP-Cookies-6.01-5.el7.noarch                       4/42   Verifying  : perl-JSON-
+        PP-2.27202-2.el7.noarch                         5/42   Verifying  : perl-Net-LibIDN-0.12-15.el7.x86_64
+        6/42   Verifying  : perl-Compress-Raw-Bzip2-2.061-3.el7.x86_64                7/42   Verifying  : perl-HTML-
+        Parser-3.71-4.el7.x86_64                        8/42   Verifying  : perl-Net-Daemon-0.48-5.el7.noarch
+        9/42   Verifying  : perl-HTTP-Message-6.06-6.el7.noarch                      10/42   Verifying  : perl-Digest-
+        MD5-2.52-3.el7.x86_64                        11/42   Verifying  : perl-HTTP-Date-6.02-8.el7.noarch
+        12/42   Verifying  : perl-WWW-RobotRules-6.02-5.el7.noarch                    13/42   Verifying  : perl-XML-
+        NamespaceSupport-1.11-10.el7.noarch             14/42   Verifying  : perl-IO-Socket-SSL-1.94-7.el7.noarch
+        15/42   Verifying  : perl-Mozilla-CA-20130114-5.el7.noarch                    16/42   Verifying  : 3:perl-
+        version-0.99.07-3.el7.x86_64                      17/42   Verifying  : perl-DBD-Pg-2.19.3-4.el7.x86_64
+        18/42   Verifying  : perl-Encode-Locale-1.03-5.el7.noarch                     19/42   Verifying  : perl-Data-
+        Dumper-2.145-3.el7.x86_64                      20/42   Verifying  : 1:perl-XML-LibXML-2.0018-5.el7.x86_64
+        21/42   Verifying  : perl-IO-Socket-IP-0.21-5.el7.noarch                      22/42   Verifying  : perl-Net-
+        SSLeay-1.55-6.el7.x86_64                        23/42   Verifying  : perl-HTTP-Negotiate-6.01-5.el7.noarch
+        24/42   Verifying  : perl-Business-ISBN-Data-20120719.001-2.el7.noarch        25/42   Verifying  : 1:perl-Compress-Raw-
+        Zlib-2.061-4.el7.x86_64              26/42   Verifying  : perl-libwww-perl-6.05-2.el7.noarch                       27/42
+        Verifying  : perl-HTTP-Daemon-6.01-8.el7.noarch                       28/42   Verifying  : perl-LWP-
+        MediaTypes-6.02-2.el7.noarch                    29/42   Verifying  : perl-XML-SAX-0.99-9.el7.noarch
+        30/42   Verifying  : perl-PlRPC-0.2020-14.el7.noarch                          31/42   Verifying  : perl-
+        DBI-1.627-4.el7.x86_64                              32/42   Verifying  : perl-Net-HTTP-6.06-2.el7.noarch
+        33/42   Verifying  : 1:perl-TimeDate-2.30-2.el7.noarch                        34/42   Verifying  : 1:perl-Digest-
+        SHA-5.85-4.el7.x86_64                      35/42   Verifying  : perl-IO-HTML-1.00-2.el7.noarch
+        36/42   Verifying  : perl-XML-SAX-Base-1.08-7.el7.noarch                      37/42   Verifying  : perl-
+        Digest-1.17-245.el7.noarch                          38/42   Verifying  : perl-HTML-Tagset-3.20-15.el7.noarch
+        39/42   Verifying  : pgbackrest-2.14-1.rhel7.x86_64                           40/42   Verifying  : perl-
+        URI-1.60-9.el7.noarch                               41/42   Verifying  : perl-File-Listing-6.04-7.el7.noarch
+        42/42
+                              Installed:   pgbackrest.x86_64 0:2.14-1.rhel7
+                              Dependency Installed:   mailcap.noarch 0:2.1.41-2.el7                                perl-
+        Business-ISBN.noarch 0:2.06-2.el7   perl-Business-ISBN-Data.noarch 0:20120719.001-2.el7          perl-Compress-Raw-
+        Bzip2.x86_64 0:2.061-3.el7   perl-Compress-Raw-Zlib.x86_64 1:2.061-4.el7                  perl-DBD-Pg.x86_64
+        0:2.19.3-4.el7   perl-DBI.x86_64 0:1.627-4.el7                                perl-Data-Dumper.x86_64 0:2.145-3.el7
+        perl-Digest.noarch 0:1.17-245.el7                            perl-Digest-MD5.x86_64 0:2.52-3.el7   perl-Digest-
+        SHA.x86_64 1:5.85-4.el7                          perl-Encode-Locale.noarch 0:1.03-5.el7   perl-File-Listing.noarch
+        0:6.04-7.el7                        perl-HTML-Parser.x86_64 0:3.71-4.el7   perl-HTML-Tagset.noarch 0:3.20-15.el7
+        perl-HTTP-Cookies.noarch 0:6.01-5.el7   perl-HTTP-Daemon.noarch 0:6.01-8.el7                         perl-HTTP-
+        Date.noarch 0:6.02-8.el7   perl-HTTP-Message.noarch 0:6.06-6.el7                        perl-HTTP-Negotiate.noarch
+        0:6.01-5.el7   perl-IO-Compress.noarch 0:2.061-2.el7                        perl-IO-HTML.noarch 0:1.00-2.el7   perl-IO-
+        Socket-IP.noarch 0:0.21-5.el7                        perl-IO-Socket-SSL.noarch 0:1.94-7.el7   perl-JSON-PP.noarch
+        0:2.27202-2.el7                          perl-LWP-MediaTypes.noarch 0:6.02-2.el7   perl-Mozilla-CA.noarch
+        0:20130114-5.el7                      perl-Net-Daemon.noarch 0:0.48-5.el7   perl-Net-HTTP.noarch 0:6.06-2.el7
+        perl-Net-LibIDN.x86_64 0:0.12-15.el7   perl-Net-SSLeay.x86_64 0:1.55-6.el7                          perl-PlRPC.noarch
+        0:0.2020-14.el7   perl-TimeDate.noarch 1:2.30-2.el7                            perl-URI.noarch 0:1.60-9.el7   perl-WWW-
+        RobotRules.noarch 0:6.02-5.el7                      perl-XML-LibXML.x86_64 1:2.0018-5.el7   perl-XML-
+        NamespaceSupport.noarch 0:1.11-10.el7               perl-XML-SAX.noarch 0:0.99-9.el7   perl-XML-SAX-Base.noarch
+        0:1.08-7.el7                        perl-libwww-perl.noarch 0:6.05-2.el7   perl-version.x86_64 3:0.99.07-3.el7
+                              Complete!
+        Once installed, `pgBackRest` must be configured for things like stanza name, backup location, retention policy, logging,
+        etc. Please consult the [configuration guide](http://pgbackrest.org/configuration.html).
+
+        If employing `pgBackRest` for your backup/recovery solution, ensure the repository, base backups, and WAL archives are
+        stored on a reliable file system separate from the database server. Further, the external storage system where backups
+        resided should have limited access to only those system administrators as necessary. Finally, as with any
+        backup/recovery solution, stringent testing must be conducted. **A backup is only good if it can be restored
+        successfully.**
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_8.3', 'cis_postgresql_11_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "8.4":
+    title: '8.4 | Ensure miscellaneous configuration settings are correct'
+    section: 'Special Configuration Considerations'
+    description: |
+        This recommendation covers nonregular, special files, and dynamic libraries. PostgreSQL permits local logins via the
+        UNIX DOMAIN SOCKET and, for the most part, anyone with a legitimate Unix login account can make the attempt. Limiting
+        PostgreSQL login attempts can be made by relocating the UNIX DOMAIN SOCKET to a subdirectory with restricted
+        permissions. The creation and implementation of userdefined dynamic libraries is an extraordinary powerful capability.
+        In the hands of an experienced DBA/programmer, it can significantly enhance the power and flexibility of the RDBMS. But
+        new and unexpected behavior can also be assigned to the RDBMS, resulting in a very dangerous environment in what should
+        otherwise be trusted.
+    remediation: |
+        Follow these steps to remediate the configuration: Determine permissions based on your organization's security policies.
+        Relocate all files and ensure their permissions are restricted as much as possible, i.e. only superuser read access.
+        Ensure all directories where these files are located have restricted permissions such that the superuser can read but
+        not write. Lastly, change the settings accordingly in the  postgresql.conf  configuration file and restart the database
+        cluster for changes to take effect.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_11_benchmark', 'rule_8.4', 'cis_postgresql_11_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:

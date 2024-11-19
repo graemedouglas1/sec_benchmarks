@@ -1,0 +1,898 @@
+#TRUSTED 1e27a88328531fba605218f48198ae96b07a1ba7da234f9740005228b28fb5dd8b33e1ebb34d321543649bbcfb53c01697681e86e1e22cf98461de69bf644f1f727f9eb59d7b1efe4758294daa676159b5c3554c3032a94cb3f4dc4bfdb985c671efc30a2c0c654387e438ea37311076d9df172c277a8c25e6e711a06261ecf46b6b3942317d482d8b942199a43baa2a12c7badb626fd5922906497bcdfb12d4ec1bbfa87d4dcabd6e06fdbe5d2ab9836eb3ba18ad071d59935bc3f61562c80202e9b0ae40d1d7930159d9aa36d40ac1906e676bc43faea4eef1a4e8e7a459609d0869e918d80ca718e44f9173205ee5e4fc431bbcb263a444681c4fda4df8e469122486212e8cdde8110cdd31ba5075d3510173e3a446c67fb4b8b5f6fbfab689d128531c662ec55adb0d780ade40a19683dedfafba9d20e58266e4c6eeb227c57e930eddad3b63ea3f27440933740e5a57f87a5ae490b09e92362d95c0b1a2f020e80430e734e7f0aec2d49ef22097065f519bd3346d4f26e739ad2713e6e5462dc6d7563257720c0cbdd08ed42c6d879d69784820b2b11ac6d4ba8e46f92a57c614edc96562851da773c09bc5fe5a9b0556f6c5009fd82ac23fbd41a847d911e84d74d6aa91ed99f255a3af6e275d0b5b2491b2c784766d03a529731cddf21fc8fd69ff495987a82899cd528f99e8978f579c8e0cfceda46fc96a05d736b8
+#TRUST-RSA-SHA256 6a7d7afa031e3c682a662cc89f18ed0b9c6e860c935c29aefd7ce3f3c0166c5268335ad98c4e686a2dcba8ba8c433895d186346c1ce0aad1b073b5425322e172d1c6ff16d0a920f626fd47daf15863e3b9d937ecc2cecd56bd19280ecdb9eb130bf4ce4ec5e0af7c4dc9c20fc37e33f3d855044d0a86f2cb9f5a9bce69e98c36817cd321f6a0c4a1b2956b9fc0f6243c89d64fe4956e6c151268d0028c246d884cc4b015eb2bde97c101dff8b067ec198a57f6a761e0269cec6a5ec0921a0d37127ae2b9e5391442271036b610d135c2e12725a2f02b46a9aa1f8f8599e37b789201a1652b3c1137fe360e79853b67d09156ee6bd81dacb64ecc21a61aa3c2e3f44c5f96833340c3ba2978ae2b98f25d0f50f43d264d6a4fd8c316838c1169c1b6d9905fc63174c154a361a638916801e468687691fe60cf6ac4b8cf7d211775dfd169939001d4e465003136ca7cc53d0bda331987bfe2aafa93a1710a25327112e1bee49a46d66ea07d25e1454c3f71a6886429abca565f28b062cd7791496665d7a42561983076dcd635e2cb4667793715896e57161c3849cc11000d2fa90065ff2df0ffc60371275096cfc7b46498f2c46c743c1bd1238db4a53ba7042b2f01187b89a9c544627daa2fc74cc2e58f217612d76e4e5f73256c9790c15f3632a7e1524da1ea730f96b98fd8ff75327bf49ba59e9fa5a044477fbce22c629d30
+#
+# This script is Copyright (C) 2004-2024 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.1 $
+# $Date: 2024/06/17 $
+#
+# Description : This document implements the security configuration as recommended by the
+#               CIS MongoDB 6 benchmark v1.1.0
+#
+#<ui_metadata>
+#<display_name>CIS MongoDB 6 L2 OS Windows v1.1.0</display_name>
+#<spec>
+#  <type>CIS</type>
+#  <name>MongoDB 6</name>
+#  <profile>L2 OS Windows</profile>
+#  <version>1.1.0</version>
+#  <link>https://workbench.cisecurity.org/benchmarks/15135</link>
+#</spec>
+#<labels>ms_mongodb_6,cis,update_20230227</labels>
+#<benchmark_refs>CCE,CSCv6,CSCv7,CSCv8,LEVEL</benchmark_refs>
+#<variables>
+#  <variable>
+#    <name>MONGOD_CONF_FULL_PATH</name>
+#    <default>C:\Program Files\MongoDB\Server\6.0\bin\mongod.cfg</default>
+#    <description>Full path to the mongodb conf file</description>
+#    <info>Full path to the mongodb conf file</info>
+#    <value_type>WIN_FILE_PATH</value_type>
+#  </variable>
+#  <variable>
+#    <name>MONGO_BINARY_PATH</name>
+#    <default>C:\Program Files\MongoDB\Server\6.0\bin\</default>
+#    <description>Path to the mongo binary. Do not include mongo.exe.</description>
+#    <info>Path to the mongo binary. Do not include mongo.exe.</info>
+#    <value_type>WIN_FILE_PATH</value_type>
+#  </variable>
+#</variables>
+#</ui_metadata>
+
+<check_type:"Windows" version:"2">
+<group_policy:"CIS MongoDB 6">
+
+<if>
+  <condition type:"AND">
+    <custom_item>
+      type            : AUDIT_POWERSHELL
+      description     : "Check for MongoDB 6"
+      value_type      : POLICY_TEXT
+      value_data      : "^6"
+      powershell_args : "Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*, HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Where-Object { $_.DisplayName -Clike 'Mongo*'} | Select-Object DisplayVersion"
+      check_type      : CHECK_REGEX
+    </custom_item>
+  </condition>
+
+  <then>
+    <report type:"PASSED">
+      description : "CIS_MongoDB_6_Benchmark_Level_2_OS_Windows_v1.1.0.audit from CIS MongoDB 6 Benchmark"
+      see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+    </report>
+
+    <if>
+      <condition type:"AND">
+        <custom_item>
+          type            : AUDIT_POWERSHELL
+          description     : "Check for isdbgrid / sharding"
+          value_type      : POLICY_TEXT
+          value_data      : '"msg"[\s]*:[\s]*"isdbgrid"'
+          powershell_args : "cd '@MONGO_BINARY_PATH@';./mongo.exe --eval 'db.hello()'"
+          check_type      : CHECK_REGEX
+        </custom_item>
+      </condition>
+
+      <then>
+        <custom_item>
+          type        : FILE_CONTENT_CHECK
+          description : "2.3 Ensure authentication is enabled in the sharded cluster - PEMKeyFile"
+          info        : "Authentication is enabled in a sharded cluster when the certificate or key files are created and configured for all components. This ensures that every client that accesses the cluster must provide credentials, to include MongoDB instances that access each other within the cluster.
+
+With keyfile authentication, each mongod or mongos instance in the sharded cluster uses the contents of the keyfile as the shared password for authenticating other members in the deployment. Only mongod or mongos instances with the correct keyfile can join the sharded cluster.
+
+For Production Environment: x.509 certificate authentication with secure TSL/SSL connection must be used for authentication.
+
+For Development Purpose: Key file can be used as an authentication mechanism between the shared cluster. Keyfiles are bare-minimum forms of security and are best suited for testing or development environments.
+
+Rationale:
+
+Enforcing a key or certificate on a sharded cluster prevents unauthorized access to the MongoDB database and provides traceability of database activities to a specific user or component. A MongoDB sharded cluster can enforce user authentication as well as internal authentication of its components to secure against unauthorized access."
+          solution    : "To authenticate to servers, clients can use x.509 certificates instead of usernames and passwords.
+MongoDB supports x.509 certificate authentication for use with a secure TLS/SSL connection. The x.509 client authentication allows clients to authenticate to servers with certificates rather than with a username and password.
+Change the configuration file /etc/mongod.conf on each host, adding the following rows:
+
+net:
+   port: 27017
+   tls:
+      mode: requireSSL
+      PEMKeyFile: /etc/mongodb/ssl/server1.pem
+      CAFile: /etc/mongodb/ssl/mongoCA.crt
+      clusterFile: /etc/mongodb/ssl/server1.pem
+   security:
+      authorization: enabled
+      clusterAuthMode: x509
+
+Restart the daemon
+
+sudo service mongodb restart
+
+
+
+
+To enable authentication in the sharded cluster, perform the following steps:(Only for Development Purpose)
+
+
+Generate A Key File
+
+On each component in the shared cluster, enable authentication by editing the configuration file /etc/mongod.conf. Set the keyFile option to the key file's path and then start the component with this command:
+
+keyFile = /srv/mongodb/keyfile
+
+When starting the component, set --keyFile option, which is an option for both mongos instances and mongod instances. Set the --keyFile to the key file's path.
+
+Default Value:
+
+Not configured"
+          reference   : "800-171|3.4.1,800-53|CM-8,800-53r5|CM-8,CN-L3|8.1.10.2(a),CN-L3|8.1.10.2(b),CSCv7|1.8,CSCv8|6.6,CSF|DE.CM-7,CSF|ID.AM-1,CSF|ID.AM-2,CSF|PR.DS-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-8,LEVEL|2A,NESA|T1.2.1,NESA|T1.2.2"
+          see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+          value_type  : POLICY_TEXT
+          value_data  : "@MONGOD_CONF_FULL_PATH@"
+          regex       : "^[\s]*PEMKeyFile[\s]*:"
+          expect      : "^[\s]*PEMKeyFile[\s]*:[\s]*.+$"
+        </custom_item>
+
+        <custom_item>
+          type        : FILE_CONTENT_CHECK
+          description : "2.3 Ensure authentication is enabled in the sharded cluster - clusterFile"
+          info        : "Authentication is enabled in a sharded cluster when the certificate or key files are created and configured for all components. This ensures that every client that accesses the cluster must provide credentials, to include MongoDB instances that access each other within the cluster.
+
+With keyfile authentication, each mongod or mongos instance in the sharded cluster uses the contents of the keyfile as the shared password for authenticating other members in the deployment. Only mongod or mongos instances with the correct keyfile can join the sharded cluster.
+
+For Production Environment: x.509 certificate authentication with secure TSL/SSL connection must be used for authentication.
+
+For Development Purpose: Key file can be used as an authentication mechanism between the shared cluster. Keyfiles are bare-minimum forms of security and are best suited for testing or development environments.
+
+Rationale:
+
+Enforcing a key or certificate on a sharded cluster prevents unauthorized access to the MongoDB database and provides traceability of database activities to a specific user or component. A MongoDB sharded cluster can enforce user authentication as well as internal authentication of its components to secure against unauthorized access."
+          solution    : "To authenticate to servers, clients can use x.509 certificates instead of usernames and passwords.
+MongoDB supports x.509 certificate authentication for use with a secure TLS/SSL connection. The x.509 client authentication allows clients to authenticate to servers with certificates rather than with a username and password.
+Change the configuration file /etc/mongod.conf on each host, adding the following rows:
+
+net:
+   port: 27017
+   tls:
+      mode: requireSSL
+      PEMKeyFile: /etc/mongodb/ssl/server1.pem
+      CAFile: /etc/mongodb/ssl/mongoCA.crt
+      clusterFile: /etc/mongodb/ssl/server1.pem
+   security:
+      authorization: enabled
+      clusterAuthMode: x509
+
+Restart the daemon
+
+sudo service mongodb restart
+
+
+
+
+To enable authentication in the sharded cluster, perform the following steps:(Only for Development Purpose)
+
+
+Generate A Key File
+
+On each component in the shared cluster, enable authentication by editing the configuration file /etc/mongod.conf. Set the keyFile option to the key file's path and then start the component with this command:
+
+keyFile = /srv/mongodb/keyfile
+
+When starting the component, set --keyFile option, which is an option for both mongos instances and mongod instances. Set the --keyFile to the key file's path.
+
+Default Value:
+
+Not configured"
+          reference   : "800-171|3.4.1,800-53|CM-8,800-53r5|CM-8,CN-L3|8.1.10.2(a),CN-L3|8.1.10.2(b),CSCv7|1.8,CSCv8|6.6,CSF|DE.CM-7,CSF|ID.AM-1,CSF|ID.AM-2,CSF|PR.DS-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-8,LEVEL|2A,NESA|T1.2.1,NESA|T1.2.2"
+          see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+          value_type  : POLICY_TEXT
+          value_data  : "@MONGOD_CONF_FULL_PATH@"
+          regex       : "^[\s]*clusterFile[\s]*:"
+          expect      : "^[\s]*clusterFile[\s]*:[\s]*.+$"
+        </custom_item>
+
+        <custom_item>
+          type        : FILE_CONTENT_CHECK
+          description : "2.3 Ensure authentication is enabled in the sharded cluster - CAFile"
+          info        : "Authentication is enabled in a sharded cluster when the certificate or key files are created and configured for all components. This ensures that every client that accesses the cluster must provide credentials, to include MongoDB instances that access each other within the cluster.
+
+With keyfile authentication, each mongod or mongos instance in the sharded cluster uses the contents of the keyfile as the shared password for authenticating other members in the deployment. Only mongod or mongos instances with the correct keyfile can join the sharded cluster.
+
+For Production Environment: x.509 certificate authentication with secure TSL/SSL connection must be used for authentication.
+
+For Development Purpose: Key file can be used as an authentication mechanism between the shared cluster. Keyfiles are bare-minimum forms of security and are best suited for testing or development environments.
+
+Rationale:
+
+Enforcing a key or certificate on a sharded cluster prevents unauthorized access to the MongoDB database and provides traceability of database activities to a specific user or component. A MongoDB sharded cluster can enforce user authentication as well as internal authentication of its components to secure against unauthorized access."
+          solution    : "To authenticate to servers, clients can use x.509 certificates instead of usernames and passwords.
+MongoDB supports x.509 certificate authentication for use with a secure TLS/SSL connection. The x.509 client authentication allows clients to authenticate to servers with certificates rather than with a username and password.
+Change the configuration file /etc/mongod.conf on each host, adding the following rows:
+
+net:
+   port: 27017
+   tls:
+      mode: requireSSL
+      PEMKeyFile: /etc/mongodb/ssl/server1.pem
+      CAFile: /etc/mongodb/ssl/mongoCA.crt
+      clusterFile: /etc/mongodb/ssl/server1.pem
+   security:
+      authorization: enabled
+      clusterAuthMode: x509
+
+Restart the daemon
+
+sudo service mongodb restart
+
+
+
+
+To enable authentication in the sharded cluster, perform the following steps:(Only for Development Purpose)
+
+
+Generate A Key File
+
+On each component in the shared cluster, enable authentication by editing the configuration file /etc/mongod.conf. Set the keyFile option to the key file's path and then start the component with this command:
+
+keyFile = /srv/mongodb/keyfile
+
+When starting the component, set --keyFile option, which is an option for both mongos instances and mongod instances. Set the --keyFile to the key file's path.
+
+Default Value:
+
+Not configured"
+          reference   : "800-171|3.4.1,800-53|CM-8,800-53r5|CM-8,CN-L3|8.1.10.2(a),CN-L3|8.1.10.2(b),CSCv7|1.8,CSCv8|6.6,CSF|DE.CM-7,CSF|ID.AM-1,CSF|ID.AM-2,CSF|PR.DS-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-8,LEVEL|2A,NESA|T1.2.1,NESA|T1.2.2"
+          see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+          value_type  : POLICY_TEXT
+          value_data  : "@MONGOD_CONF_FULL_PATH@"
+          regex       : "^[\s]*CAFile[\s]*:"
+          expect      : "^[\s]*CAFile[\s]*:[\s]*.+$"
+        </custom_item>
+
+        <custom_item>
+          type        : FILE_CONTENT_CHECK
+          description : "2.3 Ensure authentication is enabled in the sharded cluster - clusterAuthMode"
+          info        : "Authentication is enabled in a sharded cluster when the certificate or key files are created and configured for all components. This ensures that every client that accesses the cluster must provide credentials, to include MongoDB instances that access each other within the cluster.
+
+With keyfile authentication, each mongod or mongos instance in the sharded cluster uses the contents of the keyfile as the shared password for authenticating other members in the deployment. Only mongod or mongos instances with the correct keyfile can join the sharded cluster.
+
+For Production Environment: x.509 certificate authentication with secure TSL/SSL connection must be used for authentication.
+
+For Development Purpose: Key file can be used as an authentication mechanism between the shared cluster. Keyfiles are bare-minimum forms of security and are best suited for testing or development environments.
+
+Rationale:
+
+Enforcing a key or certificate on a sharded cluster prevents unauthorized access to the MongoDB database and provides traceability of database activities to a specific user or component. A MongoDB sharded cluster can enforce user authentication as well as internal authentication of its components to secure against unauthorized access."
+          solution    : "To authenticate to servers, clients can use x.509 certificates instead of usernames and passwords.
+MongoDB supports x.509 certificate authentication for use with a secure TLS/SSL connection. The x.509 client authentication allows clients to authenticate to servers with certificates rather than with a username and password.
+Change the configuration file /etc/mongod.conf on each host, adding the following rows:
+
+net:
+   port: 27017
+   tls:
+      mode: requireSSL
+      PEMKeyFile: /etc/mongodb/ssl/server1.pem
+      CAFile: /etc/mongodb/ssl/mongoCA.crt
+      clusterFile: /etc/mongodb/ssl/server1.pem
+   security:
+      authorization: enabled
+      clusterAuthMode: x509
+
+Restart the daemon
+
+sudo service mongodb restart
+
+
+
+
+To enable authentication in the sharded cluster, perform the following steps:(Only for Development Purpose)
+
+
+Generate A Key File
+
+On each component in the shared cluster, enable authentication by editing the configuration file /etc/mongod.conf. Set the keyFile option to the key file's path and then start the component with this command:
+
+keyFile = /srv/mongodb/keyfile
+
+When starting the component, set --keyFile option, which is an option for both mongos instances and mongod instances. Set the --keyFile to the key file's path.
+
+Default Value:
+
+Not configured"
+          reference   : "800-171|3.4.1,800-53|CM-8,800-53r5|CM-8,CN-L3|8.1.10.2(a),CN-L3|8.1.10.2(b),CSCv7|1.8,CSCv8|6.6,CSF|DE.CM-7,CSF|ID.AM-1,CSF|ID.AM-2,CSF|PR.DS-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-8,LEVEL|2A,NESA|T1.2.1,NESA|T1.2.2"
+          see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+          value_type  : POLICY_TEXT
+          value_data  : "@MONGOD_CONF_FULL_PATH@"
+          regex       : "^[\s]*clusterAuthMode[\s]*:"
+          expect      : "^[\s]*clusterAuthMode[\s]*:[\s]*x509$"
+        </custom_item>
+
+        <custom_item>
+          type        : FILE_CONTENT_CHECK
+          description : "2.3 Ensure authentication is enabled in the sharded cluster - authenticationMechanisms"
+          info        : "Authentication is enabled in a sharded cluster when the certificate or key files are created and configured for all components. This ensures that every client that accesses the cluster must provide credentials, to include MongoDB instances that access each other within the cluster.
+
+With keyfile authentication, each mongod or mongos instance in the sharded cluster uses the contents of the keyfile as the shared password for authenticating other members in the deployment. Only mongod or mongos instances with the correct keyfile can join the sharded cluster.
+
+For Production Environment: x.509 certificate authentication with secure TSL/SSL connection must be used for authentication.
+
+For Development Purpose: Key file can be used as an authentication mechanism between the shared cluster. Keyfiles are bare-minimum forms of security and are best suited for testing or development environments.
+
+Rationale:
+
+Enforcing a key or certificate on a sharded cluster prevents unauthorized access to the MongoDB database and provides traceability of database activities to a specific user or component. A MongoDB sharded cluster can enforce user authentication as well as internal authentication of its components to secure against unauthorized access."
+          solution    : "To authenticate to servers, clients can use x.509 certificates instead of usernames and passwords.
+MongoDB supports x.509 certificate authentication for use with a secure TLS/SSL connection. The x.509 client authentication allows clients to authenticate to servers with certificates rather than with a username and password.
+Change the configuration file /etc/mongod.conf on each host, adding the following rows:
+
+net:
+   port: 27017
+   tls:
+      mode: requireSSL
+      PEMKeyFile: /etc/mongodb/ssl/server1.pem
+      CAFile: /etc/mongodb/ssl/mongoCA.crt
+      clusterFile: /etc/mongodb/ssl/server1.pem
+   security:
+      authorization: enabled
+      clusterAuthMode: x509
+
+Restart the daemon
+
+sudo service mongodb restart
+
+
+
+
+To enable authentication in the sharded cluster, perform the following steps:(Only for Development Purpose)
+
+
+Generate A Key File
+
+On each component in the shared cluster, enable authentication by editing the configuration file /etc/mongod.conf. Set the keyFile option to the key file's path and then start the component with this command:
+
+keyFile = /srv/mongodb/keyfile
+
+When starting the component, set --keyFile option, which is an option for both mongos instances and mongod instances. Set the --keyFile to the key file's path.
+
+Default Value:
+
+Not configured"
+          reference   : "800-171|3.4.1,800-53|CM-8,800-53r5|CM-8,CN-L3|8.1.10.2(a),CN-L3|8.1.10.2(b),CSCv7|1.8,CSCv8|6.6,CSF|DE.CM-7,CSF|ID.AM-1,CSF|ID.AM-2,CSF|PR.DS-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-8,LEVEL|2A,NESA|T1.2.1,NESA|T1.2.2"
+          see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+          value_type  : POLICY_TEXT
+          value_data  : "@MONGOD_CONF_FULL_PATH@"
+          regex       : "^[\s]*authenticationMechanisms[\s]*:"
+          expect      : "^[\s]*authenticationMechanisms[\s]*:[\s]*MONGODB-X509$"
+        </custom_item>
+      </then>
+
+      <else>
+        <report type:"PASSED">
+          description : "2.3 Ensure authentication is enabled in the sharded cluster - PEMKeyFile"
+          info        : "Authentication is enabled in a sharded cluster when the certificate or key files are created and configured for all components. This ensures that every client that accesses the cluster must provide credentials, to include MongoDB instances that access each other within the cluster.
+
+With keyfile authentication, each mongod or mongos instance in the sharded cluster uses the contents of the keyfile as the shared password for authenticating other members in the deployment. Only mongod or mongos instances with the correct keyfile can join the sharded cluster.
+
+For Production Environment: x.509 certificate authentication with secure TSL/SSL connection must be used for authentication.
+
+For Development Purpose: Key file can be used as an authentication mechanism between the shared cluster. Keyfiles are bare-minimum forms of security and are best suited for testing or development environments.
+
+Rationale:
+
+Enforcing a key or certificate on a sharded cluster prevents unauthorized access to the MongoDB database and provides traceability of database activities to a specific user or component. A MongoDB sharded cluster can enforce user authentication as well as internal authentication of its components to secure against unauthorized access."
+          solution    : "To authenticate to servers, clients can use x.509 certificates instead of usernames and passwords.
+MongoDB supports x.509 certificate authentication for use with a secure TLS/SSL connection. The x.509 client authentication allows clients to authenticate to servers with certificates rather than with a username and password.
+Change the configuration file /etc/mongod.conf on each host, adding the following rows:
+
+net:
+   port: 27017
+   tls:
+      mode: requireSSL
+      PEMKeyFile: /etc/mongodb/ssl/server1.pem
+      CAFile: /etc/mongodb/ssl/mongoCA.crt
+      clusterFile: /etc/mongodb/ssl/server1.pem
+   security:
+      authorization: enabled
+      clusterAuthMode: x509
+
+Restart the daemon
+
+sudo service mongodb restart
+
+
+
+
+To enable authentication in the sharded cluster, perform the following steps:(Only for Development Purpose)
+
+
+Generate A Key File
+
+On each component in the shared cluster, enable authentication by editing the configuration file /etc/mongod.conf. Set the keyFile option to the key file's path and then start the component with this command:
+
+keyFile = /srv/mongodb/keyfile
+
+When starting the component, set --keyFile option, which is an option for both mongos instances and mongod instances. Set the --keyFile to the key file's path.
+
+Default Value:
+
+Not configured"
+          reference   : "800-171|3.4.1,800-53|CM-8,800-53r5|CM-8,CN-L3|8.1.10.2(a),CN-L3|8.1.10.2(b),CSCv7|1.8,CSCv8|6.6,CSF|DE.CM-7,CSF|ID.AM-1,CSF|ID.AM-2,CSF|PR.DS-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-8,LEVEL|2A,NESA|T1.2.1,NESA|T1.2.2"
+          see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+        </report>
+
+        <report type:"PASSED">
+          description : "2.3 Ensure authentication is enabled in the sharded cluster - clusterFile"
+          info        : "Authentication is enabled in a sharded cluster when the certificate or key files are created and configured for all components. This ensures that every client that accesses the cluster must provide credentials, to include MongoDB instances that access each other within the cluster.
+
+With keyfile authentication, each mongod or mongos instance in the sharded cluster uses the contents of the keyfile as the shared password for authenticating other members in the deployment. Only mongod or mongos instances with the correct keyfile can join the sharded cluster.
+
+For Production Environment: x.509 certificate authentication with secure TSL/SSL connection must be used for authentication.
+
+For Development Purpose: Key file can be used as an authentication mechanism between the shared cluster. Keyfiles are bare-minimum forms of security and are best suited for testing or development environments.
+
+Rationale:
+
+Enforcing a key or certificate on a sharded cluster prevents unauthorized access to the MongoDB database and provides traceability of database activities to a specific user or component. A MongoDB sharded cluster can enforce user authentication as well as internal authentication of its components to secure against unauthorized access."
+          solution    : "To authenticate to servers, clients can use x.509 certificates instead of usernames and passwords.
+MongoDB supports x.509 certificate authentication for use with a secure TLS/SSL connection. The x.509 client authentication allows clients to authenticate to servers with certificates rather than with a username and password.
+Change the configuration file /etc/mongod.conf on each host, adding the following rows:
+
+net:
+   port: 27017
+   tls:
+      mode: requireSSL
+      PEMKeyFile: /etc/mongodb/ssl/server1.pem
+      CAFile: /etc/mongodb/ssl/mongoCA.crt
+      clusterFile: /etc/mongodb/ssl/server1.pem
+   security:
+      authorization: enabled
+      clusterAuthMode: x509
+
+Restart the daemon
+
+sudo service mongodb restart
+
+
+
+
+To enable authentication in the sharded cluster, perform the following steps:(Only for Development Purpose)
+
+
+Generate A Key File
+
+On each component in the shared cluster, enable authentication by editing the configuration file /etc/mongod.conf. Set the keyFile option to the key file's path and then start the component with this command:
+
+keyFile = /srv/mongodb/keyfile
+
+When starting the component, set --keyFile option, which is an option for both mongos instances and mongod instances. Set the --keyFile to the key file's path.
+
+Default Value:
+
+Not configured"
+          reference   : "800-171|3.4.1,800-53|CM-8,800-53r5|CM-8,CN-L3|8.1.10.2(a),CN-L3|8.1.10.2(b),CSCv7|1.8,CSCv8|6.6,CSF|DE.CM-7,CSF|ID.AM-1,CSF|ID.AM-2,CSF|PR.DS-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-8,LEVEL|2A,NESA|T1.2.1,NESA|T1.2.2"
+          see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+        </report>
+
+        <report type:"PASSED">
+          description : "2.3 Ensure authentication is enabled in the sharded cluster - CAFile"
+          info        : "Authentication is enabled in a sharded cluster when the certificate or key files are created and configured for all components. This ensures that every client that accesses the cluster must provide credentials, to include MongoDB instances that access each other within the cluster.
+
+With keyfile authentication, each mongod or mongos instance in the sharded cluster uses the contents of the keyfile as the shared password for authenticating other members in the deployment. Only mongod or mongos instances with the correct keyfile can join the sharded cluster.
+
+For Production Environment: x.509 certificate authentication with secure TSL/SSL connection must be used for authentication.
+
+For Development Purpose: Key file can be used as an authentication mechanism between the shared cluster. Keyfiles are bare-minimum forms of security and are best suited for testing or development environments.
+
+Rationale:
+
+Enforcing a key or certificate on a sharded cluster prevents unauthorized access to the MongoDB database and provides traceability of database activities to a specific user or component. A MongoDB sharded cluster can enforce user authentication as well as internal authentication of its components to secure against unauthorized access."
+          solution    : "To authenticate to servers, clients can use x.509 certificates instead of usernames and passwords.
+MongoDB supports x.509 certificate authentication for use with a secure TLS/SSL connection. The x.509 client authentication allows clients to authenticate to servers with certificates rather than with a username and password.
+Change the configuration file /etc/mongod.conf on each host, adding the following rows:
+
+net:
+   port: 27017
+   tls:
+      mode: requireSSL
+      PEMKeyFile: /etc/mongodb/ssl/server1.pem
+      CAFile: /etc/mongodb/ssl/mongoCA.crt
+      clusterFile: /etc/mongodb/ssl/server1.pem
+   security:
+      authorization: enabled
+      clusterAuthMode: x509
+
+Restart the daemon
+
+sudo service mongodb restart
+
+
+
+
+To enable authentication in the sharded cluster, perform the following steps:(Only for Development Purpose)
+
+
+Generate A Key File
+
+On each component in the shared cluster, enable authentication by editing the configuration file /etc/mongod.conf. Set the keyFile option to the key file's path and then start the component with this command:
+
+keyFile = /srv/mongodb/keyfile
+
+When starting the component, set --keyFile option, which is an option for both mongos instances and mongod instances. Set the --keyFile to the key file's path.
+
+Default Value:
+
+Not configured"
+          reference   : "800-171|3.4.1,800-53|CM-8,800-53r5|CM-8,CN-L3|8.1.10.2(a),CN-L3|8.1.10.2(b),CSCv7|1.8,CSCv8|6.6,CSF|DE.CM-7,CSF|ID.AM-1,CSF|ID.AM-2,CSF|PR.DS-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-8,LEVEL|2A,NESA|T1.2.1,NESA|T1.2.2"
+          see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+        </report>
+
+        <report type:"PASSED">
+          description : "2.3 Ensure authentication is enabled in the sharded cluster - clusterAuthMode"
+          info        : "Authentication is enabled in a sharded cluster when the certificate or key files are created and configured for all components. This ensures that every client that accesses the cluster must provide credentials, to include MongoDB instances that access each other within the cluster.
+
+With keyfile authentication, each mongod or mongos instance in the sharded cluster uses the contents of the keyfile as the shared password for authenticating other members in the deployment. Only mongod or mongos instances with the correct keyfile can join the sharded cluster.
+
+For Production Environment: x.509 certificate authentication with secure TSL/SSL connection must be used for authentication.
+
+For Development Purpose: Key file can be used as an authentication mechanism between the shared cluster. Keyfiles are bare-minimum forms of security and are best suited for testing or development environments.
+
+Rationale:
+
+Enforcing a key or certificate on a sharded cluster prevents unauthorized access to the MongoDB database and provides traceability of database activities to a specific user or component. A MongoDB sharded cluster can enforce user authentication as well as internal authentication of its components to secure against unauthorized access."
+          solution    : "To authenticate to servers, clients can use x.509 certificates instead of usernames and passwords.
+MongoDB supports x.509 certificate authentication for use with a secure TLS/SSL connection. The x.509 client authentication allows clients to authenticate to servers with certificates rather than with a username and password.
+Change the configuration file /etc/mongod.conf on each host, adding the following rows:
+
+net:
+   port: 27017
+   tls:
+      mode: requireSSL
+      PEMKeyFile: /etc/mongodb/ssl/server1.pem
+      CAFile: /etc/mongodb/ssl/mongoCA.crt
+      clusterFile: /etc/mongodb/ssl/server1.pem
+   security:
+      authorization: enabled
+      clusterAuthMode: x509
+
+Restart the daemon
+
+sudo service mongodb restart
+
+
+
+
+To enable authentication in the sharded cluster, perform the following steps:(Only for Development Purpose)
+
+
+Generate A Key File
+
+On each component in the shared cluster, enable authentication by editing the configuration file /etc/mongod.conf. Set the keyFile option to the key file's path and then start the component with this command:
+
+keyFile = /srv/mongodb/keyfile
+
+When starting the component, set --keyFile option, which is an option for both mongos instances and mongod instances. Set the --keyFile to the key file's path.
+
+Default Value:
+
+Not configured"
+          reference   : "800-171|3.4.1,800-53|CM-8,800-53r5|CM-8,CN-L3|8.1.10.2(a),CN-L3|8.1.10.2(b),CSCv7|1.8,CSCv8|6.6,CSF|DE.CM-7,CSF|ID.AM-1,CSF|ID.AM-2,CSF|PR.DS-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-8,LEVEL|2A,NESA|T1.2.1,NESA|T1.2.2"
+          see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+        </report>
+
+        <report type:"PASSED">
+          description : "2.3 Ensure authentication is enabled in the sharded cluster - authenticationMechanisms"
+          info        : "Authentication is enabled in a sharded cluster when the certificate or key files are created and configured for all components. This ensures that every client that accesses the cluster must provide credentials, to include MongoDB instances that access each other within the cluster.
+
+With keyfile authentication, each mongod or mongos instance in the sharded cluster uses the contents of the keyfile as the shared password for authenticating other members in the deployment. Only mongod or mongos instances with the correct keyfile can join the sharded cluster.
+
+For Production Environment: x.509 certificate authentication with secure TSL/SSL connection must be used for authentication.
+
+For Development Purpose: Key file can be used as an authentication mechanism between the shared cluster. Keyfiles are bare-minimum forms of security and are best suited for testing or development environments.
+
+Rationale:
+
+Enforcing a key or certificate on a sharded cluster prevents unauthorized access to the MongoDB database and provides traceability of database activities to a specific user or component. A MongoDB sharded cluster can enforce user authentication as well as internal authentication of its components to secure against unauthorized access."
+          solution    : "To authenticate to servers, clients can use x.509 certificates instead of usernames and passwords.
+MongoDB supports x.509 certificate authentication for use with a secure TLS/SSL connection. The x.509 client authentication allows clients to authenticate to servers with certificates rather than with a username and password.
+Change the configuration file /etc/mongod.conf on each host, adding the following rows:
+
+net:
+   port: 27017
+   tls:
+      mode: requireSSL
+      PEMKeyFile: /etc/mongodb/ssl/server1.pem
+      CAFile: /etc/mongodb/ssl/mongoCA.crt
+      clusterFile: /etc/mongodb/ssl/server1.pem
+   security:
+      authorization: enabled
+      clusterAuthMode: x509
+
+Restart the daemon
+
+sudo service mongodb restart
+
+
+
+
+To enable authentication in the sharded cluster, perform the following steps:(Only for Development Purpose)
+
+
+Generate A Key File
+
+On each component in the shared cluster, enable authentication by editing the configuration file /etc/mongod.conf. Set the keyFile option to the key file's path and then start the component with this command:
+
+keyFile = /srv/mongodb/keyfile
+
+When starting the component, set --keyFile option, which is an option for both mongos instances and mongod instances. Set the --keyFile to the key file's path.
+
+Default Value:
+
+Not configured"
+          reference   : "800-171|3.4.1,800-53|CM-8,800-53r5|CM-8,CN-L3|8.1.10.2(a),CN-L3|8.1.10.2(b),CSCv7|1.8,CSCv8|6.6,CSF|DE.CM-7,CSF|ID.AM-1,CSF|ID.AM-2,CSF|PR.DS-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-8,LEVEL|2A,NESA|T1.2.1,NESA|T1.2.2"
+          see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+        </report>
+      </else>
+    </if>
+
+    <custom_item>
+      type            : AUDIT_POWERSHELL
+      description     : "4.1 Ensure legacy TLS protocols are disabled"
+      info            : "Only modern TLS protocols should be enabled in MongoDB for all client connections and upstream connections. Removing legacy TLS and SSL protocols (SSL 3.0, TLS 1.0 and 1.1), and enabling emerging and stable TLS protocols (TLS 1.2, and TLS 1.3), ensures users are able to take advantage of strong security capabilities and protects them from insecure legacy protocols.
+
+Rationale:
+
+Why disable TLS 1.0: TLS 1.0 was deprecated from use when PCI DSS Compliance mandated that it not be used for any applications processing credit card numbers in June 2018.
+
+Why disable TLS 1.1: Because of the increased security associated with higher versions of TLS, TLS 1.0 should be disabled."
+      solution        : "Make changes to configuration file, to configure your mongod or mongos instance to disable legacy protocols, shut down the instance and update the configuration file with the following setting:
+
+net:
+  tls:
+    mode: requireTLS
+    certificateKeyFile: /etc/ssl/mongodb.pem
+    CAFile: /etc/ssl/caToValidateClientCertificates.pem
+    disabledProtocols: TLS1_0,TLS1_1
+
+Start mongod or mongos instance with the configuration file.
+
+mongod --config /etc/mongod.conf
+
+Default Value:
+
+TLS1_0, TLS1_1, TLS1_2
+
+Note: Starting in version 4.0.4 (and 3.6.9)TLS1_3 is added to the default value."
+      reference       : "800-171|3.4.1,800-171|3.4.2,800-171|3.4.6,800-171|3.4.7,800-171|3.13.1,800-171|3.13.2,800-53|CM-1,800-53|CM-2,800-53|CM-6,800-53|CM-7,800-53|CM-7(1),800-53|CM-9,800-53|SA-3,800-53|SA-8,800-53|SA-10,800-53r5|CM-1,800-53r5|CM-2,800-53r5|CM-6,800-53r5|CM-7,800-53r5|CM-7(1),800-53r5|CM-9,800-53r5|SA-3,800-53r5|SA-8,800-53r5|SA-10,CSCv7|18.11,CSCv8|4.1,CSF|DE.AE-1,CSF|ID.GV-1,CSF|ID.GV-3,CSF|PR.DS-7,CSF|PR.IP-1,CSF|PR.IP-2,CSF|PR.IP-3,CSF|PR.PT-3,GDPR|32.1.b,GDPR|32.4,HIPAA|164.306(a)(1),ITSG-33|CM-1,ITSG-33|CM-2,ITSG-33|CM-6,ITSG-33|CM-7,ITSG-33|CM-7(1),ITSG-33|CM-9,ITSG-33|SA-3,ITSG-33|SA-8,ITSG-33|SA-8a.,ITSG-33|SA-10,LEVEL|2A,NESA|M1.2.2,NESA|T1.2.1,NESA|T1.2.2,NESA|T3.2.5,NESA|T3.4.1,NESA|T4.5.3,NESA|T4.5.4,NESA|T7.2.1,NESA|T7.5.1,NESA|T7.5.3,NESA|T7.6.1,NESA|T7.6.2,NESA|T7.6.3,NESA|T7.6.5,NIAv2|GS8b,NIAv2|SS3,NIAv2|SS15a,NIAv2|SS16,NIAv2|VL2,NIAv2|VL7a,NIAv2|VL7b,PCI-DSSv3.2.1|2.2.2,QCSC-v1|3.2,QCSC-v1|4.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|7.2,SWIFT-CSCv1|2.3"
+      see_also        : "https://workbench.cisecurity.org/benchmarks/15135"
+      value_type      : POLICY_TEXT
+      value_data      : "^[\s]*>[\s]*disabledProtocols[\s]*:[\s]*(?=.*TLS1_0)(?=.*TLS1_1).*"
+      powershell_args : "get-content '@MONGOD_CONF_FULL_PATH@' | select-string -pattern 'net:' -context 0,10"
+      check_type      : CHECK_REGEX
+    </custom_item>
+
+    <custom_item>
+      type            : AUDIT_POWERSHELL
+      description     : "4.4 Ensure Federal Information Processing Standard (FIPS) is enabled"
+      info            : "The Federal Information Processing Standard (FIPS) is a computer security standard used to certify software modules and libraries that encrypt and decrypt data securely. You can configure MongoDB to run with a FIPS 140-2 certified library for OpenSSL.
+
+FIPS is a property of the encryption system and not the access control system. However, the environment requires FIPS compliant encryption and access control. Organizations must ensure that the access control system uses only FIPS-compliant encryption.
+
+Rationale:
+
+FIPS is an industry standard which dictates how data should be encrypted at rest and during transmission."
+      solution        : "Configuring FIPS mode, ensure that your certificate is FIPS compliant. Run mongod or mongos instance in FIPS mode.
+Make changes to configuration file, to configure your mongod or mongos instance to use FIPS mode, shut down the instance and update the configuration file with the following setting:
+
+net:
+   tls:
+      FIPSMode: true
+
+Start mongod or mongos instance with a configuration file.
+
+mongod --config /etc/mongod.conf
+
+Default Value:
+
+Not configured"
+      reference       : "800-171|3.13.8,800-171|3.13.16,800-53|SC-8,800-53|SC-28,800-53r5|SC-8,800-53r5|SC-28,CN-L3|8.1.2.2(a),CN-L3|8.1.2.2(b),CN-L3|8.1.4.7(a),CN-L3|8.1.4.7(b),CN-L3|8.1.4.8(a),CN-L3|8.1.4.8(b),CN-L3|8.2.4.5(c),CN-L3|8.2.4.5(d),CN-L3|8.5.2.2,CSCv7|14.4,CSCv7|14.8,CSF|PR.DS-1,CSF|PR.DS-2,CSF|PR.DS-5,GDPR|32.1.a,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(2)(iv),HIPAA|164.312(e)(1),HIPAA|164.312(e)(2)(i),HIPAA|164.312(e)(2)(ii),ITSG-33|SC-8,ITSG-33|SC-8a.,ITSG-33|SC-28,ITSG-33|SC-28a.,LEVEL|2A,NESA|T4.3.1,NESA|T4.3.2,NESA|T4.5.1,NESA|T4.5.2,NESA|T7.3.3,NESA|T7.4.1,NIAv2|IE8,NIAv2|IE9,NIAv2|IE12,NIAv2|NS29,NIAv2|SS24,PCI-DSSv3.2.1|2.3,PCI-DSSv3.2.1|3.4,PCI-DSSv3.2.1|4.1,PCI-DSSv4.0|2.2.7,PCI-DSSv4.0|3.3.2,PCI-DSSv4.0|3.5.1,PCI-DSSv4.0|4.2.1,QCSC-v1|5.2.2,QCSC-v1|6.2"
+      see_also        : "https://workbench.cisecurity.org/benchmarks/15135"
+      value_type      : POLICY_TEXT
+      value_data      : "^[\s]*>[\s]*FIPSMode[\s]*:[\s]*true"
+      powershell_args : "get-content '@MONGOD_CONF_FULL_PATH@' | select-string -pattern 'net:' -context 0,10"
+      check_type      : CHECK_REGEX
+    </custom_item>
+
+    <report type:"WARNING">
+      description : "4.5 Ensure Encryption of Data at Rest"
+      info        : "Encryption of data at rest must be enabled to ensure compliance with security and privacy standards including HIPAA, PCI-DSS, and FERPA.
+
+Encryption at rest, when used in conjunction with transport encryption and good security policies that protect relevant accounts, passwords, and encryption keys.
+
+Rationale:
+
+Unauthorized users, such as intruders who are attempting security attacks, cannot read the data from storage and back up media unless they have the master encryption key to decrypt it.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+      solution    : "It is recommended to enable the data at rest encryption to protect the data.
+Protecting Data at Rest Including following steps.
+
+Generating a master key.
+
+Generating keys for each database.
+
+Encrypting data with the database keys.
+
+Encrypting the database keys with the master key.
+
+Only the master key is external to the server and requires external management. To manage the master key, MongoDB's encrypted storage engine supports two key management options:
+
+Integration with a third-party key management appliance via the Key Management Interoperability Protocol (KMIP). Recommended
+
+Use of local key management via a keyfile.
+
+The encryption occurs transparently in the storage layer; i.e. all data files are fully encrypted from a filesystem perspective, and data only exists in an unencrypted state in memory and during transmission.
+To enable Encryption on Database follow below step mentioned in below Link
+https://docs.mongodb.com/manual/tutorial/configure-encryption/
+Rotation of Key is also important. This can be enabled by following mentioned steps in below link.
+https://docs.mongodb.com/manual/tutorial/rotate-encryption-key/"
+      reference   : "800-171|3.13.16,800-53|SC-28,800-53r5|SC-28,CN-L3|8.1.4.7(b),CN-L3|8.1.4.8(b),CSCv7|14.8,CSF|PR.DS-1,GDPR|32.1.a,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(2)(iv),HIPAA|164.312(e)(2)(ii),ITSG-33|SC-28,ITSG-33|SC-28a.,LEVEL|2M,PCI-DSSv3.2.1|3.4,PCI-DSSv4.0|3.3.2,PCI-DSSv4.0|3.5.1,QCSC-v1|5.2.2,QCSC-v1|6.2"
+      see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+    </report>
+
+    <custom_item>
+      type            : AUDIT_POWERSHELL
+      description     : "5.2 Ensure that audit filters are configured properly"
+      info            : "MongoDB Enterprise supports auditing of various operations. When enabled, the audit facility, by default, records all auditable operations as detailed in Audit Event Actions, Details, and Results. To specify which events to record, the audit feature includes the --auditFilter option. This check is only for Enterprise editions.
+
+Rationale:
+
+All operations carried out on the database are logged. This helps in backtracking and tracing any incident that occurs."
+      solution        : "Set the audit filters based on the organization's requirements.
+
+Default Value:
+
+Not configured"
+      reference       : "800-171|3.3.1,800-171|3.3.2,800-171|3.3.6,800-53|AU-2,800-53|AU-3,800-53|AU-3(1),800-53|AU-7,800-53|AU-12,800-53r5|AU-2,800-53r5|AU-3,800-53r5|AU-3(1),800-53r5|AU-7,800-53r5|AU-12,CN-L3|7.1.2.3(a),CN-L3|7.1.2.3(b),CN-L3|7.1.2.3(c),CN-L3|7.1.3.3(a),CN-L3|7.1.3.3(b),CN-L3|8.1.4.3(a),CN-L3|8.1.4.3(b),CSCv7|6.2,CSCv7|6.3,CSCv8|8.2,CSCv8|8.5,CSF|DE.CM-1,CSF|DE.CM-3,CSF|DE.CM-7,CSF|PR.PT-1,CSF|RS.AN-3,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ITSG-33|AU-2,ITSG-33|AU-3,ITSG-33|AU-3(1),ITSG-33|AU-7,ITSG-33|AU-12,LEVEL|2M,NESA|M1.2.2,NESA|M5.5.1,NESA|T3.6.2,NIAv2|AM7,NIAv2|AM11a,NIAv2|AM11b,NIAv2|AM11c,NIAv2|AM11d,NIAv2|AM11e,NIAv2|AM34a,NIAv2|AM34b,NIAv2|AM34c,NIAv2|AM34d,NIAv2|AM34e,NIAv2|AM34f,NIAv2|AM34g,NIAv2|SS30,NIAv2|VL8,PCI-DSSv3.2.1|10.1,PCI-DSSv3.2.1|10.3,PCI-DSSv3.2.1|10.3.1,PCI-DSSv3.2.1|10.3.2,PCI-DSSv3.2.1|10.3.3,PCI-DSSv3.2.1|10.3.4,PCI-DSSv3.2.1|10.3.5,PCI-DSSv3.2.1|10.3.6,PCI-DSSv4.0|10.2.2,QCSC-v1|3.2,QCSC-v1|6.2,QCSC-v1|8.2.1,QCSC-v1|10.2.1,QCSC-v1|11.2,QCSC-v1|13.2,SWIFT-CSCv1|6.4"
+      see_also        : "https://workbench.cisecurity.org/benchmarks/15135"
+      value_type      : POLICY_TEXT
+      value_data      : "^[\s]*>[\s]*filter[\s]*:[\s]*.+$"
+      powershell_args : "get-content '@MONGOD_CONF_FULL_PATH@' | select-string -pattern 'auditLog' -context 0,10"
+      check_type      : CHECK_REGEX
+    </custom_item>
+
+    <custom_item>
+      type            : AUDIT_POWERSHELL
+      description     : "5.3 Ensure that logging captures as much information as possible"
+      info            : "The SystemLog.quiet option stops logging of information such as:
+
+connection events
+
+authentication events
+
+replication sync activities
+
+evidence of some potentially impactful commands being run (eg: drop, dropIndexes, validate)
+
+This information should be logged whenever possible. This check is only for Enterprise editions.
+
+Rationale:
+
+The use of SystemLog.quiet makes troubleshooting problems and investigating possible security incidents much more difficult."
+      solution        : "Set
+
+'SystemLog:
+       quiet: false'
+
+to false in the /etc/mongod.conf file to disable it."
+      reference       : "800-171|3.3.1,800-171|3.3.2,800-171|3.3.6,800-53|AU-2,800-53|AU-3,800-53|AU-3(1),800-53|AU-7,800-53|AU-12,800-53r5|AU-2,800-53r5|AU-3,800-53r5|AU-3(1),800-53r5|AU-7,800-53r5|AU-12,CN-L3|7.1.2.3(a),CN-L3|7.1.2.3(b),CN-L3|7.1.2.3(c),CN-L3|7.1.3.3(a),CN-L3|7.1.3.3(b),CN-L3|8.1.4.3(a),CN-L3|8.1.4.3(b),CSCv7|6.2,CSCv7|6.3,CSCv8|8.2,CSCv8|8.5,CSF|DE.CM-1,CSF|DE.CM-3,CSF|DE.CM-7,CSF|PR.PT-1,CSF|RS.AN-3,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ITSG-33|AU-2,ITSG-33|AU-3,ITSG-33|AU-3(1),ITSG-33|AU-7,ITSG-33|AU-12,LEVEL|2A,NESA|M1.2.2,NESA|M5.5.1,NESA|T3.6.2,NIAv2|AM7,NIAv2|AM11a,NIAv2|AM11b,NIAv2|AM11c,NIAv2|AM11d,NIAv2|AM11e,NIAv2|AM34a,NIAv2|AM34b,NIAv2|AM34c,NIAv2|AM34d,NIAv2|AM34e,NIAv2|AM34f,NIAv2|AM34g,NIAv2|SS30,NIAv2|VL8,PCI-DSSv3.2.1|10.1,PCI-DSSv3.2.1|10.3,PCI-DSSv3.2.1|10.3.1,PCI-DSSv3.2.1|10.3.2,PCI-DSSv3.2.1|10.3.3,PCI-DSSv3.2.1|10.3.4,PCI-DSSv3.2.1|10.3.5,PCI-DSSv3.2.1|10.3.6,PCI-DSSv4.0|10.2.2,QCSC-v1|3.2,QCSC-v1|6.2,QCSC-v1|8.2.1,QCSC-v1|10.2.1,QCSC-v1|11.2,QCSC-v1|13.2,SWIFT-CSCv1|6.4"
+      see_also        : "https://workbench.cisecurity.org/benchmarks/15135"
+      value_type      : POLICY_TEXT
+      value_data      : "^[\s]*>[\s]*quiet[\s]*:[\s]*false"
+      powershell_args : "get-content '@MONGOD_CONF_FULL_PATH@' | select-string -pattern 'systemLog' -context 0,10"
+      check_type      : CHECK_REGEX
+    </custom_item>
+
+    <custom_item>
+      type            : AUDIT_POWERSHELL
+      description     : "5.4 Ensure that new entries are appended to the end of the log file"
+      info            : "By default, new log entries will overwrite old entries after a restart of the mongod or Mongols service. Enabling the systemLog.logAppend setting causes new entries to be appended to the end of the log file rather than overwriting the existing content of the log when the mongos or mongod instance restarts.
+
+Rationale:
+
+Allowing old entries to be overwritten by new entries instead of appending new entries to the end of the log may destroy old log data that is needed for a variety of purposes."
+      solution        : "Set
+
+'systemLog:
+    logAppend: true'
+
+to true in the /etc/mongod.conf file."
+      reference       : "800-53|AU-11,800-53r5|AU-11,CSCv7|6.4,CSCv8|8.10,CSF|PR.PT-1,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ITSG-33|AU-11,LEVEL|2A,NESA|M5.2.3,NESA|T3.6.2,NIAv2|SM7,PCI-DSSv3.2.1|10.7,PCI-DSSv4.0|10.5.1,QCSC-v1|8.2.1,QCSC-v1|13.2"
+      see_also        : "https://workbench.cisecurity.org/benchmarks/15135"
+      value_type      : POLICY_TEXT
+      value_data      : "^[\s]*>[\s]*logAppend[\s]*:[\s]*true"
+      powershell_args : "get-content '@MONGOD_CONF_FULL_PATH@' | select-string -pattern 'logAppend' -context 0,10"
+      check_type      : CHECK_REGEX
+    </custom_item>
+
+    <report type:"WARNING">
+      description : "6.2 Ensure that operating system resource limits are set for MongoDB"
+      info        : "Operating systems provide ways to limit and control the usage of system resources such as threads, files, and network connections on a per-process and per-user basis
+
+Rationale:
+
+These ulimits prevent a single user from consuming too many system resources.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+      solution    : "Every deployment may have unique requirements and settings. Recommended thresholds and settings are particularly important for MongoDB deployments:
+
+
+f (file size): unlimited
+
+
+t (cpu time): unlimited
+
+
+v (virtual memory): unlimited [1]
+
+
+n (open files): 64000
+
+
+m (memory size): unlimited [1] [2]
+
+
+u (processes/threads): 64000
+
+Restart the mongod and mongos instances after changing the ulimit settings to ensure that the changes take effect.
+
+Default Value:
+
+Not configured"
+      reference   : "800-53|SC-6,800-53r5|SC-6,CN-L3|7.1.3.7(c),CN-L3|7.1.3.7(d),GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-6,ITSG-33|SC-6a.,LEVEL|2M,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|6.2"
+      see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+    </report>
+
+    <custom_item>
+      type            : AUDIT_POWERSHELL
+      description     : "6.3 Ensure that server-side scripting is disabled if not needed"
+      info            : "MongoDB supports the execution of JavaScript code for certain server-side operations: mapReduce, group, $where, $accumulator, and $function aggregation operations that allow users to define custom aggregation expressions. If you do not use these operations, server-side scripting should be disabled.
+
+Rationale:
+
+If server-side scripting is not needed and is not disabled, this introduces unnecessary risk which may allow an attacker to take advantage of insecure coding.
+
+Impact:
+
+Disabling server-side scripting will block all server-side scripts from executing."
+      solution        : "If server-side scripting is not required, for mongod instance disable it by using the --noscripting option on the command line, or setting security.javascriptEnabled to false in the configuration file.
+Starting in MongoDB 4.4 this is also applicable to mongos.
+
+Default Value:
+
+Enabled"
+      reference       : "800-171|3.14.6,800-171|3.14.7,800-53|SI-4,800-53r5|SI-4,CN-L3|7.1.3.5(a),CN-L3|8.1.10.5(b),CN-L3|8.1.10.6(f),CSCv7|9.2,CSF|DE.AE-1,CSF|DE.AE-2,CSF|DE.AE-3,CSF|DE.AE-4,CSF|DE.CM-1,CSF|DE.CM-5,CSF|DE.CM-6,CSF|DE.CM-7,CSF|DE.DP-2,CSF|DE.DP-3,CSF|DE.DP-4,CSF|DE.DP-5,CSF|ID.RA-1,CSF|PR.DS-5,CSF|PR.IP-8,CSF|RS.AN-1,CSF|RS.CO-3,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ITSG-33|SI-4,LEVEL|2M,NESA|M1.2.2,QCSC-v1|3.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|5.2.3,QCSC-v1|6.2,QCSC-v1|8.2.1,QCSC-v1|10.2.1,QCSC-v1|11.2"
+      see_also        : "https://workbench.cisecurity.org/benchmarks/15135"
+      value_type      : POLICY_TEXT
+      value_data      : "^[\s]*>[\s]*javascriptEnabled[\s]*:[\s]*false"
+      powershell_args : "get-content '@MONGOD_CONF_FULL_PATH@' | select-string -pattern 'security' -context 0,10"
+      check_type      : CHECK_REGEX
+    </custom_item>
+  </then>
+
+  <else>
+    <report type:"WARNING">
+      description : "CIS_MongoDB_6_Benchmark_Level_2_OS_Windows_v1.1.0.audit from CIS MongoDB 6 Benchmark"
+      info        : "NOTE: Nessus has not identified that the chosen audit applies to the target device."
+      see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+    </report>
+  </else>
+</if>
+
+</group_policy>
+</check_type>

@@ -1,0 +1,323 @@
+#TRUSTED 3591a512f0fd23c3a08f68739f8982ab390483db1c8fa9f3e07e8cdcfa3f15cdc2222cf5a914a6104770c2f06dd96674efae7b9a3dffd7aca26db4f00a210f61ab1a41bbb92a607cb72b59f5ef955cb9d90179d7f9c11c516f2c7829e52a2af1c7961a83f4852f129cd482eb00b97b22c046d452d929b64d137c27a6d8bb0172a9294a1285c3eb79112b8045f7b096eeb2554dec96fb5cbbb188c4ce8def99700efa0001ebd6a6b4d3f336874c2f7bc3b9a3c937ad8e04aaeeaceb30cbce487ced1a610a60527b5b5942fbab57d7a26f29bd34c3f0b5f7ac85692cceb7d84667197d8c32a6ad7fe76d2acdb04a92741f6ced90fc9eac9f5a01e12deddb6106397f3c510976aba580bb26448c904ae22f804595cf35e4f598050eec060d9a966167bcd610d21a387c4a763a01e021f3f08c8acb4919d0b80c58ec7d4d8539008a117dc643d2938696bb022cf008c3f4a2f7eb3681dfee455d4fb0669d620c3fc6af15f699f0358c2f0768c279b58717a5d1e6a1b96e2e5f611afe1afdf8c362744447c5be5437d8cb2bfe5a9f12ce37a6d6b2df6aa299fa69d443b25f5a7418f962433e43f78f3613f9e4f4a9f152e01229d22547ded5298d486951502fb8ef9ab2662ab501daa7dcd510afcf6206d09c06e26ceb55ccbb8479310d456116d890368d3310db1310adc7bc1de3597acabadd9925a689bb95e7055afa081c754ccb
+#TRUST-RSA-SHA256 3cb6103c929c6b2c4a1b2c76d23bbfee451db7775eabd7a52608b1ca39d994c31f4e6ba02e8e7d584291b092cf79f1fa043e3fb0919351290881a9b978d79e4777d872bb24bce5267b233b99c9bbb83cdd943a55922e46d35ed623124162f4fbe55b0bdf9173234a143725434d90a33119c26e0473684eaa355a02c11e99a97a320bd0be16fd7920add35020e5376fe8d0f36b3b63ebe41714ec9744bb27ad1dd8b1327eff822fc6a91305351657c3a39598293355771a8929b7a9ef6d2fa80242ad5c0beca2aa3cc13a2c07ac119f44f2397a9bd9a63848a3009ad24c533995595601f9929b01297159e3e2da058f130189b35665fec8ac990ee6a6145f3181396e085eca1c1eeadce7ca4d2b0397f04450764d360486495c1f0ad963f837d0e64e89c416eecefe84a6268f5abeade82f6d5c62e4f2658940257156f7957cc23f807e221bc27f708c1792b23484d0fe377137557ce946f4c81a3cc7d8d7318d6101e9d5972b869de4ddfefcd9f78cbdabdc803427d0fa65e6679e6b0973ea774d6b0dcb57cc7e0ef7245dfd9099036b13c48e5f6d33bd4bfe3ba100f14f86667b748416afaa72d0e17ed7641a45fff7195304bbe1e76e142d97febec86db4f3f3ce21618daf285deecd09892f9c9e64131effb434bf79678c796c87ec499016c763a553be462b0ee107622d8a8d56648cd8bb886eb6706b30a4219bc669001a
+#
+# This script is Copyright (C) 2004-2024 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.1 $
+# $Date: 2024/06/17 $
+#
+# description : This document implements the security configuration as recommended by the
+#               CIS Docker Benchmark v1.6.0
+#
+#<ui_metadata>
+#<display_name>CIS Docker v1.6.0 L1 Docker Swarm</display_name>
+#<spec>
+#  <type>CIS</type>
+#  <name>Docker</name>
+#  <profile>L1 Swarm</profile>
+#  <version>1.6.0</version>
+#  <link>https://workbench.cisecurity.org/files/4532</link>
+#</spec>
+#<labels>cis,docker_swarm,agent,update_20230227</labels>
+#<benchmark_refs>CCE,CSCv6,CSCv7,CSCv8,LEVEL</benchmark_refs>
+#<variables>
+#  <variable>
+#    <name>MANAGEMENT_ADDRESS</name>
+#    <default>172.17.0.[1-9]</default>
+#    <description>Management Plane Address</description>
+#    <info>IP address for Management Plane traffic.</info>
+#    <value_type>STRING</value_type>
+#  </variable>
+#  <variable>
+#    <name>SWARM_MANAGERS</name>
+#    <default>[3-7]</default>
+#    <description>Swarm Manager Nodes</description>
+#    <info>The number of swarm manager nodes configured.</info>
+#    <value_type>STRING</value_type>
+#  </variable>
+#</variables>
+#</ui_metadata>
+
+<check_type:"Unix">
+
+<if>
+  <condition type:"AND">
+    <custom_item>
+      type        : CMD_EXEC
+      description : "Check if this is a Docker Vessel/Host"
+      cmd         : "/usr/bin/docker info"
+      expect      : "Containers"
+    </custom_item>
+
+    <custom_item>
+      type        : CMD_EXEC
+      description : "Check to see if Swarm is active"
+      cmd         : "docker info | egrep 'Swarm: active' | awk '{ print } END { if (NR==1) print \"true\"; else print \"false\"}'"
+      expect      : "true"
+    </custom_item>
+  </condition>
+
+  <then>
+    <report type:"PASSED">
+      description : "CIS_Docker_v1.6.0_L1_Docker_Swarm.audit from CIS Docker Benchmark v1.6.0"
+      see_also    : "https://workbench.cisecurity.org/files/4532"
+    </report>
+
+    <custom_item>
+      type        : CMD_EXEC
+      description : "7.1 Ensure that the minimum number of manager nodes have been created in a swarm"
+      info        : "You should ensure that the minimum number of required manager nodes is created in a swarm.
+
+Rationale:
+
+Manager nodes within a swarm have control over the swarm and can change its configuration, including modifying security parameters. Having excessive manager nodes could render the swarm more susceptible to compromise.
+
+If fault tolerance is not required in the manager nodes, a single node should be elected as a manger. If fault tolerance is required then the smallest odd number to achieve the appropriate level of tolerance should be configured. This should always be an odd number in order to ensure that a quorum is reached.
+
+Impact:
+
+None"
+      solution    : "If an excessive number of managers is configured, the excess nodes can be demoted to workers using the following command:
+
+docker node demote <ID>
+
+Where <ID> is the node ID value of the manager to be demoted.
+
+Default Value:
+
+Only a single manager is required to start a given cluster."
+      reference   : "800-171|3.4.2,800-53|CM-6,800-53r5|CM-6,CSCv7|5.1,CSCv8|4,CSF|PR.IP-1,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6,LEVEL|1M,SWIFT-CSCv1|2.3"
+      see_also    : "https://workbench.cisecurity.org/files/4532"
+      cmd         : "docker info --format '{{ .Swarm.Managers }}'"
+      expect      : "^@SWARM_MANAGERS@$"
+    </custom_item>
+
+    <custom_item>
+      type        : CMD_EXEC
+      description : "7.2 Ensure that swarm services are bound to a specific host interface"
+      info        : "By default, Docker swarm services will listen on all interfaces on the host. This may not be necessary for the operation of the swarm where the host has multiple network interfaces.
+
+Rationale:
+
+When a swarm is initialized the default value for the --listen-addr flag is 0.0.0.0:2377 which means that swarm services will listen on all interfaces on the host. If a host has multiple network interfaces this may be undesirable as it could expose swarm services to networks which are not involved with the operation of the swarm.
+
+By passing a specific IP address to the --listen-addr, a specific network interface can be specified, limiting this exposure.
+
+Impact:
+
+None"
+      solution    : "Resolving this issues requires re-initialization of the swarm, specifying a specific interface for the --listen-addr parameter.
+
+Default Value:
+
+By default, Docker swarm services listen on all available host interfaces."
+      reference   : "800-171|3.13.1,800-171|3.13.5,800-171|3.13.6,800-53|CA-9,800-53|SC-7,800-53|SC-7(5),800-53r5|CA-9,800-53r5|SC-7,800-53r5|SC-7(5),CN-L3|7.1.2.2(c),CN-L3|8.1.10.6(j),CSCv7|9,CSCv8|4.4,CSF|DE.CM-1,CSF|ID.AM-3,CSF|PR.AC-5,CSF|PR.DS-5,CSF|PR.PT-4,GDPR|32.1.b,GDPR|32.1.d,GDPR|32.2,HIPAA|164.306(a)(1),ISO/IEC-27001|A.13.1.3,ITSG-33|SC-7,ITSG-33|SC-7(5),LEVEL|1M,NESA|T4.5.4,NIAv2|GS1,NIAv2|GS2a,NIAv2|GS2b,NIAv2|GS7b,NIAv2|NS25,PCI-DSSv3.2.1|1.1,PCI-DSSv3.2.1|1.2,PCI-DSSv3.2.1|1.2.1,PCI-DSSv3.2.1|1.3,PCI-DSSv4.0|1.2.1,PCI-DSSv4.0|1.4.1,QCSC-v1|4.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|5.2.3,QCSC-v1|6.2,QCSC-v1|8.2.1,SWIFT-CSCv1|2.1,TBA-FIISB|43.1"
+      see_also    : "https://workbench.cisecurity.org/files/4532"
+      cmd         : "netstat -lt | grep -i (2377|7946) | egrep '0.0.0.0' | awk '{ print } END { if (NR==0) print \"none\" }'"
+      expect      : "^none$"
+    </custom_item>
+
+    <custom_item>
+      type        : CMD_EXEC
+      description : "7.3 Ensure that all Docker swarm overlay networks are encrypted"
+      info        : "Ensure that all Docker swarm overlay networks are encrypted.
+
+Rationale:
+
+By default, data exchanged between containers on nodes on the overlay network is not encrypted. This could potentially expose traffic between containers.
+
+Impact:
+
+None"
+      solution    : "You should create overlay networks the with --opt encrypted flag.
+
+Default Value:
+
+By default, data exchanged in overlay networks in Docker swarm mode is not encrypted."
+      reference   : "800-171|3.1.13,800-171|3.5.2,800-171|3.13.8,800-53|AC-17(2),800-53|IA-5,800-53|IA-5(1),800-53|SC-8,800-53|SC-8(1),800-53r5|AC-17(2),800-53r5|IA-5,800-53r5|IA-5(1),800-53r5|SC-8,800-53r5|SC-8(1),CN-L3|7.1.2.7(g),CN-L3|7.1.3.1(d),CN-L3|8.1.2.2(a),CN-L3|8.1.2.2(b),CN-L3|8.1.4.1(c),CN-L3|8.1.4.7(a),CN-L3|8.1.4.8(a),CN-L3|8.2.4.5(c),CN-L3|8.2.4.5(d),CN-L3|8.5.2.2,CSCv7|14.4,CSCv8|3.10,CSF|PR.AC-1,CSF|PR.AC-3,CSF|PR.DS-2,CSF|PR.DS-5,CSF|PR.PT-4,GDPR|32.1.a,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),HIPAA|164.312(a)(2)(i),HIPAA|164.312(d),HIPAA|164.312(e)(1),HIPAA|164.312(e)(2)(i),ISO/IEC-27001|A.6.2.2,ISO/IEC-27001|A.10.1.1,ISO/IEC-27001|A.13.2.3,ITSG-33|AC-17(2),ITSG-33|IA-5,ITSG-33|IA-5(1),ITSG-33|SC-8,ITSG-33|SC-8a.,ITSG-33|SC-8(1),LEVEL|1M,NESA|T4.3.1,NESA|T4.3.2,NESA|T4.5.1,NESA|T4.5.2,NESA|T5.2.3,NESA|T5.4.2,NESA|T7.3.3,NESA|T7.4.1,NIAv2|AM37,NIAv2|IE8,NIAv2|IE9,NIAv2|IE12,NIAv2|NS5d,NIAv2|NS6b,NIAv2|NS29,NIAv2|SS24,PCI-DSSv3.2.1|2.3,PCI-DSSv3.2.1|4.1,PCI-DSSv4.0|2.2.7,PCI-DSSv4.0|4.2.1,QCSC-v1|3.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|13.2,SWIFT-CSCv1|2.1,SWIFT-CSCv1|2.6,SWIFT-CSCv1|4.1,TBA-FIISB|29.1"
+      see_also    : "https://workbench.cisecurity.org/files/4532"
+      cmd         : "docker network ls --filter driver=overlay --quiet | xargs docker network inspect --format '{{.Name}} {{ .Options }}' | grep -v 'encrypted:true' | awk '{ print } END { if (NR==0) print \"none\" }'"
+      expect      : "^none$"
+    </custom_item>
+
+    <custom_item>
+      type        : CMD_EXEC
+      description : "7.4 Ensure that Docker's secret management commands are used for managing secrets in a swarm cluster"
+      info        : "You should use Docker's in-built secret management command for control of secrets.
+
+Rationale:
+
+Docker has various commands for managing secrets in a swarm cluster.
+
+Impact:
+
+None
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+      solution    : "You should follow the docker secret documentation and use it to manage secrets effectively.
+
+Default Value:
+
+Not Applicable"
+      reference   : "800-171|3.4.2,800-53|CM-6,800-53r5|CM-6,CSCv7|5.1,CSCv8|4,CSF|PR.IP-1,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6,LEVEL|1M,SWIFT-CSCv1|2.3"
+      see_also    : "https://workbench.cisecurity.org/files/4532"
+      cmd         : "docker secret ls"
+      expect      : "MANUAL_REVIEW"
+      severity    : MEDIUM
+    </custom_item>
+
+    <custom_item>
+      type        : CMD_EXEC
+      description : "7.5 Ensure that swarm manager is run in auto-lock mode"
+      info        : "You should review whether you wish to run Docker swarm manager in auto-lock mode.
+
+Rationale:
+
+When Docker restarts, both the TLS key used to encrypt communication among swarm nodes, and the key used to encrypt and decrypt Raft logs on disk, are loaded into each manager node's memory. You could protect the mutual TLS encryption key and the key used to encrypt and decrypt Raft logs at rest. This protection could be enabled by initializing the swarm with the --autolock flag.
+
+With --autolock enabled, when Docker restarts, you must unlock the swarm first, using a key encryption key generated by Docker when the swarm was initialized.
+
+This has benefits in a high security environment, however these should be balanced against the support issues caused by the swarm not starting automatically if, for example the host were to experience an outage.
+
+Impact:
+
+A swarm in auto-lock mode will not recover from a restart without manual intervention from an administrator to enter the unlock key. This may not always be desirable, and should be reviewed at a policy level."
+      solution    : "If you are initializing a swarm, use the command below.
+
+docker swarm init --autolock
+
+If you want to set --autolock on an existing swarm manager node, use the following command.
+
+docker swarm update --autolock
+
+Default Value:
+
+By default, the swarm manager does not run in auto-lock mode."
+      reference   : "800-171|3.5.2,800-171|3.13.16,800-53|IA-5(1),800-53|SC-28,800-53|SC-28(1),800-53r5|IA-5(1),800-53r5|SC-28,800-53r5|SC-28(1),CN-L3|8.1.4.7(b),CN-L3|8.1.4.8(b),CSCv7|14.8,CSCv8|3.11,CSF|PR.AC-1,CSF|PR.DS-1,GDPR|32.1.a,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(2)(i),HIPAA|164.312(a)(2)(iv),HIPAA|164.312(d),HIPAA|164.312(e)(2)(ii),ITSG-33|IA-5(1),ITSG-33|SC-28,ITSG-33|SC-28a.,ITSG-33|SC-28(1),LEVEL|1M,NESA|T5.2.3,PCI-DSSv3.2.1|3.4,PCI-DSSv4.0|3.3.2,PCI-DSSv4.0|3.5.1,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|13.2,SWIFT-CSCv1|4.1,TBA-FIISB|28.1"
+      see_also    : "https://workbench.cisecurity.org/files/4532"
+      cmd         : "docker info --format '{{ .Swarm.Cluster.Spec.EncryptionConfig.AutoLockManagers }}'"
+      expect      : "true"
+    </custom_item>
+
+    <report type:"WARNING">
+      description : "7.6 Ensure that the swarm manager auto-lock key is rotated periodically"
+      info        : "You should rotate the swarm manager auto-lock key periodically.
+
+Rationale:
+
+The swarm manager auto-lock key is not automatically rotated. Good security practice is to rotate keys.
+
+Impact:
+
+None
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+      solution    : "You should run the command below to rotate the keys.
+
+docker swarm unlock-key --rotate
+
+Additionally, to facilitate auditing of this recommendation, you should maintain key rotation records and ensure that you establish a pre-defined frequency for key rotation.
+
+Default Value:
+
+By default, keys are not rotated automatically."
+      reference   : "800-171|3.5.2,800-53|IA-5(1),800-53r5|IA-5(1),CSCv7|4.4,CSCv8|5.2,CSF|PR.AC-1,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(2)(i),HIPAA|164.312(d),ITSG-33|IA-5(1),LEVEL|1M,NESA|T5.2.3,QCSC-v1|5.2.2,QCSC-v1|13.2,SWIFT-CSCv1|4.1"
+      see_also    : "https://workbench.cisecurity.org/files/4532"
+    </report>
+
+    <custom_item>
+      type        : CMD_EXEC
+      description : "7.7 Ensure that node certificates are rotated as appropriate"
+      info        : "You should rotate swarm node certificates in line with your organizational security policy.
+
+Rationale:
+
+Docker Swarm uses TLS for clustering operations between its nodes. Certificate rotation ensures that in an event such as a compromised node or key, it is difficult to impersonate a node. By default, node certificates are rotated every 90 days, but you should rotate them more often or as appropriate in your environment.
+
+Impact:
+
+None"
+      solution    : "You should run the command to set the desired expiry time on the node certificate.
+For example:
+
+docker swarm update --cert-expiry 48h
+
+Default Value:
+
+By default, node certificates are rotated automatically every 90 days."
+      reference   : "800-171|3.5.2,800-53|IA-5(1),800-53r5|IA-5(1),CSCv7|4.4,CSCv8|5.2,CSF|PR.AC-1,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(2)(i),HIPAA|164.312(d),ITSG-33|IA-5(1),LEVEL|1M,NESA|T5.2.3,QCSC-v1|5.2.2,QCSC-v1|13.2,SWIFT-CSCv1|4.1"
+      see_also    : "https://workbench.cisecurity.org/files/4532"
+      cmd         : "docker info | grep 'Expiry Duration'"
+      expect      : "Expiry Duration: [1]?[1-9]^ months"
+    </custom_item>
+
+    <report type:"WARNING">
+      description : "7.8 Ensure that CA certificates are rotated as appropriate"
+      info        : "You should rotate root CA certificates as appropriate.
+
+Rationale:
+
+Docker Swarm uses TLS for clustering operations between its nodes. Certificate rotation ensures that in an event such as a compromised node or key, it is difficult to impersonate a node. Node certificates depend upon root CA certificates. For operational security, it is important to rotate these frequently. Currently, root CA certificates are not rotated automatically and you should therefore establish a process for rotating them in line with your organizational security policy.
+
+Impact:
+
+None
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+      solution    : "You should run the command below to rotate a certificate.
+
+docker swarm ca --rotate
+
+Default Value:
+
+By default, root CA certificates are not rotated."
+      reference   : "800-171|3.5.2,800-53|IA-5(1),800-53r5|IA-5(1),CSCv7|4.4,CSCv8|5.2,CSF|PR.AC-1,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(2)(i),HIPAA|164.312(d),ITSG-33|IA-5(1),LEVEL|1M,NESA|T5.2.3,QCSC-v1|5.2.2,QCSC-v1|13.2,SWIFT-CSCv1|4.1"
+      see_also    : "https://workbench.cisecurity.org/files/4532"
+    </report>
+
+    <custom_item>
+      type        : CMD_EXEC
+      description : "7.9 Ensure that management plane traffic is separated from data plane traffic"
+      info        : "You should separate management plane traffic from data plane traffic.
+
+Rationale:
+
+Separating management plane traffic from data plane traffic ensures that these types of traffic are segregated from each other. These traffic flows can then be individually monitored and tied to different traffic control policies and monitoring. This also ensures that the management plane is always reachable even if there is a great deal of traffic on the data plane.
+
+Impact:
+
+This requires two network interfaces per node."
+      solution    : "You should initialize the swarm with dedicated interfaces for management and data planes respectively.
+For example,
+
+docker swarm init --advertise-addr=192.168.0.1 --data-path-addr=17.1.0.3
+
+Default Value:
+
+By default, data plane traffic is not separated from management plane traffic."
+      reference   : "800-171|3.13.1,800-171|3.13.5,800-53|CA-9,800-53|SC-7,800-53r5|CA-9,800-53r5|SC-7,CN-L3|8.1.10.6(j),CSCv7|14.1,CSCv8|13.4,CSF|DE.CM-1,CSF|ID.AM-3,CSF|PR.AC-5,CSF|PR.DS-5,CSF|PR.PT-4,GDPR|32.1.b,GDPR|32.1.d,GDPR|32.2,HIPAA|164.306(a)(1),ISO/IEC-27001|A.13.1.3,ITSG-33|SC-7,LEVEL|1M,NESA|T4.5.4,NIAv2|GS1,NIAv2|GS2a,NIAv2|GS2b,PCI-DSSv3.2.1|1.1,PCI-DSSv3.2.1|1.2,PCI-DSSv3.2.1|1.2.1,PCI-DSSv3.2.1|1.3,PCI-DSSv4.0|1.2.1,PCI-DSSv4.0|1.4.1,QCSC-v1|4.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|5.2.3,QCSC-v1|6.2,QCSC-v1|8.2.1,SWIFT-CSCv1|2.1,TBA-FIISB|43.1"
+      see_also    : "https://workbench.cisecurity.org/files/4532"
+      cmd         : "docker node inspect --format '{{ .Status.Addr }}' self"
+      expect      : "@MANAGEMENT_ADDRESS@"
+    </custom_item>
+  </then>
+
+  <else>
+    <report type:"WARNING">
+      description : "CIS_Docker_v1.6.0_L1_Docker_Swarm.audit from CIS Docker Benchmark v1.6.0"
+      info        : "NOTE: Nessus has not identified that the chosen audit applies to the target device."
+      see_also    : "https://workbench.cisecurity.org/files/4532"
+    </report>
+  </else>
+</if>
+
+</check_type>

@@ -1,0 +1,47 @@
+#TRUSTED 17dd584ab25078d944d9fd40163815ffcbab1d26d4286873375d9b02d5b11b7937419cdecba8553a2c3d6191d1a5fa2567caeba78ce8ee57567252cd94c51a369ba84733247aa53fd640b3386c307ab95b2ba7005ff8e1cdc51f92af5374e2b7eb1946d5b9d557b57243a94adf11ef6513818cabea2275f3111cb1bc80bffd5607347c0d1f7c02d03716f06ea361a4bd71d4a9720bd8a825b7531cc816201aa5c3ef597524b4e314b91e3222bcd198bd3c24fdf32efe098c1ec52fd311de7464add1e2bf67ba74f1eb6a863a054f1217785b9facc1e5c40eecbabcb88ea6f852057467533c344495495ff05f4475b43a301d2e85eefa4f475e6471560173130fbf0fa37b9e238cba0d541fda5c2b85ce4c14feff633dc2823e1377191c4aa2f07b63b245d9ee9f615a72a16a3006e29480ecd5424b1f0d6c021bb4c479137f79e71b29dc81560ef68f6b3bd70c407b3355b7b02249d5df44445e960733bac41fa199b9ae38d2eac14557087470644375995566ad78bbd25b497f5944bdd7cf16734026e1e5f95df66d42a2e329c821753fab7f7078ec031f88d6b4f5da4b1d80afba86732f5eb2402f2037ea0b7d77c846b43221815775d1e8e0ff2d58aefd321a818f3390cb81279848022adb557b402cde8d6a5d164d833b52f7b0f1ccaa6aac9d1e61112452cc4b5e08272fa808ffb91fafc593902176efab629940030674
+#TRUST-RSA-SHA256 b0af8672141bdbc59bd88dba6f2364d0edc3a22770140995129e6c96cd6964b22003aa689dbd86883025b6091b9bf6ba5a9dfd2b692db088e7ad18cc2a44260bfbf661e1d0d64ee844317efaee100a16d0e56739bbe5c961f14ca21d9fd1f7924e9ddb6b731cda11e0c72bba0d26be5227558155150a7db34982d644b588d5130a3e9b8444f684acabb465322d080c16f352093aad31a423dcfa6145f52524a2e4b4b97e43c1f585fc03864dac7f17eb66eccd0b3d845ef393690c1a31932a7a3145c22626212b96a1b8741859f94dbc5b900aab1b748c02b990438cdebb255d9c4b39393dc8560b2829e781a9aa558391961de8ca360ae701890cced5806d823eef56fe84b4c97de657397e2cfb2553e1471669fcf9aa42a8d227c72ec40c3dcfb9de2c591d8ce528ea37235dbac7784c9e6900b0b60c1c9df19384f298fee510da76418e110d2647824c555b9e8ca7607afba9fcbb8c79569b4d6c2e1512cebebaabc93e7d24c184dc717b3d6d4b256cc659e8cc69aca4ba317715ce0f0e58f7054615d31dfe37d189ed9f887718c21e854d22f3da5ce807cd45020aa310916db71335d9b8ccad214bb3b72c8cdba4d120e665a3072fe24824566974926ce37024469975b7085de6269a24ac742b4f6b99e1cd9b6ad0cfc52cfcf55d4a045570ecc3144f4fcbdf49d261b1a0ccc871271f8894c0de18a2376d400a46134960
+#
+# This script is Copyright (C) 2004-2023 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.8 $
+# $Date: 2023/03/07 $
+#
+# This .audit file looks for file names that contain "dirty"
+# words in common image and video formats. No actual file content
+# analysis is performed. All matches are based on the name of the
+# file.
+#
+# The regular expressions are short to match more files, but
+# keep in mind that false positives can occur. For example,
+# the string "anal" can occur in words like "canal" or "analysis".
+#
+#<ui_metadata>
+#<display_name>TNS File Analysis - Adult Media Content</display_name>
+#<spec>
+#  <type>TNS</type>
+#  <name>File Analysis - Adult Media Content</name>
+#  <version>1.0.0</version>
+#</spec>
+#<labels>filecontent,content,adult,media,update_20230227</labels>
+#</ui_metadata>
+
+<check_type:"FileContent">
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Determine if the server is hosting adult content."
+  file_extension : "png" | "jpg" | "gif" | "bmp" | "mpg" | "avi" | "divx" | "mov" | "wmv" | "mp4"
+  file_name      : "([^a-z]|^)anal" | "lesbian" | "facial" | "nude" | "orgy" | "threesome" | "sex" | "schoolgirl" | "bdsm" | "fetish" | "playboy" | "femdom" | "bondage" | "shaved"
+  max_size       : "5"
+</item>
+
+</check_type>

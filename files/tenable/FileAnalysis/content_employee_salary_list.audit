@@ -1,0 +1,42 @@
+#TRUSTED 1d65e8ffcbcfa13af0c96b408cef8f185709c1c9d57cc2a9099fdc15a9ffec08f983d8af18b69976351c58af14ffa0c3bbdf5d9349d59bd56b73e5aa7be1e423149f9dd7c4848cf112bf93e7d827d26c0dd751a2a847380e172dde19d70638fcffdb42d1f57d3731c40a392652cf0ef41ec43c6c0339ade48c733716e8ec3da8427c8d91b63dd20d6b2f5a5b0b4040b3f16aff5ee6f22ee905abab9f85ef67b7e23e05f5c1dba80e76c9a20dd3ca5b2db932030ed5d104f38b56379e96c5c5d86ac0ea1f4faf9d623adb3899edbd0d194fd23528a93457b2056c71870ddcb5ed84b93fa72d0741d2fae1853a4e115bcf54aff0ca3f5477479dd7b04d0022350ae5f98cde2f55790aadd092a3b61624fc0cb25a928cde9561acdc0c34f258e35ee51bb8dc43bf7ae2aa52def76a536ea065f8d77a174d7223881ded5d129cb290cab8cc2fa543397b180cb0a7a3e92d0d88598026577272a4a66efacbbde06a3b61fa8e76c0a7f6bb0eba2eb5273f73c7dff8ebe5e87e49f0cb97aea92b9b79bdb75d06b12e11ccd3c6b7c2e2b8364a8b6675bfa949734aaa581412a68b36a058fd0f075ec35aa97f52e095a723fb2abad75b9a5eb7e271be16faa0680bd3e0e475340b683859a04428d6d8f1d43975261206d5fec26ddf25f1663b7c6154c138b73d84f22c1dab8230797a821b051ae3eea0e02c78938d7e47d1307d6e932db7
+#TRUST-RSA-SHA256 541b51454a50406f641336802f80149ed6583282c417b7d7faa1a62040a9c131469f093e443cc3468e755bcd1b2271db1990305eb824655a04b513dd6734a337cb40579b00b05caa64b34abd272af0df350a037398154cc294b4e3984881cfd22ba26249df7850867edc4ad1f6fb022f16205cd9ca2589e4c027a35c091455ffffac6f3474ed8e90b0fe68bc7c03099e42be75a309da553502ffcfcba94ec2f9cb4222032d350bcfb0ffad27301260194b7ba53e68b8930c184114d3ad15d9d9fbc88e2f21f81229550298f4b87c64e6e508b4ecac95bc378c53c43fd0548d82fce700f3dd38c6e45b39f35b30b56aa2e53e541a3a5f15caba5ee4ce2946a8a59984350086f3e3863c2daf5136a1bde74f530c3bfdaad476e8eb2a5a7dde51219606b8afee6a76b5ff17b8c8fe6ca3f5bc30cd3267d62bd1a40c370933f1cd0ccef786e6d7bb631f33811874e86e5bed9454ba0a19632d1769bbbe4095c3cc81a8dc9c1b372eeb04433b7d04839ae66941e2dfe8fa8c52aad1a85d738538008ac07a2d0c588c319b18c70e70d6f8b1f9cb65ae1f6c7ab9d2e2cc8f3dd0719f81dffd6393f220b3cb7e457e3234fefa7b42e89fbfb806220d4b28b73fb014ac52f75d39ec243702046ee7de4a3e6d517b96fb8c35eff5bfa9fbd3d4149dfba267fd510f053840ebd9151c990e2cd4e43aa2754ce8eaa177da22bbb6e8e8232f7a
+#
+# This script is Copyright (C) 2004-2023 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.9 $
+# $Date: 2023/03/07 $
+#
+# This policy looks for Excell and Adobe files that are likely to
+# contain spread sheets holding employee salary figures.
+#
+#<ui_metadata>
+#<display_name>TNS File Analysis - Employee Salary List</display_name>
+#<spec>
+#  <type>TNS</type>
+#  <name>File Analysis - Employee Salary List</name>
+#  <version>1.0.0</version>
+#</spec>
+#<labels>filecontent,content,employee,salary,list,update_20230227</labels>
+#</ui_metadata>
+
+<check_type:"FileContent">
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "DLP - Determine if server is hosting a financial statement"
+  file_extension : "xls" | "pdf"
+  expect         : "[Ss]alary" | "SALARY" | "DOH" | "HIRE DATE" | "Hire Date" | "START DATE" | "REVIEW" | "[Bb]onus" | "[Oo]ptions"
+  file_name      : "employee" | "salar"
+  max_size       : "5K"
+</item>
+
+</check_type>

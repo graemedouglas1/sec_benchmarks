@@ -1,0 +1,125 @@
+#TRUSTED 1947d6af3c14d9a4091de17b3a5638240dd90b639886d0fe830aa3f597f7908f1f3f9c4e789787756e060ea71fd15f88ea6c0a178b33bd8c905d5df9b83356690c77245bf1279601c4ef4a7ab92b4cebb60ec6991dc0c0eea8dce8bc87729f1b4a88834b437e7b47e8319bcfce52ebd498a46d9277ba508cb5bd6b17dbc8c9d117a21333124713daf0b0a9dc27feec8ad68152f282950fe61424755ded5106ef230f97c7099063247504af95ee722cf6b357d462a70b840ee370acda23414f53587e673e1fb135c3a47e6303d401c66bcfebad12aa8e8586ac9be9ef817ccdc3eac6167e0b8d53149c7ec2ac3d8ecadbb1b2bdba79d1fbc69ba5db8569c5090ad97f4377873a5a7e967d5d7d1b1d9e4780ac45ae448f28263eb23a2a75498d59123d8421d602fed3ba6fdc15404e12d5bc18bdf55da43d530764b4fc93dc12528bec96624f41dc5ed8e2679ef0d9849d249177203e449a18032f70533f7eed6cd33a518903eec397533bb822a711587b3848c79b54ce1f63afae9f3f651b0ed6754b157a1f722c9357e3216742cc533af90efea5cab0dc5cff5dec5c47032156a23763cf9c46889b3f852c29cf190ade0e52431e5d7e8ee9b695ff1a4921bb65d55598f67bb6adc5e7fa83a2095973065c4e37dee503fa9f500a29e739372d5da66443003ed46a2bde7dda5807c537fc8335d92226729a59b279785124a23870
+#TRUST-RSA-SHA256 4d3b4cb82e0e58518bd914144a1f2439c0b2ce68214930c5c7263c19b448601cc340c7b7d161ef6ac09910a0b32139fb2a80525877e3c66ec8d8934e115b2724fc9d2865e691f326d0ab1782397ea0498ba0f50c48b2bba18fa89ad5d5d9194d088083641b0fb7af251148f1d9ccbdcba582fb4299119ed5465209c5273e1ea746db607b9d14d82b6ac5774dea228b8657cd7278d379863acc9505aa2d12928b766e56cee048c3f352516feccca1d65832dd247cd799cea66abc3923cd0d995f94e5082a940d71513ae179c78277607492784152716cdfe7f41be37cc45fbc12403294b7940e47479c816cd0ac5792357fce1a11e5252c1d2084ed4feee7ffb5126624ea86be3e5803df81d51456b569ae64f96dfb4bf4370570dc2ae7bf7f0c03087c7a554a5024fb94af281e0a2501f33fea736226b7f566ad2bec59dd12742484de42c9a2fd7ad3d26203e54a70313ad8bc8b51fb9a07713b2b514f83c1439df8793c4f174ee136737ecd541e82102219032ebdfa77d876e6b5026ed6750ad11713b78bb6fd79dc84dc16c09022b182b46190bd174eb85b06790615426363aa98887e2002bb2c542ad118c2004e80d53ed1fe8b666291a86d415c2b86bc89a2fe0f8f5612f77554bf09eb59624f18f4a40fe18d013848303f9e44c477dc6133778b01ad999baa4f91099e2f16770c058a661495023eff9adf6f7592d1139f
+#
+# This script is Copyright (C) 2004-2024 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.0 $
+# $Date: 2024/08/21 $
+#
+# Description : This document implements the security configuration as recommended by the
+#               DISA Microsoft Lync 2013 v1r5 STIG.
+#
+#<ui_metadata>
+#<display_name>DISA STIG Microsoft Lync 2013 v1r5</display_name>
+#<spec>
+#  <type>DISA STIG</type>
+#  <name>Microsoft Lync 2013</name>
+#  <version>1.5.0</version>
+#  <link>https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MS_Lync_2013_V1R5_STIG.zip</link>
+#</spec>
+#<labels>ms_lync</labels>
+#<benchmark_refs>CAT,CCE,CCI,DISA_Benchmark,Group-ID,Rule-ID,STIG-ID,STIG-Legacy,Vuln-ID</benchmark_refs>
+#</ui_metadata>
+
+<check_type:"Windows" version:"2">
+<group_policy:"MS Lync 2013">
+
+<if>
+  <condition type:"AND">
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "Check if Lync is installed"
+      value_type  : POLICY_TEXT
+      value_data  : ".+"
+      reg_key     : "HKLM\Software\Microsoft\Office\15.0\lync\Installroot"
+      reg_item    : "Path"
+      reg_option  : MUST_EXIST
+      check_type  : CHECK_REGEX
+    </custom_item>
+  </condition>
+
+  <then>
+    <report type:"PASSED">
+      description : "DISA_STIG_Microsoft_Lync_2013_v1r5.audit from DISA Microsoft Lync 2013 v1r5 STIG"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MS_Lync_2013_V1R5_STIG.zip"
+    </report>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO420 - The ability of Lync to store user passwords must be disabled."
+      info        : "Lync 2013 provides a single, unified client for real-time communications, including voice and video calls, Lync Meetings, presence, instant messaging, and persistent chat. These features require the ability to log into the service with a username and password. The Lync client could potentially be configured to store user passwords locally which would allow it to be susceptible to compromise and to be used maliciously."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Lync 2013 -> Microsoft Lync Feature Policies 'Allow storage of user passwords' to 'Disabled'."
+      reference   : "800-171|3.5.10,800-53|IA-5(1)(c),800-53r5|IA-5(1)(c),CAT|II,CCI|CCI-000196,CSF|PR.AC-1,CSF2.0|PR.AA-01,CSF2.0|PR.AA-03,DISA_Benchmark|Microsoft_Lync_2013,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(2)(i),HIPAA|164.312(d),ITSG-33|IA-5(1)(c),NESA|T5.2.3,NIAv2|CY6,QCSC-v1|5.2.2,QCSC-v1|13.2,Rule-ID|SV-242503r961026_rule,STIG-ID|DTOO420,STIG-Legacy|SV-52834,STIG-Legacy|V-40776,SWIFT-CSCv1|4.1,TBA-FIISB|26.1,Vuln-ID|V-242503"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MS_Lync_2013_V1R5_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 0
+      reg_key     : "HKLM\Software\Policies\Microsoft\Office\15.0\Lync"
+      reg_item    : "savepassword"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO421 - Session Initiation Protocol (SIP) security mode must be configured."
+      info        : "Lync 2013 provides a single, unified client for real-time communications, including voice and video calls, Lync Meetings, presence, instant messaging, and persistent chat, using the Session Initiation Protocol (SIP). SIP is widely used for controlling multimedia communication sessions, such as voice and video calls over Internet Protocol (IP) networks. By using TLS it would render a sniff/man in the middle attack very difficult to impossible to achieve within the time period in which a given conversation could be attacked. TLS authenticates all parties and encrypts all traffic. This does not prevent listening over the wire, but the attacker cannot read the traffic unless the encryption is broken."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Lync 2013 -> Microsoft Lync Feature Policies 'Configure SIP security mode' to 'Enabled'."
+      reference   : "800-171|3.13.15,800-53|SC-23,800-53r5|SC-23,CAT|II,CCI|CCI-001184,DISA_Benchmark|Microsoft_Lync_2013,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-23,ITSG-33|SC-23a.,NESA|T4.5.1,QCSC-v1|5.2.1,Rule-ID|SV-242504r961110_rule,STIG-ID|DTOO421,STIG-Legacy|SV-52835,STIG-Legacy|V-40777,Vuln-ID|V-242504"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MS_Lync_2013_V1R5_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Policies\Microsoft\Office\15.0\Lync"
+      reg_item    : "enablesiphighsecuritymode"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO422 - In the event a secure Session Initiation Protocol (SIP) connection fails, the connection must be restricted from resorting to the unencrypted HTTP."
+      info        : "Lync 2013 provides a single, unified client for real-time communications, including voice and video calls, Lync Meetings, presence, instant messaging, and persistent chat. The Lync client has a fall back option so that, in the event the Lync client cannot make a secure SIP connection to the Lync server, it will fall back to an unencrypted HTTP connection. In that event, all traffic will be unencrypted and in clear text. The configuration must be set to prevent HTTP being used for SIP connections in the event TLS or TCP fail."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Lync 2013 -> Microsoft Lync Feature Policies 'Disable HTTP fallback for SIP connection' to 'Enabled'."
+      reference   : "800-171|3.13.15,800-53|SC-23,800-53r5|SC-23,CAT|II,CCI|CCI-001184,DISA_Benchmark|Microsoft_Lync_2013,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-23,ITSG-33|SC-23a.,NESA|T4.5.1,QCSC-v1|5.2.1,Rule-ID|SV-242505r961110_rule,STIG-ID|DTOO422,STIG-Legacy|SV-52836,STIG-Legacy|V-40778,Vuln-ID|V-242505"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MS_Lync_2013_V1R5_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Policies\Microsoft\Office\15.0\Lync"
+      reg_item    : "disablehttpconnect"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <report type:"WARNING">
+      description : "DTOO999-Lync13 - The version of Lync running on the system must be a supported version."
+      info        : "Security flaws with software applications are discovered daily. Vendors are constantly updating and patching their products to address newly discovered security vulnerabilities. Organizations (including any contractor to the organization) are required to promptly install security-relevant software updates (e.g., patches, service packs, and hot fixes). Flaws discovered during security assessments, continuous monitoring, incident response activities, or information system error handling must also be addressed expeditiously.
+
+Organization-defined time periods for updating security-relevant software may vary based on a variety of factors including, for example, the security category of the information system or the criticality of the update (i.e., severity of the vulnerability related to the discovered flaw).
+
+This requirement will apply to software patch management solutions that are used to install patches across the enclave and also to applications themselves that are not part of that patch management solution. For example, many browsers today provide the capability to install their own patch software. Patch criticality, as well as system criticality will vary. Therefore, the tactical situations regarding the patch management process will also vary. This means that the time period used must be a configurable parameter. Time frames for application of security-relevant software updates may be dependent upon the Information Assurance Vulnerability Management (IAVM) process.
+
+The application will be configured to check for and install security-relevant software updates within an identified time period from the availability of the update. The specific time period will be defined by an authoritative source (e.g., IAVM, CTOs, DTMs, and STIGs).
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+      solution    : "Upgrade to a supported version."
+      reference   : "800-171|3.14.1,800-53|SI-2c.,800-53r5|SI-2c.,CAT|I,CCI|CCI-002605,CN-L3|8.1.4.4(e),CN-L3|8.1.10.5(a),CN-L3|8.1.10.5(b),CN-L3|8.5.4.1(b),CN-L3|8.5.4.1(d),CN-L3|8.5.4.1(e),CSF|ID.RA-1,CSF|PR.IP-12,CSF2.0|ID.IM-01,CSF2.0|ID.IM-02,CSF2.0|ID.IM-03,CSF2.0|PR.PS-02,DISA_Benchmark|Microsoft_Lync_2013,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SI-2,NESA|T7.6.2,NESA|T7.7.1,NIAv2|AM38,NIAv2|AM39,NIAv2|SS14b,PCI-DSSv3.2.1|6.2,PCI-DSSv4.0|6.3,PCI-DSSv4.0|6.3.3,QCSC-v1|11.2,Rule-ID|SV-265903r999913_rule,STIG-ID|DTOO999,SWIFT-CSCv1|2.2,Vuln-ID|V-265903"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MS_Lync_2013_V1R5_STIG.zip"
+    </report>
+  </then>
+
+  <else>
+    <report type:"WARNING">
+      description : "DISA_STIG_Microsoft_Lync_2013_v1r5.audit from DISA Microsoft Lync 2013 v1r5 STIG"
+      info        : "NOTE: Nessus has not identified that the chosen audit applies to the target device."
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MS_Lync_2013_V1R5_STIG.zip"
+    </report>
+  </else>
+</if>
+
+</group_policy>
+</check_type>

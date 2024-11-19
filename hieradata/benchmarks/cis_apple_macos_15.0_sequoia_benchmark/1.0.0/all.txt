@@ -1,0 +1,123 @@
+1.1 - Ensure All Apple-provided Software Is Current
+1.2 - Ensure Auto Update Is Enabled
+1.3 - Ensure Download New Updates When Available Is Enabled
+1.4 - Ensure Install of macOS Updates Is Enabled
+1.5 - Ensure Install Application Updates from the App Store Is Enabled
+1.6 - Ensure Install Security Responses and System Files Is Enabled
+1.7 - Ensure Software Update Deferment Is Less Than or Equal to 30 Days
+1.8 - Ensure the System is Managed by a Mobile Device Management MDM Software
+2.1.2 - Audit App Store Password Settings
+2.1.1.1 - Audit iCloud Keychain
+2.1.1.2 - Audit iCloud Drive
+2.1.1.3 - Ensure iCloud Drive Document and Desktop Sync Is Disabled
+2.1.1.4 - Audit Security Keys Used With AppleIDs
+2.1.1.5 - Audit Freeform Sync to iCloud
+2.1.1.6 - Audit Find My Mac
+2.2.1 - Ensure Firewall Is Enabled
+2.2.2 - Ensure Firewall Stealth Mode Is Enabled
+2.3.1.1 - Ensure AirDrop Is Disabled When Not Actively Transferring Files
+2.3.1.2 - Ensure AirPlay Receiver Is Disabled
+2.3.2.1 - Ensure Set Time and Date Automatically Is Enabled
+2.3.2.2 - Ensure the Time Service Is Enabled
+2.3.3.1 - Ensure DVD or CD Sharing Is Disabled
+2.3.3.2 - Ensure Screen Sharing Is Disabled
+2.3.3.3 - Ensure File Sharing Is Disabled
+2.3.3.4 - Ensure Printer Sharing Is Disabled
+2.3.3.5 - Ensure Remote Login Is Disabled
+2.3.3.6 - Ensure Remote Management Is Disabled
+2.3.3.7 - Ensure Remote Apple Events Is Disabled
+2.3.3.8 - Ensure Internet Sharing Is Disabled
+2.3.3.9 - Ensure Content Caching Is Disabled
+2.3.3.10 - Ensure Media Sharing Is Disabled
+2.3.3.11 - Ensure Bluetooth Sharing Is Disabled
+2.3.3.12 - Ensure Computer Name Does Not Contain PII or Protected Organizational Information
+2.3.4.1 - Ensure Backup Automatically is Enabled If Time Machine Is Enabled
+2.3.4.2 - Ensure Time Machine Volumes Are Encrypted If Time Machine Is Enabled
+2.4.1 - Ensure Show Wi-Fi status in Menu Bar Is Enabled
+2.4.2 - Ensure Show Bluetooth Status in Menu Bar Is Enabled
+2.5.1 - Audit Siri Settings
+2.5.2 - Ensure Listen for Siri Is Disabled
+2.6.4 - Ensure Limit Ad Tracking Is Enabled
+2.6.5 - Ensure Gatekeeper Is Enabled
+2.6.6 - Ensure FileVault Is Enabled
+2.6.7 - Audit Lockdown Mode
+2.6.8 - Ensure an Administrator Password Is Required to Access System-Wide Preferences
+2.6.1.1 - Ensure Location Services Is Enabled
+2.6.1.2 - Ensure Show Location Icon in Control Center when System Services Request Your Location Is Enabled
+2.6.1.3 - Audit Location Services Access
+2.6.2.1 - Audit Full Disk Access for Applications
+2.6.3.1 - Ensure Share Mac Analytics Is Disabled
+2.6.3.2 - Ensure Improve Siri  Dictation Is Disabled
+2.6.3.3 - Ensure Improve Assistive Voice Features Is Disabled
+2.6.3.4 - Ensure Share with app developers Is Disabled
+2.6.3.5 - Ensure Share iCloud Analytics Is Disabled
+2.7.1 - Ensure Screen Saver Corners Are Secure
+2.7.2 - Audit iPhone Mirroring
+2.8.1 - Audit Universal Control Settings
+2.9.2 - Ensure Power Nap Is Disabled for Intel Macs
+2.9.3 - Ensure Wake for Network Access Is Disabled
+2.9.1.1 - Ensure the OS Is Not Active When Resuming from Standby Intel
+2.9.1.2 - Ensure Sleep and Display Sleep Is Enabled on Apple Silicon Devices
+2.10.1 - Ensure an Inactivity Interval of 20 Minutes Or Less for the Screen Saver Is Enabled
+2.10.2 - Ensure Require Password After Screen Saver Begins or Display Is Turned Off Is Enabled for 5 Seconds or Immediately
+2.10.3 - Ensure a Custom Message for the Login Screen Is Enabled
+2.10.4 - Ensure Login Window Displays as Name and Password Is Enabled
+2.10.5 - Ensure Show Password Hints Is Disabled
+2.11.1 - Ensure Users Accounts Do Not Have a Password Hint
+2.11.2 - Audit Touch ID
+2.12.1 - Ensure Guest Account Is Disabled
+2.12.2 - Ensure Guest Access to Shared Folders Is Disabled
+2.12.3 - Ensure Automatic Login Is Disabled
+2.13.1 - Audit Passwords System Preference Setting
+2.14.1 - Audit Game Center Settings
+2.15.1 - Audit Notification  Focus Settings
+2.16.1 - Audit Wallet  Apple Pay Settings
+2.17.1 - Audit Internet Accounts for Authorized Use
+2.18.1 - Ensure On-Device Dictation Is Enabled
+3.1 - Ensure Security Auditing Is Enabled
+3.2 - Ensure Security Auditing Flags For User-Attributable Events Are Configured Per Local Organizational Requirements
+3.3 - Ensure install.log Is Retained for 365 or More Days and No Maximum Size
+3.4 - Ensure Security Auditing Retention Is Enabled
+3.5 - Ensure Access to Audit Records Is Controlled
+3.6 - Audit Software Inventory
+4.1 - Ensure Bonjour Advertising Services Is Disabled
+4.2 - Ensure HTTP Server Is Disabled
+4.3 - Ensure NFS Server Is Disabled
+5.4 - Ensure the Sudo Timeout Period Is Set to Zero
+5.5 - Ensure a Separate Timestamp Is Enabled for Each Usertty Combo
+5.6 - Ensure the root Account Is Disabled
+5.7 - Ensure an Administrator Account Cannot Login to Another Users Active and Locked Session
+5.8 - Ensure a Login Window Banner Exists
+5.9 - Ensure the Guest Home Folder Does Not Exist
+5.10 - Ensure XProtect Is Running and Updated
+5.11 - Ensure Logging Is Enabled for Sudo
+5.1.1 - Ensure Home Folders Are Secure
+5.1.2 - Ensure System Integrity Protection Status SIP Is Enabled
+5.1.3 - Ensure Apple Mobile File Integrity AMFI Is Enabled
+5.1.4 - Ensure Signed System Volume SSV Is Enabled
+5.1.5 - Ensure Appropriate Permissions Are Enabled for System Wide Applications
+5.1.6 - Ensure No World Writable Folders Exist in the System Folder
+5.1.7 - Ensure No World Writable Folders Exist in the Library Folder
+5.2.1 - Ensure Password Account Lockout Threshold Is Configured
+5.2.2 - Ensure Password Minimum Length Is Configured
+5.2.3 - Ensure Complex Password Must Contain Alphabetic Characters Is Configured
+5.2.4 - Ensure Complex Password Must Contain Numeric Character Is Configured
+5.2.5 - Ensure Complex Password Must Contain Special Character Is Configured
+5.2.6 - Ensure Complex Password Must Contain Uppercase and Lowercase Characters Is Configured
+5.2.7 - Ensure Password Age Is Configured
+5.2.8 - Ensure Password History Is Configured
+5.3.1 - Ensure all user storage APFS volumes are encrypted
+5.3.2 - Ensure all user storage CoreStorage volumes are encrypted
+6.1.1 - Ensure Show All Filename Extensions Setting is Enabled
+6.2.1 - Ensure Protect Mail Activity in Mail Is Enabled
+6.3.1 - Ensure Automatic Opening of Safe Files in Safari Is Disabled
+6.3.2 - Audit History and Remove History Items
+6.3.3 - Ensure Warn When Visiting A Fraudulent Website in Safari Is Enabled
+6.3.4 - Ensure Prevent Cross-site Tracking in Safari Is Enabled
+6.3.5 - Audit Hide IP Address in Safari Setting
+6.3.6 - Ensure Advertising Privacy Protection in Safari Is Enabled
+6.3.7 - Ensure Show Full Website Address in Safari Is Enabled
+6.3.8 - Audit AutoFill
+6.3.9 - Audit Pop-up Windows
+6.3.10 - Ensure Show Status Bar Is Enabled
+6.4.1 - Ensure Secure Keyboard Entry Terminal.app Is Enabled

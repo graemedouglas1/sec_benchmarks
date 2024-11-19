@@ -1,0 +1,1375 @@
+---
+
+inspec_rules:
+  "1.2.1.1":
+    title: '1.2.1.1 | L1 Ensure Protection From Zone Elevation is set to Enabled Check groove.exe excel.exe mspub.exe powerpnt.exe pptview.exe  visio.exe winproj.exe outlook.exe spDesign.exe exprwd.exe msaccess.exe onent.exe mse7.exe'
+    section: 'IE Security'
+    description: |
+        Zone Elevation The recommended state for this setting is  Enabled . Check groove.exe, excel.exe, mspub.exe,
+        powerpnt.exe, pptview.exe, visio.exe, winproj.exe, outlook.exe, spDesign.exe, exprwd.exe, msaccess.exe, onent.exe,
+        mse7.exe
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . Computer
+        Configuration\Administrative Templates\Microsoft Office 2013 (Machine)\Security Settings\IE Security\Protection From
+        Zone Elevation Impact: Websites that rely on navigation to other higher privileged sites may not properly function. To
+        allow such websites to properly function, use Group Policy to add them to the Trusted sites zone. Note Enabling this
+        setting also disables JavaScript navigation if no security context is present.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_1.2.1.1', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\software\microsoft\internet explorer\main\featurecontrol\feature_zone_elevation'
+        - checks:
+            - rule: 'should have_property "excel.exe"'
+            - name: 'excel.exe'
+              rule: "should have_property_value('excel.exe', :dword, '1')"
+
+  "1.2.1.2":
+    title: '1.2.1.2 | L1 Ensure Mime Sniffing Safety Feature is set to Enabled Check groove.exe excel.exe mspub.exe powerpnt.exe pptview.exe visio.exe winproj.exe outlook.exe spDesign.exe exprwd.exe msaccess.exe onent.exe mse7.exe'
+    section: 'IE Security'
+    description: |
+        This policy setting determines whether Internet Explorer MIME sniffing prevents promotion of a file of one type to a
+        more dangerous file type. For example, it does not allow script to run from a file marked as text. For Office, this
+        setting is affects any webbased content that is accessed within Office. The recommended state for this setting is
+        Enabled .  Check groove.exe, excel.exe, mspub.exe, powerpnt.exe, pptview.exe, visio.exe, winproj.exe, outlook.exe,
+        spDesign.exe, exprwd.exe, msaccess.exe, onent.exe, mse7.exe
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . Computer
+        Configuration\Administrative Templates\Microsoft Office 2013 (Machine)\Security Settings\IE Security\Mime Sniffing
+        Safety Feature Impact: When set to Enabled, MIME sniffing will not promote a file of one type to a more dangerous file
+        type. If you disable this policy setting, MIME sniffing configures Internet Explorer processes to allow promotion of a
+        file from one type to a more dangerous file type. For example, a text file could be promoted to an executable file,
+        which is dangerous because any code in the supposed text file would be executed.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_1.2.1.2', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\software\microsoft\internet explorer\main\featurecontrol\feature_mime_sniffing'
+        - checks:
+            - rule: 'should have_property "excel.exe"'
+            - name: 'excel.exe'
+              rule: "should have_property_value('excel.exe', :dword, '1')"
+
+  "1.2.1.3":
+    title: '1.2.1.3 | L1 Ensure Information Bar is set to Enabled Check groove.exe excel.exe mspub.exe powerpnt.exe pptview.exe visio.exe winproj.exe outlook.exe spDesign.exe exprwd.exe msaccess.exe onent.exe mse7.exe'
+    section: 'IE Security'
+    description: |
+        This policy setting allows you to manage whether the Information Bar is displayed for Internet Explorer processes when
+        file or code installs are restricted. By default, the Information Bar is displayed for Internet Explorer processes. The
+        recommended state for this setting is  Enabled .  Check groove.exe, excel.exe, mspub.exe, powerpnt.exe, pptview.exe,
+        visio.exe, winproj.exe, outlook.exe, spDesign.exe, exprwd.exe, msaccess.exe, onent.exe, mse7.exe
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . Computer
+        Configuration\Administrative Templates\Microsoft Office 2013 (Machine)\Security Settings\IE Security\Information Bar
+        Impact: The security bar will be enabled for each of the specified applications.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_1.2.1.3', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\software\microsoft\internet explorer\main\featurecontrol\feature_securityband'
+        - checks:
+            - rule: 'should have_property "excel.exe"'
+            - name: 'excel.exe'
+              rule: "should have_property_value('excel.exe', :dword, '1')"
+
+  "1.2.1.4":
+    title: '1.2.1.4 | L1 Ensure Bind to Object is set to Enabled Check groove.exe excel.exe mspub.exe powerpnt.exe pptview.exe visio.exe winproj.exe outlook.exe spDesign.exe exprwd.exe msaccess.exe onent.exe mse7.exe'
+    section: 'IE Security'
+    description: |
+        This setting determines whether Microsoft Internet Explorer performs its typical safety checks on Microsoft ActiveXx00AE
+        controls when opening URLs that are passed to it by an Office application. By default, Internet Explorer performs
+        additional safety checks when ActiveX controls are initialized. Specifically, it prevents the control from being created
+        if the kill bit is set in the registry. It also checks the security settings for the zone of the URL in which the
+        control is instantiated to determine whether the control can be safely initialized. For the same behavior of the
+        selectable applications, such as Excel and Word when they instantiate the use of Internet Explorer, the policy must be
+        Enabled and the applications selected. The recommended state for this setting is  Enabled .  Check groove.exe,
+        excel.exe, mspub.exe, powerpnt.exe, pptview.exe, visio.exe, winproj.exe, outlook.exe, spDesign.exe, exprwd.exe,
+        msaccess.exe, onent.exe, mse7.exe
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . Computer
+        Configuration\Administrative Templates\Microsoft Office 2013 (Machine)\Security Settings\IE Security\Bind to Object
+        Impact: Enabling this setting can cause some disruptions for users who open Web pages that contain potentially dangerous
+        ActiveX controls from Office applications. However, because any affected controls are usually blocked by default when
+        Internet Explorer opens Web pages, most users should not experience significant usability issues.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_1.2.1.4', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\software\microsoft\internet explorer\main\featurecontrol\feature_safe_bindtoobject'
+        - checks:
+            - rule: 'should have_property "exprwd.exe"'
+            - name: 'exprwd.exe'
+              rule: "should have_property_value('exprwd.exe', :dword, '1')"
+
+  "1.2.1.5":
+    title: '1.2.1.5 | L1 Ensure Restrict File Download is set to Enabled  Check groove.exe excel.exe mspub.exe powerpnt.exe pptview.exe visio.exe winproj.exe outlook.exe spDesign.exe exprwd.exe msaccess.exe onent.exe mse7.exe'
+    section: 'IE Security'
+    description: |
+        Restrict File Download.T he recommended state for this setting is  Enabled .  Check groove.exe, excel.exe, mspub.exe,
+        powerpnt.exe, pptview.exe, visio.exe, winproj.exe, outlook.exe, spDesign.exe, exprwd.exe, msaccess.exe, onent.exe,
+        mse7.exe
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . Computer
+        Configuration\Administrative Templates\Microsoft Office 2013 (Machine)\Security Settings\IE Security\Restrict File
+        Download Impact: User initiated downloads can still occur so the majority of legitimate user download interactions
+        remain unaffected. Hiding website-initiated prompt messages makes it impossible for a malicious website to initiate a
+        download by itself. Such a site can no longer confuse a user into downloading a file that could then open on the user's
+        computer to execute an attack. However, some valid websites may initiate file downloads. If this setting is enabled,
+        users cannot view download prompts, and remain unaware when a download is available. If such sites reside in an
+        organization's intranet, they should display a link to prompt users to initiate valid downloads if the automatic
+        download process does not occur. This type of functionality is already in common use on many major internet sites and
+        should not confuse users. It is possible that some advanced users may expect their user preferences to control this
+        behavior, and for this reason, they may be confused when this preference is overridden by this setting.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_1.2.1.5', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\software\microsoft\internet explorer\main\featurecontrol\feature_restrict_filedownload'
+        - checks:
+            - rule: 'should have_property "excel.exe"'
+            - name: 'excel.exe'
+              rule: "should have_property_value('excel.exe', :dword, '1')"
+
+  "1.2.1.6":
+    title: '1.2.1.6 | L1 Ensure Saved from URL is set to Enabled  Check groove.exe excel.exe mspub.exe powerpnt.exe pptview.exe visio.exe winproj.exe outlook.exe spDesign.exe exprwd.exe msaccess.exe onent.exe mse7.exe'
+    section: 'IE Security'
+    description: |
+        This setting controls whether Internet Explorer evaluates URLs passed to it by Office applications for Mark of the Web
+        MOTW comments. The recommended state for this setting is  Enabled . Check groove.exe, excel.exe, mspub.exe,
+        powerpnt.exe, pptview.exe, visio.exe, winproj.exe, outlook.exe, spDesign.exe, exprwd.exe, msaccess.exe, onent.exe,
+        mse7.exe
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . Computer
+        Configuration\Administrative Templates\Microsoft Office 2013 (Machine)\Security Settings\IE Security\Saved from URL
+        Impact: Enabling this setting can cause some Web pages saved on UNC shares to run in a more restrictive security zone
+        when opened from Office applications than they would if the setting were disabled or not configured. However, a page
+        with a MOTW indicating it was saved from an Internet site is presumed to have been designed to run in the Internet zone
+        in the first place, so most users should not experience significant usability issues.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_1.2.1.6', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\software\microsoft\internet explorer\main\featurecontrol\feature_unc_savedfilecheck'
+        - checks:
+            - rule: 'should have_property "excel.exe"'
+            - name: 'excel.exe'
+              rule: "should have_property_value('excel.exe', :dword, '1')"
+
+  "1.2.1.7":
+    title: '1.2.1.7 | L1 Ensure Disable User Name and Password is set to Enabled  Check groove.exe excel.exe mspub.exe powerpnt.exe pptview.exe visio.exe winproj.exe outlook.exe spDesign.exe exprwd.exe msaccess.exe onent.exe mse7.exe'
+    section: 'IE Security'
+    description: |
+        This setting controls whether Internet Explorer opens URLs containing user information that are passed to it by an
+        Office application. The recommended state for this setting is  Enabled . Check groove.exe, excel.exe, mspub.exe,
+        powerpnt.exe, pptview.exe, visio.exe, winproj.exe, outlook.exe, spDesign.exe, exprwd.exe, msaccess.exe, onent.exe,
+        mse7.exe
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . Computer
+        Configuration\Administrative Templates\Microsoft Office 2013 (Machine)\Security Settings\IE Security\Disable User Name
+        and Password Impact: Enabling this setting can cause some disruptions for users who open URLs containing user
+        authentication information from Office applications. Because such URLs are blocked by default when Internet Explorer
+        opens Web pages through conventional means, however, most users should not experience significant usability issues.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_1.2.1.7', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\software\microsoft\internet explorer\main\featurecontrol\feature_http_username_password_disable'
+        - checks:
+            - rule: 'should have_property "excel.exe"'
+            - name: 'excel.exe'
+              rule: "should have_property_value('excel.exe', :dword, '1')"
+
+  "1.2.1.8":
+    title: '1.2.1.8 | L1 Ensure Scripted Window Security Restrictions is set to Enabled  Check groove.exe excel.exe mspub.exe powerpnt.exe pptview.exe visio.exe winproj.exe outlook.exe spDesign.exe exprwd.exe msaccess.exe onent.exe mse7.exe'
+    section: 'IE Security'
+    description: |
+        Window Restrictions. The recommended state for this setting is  Enabled . Check groove.exe, excel.exe, mspub.exe,
+        powerpnt.exe, pptview.exe, visio.exe, winproj.exe, outlook.exe, spDesign.exe, exprwd.exe, msaccess.exe, onent.exe,
+        mse7.exe
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . Computer
+        Configuration\Administrative Templates\Microsoft Office 2013 (Machine)\Security Settings\IE Security\Scripted Window
+        Security Restrictions Impact: It is unlikely that any valid applications would use such deceptive methods to accomplish
+        a task. For this reason, it is unlikely that organization may encounter any major limitations due to using this setting.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_1.2.1.8', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\software\microsoft\internet explorer\main\featurecontrol\feature_window_restrictions'
+        - checks:
+            - rule: 'should have_property "excel.exe"'
+            - name: 'excel.exe'
+              rule: "should have_property_value('excel.exe', :dword, '1')"
+
+  "1.2.1.9":
+    title: '1.2.1.9 | L1 Ensure Local Machine Zone Lockdown Security is set to Enabled  Check groove.exe excel.exe mspub.exe powerpnt.exe pptview.exe visio.exe winproj.exe outlook.exe spDesign.exe exprwd.exe msaccess.exe onent.exe mse7.exe'
+    section: 'IE Security'
+    description: |
+        When Internet Explorer opens a Web page, it places restrictions on what the page can do, based on the pages Internet
+        Explorer security zone. There are several possible security zones, each with different sets of restrictions. The
+        security zone for a page is determined by its location. For example, pages that are located on the Internet will
+        normally be in the more restrictive Internet security zone. They might not be allowed to perform some operations, such
+        as accessing the local hard drive. Pages that are located on your corporate network would normally be in the Intranet
+        security zone, and have fewer restrictions.  This setting allows you to configure policy settings in the zone consistent
+        with a selected security level, for example, Low, Medium Low, Medium, or High. The recommended state for this setting is
+        Enabled . Check groove.exe, excel.exe, mspub.exe, powerpnt.exe, pptview.exe, visio.exe, winproj.exe, outlook.exe,
+        spDesign.exe, exprwd.exe, msaccess.exe, onent.exe, mse7.exe
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . Computer
+        Configuration\Administrative Templates\Microsoft Office 2013 (Machine)\Security Settings\IE Security\Local Machine Zone
+        Lockdown Security Impact: If you enable this policy setting, the Local Machine zone security applies to all local files
+        and content processed by the specified applications. If you disable or do not configure this policy setting, Local
+        Machine zone security is not applied to local files or content processed by the specified applications.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_1.2.1.9', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\software\microsoft\internet explorer\main\featurecontrol\feature_localmachine_lockdown'
+        - checks:
+            - rule: 'should have_property "excel.exe"'
+            - name: 'excel.exe'
+              rule: "should have_property_value('excel.exe', :dword, '1')"
+
+  "1.2.1.10":
+    title: '1.2.1.10 | L1 Ensure Object Caching Protection is set to Enabled  Check groove.exe excel.exe mspub.exe powerpnt.exe pptview.exe visio.exe winproj.exe outlook.exe spDesign.exe exprwd.exe msaccess.exe onent.exe mse7.exe'
+    section: 'IE Security'
+    description: |
+        This policy setting defines whether a reference to an object is accessible when the user navigates within the same
+        domain or to a new domain. For Office, this applies to URL accessed within Office applications. By default in Internet
+        Explorer, a reference to an object is no longer accessible when the user browses to a new domain. There is a new
+        security context for all scriptable objects so that access to all cached objects is blocked. Additionally, access is
+        blocked when browsing within the same domain fully qualified domain name. A reference to an object is no longer
+        accessible after the context has changed due to navigation. The recommended state for this setting is  Enabled . Check
+        groove.exe, excel.exe, mspub.exe, powerpnt.exe, pptview.exe, visio.exe, winproj.exe, outlook.exe, spDesign.exe,
+        exprwd.exe, msaccess.exe, onent.exe, mse7.exe
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . Computer
+        Configuration\Administrative Templates\Microsoft Office 2013 (Machine)\Security Settings\IE Security\Object Caching
+        Protection Impact: If you enable this policy setting, object reference is no longer accessible when navigating within or
+        across domains for each specified application. If you disable or do not configure this policy setting, object reference
+        is retained when navigating within or across domains in the Restricted Zone sites.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_1.2.1.10', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\software\microsoft\internet explorer\main\featurecontrol\feature_object_caching'
+        - checks:
+            - rule: 'should have_property "excel.exe"'
+            - name: 'excel.exe'
+              rule: "should have_property_value('excel.exe', :dword, '1')"
+
+  "1.2.1.11":
+    title: '1.2.1.11 | L1 Ensure Consistent Mime Handling is set to Enabled  Check groove.exe excel.exe mspub.exe powerpnt.exe pptview.exe visio.exe winproj.exe outlook.exe spDesign.exe exprwd.exe msaccess.exe onent.exe mse7.exe'
+    section: 'IE Security'
+    description: |
+        Internet Explorer uses Multipurpose Internet Mail Extensions MIME data to determine file handling procedures for files
+        received through a Web server. This policy setting determines whether Internet Explorer requires that all filetype
+        information provided by Web servers be consistent. For example, if the MIME type of a file is text/plain but the MIME
+        data indicates that the file is really an executable file, Internet Explorer changes its extension to reflect this
+        executable status. This capability helps ensure that executable code cannot masquerade as other types of data that may
+        be trusted. The recommended state for this setting is  Enabled . Check groove.exe, excel.exe, mspub.exe, powerpnt.exe,
+        pptview.exe, visio.exe, winproj.exe, outlook.exe, spDesign.exe, exprwd.exe, msaccess.exe, onent.exe, mse7.exe
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . Computer
+        Configuration\Administrative Templates\Microsoft Office 2013 (Machine)\Security Settings\IE Security\Consistent Mime
+        Handling Impact: Internet Explorer use both the extension of the filename and the MIME information to decide how to
+        handle a file. Enabling this setting requires that information in the MIME header matches the file extension provided.
+        Since mismatched files will be blocked by enabling this setting, you should insure that any web server under your
+        control is set up correctly.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_1.2.1.11', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\software\microsoft\internet explorer\main\featurecontrol\feature_mime_handling'
+        - checks:
+            - rule: 'should have_property "excel.exe"'
+            - name: 'excel.exe'
+              rule: "should have_property_value('excel.exe', :dword, '1')"
+
+  "1.2.1.12":
+    title: '1.2.1.12 | L1 Ensure Add-on Management is set to Enabled  Check groove.exe excel.exe mspub.exe powerpnt.exe pptview.exe visio.exe winproj.exe outlook.exe spDesign.exe exprwd.exe msaccess.exe onent.exe mse7.exe'
+    section: 'IE Security'
+    description: |
+        Addon Management. The recommended state for this setting is  Enabled . Check groove.exe, excel.exe, mspub.exe,
+        powerpnt.exe, pptview.exe, visio.exe, winproj.exe, outlook.exe, spDesign.exe, exprwd.exe, msaccess.exe, onent.exe,
+        mse7.exe
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . Computer
+        Configuration\Administrative Templates\Microsoft Office 2013 (Machine)\Security Settings\IE Security\Add-on Management
+        Impact: Some legitimate programs, including ones from Microsoft, use add-ons to display documents, audio, and video in
+        Internet Explorer. The organization's Group Policy should incorporate approved, commonly-used add-ons to avoid limiting
+        important user functionality.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_1.2.1.12', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\software\microsoft\internet explorer\main\featurecontrol\feature_addon_management'
+        - checks:
+            - rule: 'should have_property "excel.exe"'
+            - name: 'excel.exe'
+              rule: "should have_property_value('excel.exe', :dword, '1')"
+
+  "1.2.1.13":
+    title: '1.2.1.13 | L1 Ensure Navigate URL is set to Enabled  Check groove.exe excel.exe mspub.exe powerpnt.exe pptview.exe visio.exe winproj.exe outlook.exe spDesign.exe exprwd.exe msaccess.exe onent.exe mse7.exe'
+    section: 'IE Security'
+    description: |
+        This setting controls whether Internet Explorer attempts to load malformed URLs that are passed to it from Office
+        applications. The recommended state for this setting is  Enabled . Check groove.exe, excel.exe, mspub.exe, powerpnt.exe,
+        pptview.exe, visio.exe, winproj.exe, outlook.exe, spDesign.exe, exprwd.exe, msaccess.exe, onent.exe, mse7.exe
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . Computer
+        Configuration\Administrative Templates\Microsoft Office 2013 (Machine)\Security Settings\IE Security\Navigate URL
+        Impact: Enabling this setting does not block any legitimate URLs, and is therefore unlikely to cause usability issues
+        for any Office users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_1.2.1.13', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\software\microsoft\internet explorer\main\featurecontrol\feature_validate_navigate_url'
+        - checks:
+            - rule: 'should have_property "excel.exe"'
+            - name: 'excel.exe'
+              rule: "should have_property_value('excel.exe', :dword, '1')"
+
+  "1.2.1.14":
+    title: '1.2.1.14 | L1 Ensure Restrict ActiveX Install is set to Enabled  Check groove.exe excel.exe mspub.exe powerpnt.exe pptview.exe visio.exe winproj.exe outlook.exe spDesign.exe exprwd.exe msaccess.exe onent.exe mse7.exe'
+    section: 'IE Security'
+    description: |
+        Restrict ActiveX Install. The recommended state for this setting is  Enabled . Check groove.exe, excel.exe, mspub.exe,
+        powerpnt.exe, pptview.exe, visio.exe, winproj.exe, outlook.exe, spDesign.exe, exprwd.exe, msaccess.exe, onent.exe,
+        mse7.exe
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . Computer
+        Configuration\Administrative Templates\Microsoft Office 2013 (Machine)\Security Settings\IE Security\Restrict ActiveX
+        Install Impact: Microsoft ActiveX controls allow unmanaged, unprotected code to run on the user computers. ActiveX
+        controls do not run within a protected container in the browser like other types of HTML or Microsoft Silverlight-based
+        controls. Disabling or not configuring this setting does not block prompts for ActiveX control installations and these
+        prompts display to users. This could allow malicious code to become active on user computers or the network.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_1.2.1.14', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\software\microsoft\internet explorer\main\featurecontrol\feature_restrict_activexinstall'
+        - checks:
+            - rule: 'should have_property "excel.exe"'
+            - name: 'excel.exe'
+              rule: "should have_property_value('excel.exe', :dword, '1')"
+
+  "1.3.1":
+    title: '1.3.1 | L1 Ensure Enable Automatic Updates is set to Enabled'
+    section: 'Updates'
+    description: |
+        This policy setting controls whether the Office automatic updates are enabled or disabled for all Office products
+        installed by using ClicktoRun. This policy has no effect on Office products installed via Windows Installer. The
+        recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . Computer
+        Configuration\Administrative Templates\Microsoft Office 2013 (Machine)\Updates\Enable Automatic Updates Impact: Office
+        updates for Click-to-Run installations of Microsoft Office are applied in the background and have no adverse affect on
+        users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_1.3.1', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\software\policies\microsoft\office\15.0\common\officeupdate'
+        - checks:
+            - rule: 'should have_property "enableautomaticupdates"'
+            - name: 'enableautomaticupdates'
+              rule: "should have_property_value('enableautomaticupdates', :dword, '')"
+
+  "1.3.2":
+    title: '1.3.2 | L1 Ensure Hide Option to Enable or Disable Updates is set to Enabled'
+    section: 'Updates'
+    description: |
+        This policy setting allows you to hide the user interface UI options to enable or disable Office automatic updates from
+        users. These options are found in the Product Information area of all Office applications installed via ClicktoRun. This
+        policy setting has no effect on Office applications installed via Windows Installer. The recommended state for this
+        setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . Computer
+        Configuration\Administrative Templates\Microsoft Office 2013 (Machine)\Updates\Hide Option to Enable or Disable Updates
+        Impact: Office updates for Click-to-Run installations of Microsoft Office are applied in the background and have no
+        adverse affect on users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_1.3.2', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\software\policies\microsoft\office\15.0\common\officeupdate'
+        - checks:
+            - rule: 'should have_property "hideenabledisableupdates"'
+            - name: 'hideenabledisableupdates'
+              rule: "should have_property_value('hideenabledisableupdates', :dword, '')"
+
+  "2.7.1":
+    title: '2.7.1 | L1 Ensure  Document Information Panel Beaconing UI is set to Enabled Always show UI'
+    section: 'Document Information Panel'
+    description: |
+        This policy setting controls whether users see a security warning when they open custom Document Information Panels that
+        contain a Web beaconing threat. InfoPath can be used to create custom Document Information Panels that can be attached
+        to Excel workbooks, PowerPoint presentations, and Word documents.  The recommended state for this setting is  Enabled .
+        Always show UI
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Document Information Pane\Document Information Panel
+        Beaconing UI Impact: Enabling this setting and selecting "Always show UI" from the drop-down menu can cause some
+        disruptions for users who often open documents containing custom Document Information Panels.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.7.1', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Dd]ocumentinformationpanel'
+        - checks:
+            - rule: 'should have_property "beaconing"'
+            - name: 'beaconing'
+              rule: "should have_property_value('beaconing', :dword, '')"
+
+  "2.11.1.2":
+    title: '2.11.1.2 | L1 Ensure Disable UI Extending from Documents and Templates is set to Enabled Disallow in Access Excel InfoPath Outlook PowerPoint Publisher Word'
+    section: 'Customize'
+    description: |
+        This policy setting controls whether Office applications load any custom user interface UI code included with a document
+        or template. Office allows developers to extend the UI with customization code that is included in a document or
+        template.  The recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Global Options\Customize\Disable UI Extending from
+        Documents and Templates Impact: Enabling this setting will prevent developers from using documents and templates to
+        extend the UI, which some organizations do to increase user productivity. If your organization makes use of a modified
+        UI, it might not be feasible for you to enable this setting. Sometimes only specific teams in an organization require a
+        modified UI, and this setting could be enabled for the rest of the organization.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.11.1.2', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Tt]oolbars\\[Aa]ccess'
+        - checks:
+            - rule: 'should have_property "noextensibilitycustomizationfromdocument"'
+            - name: 'noextensibilitycustomizationfromdocument'
+              rule: "should have_property_value('noextensibilitycustomizationfromdocument', :dword, '1')"
+
+  "2.17.1":
+    title: '2.17.1 | L1 Ensure Prevent Users From Changing Permissions on Rights Managed Content is set to Disabled'
+    section: 'Manage Restricted Permissions'
+    description: |
+        This policy setting controls whether Office users can change permissions for content that is protected with Information
+        Rights Management IRM.  The Information Rights Management feature of Office allows individuals and administrators to
+        specify access permissions to Word documents, Excel workbooks, PowerPoint presentations, InfoPath templates and forms,
+        and Outlook email messages. This functionality helps prevent sensitive information from being printed, forwarded, or
+        copied by unauthorized people.  The recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Manage Restricted Permissions\Prevent Users From Changing
+        Permissions on Rights Managed Content Impact: Disabling this setting enforces the Office default configuration, and is
+        therefore unlikely to cause significant usability issues for most users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.17.1', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Dd]rm'
+        - checks:
+            - rule: 'should have_property "disablecreation"'
+            - name: 'disablecreation'
+              rule: "should have_property_value('disablecreation', :dword, '')"
+
+  "2.17.2":
+    title: '2.17.2 | L1 Ensure Never Allow Users to Specify Groups When Restricting Permission for Documents is set to Enabled'
+    section: 'Manage Restricted Permissions'
+    description: |
+        This policy setting controls whether Office users can assign permissions to distribution lists when using Information
+        Rights Management.  The recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Manage Restricted Permissions\Never Allow Users to Specify
+        Groups When Restricting Permission for Documents Impact: Enabling this setting could cause some disruptions for Office
+        users who are accustomed to specifying distribution groups when defining permissions for a document. These users will
+        have to list users individually in the Permission dialog box to assign them permission to read or modify the document.
+        Users who do not use Information Rights Management will not be affected by this setting.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.17.2', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Dd]rm'
+        - checks:
+            - rule: 'should have_property "neverallowdls"'
+            - name: 'neverallowdls'
+              rule: "should have_property_value('neverallowdls', :dword, '')"
+
+  "2.17.3":
+    title: '2.17.3 | L1 Ensure Always Require Users to Connect to Verify Permission is set to Enabled'
+    section: 'Manage Restricted Permissions'
+    description: |
+        This policy setting controls whether users are required to connect to the Internet or a local network to have their
+        licenses confirmed every time they attempt to open Excel workbooks, InfoPath forms or templates, Outlook email messages,
+        PowerPoint presentations, or Word documents that are protected by Information Rights Management IRM. This policy is
+        useful if you want to log the usage of files with restricted permissions on the server. The recommended state for this
+        setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Manage Restricted Permissions\Always Require Users to
+        Connect to Verify Permission Impact: Enabling this setting could create problems for users who need to open rights-
+        managed files when they are not connected to the Internet, such as mobile users. Consider surveying your organization to
+        determine users' need for offline use of rights-managed files before enabling this setting.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.17.3', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Dd]rm'
+        - checks:
+            - rule: 'should have_property "requireconnection"'
+            - name: 'requireconnection'
+              rule: "should have_property_value('requireconnection', :dword, '')"
+
+  "2.17.4":
+    title: '2.17.4 | L1 Ensure Always Expand Groups in Office When Restricting Permission for Documents is set to Enabled'
+    section: 'Manage Restricted Permissions'
+    description: |
+        This policy setting controls whether group names automatically expand to display all the members of the group when
+        selected in the Permissions dialog box.  The recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Manage Restricted Permissions\Always Expand Groups in
+        Office When Restricting Permission for Documents Impact: Enabling this setting changes the way the Permissions dialog
+        box displays names, but should not create significant usability issues for most users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.17.4', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Dd]rm\\[Aa]utoexpanddls'
+        - checks:
+            - rule: 'should have_property "autoexpanddlsenable"'
+            - name: 'autoexpanddlsenable'
+              rule: "should have_property_value('autoexpanddlsenable', :dword, '')"
+
+  "2.17.5":
+    title: '2.17.5 | L1 Ensure Allow Users With Earlier Versions of Office to Read with Browsers.... is set to Disabled'
+    section: 'Manage Restricted Permissions'
+    description: |
+        This policy setting will allow users with earlier versions of Office to read documents with browsers supporting
+        Information Rights Management. The recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Manage Restricted Permissions\Allow Users With Earlier
+        Versions of Office to Read with Browsers.... Impact: Disabling this setting enforces the default configuration, and is
+        therefore unlikely to cause significant usability issues for most users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.17.5', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Dd]rm'
+        - checks:
+            - rule: 'should have_property "includehtml"'
+            - name: 'includehtml'
+              rule: "should have_property_value('includehtml', :dword, '')"
+
+  "2.21.2":
+    title: '2.21.2 | L1 Ensure Control Blogging is set to Enabled All Blogging Disabled'
+    section: 'Miscellaneous'
+    description: |
+        This policy setting controls whether users can compose and post blog entries from Word. The recommended state for this
+        setting is  Enabled .  All Blogging Disabled
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Miscellaneous\Control Blogging Impact: Disabling the
+        blogging feature in Word may cause disruptions for users who use Word to compose and post blog entries. Any users who
+        have a legitimate need to post blog entries will have to use another tool.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.21.2', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\[Cc]ommon\\[Bb]log'
+        - checks:
+            - rule: 'should have_property "disableblog"'
+            - name: 'disableblog'
+              rule: "should have_property_value('disableblog', :dword, '')"
+
+  "2.21.3":
+    title: '2.21.3 | L1 Ensure Block Signing into Office is set to Enabled None allowed'
+    section: 'Miscellaneous'
+    description: |
+        This policy setting controls whether users can provide credentials to Office using either their Microsoft Account or the
+        user ID assigned by your organization for accessing Office 365. The recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Miscellaneous\Block Signing into Office Impact: Users will
+        not be unable to connect to cloud services (such as SharePoint services in Office 365) and access the files and services
+        provided by the cloud services.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.21.3', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Ss]ignin'
+        - checks:
+            - rule: 'should have_property "signinoptions"'
+            - name: 'signinoptions'
+              rule: "should have_property_value('signinoptions', :dword, '')"
+
+  "2.22.1":
+    title: '2.22.1 | L1 Ensure Block Opening of Pre-Release Versions of File Formats New to PowerPoint Through the Compatibility Pack for Office and PowerPoint Converter is set to Enabled'
+    section: 'Office Converters'
+    description: |
+        This policy setting controls whether users with the Microsoft Office Compatibility Pack for Word, Excel, and PowerPoint
+        File Formats installed can open Office Open XML files saved with prerelease versions of PowerPoint. PowerPoint Open XML
+        files usually have the following extensions .pptx, .pptm, .potx, .potm, .ppsx, .ppsm, .ppam, .thmx, .xml. The
+        recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Office 2013 Converters\Block Opening of Pre-Release
+        Versions of File Formats New to PowerPoint 2013 Through the Compatibility Pack for Office 2013 and PowerPoint 2013
+        Converter Impact: Enabling this setting enforces the default configuration, and is therefore unlikely to cause usability
+        issues for most users. Note See Plan block file format settings in the Office Resource Kit for more information about
+        using Group Policy to manage and enforce file format requirements. Also, see the "File Block Technology" section in
+        Chapter 4 of the Microsoft Office Security Guide for information about the Microsoft Office Isolated Conversion
+        Environment (MOICE), which provides another method.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.22.1', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Pp]owerpoint\\[Ss]ecurity\\[Ff]ileblock'
+        - checks:
+            - rule: 'should have_property "powerpoint12betafilesfromconverters"'
+            - name: 'powerpoint12betafilesfromconverters'
+              rule: "should have_property_value('powerpoint12betafilesfromconverters', :dword, '')"
+
+  "2.22.2":
+    title: '2.22.2 | L1 Ensure Block Opening of Pre-release Versions of File Formats New to Excel Through The Compatibility Pack for Office and Excel Converter is set to Enabled'
+    section: 'Office Converters'
+    description: |
+        This policy setting controls whether users with the Microsoft Office Compatibility Pack for Word, Excel, and PowerPoint
+        File Formats installed can open Office Open XML files saved with prerelease versions of Excel. Excel Open XML files
+        usually have the following extensions .xlsx, .xlsm, .xltx, .xltm, .xlam.  The recommended state for this setting is
+        Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Office 2013 Converters\Block Opening of Pre-release
+        Versions of File Formats New to Excel 2013 Through The Compatibility Pack for Office 2013 and Excel 2013 Converter
+        Impact: Enabling this setting enforces the default configuration, and is therefore unlikely to cause usability issues
+        for most users. Note See Plan block file format settings in the Office Resource Kit for more information about using
+        Group Policy to manage and enforce file format requirements. Also, see the "File Block Technology" section in Chapter 4
+        of the Microsoft Office Security Guide for information about the Microsoft Office Isolated Conversion Environment
+        (MOICE), which provides another method.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.22.2', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity\\[Ff]ileblock'
+        - checks:
+            - rule: 'should have_property "excel12betafilesfromconverters"'
+            - name: 'excel12betafilesfromconverters'
+              rule: "should have_property_value('excel12betafilesfromconverters', :dword, '')"
+
+  "2.24.1.1":
+    title: '2.24.1.1 | L1 Ensure Disable Opt-in Wizard on First Run is set to Enabled'
+    section: 'Trust Center'
+    description: |
+        This policy setting controls whether users see the Optin Wizard the first time they run a Microsoft Office application.
+        The recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Privacy\Trust Center\Disable Opt-in Wizard on First Run
+        Impact: Enabling this setting will prevent users from opting in to the services listed above. This can prevent users
+        from receiving the latest program updates, security fixes, and Help content. If you enable this setting, consider
+        ensuring that such updates are made available to users through alternate means.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.24.1.1', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Gg]eneral'
+        - checks:
+            - rule: 'should have_property "shownfirstrunoptin"'
+            - name: 'shownfirstrunoptin'
+              rule: "should have_property_value('shownfirstrunoptin', :dword, '')"
+
+  "2.24.1.2":
+    title: '2.24.1.2 | L1 Ensure Enable Customer Experience Improvement Program is set to Disabled'
+    section: 'Trust Center'
+    description: |
+        This policy setting controls whether users can participate in the Microsoft Office Customer Experience Improvement
+        Program to help improve Microsoft Office. When users choose to participate in the Customer Experience Improvement
+        Program CEIP, Office applications automatically send information to Microsoft about how the applications are used. This
+        information is combined with other CEIP data to help Microsoft solve problems and to improve the products and features
+        customers use most often. This feature does not collect users names, addresses, or any other identifying information
+        except the IP address that is used to send the data.  The recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Privacy\Trust Center\Enable Customer Experience Improvement
+        Program  Impact: The Customer Experience Improvement Program sends data to Microsoft silently and without affecting
+        application usage, so choosing Disabled will not cause usability issues for Office users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.24.1.2', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon'
+        - checks:
+            - rule: 'should have_property "qmenable"'
+            - name: 'qmenable'
+              rule: "should have_property_value('qmenable', :dword, '')"
+
+  "2.24.1.3":
+    title: '2.24.1.3 | L1 Ensure Allow including screenshot with Office Feedback is set to Disabled'
+    section: 'Trust Center'
+    description: |
+        This policy setting manages whether the Office Feedback Tool a.k.a. Send a Smile allows the user to send a screenshot of
+        their desktop with their feedback to Microsoft. The Office Feedback Tool allows users to provide Microsoft feedback
+        regarding their positive and negative experiences when using Office. The recommended state for this setting is  Disabled
+        .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Privacy\Trust Center\Allow including screenshot with Office
+        Feedback Impact: If you disable this policy setting, the Office Feedback Tool will not allow the user to send a
+        screenshot of their desktop with their feedback to Microsoft.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.24.1.3', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Ff]eedback'
+        - checks:
+            - rule: 'should have_property "includescreenshot"'
+            - name: 'includescreenshot'
+              rule: "should have_property_value('includescreenshot', :dword, '')"
+
+  "2.24.1.4":
+    title: '2.24.1.4 | L1 Ensure Send Office Feedback is set to Disabled'
+    section: 'Trust Center'
+    description: |
+        This policy setting manages the Office Feedback Tool a.k.a. Send a Smile. The Office Feedback Tool allows users to
+        provide Microsoft feedback regarding their positive and negative experiences when using Office. The recommended state
+        for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Privacy\Trust Center\Send Office Feedback Impact: If you
+        disable this policy setting, the Office Feedback Tool will be turned off. Users will not see the Smile button in any of
+        the Office applications in which the tool is available.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.24.1.4', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Ff]eedback'
+        - checks:
+            - rule: 'should have_property "enabled"'
+            - name: 'enabled'
+              rule: "should have_property_value('enabled', :dword, '')"
+
+  "2.24.1.5":
+    title: '2.24.1.5 | L1 Ensure Set Automatically Receive Small Updates to Improve Reliability is set to Disabled'
+    section: 'Trust Center'
+    description: |
+        This policy setting controls whether Microsoft Office Diagnostics is enabled. Office Diagnostics enables Microsoft to
+        diagnose system problems by periodically downloading a small file to the computer.  If you enable this policy setting,
+        Office Diagnostics collects information about specific errors and the IP address of the computer. Office Diagnostics
+        does not transmit any personally identifiable information to Microsoft other than the IP address of the computer
+        requesting the update.  If you disable this policy setting, users will not receive updates from Office Diagnostics.  If
+        you do not configure this policy setting, this policy setting is not enabled, but users have the opportunity to opt into
+        receiving updates from Office Diagnostics the first time they run an Office application. The recommended state for this
+        setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Privacy\Trust Center\Automatically Receive Small Updates to
+        Improve Reliability Impact: Disabling this setting will prevent users from receiving information and advice from
+        Microsoft about fixing and preventing Office application errors, which could cause your support department to experience
+        an increase in desktop support requests.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.24.1.5', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon'
+        - checks:
+            - rule: 'should have_property "updatereliabilitydata"'
+            - name: 'updatereliabilitydata'
+              rule: "should have_property_value('updatereliabilitydata', :dword, '')"
+
+  "2.25.3.3":
+    title: '2.25.3.3 | L1 Ensure Allow Mix of Policy and User Locations is set to Disabled'
+    section: 'Trust Center'
+    description: |
+        This policy setting controls whether trusted locations can be defined by users, the Office Customization Tool OCT, and
+        Group Policy, or if they must be defined by Group Policy alone. The recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Security Settings\Trust Center\Allow Mix of Policy and User
+        Locations Impact: Disabling this setting will cause some disruption for users who have defined their own trusted
+        locations in the Trust Center. Applications will treat such locations like any other untrusted locations, which means
+        that users will see Message Bar warnings about active content such as ActiveX controls and VBA macros when they open
+        files, and they will have to choose whether to enable controls and macros or leave them disabled.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.25.3.3', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Ss]ecurity\\[Tt]rusted [Ll]ocations'
+        - checks:
+            - rule: 'should have_property "allow user locations"'
+            - name: 'allow user locations'
+              rule: "should have_property_value('allow user locations', :dword, '')"
+
+  "2.25.4":
+    title: '2.25.4 | L1 Ensure Suppress Hyperlink Warnings is set to Disabled'
+    section: 'Security Settings'
+    description: |
+        This policy setting controls whether Office applications notify users about unsafe hyperlinks. Links that Office
+        considers unsafe include links to executable files, TIFF files, and Microsoft Document Imaging MDI files. Other unsafe
+        links are those that use protocols considered to be unsafe such as javascript.  The recommended state for this setting
+        is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Security Settings\Suppress Hyperlink Warnings Impact: This
+        setting does not alter the default configuration and therefore is unlikely to provide any usability concerns.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.25.4', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "disablehyperlinkwarning"'
+            - name: 'disablehyperlinkwarning'
+              rule: "should have_property_value('disablehyperlinkwarning', :dword, '')"
+
+  "2.25.5":
+    title: '2.25.5 | L1 Ensure Protect Document Metadata for Rights Managed Office Open XML Files is set to Enabled'
+    section: 'Security Settings'
+    description: |
+        This policy setting determines whether metadata is encrypted in Office Open XML files that are protected by Information
+        Rights Management IRM.  The recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Security Settings\Protect Document Metadata for Rights
+        Managed Office Open XML Files Impact: Enabling this setting might interfere with the functioning of tools that aggregate
+        and display metadata information for Office Open XML files, but is otherwise unlikely to cause significant usability
+        issues.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.25.5', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "drmencryptproperty"'
+            - name: 'drmencryptproperty'
+              rule: "should have_property_value('drmencryptproperty', :dword, '')"
+
+  "2.25.6":
+    title: '2.25.6 | L1 Ensure Protect Document Metadata for Password Protected Files is set to Enabled'
+    section: 'Security Settings'
+    description: |
+        This policy setting determines whether metadata is encrypted when an Office Open XML file is password protected. The
+        recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Security Settings\Protect Document Metadata for Password
+        Protected Files Impact: Enabling this setting might interfere with the functioning of tools that aggregate and display
+        metadata information for Office Open XML files, but is otherwise unlikely to cause significant usability issues.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.25.6', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "openxmlencryptproperty"'
+            - name: 'openxmlencryptproperty'
+              rule: "should have_property_value('openxmlencryptproperty', :dword, '')"
+
+  "2.25.7":
+    title: '2.25.7 | L1 Ensure Load Controls in Forms3 is set to Disabled'
+    section: 'Security Settings'
+    description: |
+        This policy setting allows you to control how ActiveX controls in UserForms should be initialized based upon whether
+        they are Safe For Initialization SFI or Unsafefor Initialization UFI.  The recommended state for this setting is
+        Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Security Settings\Load Controls in Forms3 Impact: Enabling
+        this setting and selecting "2" enforces the default configuration and is therefore unlikely to cause usability issues
+        for most users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.25.7', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Kk]eycupoliciesmsvbasecurity'
+        - checks:
+            - rule: 'should_not have_property "loadcontrolsinforms"'
+
+  "2.25.8":
+    title: '2.25.8 | L1 Ensure Encryption Type for Password Protected Office Open XML Files is set to Enabled'
+    section: 'Security Settings'
+    description: |
+        This policy setting allows you to specify an encryption type for Office Open XML files. The recommended state for this
+        setting is  En abled
+                           .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Security Settings\Encryption Type for Password Protected
+        Office Open XML Files Impact: Consider the needs of your organization and users when selecting an encryption method to
+        enforce. If you work for a government agency, contract for a government agency, or otherwise work with very sensitive
+        information, you might need to select a method that complies with policies that govern how such information is
+        processed. Remember, you will need to ensure that the selected cryptographic service provider is installed on the
+        computers of all users who need to work with password-protected Office Open XML files.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.25.8', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "openxmlencryption"'
+            - name: 'openxmlencryption'
+              rule: "should have_property_value('openxmlencryption', :dword, '')"
+
+  "2.25.9":
+    title: '2.25.9 | L1 Ensure Encryption Type for Password Protected Office 97-2003 files is set to Enabled'
+    section: 'Security Settings'
+    description: |
+        This policy setting enables you to specify an encryption type for passwordprotected Office 972003 files. The recommended
+        state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Security Settings\Encryption Type for Password Protected
+        Office 97-2003 files Impact: Consider the needs of your organization and users when selecting an encryption method to
+        enforce. If you work for a government agency, contract for a government agency, or otherwise work with very sensitive
+        information, you might need to select a method that complies with policies that govern how such information is
+        processed. Remember that you will need to ensure that the selected cryptographic service provider is installed on the
+        computers of all users who need to work with password-protected Office 97-2003 files.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.25.9', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "defaultencryption12"'
+            - name: 'defaultencryption12'
+              rule: "should have_property_value('defaultencryption12', :dword, '')"
+
+  "2.25.10":
+    title: '2.25.10 | L1 Ensure Disable Password to Open UI is set to Disabled'
+    section: 'Security Settings'
+    description: |
+        This policy setting controls whether Office users can add password encryption to documents. Users would access this
+        feature in Microsoft Office tabclick Info, click Protect Document, then click Encrypt with Password. The recommended
+        state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Security Settings\Disable Password to Open UI Impact: The
+        recommended settings enforce the default configuration, and therefore will not affect usability. Typically, this setting
+        should not be enabled, because doing so will prevent users from adding passwords to Office files. However, if you wish
+        to ensure that only other mechanisms are used to secure files, you might consider enabling this setting.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.25.10', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "disablepasswordui"'
+            - name: 'disablepasswordui'
+              rule: "should have_property_value('disablepasswordui', :dword, '')"
+
+  "2.25.11":
+    title: '2.25.11 | L1 Ensure Disable All Trust Bar Notifications For Security Issues is set to Disabled'
+    section: 'Security Settings'
+    description: |
+        This policy setting controls whether Office applications notify users when potentially unsafe features or content are
+        detected, or whether such features or content are silently disabled without notification.  recommended state for this
+        setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Security Settings\Disable All Trust Bar Notifications For
+        Security Issues Impact: This setting does not modify the default configuration, and therefore is unlikely to cause any
+        usability issues.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.25.11', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Tt]rustcenter'
+        - checks:
+            - rule: 'should have_property "trustbar"'
+            - name: 'trustbar'
+              rule: "should have_property_value('trustbar', :dword, '')"
+
+  "2.25.12":
+    title: '2.25.12 | L1 Ensure Automation Security is set to Enabled Disable Macros by Default'
+    section: 'Security Settings'
+    description: |
+        This policy setting controls whether macros can run in an Office application that is opened programmatically by another
+        application.  The recommended state for this setting is  Enabled .  Disable Macros by Default
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Security Settings\Automation Security Impact: Enabling this
+        setting and selecting "Disable macros by default" from the drop-down menu could limit functionality if an external
+        application programmatically opens a Office application to open a document or template containing macros.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.25.12', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\[Cc]ommon\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "automationsecurity"'
+            - name: 'automationsecurity'
+              rule: "should have_property_value('automationsecurity', :dword, '')"
+
+  "2.25.13":
+    title: '2.25.13 | L1 Ensure ActiveX Control Initialization is set to Disabled'
+    section: 'Security Settings'
+    description: |
+        This policy setting specifies the Microsoft ActiveXx00AE initialization security level for all Microsoft Office
+        applications. The recommended state for this setting is  Disabled
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Security Settings\ActiveX Control Initialization Impact:
+        This setting only increases security for ActiveX controls that are accurately marked as SFI. In situations that involve
+        malicious or poorly designed code, an ActiveX control might be inaccurately marked as SFI. Important Some ActiveX
+        controls do not respect the safe mode registry setting, and therefore might load persisted data even though you
+        configure this setting to instruct the control to use safe mode.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.25.13', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\[Cc]ommon\\[Ss]ecurity'
+        - checks:
+            - rule: 'should_not have_property "uficontrols"'
+
+  "2.26.2":
+    title: '2.26.2 | L1 Ensure Disable The Office Client From Polling The SharePoint Server For Published Links is set to Enabled'
+    section: 'Server Settings'
+    description: |
+        This policy setting controls whether Office applications can poll Office servers to retrieve lists of published links.
+        Note  This policy setting applies to Microsoft SharePoint Server specifically. It does not apply to Microsoft SharePoint
+        Foundation.  The recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Server Settings\Disable The Office Client From Polling The
+        SharePoint Server For Published Links Impact: If this setting is Enabled, users will not be able to use the list of
+        published links to open and save files directly from within Office applications, which could hinder the use of
+        SharePoint Server for document collaboration. Note This setting applies to Microsoft Office SharePoint Server
+        specifically. It does not apply to Windows SharePoint Services (WSS).
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.26.2', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Pp]ortal'
+        - checks:
+            - rule: 'should have_property "linkpublishingdisabled"'
+            - name: 'linkpublishingdisabled'
+              rule: "should have_property_value('linkpublishingdisabled', :dword, '')"
+
+  "2.27.1.1":
+    title: '2.27.1.1 | L1 Ensure Disable Internet Fax Feature is set to Enabled'
+    section: 'Fax'
+    description: |
+        This policy setting determines whether users can access the Internet Fax feature in Office applications.  The
+        recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Services\Fax\Disable Internet Fax Feature Impact: If the
+        Internet Fax feature is used by your organization to send faxes, enabling this setting will cause users to lose this
+        functionality. In such situations, you will need to ensure that users who need to send faxes have some other mechanism
+        for doing so.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.27.1.1', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Ss]ervices\\[Ff]ax'
+        - checks:
+            - rule: 'should have_property "nofax"'
+            - name: 'nofax'
+              rule: "should have_property_value('nofax', :dword, '')"
+
+  "2.29.1":
+    title: '2.29.1 | L1 Ensure Suppress External Signature Service is set to Enabled'
+    section: 'Signing'
+    description: |
+        This policy setting controls whether Outlook displays the Add Signature Services menu item.  The recommended state for
+        this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Signing\Suppress External Signature Service Impact:
+        Enabling this setting prevents users from adding a signature service from Microsoft Office.com, but should not otherwise
+        cause significant usability issues for most users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.29.1', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Ss]ignatures'
+        - checks:
+            - rule: 'should have_property "suppressextsigningsvcs"'
+            - name: 'suppressextsigningsvcs'
+              rule: "should have_property_value('suppressextsigningsvcs', :dword, '')"
+
+  "2.29.2":
+    title: '2.29.2 | L1 Ensure Legacy Format Signatures is set to Disabled'
+    section: 'Signing'
+    description: |
+        This policy setting controls whether users can apply binary format digital signatures to Office 972003 documents.  The
+        recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Signing\Legacy Format Signatures Impact: Enabling this
+        setting is not likely to cause significant usability issues for most Office users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.29.2', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Ss]ignatures'
+        - checks:
+            - rule: 'should have_property "enablecreationofweakxpsignatures"'
+            - name: 'enablecreationofweakxpsignatures'
+              rule: "should have_property_value('enablecreationofweakxpsignatures', :dword, '')"
+
+  "2.30.1":
+    title: '2.30.1 | L1 Ensure Disable Smart Documents Use of Manifests is set to Enabled'
+    section: 'Smart Documents (Word, Excel)'
+    description: |
+        This policy setting controls whether Office applications can load an XML expansion pack manifest file with a Smart
+        Document.  The recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Smart Documents (Word, Excel)\Disable Smart Document's Use
+        of Manifests Impact: Enabling this setting prevents users from working with Smart Documents. It might not be feasible to
+        enable this setting.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.30.1', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\[Cc]ommon\\[Ss]mart tag'
+        - checks:
+            - rule: 'should have_property "neverloadmanifests"'
+            - name: 'neverloadmanifests'
+              rule: "should have_property_value('neverloadmanifests', :dword, '')"
+
+  "2.34.2.1":
+    title: '2.34.2.1 | L1 Ensure Online Content Options is set to Enabled Allow Office to connect to the internet'
+    section: 'Online Content'
+    description: |
+        This policy setting controls users access to the online features of Office. The recommended state for this setting is
+        Enabled .  Allow Office to connect to the internet
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Tools | Options | General | Service Options...\Online
+        Content\Online Content Options Impact: Configuring this setting to "Never show online content or entry points" will
+        cause disruptions for users who are accustomed to receiving content from Microsoft Office.com within Office
+        applications. These users will have to access Microsoft Office.com using their Web browsers to obtain this content, if
+        permitted.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.34.2.1', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Ii]nternet'
+        - checks:
+            - rule: 'should have_property "useonlinecontent"'
+            - name: 'useonlinecontent'
+              rule: "should have_property_value('useonlinecontent', :dword, '')"
+
+  "2.35.1.1":
+    title: '2.35.1.1 | L1 Ensure Allow PNG As an Output Format is set to Disabled'
+    section: 'Browsers'
+    description: |
+        This policy setting determines whether Office applications can output graphics in Portable Network Graphics PNG format
+        when documents are saved as Web pages. The recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Tools | Options | General | Web Options...\Browsers\Allow
+        PING As an Output Format Impact: Disabling this setting enforces the default configuration, and is therefore unlikely to
+        cause significant usability issues for most users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.35.1.1', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Ii]nternet'
+        - checks:
+            - rule: 'should have_property "allowpng"'
+            - name: 'allowpng'
+              rule: "should have_property_value('allowpng', :dword, '')"
+
+  "2.35.3.1":
+    title: '2.35.3.1 | L1 Ensure Open Office Documents as ReadWrite While Browsing is set to Disabled'
+    section: 'Files'
+    description: |
+        This policy setting controls whether users can edit and save Office documents on Web servers that they have opened using
+        Internet Explorer. The recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Tools | Options | General | Web Options...\Files\Open
+        Office Documents as Read/Write While Browsing Impact: This setting enforces the Office default configuration and
+        therefore should have minimal impact on users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.35.3.1', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Ii]nternet'
+        - checks:
+            - rule: 'should have_property "opendocumentsreadwritewhilebrowsing"'
+            - name: 'opendocumentsreadwritewhilebrowsing'
+              rule: "should have_property_value('opendocumentsreadwritewhilebrowsing', :dword, '')"
+
+  "2.36.1.1":
+    title: '2.36.1.1 | L1 Ensure Improve Proofing Tools is set to Disabled'
+    section: 'Proofing Data Collection'
+    description: |
+        This policy setting controls whether the Help Improve Proofing Tools feature sends usage data to Microsoft. The Help
+        Improve Proofing Tools feature collects data about use of the Proofing Tools, such as additions to the custom
+        dictionary, and sends it to Microsoft. After about six months, the feature stops sending data to Microsoft and deletes
+        the data collection file from the users computer.  The recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Office 2013\Tools | Options | Spelling\Proofing Data Collection\Improve
+        Proofing Tools Impact: The Customer Experience Improvement Program sends proofing tool data to Microsoft silently and
+        without affecting application usage, so disabling the collection and transmission of proofing tool data is unlikely to
+        cause usability issues for most users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_2013_benchmark', 'rule_2.36.1.1', 'cis_microsoft_office_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Cc]ommon\\[Pp]twatson'
+        - checks:
+            - rule: 'should have_property "ptwoptin"'
+            - name: 'ptwoptin'
+              rule: "should have_property_value('ptwoptin', :dword, '')"

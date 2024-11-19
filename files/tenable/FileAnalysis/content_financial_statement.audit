@@ -1,0 +1,42 @@
+#TRUSTED 2fb0b00429015a81da5157cfd88dc55e006bac7a71972263ba11f2226bcbcdedccfb8e0046832cefa987697c17a729b20d23ad6b9c917dd27910d9134b2efc9290bd86c622dafa20825071c0543c56abef5b4efecc9a440a711d2b2742e706ea327e0af590af3a873ae7f2b8caa7c1ac771e4f6bdfb3c330c1b6eda5d4ef6c62e6d9c8cc9b1a9767eae605a8a325e9a1bbd48de081ca067ce72c38bed6e7d6eff71eea0e5f7b7a2af517999095b080360e6ef45bdb95162a892faf52a80b159e4059c0cbb7cc22f543cc227d6ab9542c3c6e640aebe463b2fa4dd96793e7fa5b9c3f18fd00ea67fee79a49eec49736b111f4cee34b14c1351d341120c7c5c884b0569e3c6f2a2b22cd481105b9038db85d4dd3726dd947e2280c81eb96d1bea9c5a35f82b1ef13c524e08abc783a71826e56fe6df407091958d71200f70a1ca26f8824fcb4d3fbe918aad1d660ac819bf467e84203fc8d9303270bfc2dd7689c464e0f109d3b066ae03f78443062761f312982fa9fd21dca07b645f45fe9f81afeb5c0cb1483873e6e85bd96ffbad29f055803577ced85e56d825f7e1a7b89b194265aba95023775f4a526a1e1773ada49e18a60370f7477dc6e6d0f4258b531c0f34902037e4ac661646492feda7576739c5bcf4c1e2d16ec66ad0f9046dbc867a0cb0ff0fb75406ec9b632fbbd8474c1aa77341b6ce5e04a21e7d0132a9ad3
+#TRUST-RSA-SHA256 689ff49d204c567bd77f217180f6891033773f52b56b92ec1dac34f487fce031f3e92d41cadd72f58a0cf6d010dd934da7312664f5769c3ca183d91d629e23ab38f0ea12f83751f4d0348f15e8e754efb196e5ddac6f21c651414451e22156bcbad46f492946aeb62eb46473b45c43d7af37e25e5b08e1a38cf45e809e4d5832fcfe3e07d412090a4fc1362981b0f19e2c8ad1e1d3434d4f70d9364b0468e6c9cd0424ab9d28fdf544ca9f5c58853b346a3be0eb6bd2c213eaf786e48e7c1962aaa1577e2a305d9e149eb054e200a37db1ce9a666a27f23f8c431e71e882ef6983e29725795b6ee6706b5432155e044a4f44077029706a75af4b7e781a2952ac41dec7645c655179775b6e5ec1f90b53c1f916d3ca9e517d02cc5a5c50da8c976046596b3a09504282d04ea33dca33ce455a33e5849b9b65f14e52a5a011a57f317539116a5359a1d6e1c4b8d2b439dfcd9ca04600b543d75e04107d098aa71872b7bf6a9ee3cf195a9c8e31ad982a47a38a0cb0fbb4d8cd63b6505c6484605ff9e5db988268367350807df7cbe47f485fbf687bb59cecd05784c5ee0ce0c5b881ce634d82316ffabdf85aaa5b79abbda86a37ec7f923d0e666f3bfd404051eab0c254d649cf9bf3de88f8aeab081ddafdd3cf1ef802383ea5f1a3c4ccc9c17ddda96f34c7e972f493fc89c2767a54c1b7c5c578a26d8285e0b6c5a1c75a2001
+#
+# This script is Copyright (C) 2004-2023 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.9 $
+# $Date: 2023/03/07 $
+#
+# This policy looks for Excell and Adobe files that are likely to
+# contain spread sheets holding quarterly sales figures.
+#
+#<ui_metadata>
+#<display_name>TNS File Analysis - Financial Statement</display_name>
+#<spec>
+#  <type>TNS</type>
+#  <name>File Analysis - Financial Statement</name>
+#  <version>1.0.0</version>
+#</spec>
+#<labels>filecontent,content,financial,statement,update_20230227</labels>
+#</ui_metadata>
+
+<check_type:"FileContent">
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "DLP - Determine if server is hosting a financial statement"
+  file_extension : "xls" | "pdf"
+  expect         : "COGS" | "[Cc]ost [Oo]f [Gg]oods [Ss]old" | "[Gg]ross [Mm]argin" | "[Rr]evenue" | "[Uu]naudited" | "UNAUDITED" | "REVENUE" | "GROSS MARGIN"
+  file_name      : "financial" | "finance" | "cash" | "flow" | "earnings"
+  max_size       : "500K"
+</item>
+
+</check_type>

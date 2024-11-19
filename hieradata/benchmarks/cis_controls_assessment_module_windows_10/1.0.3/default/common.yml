@@ -1,0 +1,849 @@
+---
+
+inspec_rules:
+  "1.4":
+    title: '1.4 | Maintain Detailed Asset Inventory - manual'
+    section: 'User Survey Questions'
+    description: |
+        Maintain an accurate and uptodate inventory of all technology assets with the potential to store or process information.
+        This inventory shall include all assets, whether connected to the organizations network or not.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_1.4', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.6":
+    title: '1.6 | Address Unauthorized Assets - manual'
+    section: 'User Survey Questions'
+    description: |
+        Ensure that unauthorized assets are either removed from the network, quarantined or the inventory is updated in a timely
+        manner.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_1.6', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.1":
+    title: '2.1 | Maintain Inventory of Authorized Software - manual'
+    section: 'User Survey Questions'
+    description: |
+        Maintain an uptodate list of all authorized software that is required in the enterprise for any business purpose on any
+        business system.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_2.1', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.2":
+    title: '2.2 | Ensure Software is Supported by Vendor - manual'
+    section: 'User Survey Questions'
+    description: |
+        Ensure that only software applications or operating systems currently supported and receiving vendor updates are added
+        to the organizations authorized software inventory. Unsupported software should be tagged as unsupported in the
+        inventory system.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_2.2', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.6":
+    title: '2.6 | Address Unapproved Software - manual'
+    section: 'User Survey Questions'
+    description: |
+        Ensure that unauthorized software is either removed or the inventory is updated in a timely manner.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_2.6', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.4":
+    title: '3.4 | Deploy Automated Operating System Patch Management Tools - manual'
+    section: 'Automated Checks'
+    description: |
+        Deploy automated software update tools in order to ensure that the operating systems are running the most recent
+        security updates provided by the software vendor.
+    remediation: |
+        The automated CAM check for 3.4 requires both the download of updates and the installation of those updates to be
+        automatic and without user intervention.  Therefore, it will fail even if automatic update downloads are on but the user
+        can decide whether to install those updates. CAM is checking the following registry settings:
+                              HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate DisableWindowsUpdateAccess
+        (Fail if this setting is set to 1)
+                              HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\AU NoAutoUpdate  (Fail if
+        this setting is set to 1)
+                              HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\AU AUOptions  (Fail if this
+        setting is not set to 4)
+                           The AUOptions value can be set via local group policy as follows: Open the Local Group Policy Editor,
+        navigate to Computer Configuration > Administrative Templates > Windows Components > Windows Update > Configure
+        Automatic Updates.  Ensure that Enabled is selected, and Configure automatic updating is set to 4 – Auto download and
+        schedule the install.  The other settings there (such as the specific schedule for updates) can be set as appropriate
+        for your organization and are not assessed by CAM.    Similar settings are available at the Domain level as well.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_3.4', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.5":
+    title: '3.5 | Deploy Automated Software Patch Management Tools - manual'
+    section: 'User Survey Questions'
+    description: |
+        Deploy automated software update tools in order to ensure that thirdparty software on all systems is running the most
+        recent security updates provided by the software vendor.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_3.5', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.2":
+    title: '4.2 | Change Default Passwords - manual'
+    section: 'Automated Checks'
+    description: |
+        Before deploying any new asset, change all default passwords to have values consistent with administrative level
+        accounts.
+    remediation: |
+        Since Windows does not have default passwords, the automated CAM check for 4.2 focuses on the having "values consistent
+        with administrative level accounts" portion of the sub-control.  CAM is checking for a required minimum password length.
+        By default, the required minimum in CAM is 14 (which is consistent with the Windows Benchmark), but this setting can be
+        adjusted in the assessor-cli.properties file as appropriate for your organization. The minimum password length can be
+        set via local group policy as follows: Open the Local Group Policy Editor, navigate to Computer Configuration > Windows
+        Settings > Security Settings > Account Policies > Password Policy > Minimum password length.  Similar settings are
+        available at the Domain level as well.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_4.2', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.3":
+    title: '4.3 | Ensure the Use of Dedicated Administrative Accounts - manual'
+    section: 'User Survey Questions'
+    description: |
+        Ensure that all users with administrative account access use a dedicated or secondary account for elevated activities.
+        This account should only be used for administrative activities and not Internet browsing, email, or similar activities.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_4.3', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.1":
+    title: '5.1 | Establish Secure Configurations - manual'
+    section: 'User Survey Questions'
+    description: |
+        Maintain documented security configuration standards for all authorized operating systems and software.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_5.1', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.2":
+    title: '6.2 | Activate Audit Logging - manual'
+    section: 'Automated Checks'
+    description: |
+        Ensure that local logging has been enabled on all systems and networking devices.
+    remediation: |
+        For the CAM automated check for 6.2, CAM verifies that at least one sub-category of logging is turned on (but does not
+        currently require specific sub-categories).  For recommended audit sub-categories, see section 17 of the appropriate
+        Windows Benchmark. This should pass with a default Windows installation.  Logging sub-categories can be
+        enabled/disabled: Open the Local Group Policy Editor, navigate to Computer Configuration > Windows Settings > Security
+        Settings > Advanced Audit Policy Configuration > System Audit Policies.  Click into the desired logging category, and
+        you can enable or disable the sub-categories under that category.  Similar settings are available at the Domain level as
+        well.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_6.2', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "7.1":
+    title: '7.1 | Ensure Use of Only Fully Supported Browsers and Email Clients - manual'
+    section: 'User Survey Questions'
+    description: |
+        Ensure that only fully supported web browsers and email clients are allowed to execute in the organization, ideally only
+        using the latest version of the browsers and email clients provided by the vendor.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_7.1', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "7.7":
+    title: '7.7 | Use of DNS Filtering Services - manual'
+    section: 'User Survey Questions'
+    description: |
+        Use Domain Name System DNS filtering services to help block access to known malicious domains.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_7.7', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "8.2":
+    title: '8.2 | Ensure Anti-Malware Software and Signatures are Updated - manual'
+    section: 'Automated Checks'
+    description: |
+        Ensure that the organizations antimalware software updates its scanning engine and signature database on a regular
+        basis.
+    remediation: |
+        For the automated check for 8.2, CAM verifies that an anti-malware tool is enabled and up-to-date on the machine.  In
+        Control Panel > System and Security > Security and Maintenance, look under Security > Virus Protection to see whether
+        Windows shows that an anti-malware program is On or Off.  The exact steps for ensuring that anti-malware software is
+        enabled and that automatic updates for that software are turned on varies depending on which anti-malware software is
+        being used.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_8.2', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "8.4":
+    title: '8.4 | Configure Anti-Malware Scanning of Removable Media - manual'
+    section: 'User Survey Questions'
+    description: |
+        Configure devices so that they automatically conduct an antimalware scan of removable media when inserted or connected.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_8.4', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "8.5":
+    title: '8.5 | A Configure Devices to Not Auto-Run Content - manual'
+    section: 'Automated Checks'
+    description: |
+        Configure devices to not autorun content from removable media.
+    remediation: |
+        CAM's check for 8.5 is divided into two separate checks - one for AutoRun and one for AutoPlay.  This is the AutoRun
+        check. CAM is checking the following registry settings to see if at least one of them is set to disable AutoRun:
+                              HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer NoAutoRun  (Pass if
+        this setting is set to 1)
+                              HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer NoAutoRun  (Pass if
+        this setting is set to 1)
+                              HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer NoDriveTypeAutoRun
+        (Pass if this setting is set to 0xff)
+                              HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer NoDriveTypeAutoRun
+        (Pass if this setting is set to 0xff)
+                              HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer NoDriveAutoRun
+        (Pass if this setting is set to 0x3FFFFFF)
+                              HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer NoDriveAutoRun
+        (Pass if this setting is set to 0x3FFFFFF)
+                              Note that while the Machine settings or Current User settings are accepted by CAM, the Machine
+        settings are preferred because they would turn AutoRun off for all users on the machine.
+                           AutoRun can be turned off via local group policy as follows: Open the Local Group Policy Editor,
+        navigate to Computer Configuration > Administrative Templates > Windows Components > AutoPlay Policies > Set the default
+        behavior for AutoRun.  Ensure that Enabled is selected, and then select "Do not execute any autorun commands" in the
+        drop down menu.  Similar settings are available at the Domain level as well.
+    type: Undefined
+    impact: '0.5'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_8.5', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "8.5":
+    title: '8.5 | B Configure Devices to Not Auto-Run Content - manual'
+    section: 'Automated Checks'
+    description: |
+        Configure devices to not autorun content from removable media.
+    remediation: |
+        CAM's check for 8.5 is divided into two separate checks - one for AutoRun and one for AutoPlay.  This is the AutoPlay
+        check. CAM is checking the following registry setting to see if it is set to disable AutoPlay:
+                              HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers
+        DisableAutoPlay  (Pass if this setting is set to 1)
+                           In the Windows Settings, go to AutoPlay Settings.  Move the "Use AutoPlay for all media and devices"
+        toggle to Off.  Note: this is a per user setting.
+    type: Undefined
+    impact: '0.5'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_8.5', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "9.4":
+    title: '9.4 | Apply Host-Based Firewalls or Port Filtering - manual'
+    section: 'Automated Checks'
+    description: |
+        Apply hostbased firewalls or portfiltering tools on end systems, with a defaultdeny rule that drops all traffic except
+        those services and ports that are explicitly allowed.
+    remediation: |
+        The automated CAM check for 9.4 ensures that all three host-based Windows Firewall profiles (Domain, Private, and
+        Public) are using a default-deny rule for incoming traffic.  In Windows Defender Security Center, select Firewall and
+        network protection, and ensure that all 3 are turned on.  To edit the default-deny rules for Inbound Traffic, select
+        Advanced Settings and click Windows Defender Firewall Properties, and then ensure that "Block (default)" is selected for
+        Inbound Connections in each of the 3 profile tabs.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_9.4', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "10.1":
+    title: '10.1 | Ensure Regular Automated Backups - manual'
+    section: 'Automated Checks'
+    description: |
+        Ensure that all system data is automatically backed up on a regular basis.
+    remediation: |
+        The automated CAM check for 10.1 verifies that Windows 10 File History is turned on for at least one user.  In the
+        Windows 10 Backup settings, in the "Back up using File History" section, ensure an appropriate destination drive is
+        selected (or select one with "Add a drive"), then make sure the "Automatically back up my files" toggle is set to "On".
+        In the "More options" menu, individual folders can be included or excluded from the File History backups.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_10.1', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "10.2":
+    title: '10.2 | Perform Complete System Backups - manual'
+    section: 'Automated Checks'
+    description: |
+        Ensure that all of the organizations key systems are backed up as a complete system, through processes such as imaging,
+        to enable the quick recovery of an entire system.
+    remediation: |
+        The automated CAM check for 10.2 verifies that a successful Windows System Image backup was generated within a specified
+        timeframe.  By default, CAM uses 7 days for this time frame, but this setting can be adjusted in the assessor-
+        cli.properties file as appropriate for your organization. A Windows System Image backup can be initiated in Control
+        Panel > System and Security > Backup and Restore (Windows 7), and then clicking on "Create a system image" on the left
+        side.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_10.2', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "10.4":
+    title: '10.4 | Protect Backups - manual'
+    section: 'Automated Checks'
+    description: |
+        Ensure that backups are properly protected via physical security or encryption when they are stored, as well as when
+        they are moved across the network. This includes remote backups and cloud services.
+    remediation: |
+        The automated Controls Assessment Module check for 10.4 verifies that if Windows 10 File History is on, the drive that
+        the File History data is being backed up to is encrypted with native Windows encryption (either hardware/device
+        encryption or BitLocker software encryption).  Similarly, if Windows System Image backups are turned on, this check
+        verifies that the destination drive for those backups is encrypted with native Windows encryption.  If either/both of
+        these two backup methods are enabled, the check will fail if the corresponding backup drives are not encrypted.  If
+        neither backup method is enabled, the check will also fail. In order to pass this check, enable either Windows 10 File
+        History, Windows System Image backups, or both.  For whichever of these backup methods that you enable, ensure that the
+        corresponding backup drive destinations are encrypted with native Windows encryption. File History can be turned on in
+        the Windows 10 Backup settings, in the "Back up using File History" section, ensure an appropriate destination drive is
+        selected (or select one with "Add a drive"), then make sure the "Automatically back up my files" toggle is set to "On".
+        In the "More options" menu, individual folders can be included or excluded from the File History backups. A Windows
+        System Image backup can be initiated in Control Panel > System and Security > Backup and Restore (Windows 7), and then
+        clicking on "Create a system image" on the left side. To turn on Bitlocker, navigate to Control Panel > System and
+        Security > BitLocker Drive Encryption, and select Turn on BitLocker.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_10.4', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "10.5":
+    title: '10.5 | Ensure All Backups Have at Least One Offline Backup Destination - manual'
+    section: 'User Survey Questions'
+    description: |
+        Ensure that all backups have at least one offline i.e., not accessible via a network connection backup destination.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_10.5', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "11.4":
+    title: '11.4 | Install the Latest Stable Version of Any Security-Related Updates on All Network Devices - manual'
+    section: 'User Survey Questions'
+    description: |
+        Install the latest stable version of any securityrelated updates on all network devices.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_11.4', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "12.1":
+    title: '12.1 | Maintain an Inventory of Network Boundaries - manual'
+    section: 'User Survey Questions'
+    description: |
+        Maintain an uptodate inventory of all of the organizations network boundaries.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_12.1', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "12.4":
+    title: '12.4 | Deny Communication Over Unauthorized Ports - manual'
+    section: 'User Survey Questions'
+    description: |
+        Deny communication over unauthorized TCP or UDP ports or application traffic to ensure that only authorized protocols
+        are allowed to cross the network boundary in or out of the network at each of the organizations network boundaries.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_12.4', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "13.1":
+    title: '13.1 | Maintain an Inventory of Sensitive Information - manual'
+    section: 'User Survey Questions'
+    description: |
+        Maintain an inventory of all sensitive information stored, processed, or transmitted by the organizations technology
+        systems, including those located onsite or at a remote service provider.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_13.1', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "13.2":
+    title: '13.2 | Remove Sensitive Data or Systems Not Regularly Accessed by Organization - manual'
+    section: 'User Survey Questions'
+    description: |
+        Remove sensitive data or systems not regularly accessed by the organization from the network. These systems shall only
+        be used as standalone systems disconnected from the network by the business unit needing to occasionally use the system
+        or completely virtualized and powered off until needed.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_13.2', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "13.6":
+    title: '13.6 | Encrypt Mobile Device Data - manual'
+    section: 'Automated Checks'
+    description: |
+        Utilize approved cryptographic mechanisms to protect enterprise data stored on all mobile devices.
+    remediation: |
+        While sub-control 13.6 does explicitly specify mobile devices, the automated CAM check for 13.6 does not discriminate by
+        device type.  This CAM check passes if native Windows encryption (either hardware/device encryption or BitLocker
+        software encryption) is enabled for all drives.  To turn on Bitlocker, navigate to Control Panel > System and Security >
+        BitLocker Drive Encryption, and select Turn on BitLocker.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_13.6', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "14.6":
+    title: '14.6 | Protect Information Through Access Control Lists - manual'
+    section: 'User Survey Questions'
+    description: |
+        Protect all information stored on systems with file system, network share, claims, application, or database specific
+        access control lists. These controls will enforce the principle that only authorized individuals should have access to
+        the information based on their need to access the information as a part of their responsibilities.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_14.6', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "15.7":
+    title: '15.7 | Leverage the Advanced Encryption Standard to Encrypt Wireless Data - manual'
+    section: 'Automated Checks'
+    description: |
+        Leverage the Advanced Encryption Standard AES to encrypt wireless data in transit.
+    remediation: |
+        The automated CAM check for 15.7 ensures that any wireless connections detected for the machine are making use of CCMP
+        (the Counter Mode CBCMAC Protocol, a mode of AES used for WLAN connections as discussed in IEEE 802.11i).  If no
+        wireless connections are detected, this check will Pass.  For each wireless connection in Control Panel > All Control
+        Panel Items > Network and Sharing Center, click on the linked name of that connection to open the Wi-Fi Status of the
+        connection, and then click Wireless Properties.  In the Properties dialog box for that connection, click on the Security
+        tab.  Ensure that WPA2 is being used in the Security type dropdown and that AES is selected as the Encryption type
+        (note: settings may be different for WPA2-Enterprise).
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_15.7', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "15.10":
+    title: '15.10 | Create Separate Wireless Network for Personal and Untrusted Devices - manual'
+    section: 'User Survey Questions'
+    description: |
+        Create a separate wireless network for personal or untrusted devices. Enterprise access from this network should be
+        treated as untrusted and filtered and audited accordingly.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_15.10', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "16.8":
+    title: '16.8 | Disable Any Unassociated Accounts - manual'
+    section: 'User Survey Questions'
+    description: |
+        Disable any account that cannot be associated with a business process or business owner.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_16.8', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "16.9":
+    title: '16.9 | Disable Dormant Accounts - manual'
+    section: 'Automated Checks'
+    description: |
+        Automatically disable dormant accounts after a set period of inactivity.
+    remediation: |
+        The automated CAM check for 16.9 checks the last logon date for each of the enabled local machine accounts and verifies
+        that they have been logged into within a specified timeframe.  If the account has never been logged into, this timeframe
+        is applied to the last password set date instead.  By default, CAM uses 30 days for this timeframe, but this setting can
+        be adjusted in the assessor-cli.properties file as appropriate for your organization. Ensure that any accounts not
+        meeting the specified dormancy time frame are disabled.  The "net user" command can be used to identify last logon times
+        for specific users.  Accounts can be deactivated either with the "net user" command or in Computer Management > System
+        Tools > Local Users and Groups > Users .
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_16.9', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "16.11":
+    title: '16.11 | Lock Workstation Sessions After Inactivity - manual'
+    section: 'Automated Checks'
+    description: |
+        Automatically lock workstation sessions after a standard period of inactivity.
+    remediation: |
+        The CAM automated check for 16.11 makes sure that the lock screen timeout does not exceed a maximum value and that the
+        lock screen is enabled.  The default maximum timeout value for CAM is 900 seconds (15 minutes, which is consistent with
+        the Windows Benchmark), but this setting can be adjusted in the assessor-cli.properties file as appropriate for your
+        organization. The lock screen timeout value can be set via local group policy as follows: Open the Local Group Policy
+        Editor, navigate to Computer Configuration > Windows Settings > Security Settings > Local Policies > Security Options >
+        Interactive logon: Machine inactivity limit .  This setting may require a reboot to take effect.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_16.11', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "17.3":
+    title: '17.3 | Implement a Security Awareness Program - manual'
+    section: 'User Survey Questions'
+    description: |
+        Create a security awareness program for all workforce members to complete on a regular basis to ensure they understand
+        and exhibit the necessary behaviors and skills to help ensure the security of the organization. The organizations
+        security awareness program should be communicated in a continuous and engaging manner.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_17.3', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "17.5":
+    title: '17.5 | Train Workforce on Secure Authentication - manual'
+    section: 'User Survey Questions'
+    description: |
+        Train workforce members on the importance of enabling and utilizing secure authentication.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_17.5', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "17.6":
+    title: '17.6 | Train Workforce on Identifying Social Engineering Attacks - manual'
+    section: 'User Survey Questions'
+    description: |
+        Train the workforce on how to identify different forms of social engineering attacks, such as phishing, phone scams, and
+        impersonation calls.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_17.6', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "17.7":
+    title: '17.7 | Train Workforce on Sensitive Data Handling - manual'
+    section: 'User Survey Questions'
+    description: |
+        Train workforce members on how to identify and properly store, transfer, archive, and destroy sensitive information.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_17.7', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "17.8":
+    title: '17.8 | Train Workforce on Causes of Unintentional Data Exposure - manual'
+    section: 'User Survey Questions'
+    description: |
+        Train workforce members to be aware of causes for unintentional data exposures, such as losing their mobile devices or
+        emailing the wrong person due to autocomplete in email.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_17.8', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "17.9":
+    title: '17.9 | Train Workforce Members on Identifying and Reporting Incidents - manual'
+    section: 'User Survey Questions'
+    description: |
+        Train workforce members to be able to identify the most common indicators of an incident and be able to report such an
+        incident.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_17.9', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "19.1":
+    title: '19.1 | Document Incident Response Procedures - manual'
+    section: 'User Survey Questions'
+    description: |
+        Ensure that there are written incident response plans that define roles of personnel as well as phases of incident
+        handling/management.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_19.1', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "19.3":
+    title: '19.3 | Designate Management Personnel to Support Incident Handling - manual'
+    section: 'User Survey Questions'
+    description: |
+        Designate management personnel, as well as backups, who will support the incident handling process by acting in key
+        decisionmaking roles.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_19.3', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "19.5":
+    title: '19.5 | Maintain Contact Information for Reporting Security Incidents - manual'
+    section: 'User Survey Questions'
+    description: |
+        Assemble and maintain information on thirdparty contact information to be used to report a security incident, such as
+        Law Enforcement, relevant government departments, vendors, and Information Sharing and Analysis Center ISAC partners.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_19.5', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "19.6":
+    title: '19.6 | Publish Information Regarding Reporting Computer Anomalies and Incidents - manual'
+    section: 'User Survey Questions'
+    description: |
+        Publish information for all workforce members, regarding reporting computer anomalies and incidents, to the incident
+        handling team. Such information should be included in routine employee awareness activities.
+    remediation: |
+        CAM currently assesses this sub-control via survey question.  Be sure that the answer to this survey question
+        corresponds to your organization’s implementation status for the sub-control.  Answers to the survey questions can be
+        updated in the Assessor properties file (assessor-cli.properties), which can be found in the Assessor config folder.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_controls_assessment_module_windows_10', 'rule_19.6', 'cis_controls_assessment_module_windows_10']
+    enabled: false
+    properties:
+      match: all
+      rules:

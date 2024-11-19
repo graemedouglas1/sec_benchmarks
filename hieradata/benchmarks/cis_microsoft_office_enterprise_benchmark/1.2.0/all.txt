@@ -1,0 +1,241 @@
+1.1.4.1.1 - L1 Ensure Add-on Management is set to Enabled
+1.1.4.1.2 - L1 Ensure Bind to object is set to Enabled
+1.1.4.1.3 - L1 Ensure Consistent Mime Handling is set to Enabled
+1.1.4.1.4 - L1 Ensure Disable user name and password is set to Enabled
+1.1.4.1.5 - L1 Ensure Information Bar is set to Enabled
+1.1.4.1.6 - L1 Ensure Local Machine Zone Lockdown Security is set to Enabled
+1.1.4.1.7 - L1 Ensure Mime Sniffing Safety Feature is set to Enabled
+1.1.4.1.8 - L1 Ensure Navigate URL is set to Enabled
+1.1.4.1.9 - L1 Ensure Object Caching Protection is set to Enabled
+1.1.4.1.10 - L1 Ensure Protection From Zone Elevation is set to Enabled
+1.1.4.1.11 - L1 Ensure Restrict ActiveX Install is set to Enabled
+1.1.4.1.12 - L1 Ensure Restrict File Download is set to Enabled
+1.1.4.1.13 - L1 Ensure Saved from URL is set to Enabled
+1.1.4.1.14 - L1 Ensure Scripted Window Security Restrictions is set to Enabled
+1.1.5.1 - L1 Ensure Enable Automatic Updates is set to Enabled
+1.1.5.2 - L1 Ensure Hide option to enable or disable updates is set to Enabled
+1.3.1 - L1 Ensure Block Flash activation in Office documents is set to Enabled Block all activation
+1.3.2 - L1 Ensure Restrict legacy JScript execution for Office is set to Enabled
+2.1.1.3.2.2 - L1 Ensure Block macros from running in Office files from the internet is set to Enabled
+2.1.1.3.2.3 - L1 Ensure Disable Trust Bar Notification for unsigned application add-ins and block them is set to Enabled
+2.1.1.3.2.4 - L1 Ensure Require that application add-ins are signed by Trusted Publisher is set to Enabled
+2.1.1.3.2.1.1 - L1 Ensure Allow Trusted Locations on the network is set to Disabled
+2.1.1.3.2.1.2 - L2 Ensure Disable all trusted locations is set to Enabled
+2.1.1.4.1.1 - L1 Ensure Underline hyperlinks is set to Enabled
+2.1.4.1 - L1 Ensure Default file format is set to Enabled Access 2007
+2.1.4.2 - L1 Ensure Do not prompt to convert older databases is set to Disabled
+2.1.5.1 - L1 Ensure Modal Trust Decision Only is set to Disabled
+2.2.2.1 - L1 Ensure Do not show data extraction options when opening corrupt workbooks is set to Enabled
+2.2.4.1.2 - L1 Ensure Ask to update automatic links is set to Enabled
+2.2.4.1.1.1.1 - L1 Ensure Load Pictures from Web pages not created in Excel is set to Disabled
+2.2.4.5.1.1 - L1 Ensure Internet and network paths as hyperlinks is set to Disabled
+2.2.4.6.1 - L1 Ensure Default file format is set to Enabled Excel Workbook .xlsx
+2.2.4.6.2 - L1 Ensure Disable AutoRepublish is set to Enabled
+2.2.4.6.3 - L1 Ensure Do not show AutoRepublish warning alert is set to Disabled
+2.2.4.7.3 - L1 Ensure Force file extension to match file type is set to Enabled Always match file type
+2.2.4.7.4 - L1 Ensure Scan encrypted macros in Excel Open XML workbooks is set to Enabled Scan encrypted macros default
+2.2.4.7.5 - L1 Ensure Turn off file validation is set to Disabled
+2.2.4.7.6 - L1 Ensure WEBSERVICE Function Notification Settings is set to Enabled Disable all without notification or Enabled Disable all with notification
+2.2.4.7.2.5 - L1 Ensure Block Excel XLL Add-ins that come from an untrusted source is set to Enabled Blocked
+2.2.4.7.2.6 - L1 Ensure Block macros from running in Office files from the internet is set to Enabled
+2.2.4.7.2.7 - L1 Ensure Disable Trust Bar Notification for unsigned application add-ins and block them is set to Enabled
+2.2.4.7.2.8 - L1 Ensure Macro Notification Settings is set to Enabled Disable VBA macros except digitally signed macros
+2.2.4.7.2.9 - L1 Ensure Macro Notification Settings is set to Require macros to be signed by a trusted publisher
+2.2.4.7.2.10 - L1 Ensure Prevent Excel from running XLM macros is set to Enabled
+2.2.4.7.2.11 - L1 Ensure Require that application add-ins are signed by Trusted Publisher is set to Enabled
+2.2.4.7.2.12 - L1 Ensure Store macro in Personal Macro Workbook by default is set to Enabled
+2.2.4.7.2.13 - L1 Ensure Trust access to Visual Basic Project is set to Disabled
+2.2.4.7.2.1.1 - L1 Ensure Always prevent untrusted Microsoft Query files from opening is set to Enabled
+2.2.4.7.2.1.2 - L1 Ensure Dont allow Dynamic Data Exchange DDE server launch in Excel is set to Enabled
+2.2.4.7.2.1.3 - L1 Ensure Dont allow Dynamic Data Exchange DDE server lookup in Excel is set to Enabled
+2.2.4.7.2.2.1 - L1 Ensure dBase III IV files is set to Enable OpenSave blocked use open policy
+2.2.4.7.2.2.2 - L1 Ensure Dif and Sylk files is set to Enabled OpenSave blocked use open policy
+2.2.4.7.2.2.3 - L1 Ensure Excel 2 macrosheets and add-in files is set to Enabled OpenSave blocked use open policy
+2.2.4.7.2.2.4 - L1 Ensure Excel 2 worksheets is set to Enabled OpenSave blocked use open policy
+2.2.4.7.2.2.5 - L1 Ensure Excel 3 macrosheets and add-in files is set to Enabled OpenSave blocked use open policy
+2.2.4.7.2.2.6 - L1 Ensure Excel 3 worksheets is set to Enabled OpenSave blocked use open policy
+2.2.4.7.2.2.7 - L1 Ensure Excel 4 macrosheets and add-in files is set to Enabled OpenSave blocked use open policy
+2.2.4.7.2.2.8 - L1 Ensure Excel 4 workbooks is set to Enabled OpenSave blocked use open policy
+2.2.4.7.2.2.9 - L1 Ensure Excel 4 worksheets is set to Enabled OpenSave blocked use open policy
+2.2.4.7.2.2.10 - L1 Ensure Excel 95 workbooks is set to Enabled OpenSave Blocked Use Open Policy
+2.2.4.7.2.2.11 - L1 Ensure Excel 95-97 workbooks and templates  is set to Enabled OpenSave Blocked Use Open Policy
+2.2.4.7.2.2.12 - L1 Ensure Excel 97-2003 workbooks and templates  is set to Enabled OpenSave Blocked Use Open Policy
+2.2.4.7.2.2.13 - L1 Ensure Set default file block behavior is set to Enabled Blocked files are not opened
+2.2.4.7.2.2.14 - L1 Ensure Web pages and Excel 2003 XML spreadsheets is set to Enabled OpenSave blocked use open policy
+2.2.4.7.2.3.1 - L1 Ensure Always open untrusted database files in Protected View is set to Enabled
+2.2.4.7.2.3.2 - L1 Ensure Do not open files from the internet zone in Protected View is set to Disabled
+2.2.4.7.2.3.3 - L1 Ensure Do not open files in unsafe locations in Protected View is set to Disabled
+2.2.4.7.2.3.4 - L1 Ensure Set document behavior if file validation fails is set to Enabled Open in Protected View
+2.2.4.7.2.3.5 - L1 Ensure Set document behavior if file validation fails is set to Unchecked Do not allow edit
+2.2.4.7.2.3.6 - L1 Ensure Turn off Protected View for attachments opened from Outlook is set to Disabled
+2.2.4.7.2.4.1 - L1 Ensure Allow Trusted Locations on the network is set to Disabled
+2.2.4.7.2.4.2 - L2 Ensure Disable all trusted locations is set to Enabled
+2.3.8.1 - L1 Ensure  Document Information Panel Beaconing UI is set to Enabled Always show UI
+2.3.12.1.2 - L1 Ensure Disable UI extending from documents and templates is set to Enabled
+2.3.18.1 - L1 Ensure Allow users with earlier versions of Office to read with browsers... is set to Disabled
+2.3.18.2 - L1 Ensure Always expand groups in Office when restricting permission for documents is set to Enabled
+2.3.18.3 - L1 Ensure Always require users to connect to verify permission is set to Enabled
+2.3.18.4 - L1 Ensure Never allow users to specify groups when restricting permission for documents is set to Enabled
+2.3.18.5 - L1 Ensure Prevent users from changing permissions on rights managed content is set to Disabled
+2.3.22.2 - L1 Ensure Block signing into Office is set to Enabled Org ID only
+2.3.22.3 - L1 Ensure Control Blogging is set to Enabled All Blogging Disabled
+2.3.23.1 - L1 Ensure Block opening of pre-release versions of file formats new to Excel 2016 through the Compatibility Pack for Office 2016 and Excel 2016 Converter is set to Enabled
+2.3.23.2 - L1 Ensure Block opening of pre-release versions of file formats new to PowerPoint 2016 through the Compatibility Pack for Office 2016 and PowerPoint 2016 Converter is set to Enabled
+2.3.24.2 - L2 Ensure Remove Office Presentation Service from the list of online presentation services in PowerPoint and Word is set to Enabled
+2.3.25.1.1 - L1 Ensure Allow users to submit feedback to Microsoft is set to Disabled
+2.3.25.1.2 - L1 Ensure Automatically receive small updates to improve reliability is set to Disabled
+2.3.25.1.3 - L1 Ensure Disable Opt-in Wizard on first run is set to Enabled
+2.3.25.1.4 - L1 Ensure Enable Customer Experience Improvement Program is set to Disabled
+2.3.25.1.5 - L1 Ensure Send personal information is set to Disabled
+2.3.27.4 - L1 Ensure ActiveX Control Initialization is set to Enabled 6
+2.3.27.5 - L1 Ensure Allow Basic Authentication prompts from network proxies is set to Disabled
+2.3.27.6 - L1 Ensure Allow VBA to load typelib references by path from untrusted intranet locations is set to Disabled
+2.3.27.7 - L1 Ensure Automation Security is set to Enabled Disable Macros by default
+2.3.27.8 - L1 Ensure Control how Office handles form-based sign-in prompts is set to Enabled Block all prompts
+2.3.27.9 - L1 Ensure Disable additional security checks on VBA library references that may refer to unsafe locations on the local machine is set to Disabled
+2.3.27.10 - L1 Ensure Disable all Trust Bar notifications for security issues is set to Disabled
+2.3.27.11 - L1 Ensure Disable password to open UI is set to Disabled
+2.3.27.12 - L1 Ensure Encryption mode for Information Rights Management IRM is set to Enabled Cipher Block Chaining CBC
+2.3.27.13 - L1 Ensure Encryption type for password protected Office 97-2003 files is set to Enabled
+2.3.27.14 - L1 Ensure Encryption type for password protected Office Open XML files is set to Enabled
+2.3.27.15 - L1 Ensure Load Controls in Forms3 is set to Enabled 4
+2.3.27.16 - L1 Ensure Macro Runtime Scan Scope is set to Enabled Enable for all documents
+2.3.27.17 - L1 Ensure Protect document metadata for password protected files is set to Enabled
+2.3.27.18 - L1 Ensure Protect document metadata for rights managed Office Open XML Files is set to Enabled
+2.3.27.19 - L1 Ensure Suppress hyperlink warnings is set to Disabled
+2.3.27.3.4 - L1 Ensure Allow mix of policy and user locations is set to Disabled
+2.3.28.2 - L1 Ensure Disable the Office client from polling the SharePoint Server for published links is set to Enabled
+2.3.29.1.1 - L1 Ensure Disable Internet Fax feature is set to Enabled
+2.3.31.1 - L1 Ensure Legacy format signatures is set to Disabled
+2.3.31.2 - L1 Ensure Suppress external signature services menu item is set to Enabled
+2.3.32.1 - L1 Ensure Disable Smart Documents use of manifests is set to Enabled
+2.3.36.1.1 - L2 Ensure Conversion Service Options is set to Enabled Do not allow to use Microsoft Conversion Service
+2.3.36.2.1 - L2 Ensure Online Content Options is set to Enabled Do not allow Office to connect to the Internet
+2.3.37.3.1 - L1 Ensure Open Office documents as readwrite while browsing is set to Disabled
+2.3.38.1.1 - L2 Ensure Improve Proofing Tools is set to Disabled
+2.5.1.2.1 - L1 Ensure Authentication with Exchange server  is set to  Enabled Kerberos Password Authentication
+2.5.1.2.2 - L1 Ensure Do not allow users to change permissions on folders is set to Enabled
+2.5.1.2.3 - L1 Ensure Enable RPC encryption is set to Enabled
+2.5.1.5.1 - L1 Ensure Automatically download attachments is set to Disabled
+2.5.1.5.2 - L1 Ensure Do not include Internet Calendar integration in Outlook is set to Enabled
+2.5.1.6.1 - L1 Ensure Download full text of articles as HTML attachments is set to Disabled
+2.5.1.6.2 - L1 Ensure Synchronize Outlook RSS Feeds with Common Feed List is set to Disabled
+2.5.1.6.3 - L1 Ensure Turn off RSS feature is set to Enabled
+2.5.4.1 - L1 Ensure Do not allow Home Page URL to be set in folder Properties is set to Enabled
+2.5.7.1 - L1 Ensure Disable user entries to server list is set to Enabled Publish default disallow others
+2.5.9.2.1 - L1 Ensure PST Null Data on Delete is set to Enabled
+2.5.10.11 - L2 Ensure Internet and network paths into hyperlinks is set to Disabled
+2.5.10.4.2.2 - L1 Ensure Plain Text Options is set to Disabled
+2.5.10.6.3 - L1 Ensure Make Outlook the default program for E-mail Contacts and Calendar is set to Enabled
+2.5.10.6.1.2 - L1 Ensure Do not allow folders in non-default stores to be set as folder home pages is set to Enabled
+2.5.10.6.1.3 - L1 Ensure Do not allow Outlook object model scripts to run for public folders is set to Enabled
+2.5.10.6.1.4 - L1 Ensure Do not allow Outlook object model scripts to run for shared folders is set to Enabled
+2.5.10.6.1.5 - L1 Ensure Use Unicode format when dragging e-mail message to file system is set to Disabled
+2.5.10.8.1.2.1 - L1 Ensure Access to published calendars is set to Enabled
+2.5.10.8.1.2.2 - L1 Ensure Prevent publishing to a DAV server is set to Enabled
+2.5.10.8.1.2.3 - L1 Ensure Prevent publishing to Office.com is set to Enabled
+2.5.10.8.1.2.4 - L1 Ensure Restrict level of calendar details users can publish is set to Enabled Disables Full details and Limited details
+2.5.10.8.1.2.5 - L1 Ensure Restrict upload method is set to Enabled
+2.5.10.8.3.1 - L2 Ensure Read e-mail as plain text is set to Enabled
+2.5.10.8.3.2 - L2 Ensure Read signed e-mail as plain text is set to Enabled
+2.5.10.8.4.1 - L1 Ensure Add e-mail recipients to users Safe Senders Lists is set to Disabled
+2.5.10.8.4.2 - L1 Ensure Hide Junk Mail UI is set to Disabled
+2.5.10.8.4.3 - L1 Ensure Junk E-mail protection level is set to Enabled High
+2.5.10.8.4.4 - L1 Ensure Trust e-mail from contacts is set to Disabled
+2.5.11.1 - L1 Ensure Turn off Outlook Social Connector is set to Enabled
+2.5.14.5 - L1 Ensure Allow Active X One Off Forms is set to Enabled Load only Outlook Controls
+2.5.14.6 - L1 Ensure Disable Remember password for Internet e-mail accounts is set to Enabled
+2.5.14.7 - L1 Ensure Do not automatically sign replies is set to Disabled
+2.5.14.8 - L1 Ensure Prevent users from customizing attachment security settings is set to Enabled
+2.5.14.9 - L1 Ensure Prompt user to choose security settings if default settings fail is set to Disabled
+2.5.14.1.1 - L1 Ensure Automatically download content for e-mail from people in Safe Senders and Safe Recipients Lists is set to Disabled
+2.5.14.1.2 - L1 Ensure Block Trusted Zones is set to Enabled
+2.5.14.1.3 - L1 Ensure Display pictures and external content in HTML e-mail is set to Enabled
+2.5.14.1.4 - L1 Ensure Do not permit download of content from safe zones is set to Disabled
+2.5.14.1.5 - L1 Ensure Include Internet in Safe Zones for Automatic Picture Download is set to Disabled
+2.5.14.2.2 - L1 Ensure Do not display Publish to GAL button is set to Enabled
+2.5.14.2.3 - L1 Ensure Do not provide Continue option on Encryption warning dialog boxes is set to Enabled
+2.5.14.2.4 - L1 Ensure Message Formats is set to Enabled SMIME
+2.5.14.2.5 - L1 Ensure Minimum encryption settings is set to Enabled 256
+2.5.14.2.6 - L1 Ensure SMIME interoperability with external clients is set to Enabled Handle internally
+2.5.14.2.7 - L1 Ensure Signature Warning is set to Enabled Always warn about invalid signatures
+2.5.14.2.1.1 - L1 Ensure Attachment Secure Temporary Folder is set to Disabled
+2.5.14.2.1.2 - L1 Ensure Missing CRLs is set to Enabled Error
+2.5.14.2.1.3 - L1 Ensure Missing Root Certificates is set to Enabled Error
+2.5.14.2.1.4 - L1 Ensure Promote Level 2 errors as errors not warnings is set to Disabled
+2.5.14.2.1.5 - L1 Ensure Retrieving CRLs Certificate Revocation Lists is set to Enabled When online always retrieve the CRL
+2.5.14.3.4 - L1 Ensure Outlook Security Mode is set to Enabled Use Outlook Security Group Policy
+2.5.14.3.1.1 - L1 Ensure Allow users to demote attachments to Level 2 is set to Disabled
+2.5.14.3.1.2 - L1 Ensure Display Level 1 attachments is set to Disabled
+2.5.14.3.1.3 - L1 Ensure Do not prompt about Level 1 attachments when closing an item is set to Disabled
+2.5.14.3.1.4 - L1 Ensure Do not prompt about Level 1 attachments when sending an item is set to Disabled
+2.5.14.3.1.5 - L1 Ensure Remove file extensions blocked as Level 1 is set to Disabled
+2.5.14.3.1.6 - L1 Ensure Remove file extensions blocked as Level 2 is set to Disabled
+2.5.14.3.2.1 - L1 Ensure Allow scripts in one-off Outlook forms is set to Disabled
+2.5.14.3.2.2 - L1 Ensure Set Outlook object model custom actions execution prompt is set to Enabled Automatically Deny
+2.5.14.3.3.2 - L1 Ensure Configure Outlook object model prompt when accessing an address book is set to Enabled Automatically Deny
+2.5.14.3.3.3 - L1 Ensure Configure Outlook object model prompt When accessing the Formula property of a UserProperty object is set to Enabled Automatically Deny
+2.5.14.3.3.4 - L1 Ensure Configure Outlook object model prompt when executing Save As is set to Enabled Automatically Deny
+2.5.14.3.3.5 - L1 Ensure Configure Outlook object model prompt when reading address information is set to Enabled Automatically Deny
+2.5.14.3.3.6 - L1 Ensure Configure Outlook object model prompt when responding to meeting and task requests is set to Enabled Automatically Deny
+2.5.14.3.3.7 - L1 Ensure Configure Outlook object model prompt when sending mail is set to Enabled Automatically Deny
+2.5.14.4.1 - L1 Ensure Allow hyperlinks in suspected phishing e-mail messages is set to Disabled
+2.5.14.4.2 - L1 Ensure Security setting for macros is set to Enabled Warn for signed disable unsigned
+2.6.5.2 - L2 Ensure Disable Slide Update is set to Enabled
+2.6.6.5.1 - L1 Ensure Default file format is set to Enabled PowerPoint Presentation pptx
+2.6.6.6.3 - L1 Ensure Make hidden markup visible is set to Enabled
+2.6.6.6.4 - L1 Ensure Run Programs is set to Enabled disable dont run any programs
+2.6.6.6.5 - L1 Ensure Scan encrypted macros in PowerPoint Open XML presentations is set to Enabled Scan encrypted macros
+2.6.6.6.6 - L1 Ensure Turn off file validation is set to Disabled
+2.6.6.6.7 - L1 Ensure Unblock automatic download of linked images is set to Disabled
+2.6.6.6.2.4 - L1 Ensure Block macros from running in Office files from the Internet is set to Enabled
+2.6.6.6.2.5 - L1 Ensure Disable Trust Bar Notification for unsigned application add-ins and block them is set to Enabled
+2.6.6.6.2.6 - L1 Ensure Require that application add-ins are signed by Trusted Publisher is set to Enabled
+2.6.6.6.2.7 - L1 Ensure Trust Access to Visual Basic Project is set to Disabled
+2.6.6.6.2.8 - L1 Ensure VBA Macro Notification Settings is set to Enabled Disable all except digitally signed macros
+2.6.6.6.2.9 - L1 Ensure VBA Macro Notification Settings is set to Require macros to be signed by a trusted publisher
+2.6.6.6.2.1.1 - L1 Ensure PowerPoint 97-2003 presentations shows templates and add-in files is set to Enabled OpenSave blocked use open policy
+2.6.6.6.2.1.2 - L1 Ensure Set default file block behavior to Enabled Blocked files are not opened
+2.6.6.6.2.2.1 - L1 Ensure Do not open files from the Internet zone in Protected View is set to Disabled
+2.6.6.6.2.2.2 - L1 Ensure Do not open files in unsafe locations in Protected View is set to Disabled
+2.6.6.6.2.2.3 - L1 Ensure Set document behavior if file validation fails is set to Enabled Open in Protected View
+2.6.6.6.2.2.4 - L1 Ensure Set document behavior if file validation fails is set to Unchecked Do not allow edit
+2.6.6.6.2.2.5 - L1 Ensure Turn off Protected View for attachments opened from Outlook is set to Disabled
+2.6.6.6.2.3.1 - L1 Ensure Allow Trusted Locations on the network is set to Disabled
+2.6.6.6.2.3.2 - L2 Ensure Disable all trusted locations is set to Enabled
+2.8.4.2 - L1 Ensure Publisher Automation Security Level is set to Enabled By UI prompted
+2.8.4.1.1 - L1 Ensure Block macros from running in Office files from the internet is set to Enabled
+2.8.4.1.2 - L1 Ensure Disable Trust Bar Notification for unsigned application add-ins and block them is set to Enabled
+2.8.4.1.3 - L1 Ensure Require that application add-ins are signed by Trusted Publisher to Enabled
+2.8.4.1.4 - L1 Ensure VBA Macro Notification Settings is set to Enabled Disable all except digitally signed macros
+2.8.4.1.5 - L1 Ensure VBA Macro Notification Settings is set to Require macros to be signed by a trusted publisher
+2.11.6.2 - L2 Ensure Use online translation dictionaries is set to Disabled
+2.11.8.1.2 - L1 Ensure Update automatic links at Open  is set to Disabled
+2.11.8.3.1 - L1 Ensure Hidden text is set to Enabled
+2.11.8.6.1 - L1 Ensure Default file format  is set to Enabled Word Document .docx
+2.11.8.7.3 - L1 Ensure Make hidden markup visible is set to Enabled
+2.11.8.7.4 - L1 Ensure Turn off file validation is set to Disabled
+2.11.8.7.2.4 - L1 Ensure Block macros from running in Office files from the Internet is set to Enabled
+2.11.8.7.2.5 - L1 Ensure Disable Trust Bar Notification for unsigned application add-ins and block them is set to Enabled
+2.11.8.7.2.6 - L1 Ensure Dynamic Data Exchange is set to Disabled
+2.11.8.7.2.7 - L1 Ensure Require that application add-ins are signed by Trusted Publisher is set to Enabled
+2.11.8.7.2.8 - L1 Ensure Scan encrypted macros in Word Open XML Documents to Enabled Scan encrypted macros default
+2.11.8.7.2.9 - L1 Ensure Trust access to Visual Basic Project is set to Disabled
+2.11.8.7.2.10 - L1 Ensure VBA Macro Notification Settings is set to Enabled Disable all except digitally signed macros
+2.11.8.7.2.11 - L1 Ensure VBA Macro Notification Settings is set to Require macros to be signed by a trusted publisher
+2.11.8.7.2.1.1 - L1 Ensure Set default file block behavior is set to Enabled Blocked files are not opened
+2.11.8.7.2.1.2 - L1 Ensure Word 2 and earlier binary documents and templates  is set to Enabled OpenSave blocked use open policy
+2.11.8.7.2.1.3 - L1 Ensure Word 2000 binary documents and templates is set to Enabled OpenSave blocked use open policy
+2.11.8.7.2.1.4 - L1 Ensure Word 2003 binary documents and templates is set to Enabled OpenSave blocked use open policy
+2.11.8.7.2.1.5 - L1 Ensure Word 2007 and later binary documents and templates is set to Enabled OpenSave blocked use open policy
+2.11.8.7.2.1.6 - L1 Ensure Word 6.0 binary documents and templates  is set to Enabled OpenSave blocked use open policy
+2.11.8.7.2.1.7 - L1 Ensure Word 95 binary documents and templates  is set to Enabled OpenSave blocked use open policy
+2.11.8.7.2.1.8 - L1 Ensure Word 97 binary documents and templates  is set to Enabled OpenSave blocked use open policy
+2.11.8.7.2.1.9 - L1 Ensure Word XP binary documents and templates is set to Enabled OpenSave blocked use open policy
+2.11.8.7.2.2.1 - L1 Ensure Do not open files from the internet zone in Protected View is set to Disabled
+2.11.8.7.2.2.2 - L1 Ensure Do not open files in unsafe locations in Protected View is set to Disabled
+2.11.8.7.2.2.3 - L1 Ensure Set document behavior if file validation fails is set to Enabled Open in Protected View
+2.11.8.7.2.2.4 - L1 Ensure Set document behavior if file validation fails is set to Unchecked Do not allow edit
+2.11.8.7.2.2.5 - L1 Ensure Turn off Protected View for attachments opened from Outlook is set to Disabled
+2.11.8.7.2.3.1 - L1 Ensure Allow Trusted Locations on the network is set to Disabled
+2.11.8.7.2.3.2 - L2 Ensure Disable all trusted locations  is set to Enabled

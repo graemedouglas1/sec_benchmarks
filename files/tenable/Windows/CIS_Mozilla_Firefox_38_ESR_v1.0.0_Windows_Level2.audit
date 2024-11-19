@@ -1,0 +1,185 @@
+#TRUSTED b24f2d68d9655c36fda16e25e02a1e6a033081ae58c958b39610ac947174b6e53a35bd484803758520595f898f6288051cb19959ddb0e369953f5e3a372dfdf113c1e75f04d2b4cf1b76597cc0e98aabf05161af1b649d0a776d25f7815edcd74772a4fc49ea35fac5db04ded395f64165e3c08cd0fc27cd3d6bde16c28ce78ae49f5c65df2ee396a7881ea7f74b27afd3f842895b42ece661709bbefef39c346afe8679d8ea4aad7dee76db0424e0d67e048d08031121a592c81134282d75c16d10702103d909b7f97ef8bac63d6d6d32e1029c9e61b97648d9b4b28c4c0a2f58c0104726f57bbb0d9104423f362555fa20a518866ddad1247aa8943975277dc1ebac621d303540fe1d16ea37d021645ddf1845935c08dc834ca8803bfda4d02adc52864e6734726c91eb42e88dbd1af717515ab5f6de59f4570fa3658ed09bdf78fa8af8ab18d0f17e4c88630609cb281dbc2f8cbd63206e6a2d0f1a5a3d2855891ea71c04693918c4c20c23283d53b8c4f9da089e353a2c6531dbba971c6529165244fc78a488cc9ed21ff496dbe3c0b3b485cf63ab2da333ea2f212094e5248b05c9c6ba434e45859edc2c1f7c544a2d1f05c748017a5c2ddac09e81a01ca86a6b23b83b1db5685f85cf61ae9baed44b8fb2baa2f29c709b38ba7b4d6b57cc001f64c453665a020eb2eadef263dcc263c7da6be61692b342fdbc3b61f536
+#TRUST-RSA-SHA256 b2589d820978620b2e874b1bd46d7bc71e105bc94ccc21e8c5adf5ee51ffcf978032af833ca6aea3ae036e52f29c816572cefbe26ef16adf7985caa57568bcf1dc1637de6b8739b15ae89b42ba3689318059ab677768287af90911e4a8bdec9b89292e48fabbda2b9b15eb73dbb9a4b5c0b54057f3ba0a61603ecc7287ef0aaa838085f30ccf82b385579ec5e2cbc9287b2f1d36175a91c283958c6318722814688f5f1c5b2244ef8aa54e521079fd0e8c731edb72e833249be746c7bbe22e5bc948b696f5cfed701a3eeab23fac2888ff302f7ca11a5b7062b189a2344995b8766ec965bbf2ade129be6a8f55cf37a904d18c280d8fd1e077ea8ecef1d6d381e9b9e4eff1d07d2f912a253f4930f8cf952c611e76d9dca75009569ae55110880c59223eb6fab00108ee449d5ad660380673eda337a4e8af386d5c91911ee730da1d63788e011eadd0b04bdf7d7d591a7b4cb03e680ceb0243106f2e733cd52c4475db73a69521e7ce6afaaf12982e6dc1624b1527527a2b2a21e653d116b89aa9ccd05112af39354315369d42b9e41a7050d3cb4cba12e8559a9e2c18ad106a70fa49034e2c8e8b23caa0c641f757ddaa6ef142f4d2f1ac04c64c748fc1ed5f8d5e6f68be54515ca84965c1db77dec5e4553d8435becd10254a24ce2d064854423776a00b927986ce6b70a32bebd068f6eed5d44ef0315b76767ff7bb855d9f
+#
+# This script is Copyright (C) 2004-2024 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.14 $
+# $Date: 2024/06/17 $
+#
+# Description : This .audit is designed against the CIS Mozilla Firefox 38 ESR Benchmark v1.0.0 - 12-31-2015.
+#
+#<ui_metadata>
+#<display_name>CIS Mozilla Firefox 38 ESR Windows L2 v1.0.0</display_name>
+#<spec>
+#  <type>CIS</type>
+#  <name>Mozilla Firefox 38 ESR</name>
+#  <profile>L2 OS Windows</profile>
+#  <version>1.0.0</version>
+#  <link>https://workbench.cisecurity.org/files/1158</link>
+#</spec>
+#<labels>windows_firefox,update_20230227</labels>
+#<benchmark_refs>CCE,CIS_Recommendation,CSCv6,CSCv7,CSCv8,LEVEL</benchmark_refs>
+#<variables>
+#  <variable>
+#    <name>MOZILLA_CONFIG</name>
+#    <default>C:\Program Files (X86)\Mozilla Firefox\mozilla.cfg</default>
+#    <description>Mozilla configuration file</description>
+#    <info>This is the location where the mozilla configuration file can be found.</info>
+#    <value_type>WIN_FILE_PATH</value_type>
+#  </variable>
+#</variables>
+#</ui_metadata>
+
+<check_type:"Windows" version:"2">
+<group_policy:"Firefox">
+
+<if>
+  <condition type:"OR">
+    <custom_item>
+      type        : REG_CHECK
+      description : "Firefox is installed"
+      value_type  : POLICY_TEXT
+      value_data  : "HKLM\Software\Mozilla\Mozilla Firefox"
+      reg_option  : MUST_EXIST
+    </custom_item>
+
+    <custom_item>
+      type        : REG_CHECK
+      description : "Firefox ESR is installed"
+      value_type  : POLICY_TEXT
+      value_data  : "HKLM\Software\Mozilla\Mozilla Firefox ESR"
+      reg_option  : MUST_EXIST
+    </custom_item>
+  </condition>
+
+  <then>
+    <report type:"PASSED">
+      description : "CIS_Mozilla_Firefox_38_ESR_v1.0.0_Windows_Level2.audit for CIS Mozilla Firefox 38 ESR v1.0.0"
+    </report>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK
+      description : "3.2 Do Not Send Cross SSL/TLS Referrer Header"
+      info        : "This preference dictates whether Firefox will send the URL of the SSL/TLS-protected referring site to the referred SSL/TLS protected site.
+The URL of the SSL-protected referring site may contain sensitive information. Preventing this URL from being sent mitigates the risk that the sensitive information will be disclosed."
+      solution    : "Perform the following procedure:
+
+* Open the mozilla.cfg file in the installation directory with a text editor
+
+* Add the following lines to mozilla.cfg:
+
+      lockPref('network.http.sendSecureXSiteReferrer', false);"
+      reference   : "800-171|3.4.2,800-53|CM-6b.,800-53r5|CM-6b.,CN-L3|8.1.10.6(d),CSF|PR.IP-1,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6b.,LEVEL|2A,NESA|T3.2.1,SWIFT-CSCv1|2.3"
+      see_also    : "https://workbench.cisecurity.org/files/1158"
+      value_type  : POLICY_TEXT
+      value_data  : "@MOZILLA_CONFIG@"
+      regex       : '^[\\s]*lockPref\\("network.http.sendSecureXSiteReferrer",[\\s]*'
+      expect      : '^[\\s]*lockPref\\("network.http.sendSecureXSiteReferrer",[\\s]*false\\);[\\s]*$'
+      file_option : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK
+      description : "3.5 Enable IDN Show Punycode"
+      info        : "This feature determines whether all Internationalized Domain Names (IDNs) displayed in the browser are displayed as Punycode or as Unicode.
+IDNs displayed in Punycode are easier to identify and therefore help mitigate the risk of accessing spoofed web pages."
+      solution    : "Perform the following procedure:
+
+* Open the mozilla.cfg file in the installation directory with a text editor
+
+* Add the following lines to mozilla.cfg:
+
+      lockPref('network.IDN_show_punycode', true);"
+      reference   : "800-171|3.4.2,800-53|CM-6b.,800-53r5|CM-6b.,CN-L3|8.1.10.6(d),CSF|PR.IP-1,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6b.,LEVEL|2A,NESA|T3.2.1,SWIFT-CSCv1|2.3"
+      see_also    : "https://workbench.cisecurity.org/files/1158"
+      value_type  : POLICY_TEXT
+      value_data  : "@MOZILLA_CONFIG@"
+      regex       : '^[\\s]*lockPref\\("network.IDN_show_punycode",[\\s]*'
+      expect      : '^[\\s]*lockPref\\("network.IDN_show_punycode",[\\s]*true\\);[\\s]*$'
+      file_option : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK
+      description : "4.1 Set SSL Override Behavior"
+      info        : "When Firefox encounters an invalid certificate and the user clicks 'Add Exception', a dialog is displayed with a text box to fetch the certificate from the given URL. This preference controls whether Firefox will or will not automatically fill in the URL text box and auto-fetch the certificate on behalf of the user. Setting this preference to 0 forces the user to enter a URL and click the 'Get Certificate' button before adding an exception for an invalid cert.
+Requiring the user to manually enter the server's URL and fetch the certificate may provide additional opportunity to scrutinize the certificate before adding an exception for a potentially fraudulent certificate."
+      solution    : "Perform the following procedure:
+
+* Open the mozilla.cfg file in the installation directory with a text editor
+
+* Add the following lines to mozilla.cfg:
+
+      lockPref('browser.ssl_override_behavior', 0);"
+      reference   : "800-171|3.4.2,800-53|CM-6b.,800-53r5|CM-6b.,CN-L3|8.1.10.6(d),CSF|PR.IP-1,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6b.,LEVEL|2A,NESA|T3.2.1,SWIFT-CSCv1|2.3"
+      see_also    : "https://workbench.cisecurity.org/files/1158"
+      value_type  : POLICY_TEXT
+      value_data  : "@MOZILLA_CONFIG@"
+      regex       : '^[\\s]*lockPref\\("browser.ssl_override_behavior",[\\s]*'
+      expect      : '^[\\s]*lockPref\\("browser.ssl_override_behavior",[\\s]*0\\);[\\s]*$'
+      file_option : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK
+      description : "4.4 Set OCSP Use Policy"
+      info        : "This setting dictates whether Firefox will leverage Online Certificate Status Protocol (OCSP) to determine if a given certificate has been revoked.
+Leveraging OCSP may help identify revoked certificates."
+      solution    : "Perform the following procedure:
+
+* Open the mozilla.cfg file in the installation directory with a text editor
+
+* Add the following lines to mozilla.cfg:
+
+      lockPref('security.OCSP.enabled', 1)"
+      reference   : "800-171|3.14.2,800-171|3.14.4,800-171|3.14.5,800-53|SI-3c.1.,800-53r5|SI-3c.1.,CN-L3|7.1.3.6(b),CN-L3|8.1.4.5,CN-L3|8.1.9.6(a),CN-L3|8.1.9.6(b),CN-L3|8.1.10.5(b),CN-L3|8.1.10.7(a),CN-L3|8.1.10.7(b),CSF|DE.CM-4,CSF|DE.DP-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ISO/IEC-27001|A.12.2.1,ITSG-33|SI-3c.a.,LEVEL|2A,NESA|T3.4.1,NIAv2|NS24,PCI-DSSv3.2.1|5.1,PCI-DSSv3.2.1|5.1.1,PCI-DSSv4.0|5.3.2,PCI-DSSv4.0|5.3.3,QCSC-v1|3.2,QCSC-v1|5.2.3,QCSC-v1|8.2.1,TBA-FIISB|49.2.1,TBA-FIISB|49.2.2,TBA-FIISB|49.3.1,TBA-FIISB|49.3.2,TBA-FIISB|50.2.1,TBA-FIISB|51.2.4,TBA-FIISB|51.2.7"
+      see_also    : "https://workbench.cisecurity.org/files/1158"
+      value_type  : POLICY_TEXT
+      value_data  : "@MOZILLA_CONFIG@"
+      regex       : '^[\\s]*lockPref\\("security.OCSP.enabled",[\\s]*'
+      expect      : '^[\\s]*lockPref\\("security.OCSP.enabled",[\\s]*1\\);[\\s]*$'
+      file_option : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK
+      description : "4.6 Set OCSP Response Policy"
+      info        : "This setting dictates whether Firefox will consider a given certificate to be invalid if Firefox is unable to obtain an Online Certificate Status Protocol (OCSP) response for it.
+Requiring an OCSP response will reduce an adversary's ability to successfully leverage a compromised and revoked certificate."
+      solution    : "Perform the following procedure:
+
+* Open the mozilla.cfg file in the installation directory with a text editor
+
+* Add the following lines to mozilla.cfg:
+
+      lockPref('security.ocsp.require', true);"
+      reference   : "800-171|3.5.2,800-53|IA-5(2)(a),800-53r5|IA-5(2)(a),CSF|PR.AC-1,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(2)(i),HIPAA|164.312(d),ITSG-33|IA-5(2)(a),LEVEL|2A,NESA|T5.2.3,QCSC-v1|5.2.2,QCSC-v1|13.2"
+      see_also    : "https://workbench.cisecurity.org/files/1158"
+      value_type  : POLICY_TEXT
+      value_data  : "@MOZILLA_CONFIG@"
+      regex       : '^[\\s]*lockPref\\("security.ocsp.require",[\\s]*'
+      expect      : '^[\\s]*lockPref\\("security.ocsp.require",[\\s]*true\\);[\\s]*$'
+      file_option : CAN_NOT_BE_NULL
+    </custom_item>
+  </then>
+
+  <else>
+    <report type:"WARNING">
+      description : "CIS_Mozilla_Firefox_38_ESR_v1.0.0_Windows_Level2.audit for CIS Mozilla Firefox 38 ESR v1.0.0"
+      info        : "Firefox is not installed or remote registry service is disabled.
+      NOTE: Nessus has not identified that the chosen audit applies to the target device."
+    </report>
+  </else>
+</if>
+
+</group_policy>
+</check_type>

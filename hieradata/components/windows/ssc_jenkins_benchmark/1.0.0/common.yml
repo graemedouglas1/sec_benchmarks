@@ -1,0 +1,166 @@
+---
+
+inspec_rules:
+
+  jenkins-config-plugins:
+    title: Common Plugins
+    desc: Jenkins should have some common plugins installed
+    type: command
+    impact: 0.5
+    tags: ['ssc_jenkins_benchmark', 'jenkins-config-plugins']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - command: 'Get-ChildItem -Path C:\ProgramData\Jenkins\.jenkins\plugins -Filter "*.hpi" | Select-Object Name -ExpandProperty Name'
+          checks:
+            - name: stdout
+              rule: 'should match /credentials.hpi/'
+            - name: stdout
+              rule: 'should match /jobConfigHistory.hpi/'
+            - name: stdout
+              rule: 'should match /thinBackup.hpi/'
+            - name: stdout
+              rule: 'should match /ws-cleanup.hpi/'
+            - name: stdout
+              rule: 'should match /ldap.hpi/'
+  
+  jenkins-config-denyAnonymousReadAccess:
+    title: Jenkins-CI Server configuration checks (XML files) - Deny Anonymous Read Access
+    desc: denyAnonymousReadAccess or Global|Project Matrix Authorization Strategy should be configured
+    type: xml
+    impact: 1.0
+    tags: ['ssc_jenkins_benchmark', 'jenkins-config-denyAnonymousReadAccess']
+    enabled: true
+    properties:
+      match: one
+      rules:
+        - xml_path: 'C:\ProgramData\Jenkins\.jenkins\config.xml'
+          checks:
+            - name: hudson/authorizationStrategy/denyAnonymousReadAccess
+              rule: 'should eq ["true"]'
+        - xml_path: 'C:\ProgramData\Jenkins\.jenkins\config.xml'
+          checks:
+            - name: hudson/authorizationStrategy/@class
+              rule: 'should cmp /hudson\.security\.(Global|Project)MatrixAuthorizationStrategy/'
+  
+  jenkins-config-useSecurity:
+    title: Jenkins-CI Server configuration checks (XML files) - Use Security
+    desc: Security must be turned on
+    type: xml
+    impact: 1.0
+    tags: ['ssc_jenkins_benchmark', 'jenkins-config-useSecurity']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - xml_path: 'C:\ProgramData\Jenkins\.jenkins\config.xml'
+          checks:
+            - name: hudson/useSecurity
+              rule: 'should eq ["true"]'
+  
+  jenkins-config-disableSignup:
+    title: Jenkins-CI Server configuration checks (XML files) - Disable Signup
+    desc: Signup must be disabled
+    type: xml
+    impact: 1.0
+    tags: ['ssc_jenkins_benchmark', 'jenkins-config-disableSignup']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - xml_path: 'C:\ProgramData\Jenkins\.jenkins\config.xml'
+          checks:
+            - name: hudson/securityRealm/disableSignup
+              rule: 'should eq ["true"]'
+  
+  jenkins-config-enableCaptcha:
+    title: Jenkins-CI Server configuration checks (XML files) - Enable Captcha
+    desc: Captcha should be turned off
+    type: xml
+    impact: 1.0
+    tags: ['ssc_jenkins_benchmark', 'jenkins-config-enableCaptcha']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - xml_path: 'C:\ProgramData\Jenkins\.jenkins\config.xml'
+          checks:
+            - name: hudson/securityRealm/enableCaptcha
+              rule: 'should eq ["false"]'
+
+  jenkins-monitoring-ports:
+    title: Confirm Application Ports
+    desc: Ports are open and listening, meaning something is working
+    type: port
+    impact: 1.0
+    tags: ['ssc_jenkins_benchmark', 'jenkins-monitoring-ports']
+    enabled: true
+    properties:
+      match: one
+      rules:
+        - port: '8080'
+          checks:
+            - rule: 'should be_listening'
+        - port: '8443'
+          checks:
+            - rule: 'should be_listening'
+  
+  jenkins-monitoring-service:
+    title: Confirm Running Service
+    desc: The Jenkins service is configured correctly
+    type: service
+    impact: 1.0
+    tags: ['ssc_jenkins_benchmark', 'jenkins-monitoring-service']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - service: 'jenkins'
+          checks:
+            - rule: 'should be_enabled'
+            - rule: 'should be_installed'
+            - rule: 'should have_start_mode("Auto")'
+            - rule: 'should be_running'
+  
+  jenkins-monitoring-interface:
+    title: Confirm Web Interface
+    desc: The Jenkins process has a working web interface
+    type: http
+    impact: 1.0
+    tags: ['ssc_jenkins_benchmark', 'jenkins-monitoring-interface']
+    enabled: true
+    properties:
+      match: one
+      rules:
+        - url: 'http://{{ fqdn }}:8080/login'
+          ssl_verify: false
+          timeout: 5
+          checks:
+            - name: status
+              rule: 'should cmp 200'
+            - name: body
+              rule: 'should match /Jenkins/'
+        - url: 'https://{{ fqdn }}:8443/login'
+          ssl_verify: false
+          timeout: 5
+          checks:
+            - name: status
+              rule: 'should cmp 200'
+            - name: body
+              rule: 'should match /Jenkins/'
+
+  jenkins-system-installation-java-version-command:
+    title: Confirm OpenJDK package installed
+    desc: Verifies OpenJDK installation
+    type: command
+    impact: 1.0
+    tags: ['ssc_jenkins_benchmark', 'jenkins-system-installation-java-version-command']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - command: 'java --version'
+          checks:
+            - name: stdout
+              rule: 'should cmp /java\s+21\.\d+\.\d+/'

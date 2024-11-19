@@ -1,0 +1,697 @@
+#TRUSTED 28f1315e7d9e01e94922625f5e148109a3189e7b4a099a27f8a54afb6563b4aa6fb4baf7a3a3de77370b7a6be121b6dfc02249b8f3f2d307ec2a17cac8c4aaa8c203471938b63b61e3d801212653e73a74d504e4fa6ac6d5356bc39c838e14b91481cebfd59f87bfc7903efecc1a0edb2e586544269056624d003de11b463fb359febe0c6898fa006cb7410e0b12018d5668785cc655266be8d5328f8b67c51bb0e8994dfb7e3266fdc6c09e3b09379fef734a3199c1b132c7c15e13ba856f296a12e4a3893b68796cb67db9ad50f0fd02ab0084f0c8daf3e69a3dec5a6303150cabbc34b133f2183348b107857ff9cf3204a01927a416e0c6f4c13bd8bf249cd356d905d5378883bb8cde4c9177661f8e4ff005e4d35236708e4c01ef6bfba5939936df5f44726bcae6fd555f90438c513cca475047246c5060e011744d04c25d53d69cd443eb7cc5721b70971751256ba1c1c5b0d39c9272de1d3a449194e7d84647f2f36a1374a591069ee7a4a38345de5896081b66a85ca9099cdd37d0a2a44f0de4486c4e1d4404d773e1c6f16d1a1c511f9b49878f1a90f72a935069cd3a6f1e8769342cd6915bde326ffb391082fd15be520c0ac93d42328fcaee1eea1752762e01505a8534b731fe5393bdcee12f6d76ef2b1c9a62b3cd4ba502814c72f88d1763483c2222c6ed83153f5f12d57b1570f7afd6d0b0d0d95876afa04c
+#TRUST-RSA-SHA256 506de52fc933ed9f8e9c2614a9f5988e23cf5f6fe60de0e522194304d23ae381ac83d9171afe2c20826576ddfcbbdb1debfc4dc929b6893ec2c1d48cea2a1ba457d60f8e9a9ef2a10a57f138956033789926c139ffd078c4add3c1b737728db772f1fd219b16c82abaf339f0493c95059d20ce3024c23e2e4334fe4e7134414e885d84431d6f20ef796d4d523b3cc5f9eddcf53e4e17b9dd7eb73bb2ed100424f9334e9329da41d57b105263ca4184f77fe1d994672bcbebbba0cf1d2396b05f6754225d98150c3b6867eb878112fc896979214259e33b5ff338bc11bd64fb113cd6f78fbe9ea4c41f8858e018fb4d007d54c0003fe7def19662218a8743c789f5527254cefc58d2e2ba94a409af0cda237095edd233547f31b70f60a794b2e879e8b50eb2350fb0a20ebdfeb1e90a318654366a8c1d364b99176df7b32e1527f75ae2758cff25301ae7234d214fcf560759c560597e134ac1855b87b4463c180a46e077c0ae2992b92ed3822bdd4c30376638812f28cb1c999fc594646fb6b43a8ab9ee8fb788324649aca130d916c209926610b0b911fb9a927391f3bfffccb840d9890992d8f17b930133f2e15dc7793433797adb89bd3fdcaef0dfcfe03ba2abc8086d01a4f6932e3bbc049c638d025ab977bb998bab6c23efd594b5edcac4c6f9fae459afdbd7bb344487a78d2c6d9c93b030ee0c799f985c590f961f72
+#
+# This script is Copyright (C) 2004-2024 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.0 $
+# $Date: 2024/07/22 $
+#
+# Description : This document implements the security configuration as recommended by the
+#               CIS RedHat OpenShift Container Platform Benchmark v1.6.0
+#
+#<ui_metadata>
+#<display_name>CIS RedHat OpenShift Container Platform v1.6.0 L2</display_name>
+#<spec>
+#  <type>CIS</type>
+#  <name>RedHat OpenShift Container Platform</name>
+#  <profile>L2</profile>
+#  <version>1.6.0</version>
+#  <link>https://workbench.cisecurity.org/benchmarks/16094</link>
+#</spec>
+#<labels>openshift</labels>
+#<benchmark_refs>CCE,CSCv6,CSCv7,CSCv8,LEVEL</benchmark_refs>
+#</ui_metadata>
+
+<check_type:"OpenShift">
+
+<report type:"WARNING">
+  description : "2.7 Ensure that a unique Certificate Authority is used for etcd"
+  info        : "Use a different certificate authority for etcd from the one used for Kubernetes.
+
+Rationale:
+
+etcd is a highly available key-value store used by Kubernetes deployments for persistent storage of all of its REST API objects. Its access should be restricted to specifically designated clients and peers only.
+
+Authentication to etcd is based on whether the certificate presented was issued by a trusted certificate authority. There is no checking of certificate attributes such as common name or subject alternative name. As such, if any attackers were able to gain access to any certificate issued by the trusted certificate authority, they would be able to gain full access to the etcd database.
+
+Impact:
+
+Additional management of the certificates and keys for the dedicated certificate authority will be required.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+  solution    : "None required. Certificates for etcd are managed by the OpenShift cluster etcd operator.
+
+Default Value:
+
+By default, in OpenShift 4, communication with etcd is secured by the etcd serving CA."
+  reference   : "800-171|3.5.2,800-171|3.13.16,800-53|IA-5(1),800-53|SC-28,800-53|SC-28(1),800-53r5|IA-5(1),800-53r5|SC-28,800-53r5|SC-28(1),CN-L3|8.1.4.7(b),CN-L3|8.1.4.8(b),CSCv7|14.8,CSCv8|3.11,CSF|PR.AC-1,CSF|PR.DS-1,GDPR|32.1.a,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(2)(i),HIPAA|164.312(a)(2)(iv),HIPAA|164.312(d),HIPAA|164.312(e)(2)(ii),ITSG-33|IA-5(1),ITSG-33|SC-28,ITSG-33|SC-28a.,ITSG-33|SC-28(1),LEVEL|2M,NESA|T5.2.3,PCI-DSSv3.2.1|3.4,PCI-DSSv4.0|3.3.2,PCI-DSSv4.0|3.5.1,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|13.2,SWIFT-CSCv1|4.1,TBA-FIISB|28.1"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/16094"
+</report>
+
+<if>
+  <condition auto:"FAILED" type:"AND">
+    <custom_item>
+      type           : REST_API
+      description    : "Authentications"
+      request        : "getAuthentications"
+      json_transform : ".items[] | .spec.clusterID as $clusterID | .items[] | \"Cluster ID: \($clusterID), Name: \(.metadata.name), Kind: \(.kind)\""
+      expect         : "Kind: Authentication"
+    </custom_item>
+
+    <custom_item>
+      type           : REST_API
+      description    : "Identities"
+      request        : "getIdentities"
+      json_transform : ".items[] | .spec.clusterID as $clusterID | [.items[].providerName] | unique | .[] | \"Cluster ID: \($clusterID), Provider Name: \(.)\""
+      expect         : "Provider Name: .+"
+    </custom_item>
+
+    <custom_item>
+      type           : REST_API
+      description    : "ClusterRoleBindings"
+      request        : "getClusterRoleBindings"
+      json_transform : ".items[] | .spec.clusterID as $clusterID | .items[] | .metadata.name as $name | .metadata.uid as $uid | .subjects[] | \"Cluster ID: \($clusterID), Role: \($name), UID: \($uid), Name: \(.name), Kind: \(.kind)\""
+      regex          : "Role: cluster-admin.*Kind: User"
+      expect         : "Role: cluster-admin.*Kind: User"
+    </custom_item>
+
+    <custom_item>
+      type           : REST_API
+      description    : "Secrets"
+      request        : "getSecrets_kube-system"
+      json_transform : ".items[] | .spec.clusterID as $clusterID | .items[] | select(.metadata.name==\"kubeadmin\") | \"Cluster ID: \($clusterID), Name: \(.metadata.name), UID: \(.metadata.uid)\""
+      not_expect     : "Name: kubeadmin"
+    </custom_item>
+  </condition>
+
+  <then>
+    <report type:"PASSED">
+      description : "3.1.1 Client certificate authentication should not be used for users"
+      info        : "Kubernetes provides the option to use client certificates for user authentication. However as there is no way to revoke these certificates when a user leaves an organization or loses their credential, they are not suitable for this purpose.
+
+It is not possible to fully disable client certificate use within a cluster as it is used for component to component authentication.
+
+Rationale:
+
+With any authentication mechanism the ability to revoke credentials if they are compromised or no longer required, is a key control. Kubernetes client certificate authentication does not allow for this due to a lack of support for certificate revocation.
+
+Impact:
+
+External mechanisms for authentication generally require additional software to be deployed."
+      solution    : "Configure an identity provider for the OpenShift cluster following the OpenShift documentation. Once an identity provider has been defined, you can use RBAC to define and apply permissions.
+After you define an identity provider and create a new cluster-admin user you can reduce the attack surface by removing the default kubeadmin user.
+
+Default Value:
+
+By default, only a kubeadmin user exists on your cluster. To specify an identity provider, you must create a Custom Resource (CR) that describes that identity provider and add it to the cluster."
+      reference   : "800-171|3.4.2,800-171|3.4.6,800-171|3.4.7,800-53|CM-6,800-53|CM-7,800-53|SA-15,800-53r5|CM-6,800-53r5|CM-7,800-53r5|SA-15,CSCv7|16.2,CSCv8|4.8,CSCv8|16.11,CSF|PR.IP-1,CSF|PR.IP-2,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6,ITSG-33|CM-7,LEVEL|2M,NIAv2|SS5,NIAv2|SS6a,NIAv2|SS15a,PCI-DSSv3.2.1|2.2.2,QCSC-v1|4.2,SWIFT-CSCv1|2.3"
+      see_also    : "https://workbench.cisecurity.org/benchmarks/16094"
+      show_output : YES
+    </report>
+  </then>
+</if>
+
+<if>
+  <condition auto:"WARNING" type:"AND">
+    <custom_item>
+      type           : REST_API
+      description    : "openshift-kube-apiserver"
+      request        : "getConfigMaps_openshift-kube-apiserver"
+      json_transform : ".items[] | .spec.clusterID as $clusterID | .items[] | .metadata.uid as $uid | .metadata.name as $name | select($name == \"config\") | select(.data.\"config.yaml\" | length > 0) | .data.\"config.yaml\" | fromjson | \"Cluster ID: \($clusterID), Name: \($name), UID: \($uid), Audit Policy File: \(.apiServerArguments.\"audit-policy-file\")\""
+      expect         : "MANUAL_REVIEW_REQUIRED"
+      severity       : MEDIUM
+    </custom_item>
+
+    <custom_item>
+      type           : REST_API
+      description    : "openshift-apiserver"
+      request        : "getConfigMaps_openshift-apiserver"
+      json_transform : ".items[] | .spec.clusterID as $clusterID | .items[] | .metadata.uid as $uid | .metadata.name as $name | select($name == \"config\") | select(.data.\"config.yaml\" | length > 0) | .data.\"config.yaml\" | fromjson | \"Cluster ID: \($clusterID), Name: \($name), UID: \($uid), Audit Policy File: \(.apiServerArguments.\"audit-policy-file\")\""
+      expect         : "MANUAL_REVIEW_REQUIRED"
+      severity       : MEDIUM
+    </custom_item>
+  </condition>
+
+  <then>
+    <report type:"PASSED">
+      description : "3.2.2 Ensure that the audit policy covers key security concerns"
+      info        : "Ensure that the audit policy created for the cluster covers key security concerns.
+
+Rationale:
+
+Security audit logs should cover access and modification of key resources in the cluster, to enable them to form an effective part of a security environment.
+
+Impact:
+
+Increasing audit logging will consume resources on the nodes or other log destinations.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+      solution    : "Update the audit log policy profile to use WriteRequestBodies.
+
+Default Value:
+
+Audit logging is configured by default using the Default audit policy, but you are advised to review the log retention settings and log levels to align with your cluster's security posture."
+      reference   : "800-171|3.3.1,800-171|3.3.2,800-171|3.3.6,800-53|AU-3,800-53|AU-3(1),800-53|AU-7,800-53|AU-12,800-53r5|AU-3,800-53r5|AU-3(1),800-53r5|AU-7,800-53r5|AU-12,CN-L3|7.1.2.3(a),CN-L3|7.1.2.3(b),CN-L3|7.1.2.3(c),CN-L3|7.1.3.3(a),CN-L3|7.1.3.3(b),CN-L3|8.1.4.3(b),CSCv7|14.9,CSCv8|8.5,CSF|DE.CM-1,CSF|DE.CM-3,CSF|DE.CM-7,CSF|PR.PT-1,CSF|RS.AN-3,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ITSG-33|AU-3,ITSG-33|AU-3(1),ITSG-33|AU-7,ITSG-33|AU-12,LEVEL|2M,NESA|T3.6.2,NIAv2|AM34a,NIAv2|AM34b,NIAv2|AM34c,NIAv2|AM34d,NIAv2|AM34e,NIAv2|AM34f,NIAv2|AM34g,PCI-DSSv3.2.1|10.1,PCI-DSSv3.2.1|10.3,PCI-DSSv3.2.1|10.3.1,PCI-DSSv3.2.1|10.3.2,PCI-DSSv3.2.1|10.3.3,PCI-DSSv3.2.1|10.3.4,PCI-DSSv3.2.1|10.3.5,PCI-DSSv3.2.1|10.3.6,PCI-DSSv4.0|10.2.2,QCSC-v1|3.2,QCSC-v1|6.2,QCSC-v1|8.2.1,QCSC-v1|10.2.1,QCSC-v1|11.2,QCSC-v1|13.2,SWIFT-CSCv1|6.4"
+      see_also    : "https://workbench.cisecurity.org/benchmarks/16094"
+      show_output : YES
+    </report>
+  </then>
+</if>
+
+<report type:"WARNING">
+  description : "4.2.8 Ensure that the kubeAPIQPS [--event-qps] argument is set to 0 or a level which ensures appropriate event capture"
+  info        : "Security relevant information should be captured. The --event-qps flag on the Kubelet can be used to limit the rate at which events are gathered. Setting this too low could result in relevant events not being logged, however the unlimited setting of 0 could result in a denial of service on the kubelet.
+
+Rationale:
+
+It is important to capture all events and not restrict event creation. Events are an important source of security information and analytics that ensure that your environment is consistently monitored using the event data.
+
+Impact:
+
+Setting this parameter to 0 could result in a denial of service condition due to excessive events being created. The cluster's event processing and storage systems should be scaled to handle expected event loads.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+  solution    : "None by default.
+Follow the documentation to edit kubeletconfig parameters.
+
+Default Value:
+
+By default, the kubeAPIQPS argument is set to 50."
+  reference   : "800-171|3.3.1,800-171|3.3.2,800-171|3.3.6,800-53|AU-3,800-53|AU-3(1),800-53|AU-7,800-53|AU-12,800-53r5|AU-3,800-53r5|AU-3(1),800-53r5|AU-7,800-53r5|AU-12,CN-L3|7.1.2.3(a),CN-L3|7.1.2.3(b),CN-L3|7.1.2.3(c),CN-L3|7.1.3.3(a),CN-L3|7.1.3.3(b),CN-L3|8.1.4.3(b),CSCv7|8.8,CSCv8|8.5,CSF|DE.CM-1,CSF|DE.CM-3,CSF|DE.CM-7,CSF|PR.PT-1,CSF|RS.AN-3,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ITSG-33|AU-3,ITSG-33|AU-3(1),ITSG-33|AU-7,ITSG-33|AU-12,LEVEL|2M,NESA|T3.6.2,NIAv2|AM34a,NIAv2|AM34b,NIAv2|AM34c,NIAv2|AM34d,NIAv2|AM34e,NIAv2|AM34f,NIAv2|AM34g,PCI-DSSv3.2.1|10.1,PCI-DSSv3.2.1|10.3,PCI-DSSv3.2.1|10.3.1,PCI-DSSv3.2.1|10.3.2,PCI-DSSv3.2.1|10.3.3,PCI-DSSv3.2.1|10.3.4,PCI-DSSv3.2.1|10.3.5,PCI-DSSv3.2.1|10.3.6,PCI-DSSv4.0|10.2.2,QCSC-v1|3.2,QCSC-v1|6.2,QCSC-v1|8.2.1,QCSC-v1|10.2.1,QCSC-v1|11.2,QCSC-v1|13.2,SWIFT-CSCv1|6.4"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/16094"
+</report>
+
+<report type:"WARNING">
+  description : "4.2.10 Ensure that the --rotate-certificates argument is not set to false"
+  info        : "Enable kubelet client certificate rotation.
+
+Rationale:
+
+The --rotate-certificates setting causes the kubelet to rotate its client certificates by creating new CSRs as its existing credentials expire. This automated periodic rotation ensures that the there is no downtime due to expired certificates and thus addressing availability in the CIA security triad.
+
+Note: This recommendation only applies if you let kubelets get their certificates from the API server. In case your kubelet certificates come from an outside authority/tool (e.g. Vault) then you need to take care of rotation yourself.
+
+Impact:
+
+None.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+  solution    : "None.
+
+Default Value:
+
+By default, in OpenShift 4, kubelet client certificate rotation is enabled."
+  reference   : "800-171|3.1.13,800-171|3.5.2,800-171|3.13.8,800-53|AC-17(2),800-53|IA-5,800-53|IA-5(1),800-53|SC-8,800-53|SC-8(1),800-53r5|AC-17(2),800-53r5|IA-5,800-53r5|IA-5(1),800-53r5|SC-8,800-53r5|SC-8(1),CN-L3|7.1.2.7(g),CN-L3|7.1.3.1(d),CN-L3|8.1.2.2(a),CN-L3|8.1.2.2(b),CN-L3|8.1.4.1(c),CN-L3|8.1.4.7(a),CN-L3|8.1.4.8(a),CN-L3|8.2.4.5(c),CN-L3|8.2.4.5(d),CN-L3|8.5.2.2,CSCv7|14.4,CSCv8|3.10,CSF|PR.AC-1,CSF|PR.AC-3,CSF|PR.DS-2,CSF|PR.DS-5,CSF|PR.PT-4,GDPR|32.1.a,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),HIPAA|164.312(a)(2)(i),HIPAA|164.312(d),HIPAA|164.312(e)(1),HIPAA|164.312(e)(2)(i),ISO/IEC-27001|A.6.2.2,ISO/IEC-27001|A.10.1.1,ISO/IEC-27001|A.13.2.3,ITSG-33|AC-17(2),ITSG-33|IA-5,ITSG-33|IA-5(1),ITSG-33|SC-8,ITSG-33|SC-8a.,ITSG-33|SC-8(1),LEVEL|2M,NESA|T4.3.1,NESA|T4.3.2,NESA|T4.5.1,NESA|T4.5.2,NESA|T5.2.3,NESA|T5.4.2,NESA|T7.3.3,NESA|T7.4.1,NIAv2|AM37,NIAv2|IE8,NIAv2|IE9,NIAv2|IE12,NIAv2|NS5d,NIAv2|NS6b,NIAv2|NS29,NIAv2|SS24,PCI-DSSv3.2.1|2.3,PCI-DSSv3.2.1|4.1,PCI-DSSv4.0|2.2.7,PCI-DSSv4.0|4.2.1,QCSC-v1|3.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|13.2,SWIFT-CSCv1|2.1,SWIFT-CSCv1|2.6,SWIFT-CSCv1|4.1,TBA-FIISB|29.1"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/16094"
+</report>
+
+<report type:"WARNING">
+  description : "4.2.11 Verify that the RotateKubeletServerCertificate argument is set to true"
+  info        : "Enable kubelet server certificate rotation.
+
+Rationale:
+
+RotateKubeletServerCertificate causes the kubelet to both request a serving certificate after bootstrapping its client credentials and rotate the certificate as its existing credentials expire. This automated periodic rotation ensures that the there are no downtimes due to expired certificates and thus addressing availability in the CIA security triad.
+
+Note: This recommendation only applies if you let kubelets get their certificates from the API server. In case your kubelet certificates come from an outside authority/tool (e.g. Vault) then you need to take care of rotation yourself.
+
+Impact:
+
+None.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+  solution    : "None.
+
+Default Value:
+
+By default, RotateKubeletServerCertificate is enabled."
+  reference   : "800-171|3.1.13,800-171|3.5.2,800-171|3.13.8,800-53|AC-17(2),800-53|IA-5,800-53|IA-5(1),800-53|SC-8,800-53|SC-8(1),800-53r5|AC-17(2),800-53r5|IA-5,800-53r5|IA-5(1),800-53r5|SC-8,800-53r5|SC-8(1),CN-L3|7.1.2.7(g),CN-L3|7.1.3.1(d),CN-L3|8.1.2.2(a),CN-L3|8.1.2.2(b),CN-L3|8.1.4.1(c),CN-L3|8.1.4.7(a),CN-L3|8.1.4.8(a),CN-L3|8.2.4.5(c),CN-L3|8.2.4.5(d),CN-L3|8.5.2.2,CSCv7|14.4,CSCv8|3.10,CSF|PR.AC-1,CSF|PR.AC-3,CSF|PR.DS-2,CSF|PR.DS-5,CSF|PR.PT-4,GDPR|32.1.a,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),HIPAA|164.312(a)(2)(i),HIPAA|164.312(d),HIPAA|164.312(e)(1),HIPAA|164.312(e)(2)(i),ISO/IEC-27001|A.6.2.2,ISO/IEC-27001|A.10.1.1,ISO/IEC-27001|A.13.2.3,ITSG-33|AC-17(2),ITSG-33|IA-5,ITSG-33|IA-5(1),ITSG-33|SC-8,ITSG-33|SC-8a.,ITSG-33|SC-8(1),LEVEL|2M,NESA|T4.3.1,NESA|T4.3.2,NESA|T4.5.1,NESA|T4.5.2,NESA|T5.2.3,NESA|T5.4.2,NESA|T7.3.3,NESA|T7.4.1,NIAv2|AM37,NIAv2|IE8,NIAv2|IE9,NIAv2|IE12,NIAv2|NS5d,NIAv2|NS6b,NIAv2|NS29,NIAv2|SS24,PCI-DSSv3.2.1|2.3,PCI-DSSv3.2.1|4.1,PCI-DSSv4.0|2.2.7,PCI-DSSv4.0|4.2.1,QCSC-v1|3.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|13.2,SWIFT-CSCv1|2.1,SWIFT-CSCv1|2.6,SWIFT-CSCv1|4.1,TBA-FIISB|29.1"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/16094"
+</report>
+
+<custom_item>
+  type           : REST_API
+  description    : "5.2.6 Minimize the admission of root containers"
+  info           : "Do not generally permit containers to be run as the root user.
+
+Rationale:
+
+Containers may run as any Linux user. Containers which run as the root user, whilst constrained by Container Runtime security features still have an escalated likelihood of container breakout.
+
+Ideally, all containers should run as a defined non-UID 0 user.
+
+There should be at least one Security Context Constraint (SCC) defined which does not permit root users in a container.
+
+If you need to run root containers, this should be defined in a separate SCC and you should carefully check RBAC controls to ensure that only limited service accounts and users are given permission to access that SCC.
+
+Impact:
+
+Pods with containers which run as the root user will not be permitted."
+  solution       : "None required. By default, OpenShift includes the nonroot and nonroot-v2 SCCs that restrict the ability to run as nonroot. If additional SCCs are appropriate, follow the OpenShift documentation to create custom SCCs.
+
+Default Value:
+
+By default, the following SCCs restrict the ability to run as non-root:
+
+'nonroot'
+
+'nonroot-v2'"
+  reference      : "800-171|3.1.5,800-171|3.1.6,800-171|3.1.14,800-53|AC-6(2),800-53|AC-6(5),800-53|AC-17(3),800-53|SI-7,800-53r5|AC-6(2),800-53r5|AC-6(5),800-53r5|AC-17(3),800-53r5|SI-7,CN-L3|7.1.3.2(b),CN-L3|7.1.3.2(g),CN-L3|8.1.4.2(d),CN-L3|8.1.4.4(c),CN-L3|8.1.10.6(a),CN-L3|8.1.10.6(i),CSCv7|4.3,CSCv8|5.4,CSCv8|12.8,CSF|PR.AC-3,CSF|PR.AC-4,CSF|PR.DS-6,CSF|PR.PT-4,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),HIPAA|164.312(c)(1),HIPAA|164.312(c)(2),HIPAA|164.312(e)(2)(i),ISO/IEC-27001|A.6.2.2,ISO/IEC-27001|A.9.2.3,ITSG-33|AC-6(2),ITSG-33|AC-6(5),ITSG-33|AC-17(3),ITSG-33|SI-7,ITSG-33|SI-7a.,LEVEL|2M,NESA|T3.4.1,NESA|T5.1.1,NESA|T5.2.2,NESA|T5.4.6,NESA|T5.6.1,NESA|T7.3.2,NESA|T7.3.3,NIAv2|AM1,NIAv2|AM23f,NIAv2|AM32,NIAv2|AM33,NIAv2|SS13c,NIAv2|SS15c,NIAv2|VL3a,PCI-DSSv3.2.1|7.1.2,PCI-DSSv3.2.1|10.5.5,PCI-DSSv4.0|7.2.1,PCI-DSSv4.0|7.2.2,QCSC-v1|3.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|6.2,SWIFT-CSCv1|1.2,SWIFT-CSCv1|2.3,SWIFT-CSCv1|5.1,TBA-FIISB|31.4.2,TBA-FIISB|31.4.3"
+  see_also       : "https://workbench.cisecurity.org/benchmarks/16094"
+  request        : "getSecurityContextConstraints"
+  json_transform : ".items[] | .spec.clusterID as $clusterID | .items[] | \"Cluster ID: \($clusterID), Name: \(.metadata.name), UID: \(.metadata.uid), Run As User: \(.runAsUser.type), UID Range Min: \(.runAsUser.uidRangeMin), UID Range Max: \(.runAsUser.uidRangeMax)\""
+  expect         : "Run As User: (MustRunAsNonRoot|MustRunAsRange, UID Range Min: [1-9])"
+</custom_item>
+
+<custom_item>
+  type           : REST_API
+  description    : "5.2.9 Minimize the admission of containers with capabilities assigned"
+  info           : "Do not generally permit containers with capabilities.
+
+Rationale:
+
+Containers run with a default set of capabilities as assigned by the Container Runtime. Capabilities are parts of the rights generally granted on a Linux system to the root user.
+
+In many cases applications running in containers do not require any capabilities to operate, so from the perspective of the principal of least privilege use of capabilities should be minimized.
+
+Impact:
+
+Pods with containers which require capabilities to operate will not be permitted."
+  solution       : "Review the use of capabilities in applications running on your cluster. Where a namespace contains applications which do not require any Linux capabilities to operate, consider adding a SCC which forbids the admission of containers which do not drop all capabilities.
+
+Default Value:
+
+By default, OpenShift includes three SCCs that drop all container capabilities:
+
+'hostnetwork-v2'
+
+'nonroot-v2'
+
+'restricted-v2'"
+  reference      : "800-171|3.4.2,800-171|3.4.6,800-171|3.4.7,800-53|CM-6,800-53|CM-7,800-53r5|CM-6,800-53r5|CM-7,CSCv7|5.2,CSCv8|4.8,CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6,ITSG-33|CM-7,LEVEL|2M,NIAv2|SS15a,PCI-DSSv3.2.1|2.2.2,SWIFT-CSCv1|2.3"
+  see_also       : "https://workbench.cisecurity.org/benchmarks/16094"
+  request        : "getSecurityContextConstraints"
+  json_transform : ".items[] | .spec.clusterID as $clusterID | .items[] | \"Cluster ID: \($clusterID), Name: \(.metadata.name), UID: \(.metadata.uid), Required Drop Capabilities: \(.requiredDropCapabilities)\""
+  expect         : "Required Drop Capabilities:.*\"ALL\""
+</custom_item>
+
+<custom_item>
+  type           : REST_API
+  description    : "5.2.10 Minimize access to privileged Security Context Constraints"
+  info           : "OpenShift has the concept of Security Context Constraints (SCCs) that supplement the Pod Security Admission controller.
+
+SCCs allow you to group elevated container capabilities and assign those capabilities to users and groups. For example, you can have an SCC that restricts the ability to launch privileged containers and assign that SCC to all authenticated users. As a result, users requesting a pod that contains a privileged container will be rejected.
+
+You can find more information on SCCs in the OpenShift documentation.
+
+Rationale:
+
+SCCs that contain the ability to permit privileged or elevated container action should be carefully managed. Users with access to such an SCC can leverage the privileged functionality granted by that SCC, increasing the risk of compromising the container or host.
+
+Impact:
+
+Users should only have access to SCCs that allow them to perform functions required by their roles, and no more, following the principle of least privilege.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+  solution       : "Remove any users and groups who do not need access to an SCC, following the principle of least privilege.
+You can remove users and groups from an SCC using the oc edit scc $NAME command.
+Additionally, you can create your own SCCs that contain the container functionality you need for a particular use case and assign that SCC to users and groups if the default SCCs are not appropriate for your use case.
+
+Default Value:
+
+OpenShift provides the following SCCs by default:
+
+'anyuid'
+
+'hostaccess'
+
+'hostmount-anyuid'
+
+'hostnetwork'
+
+'hostnetwork-v2'
+
+'machine-api-termination-handler'
+
+'node-exporter'
+
+'nonroot'
+
+'nonroot-v2'
+
+'privileged'
+
+'restricted'
+
+'restricted-v2'
+
+These default SCCs attempt to group similar privileged container functionality into a single SCC that fits particular use cases.
+
+Please refer to the OpenShift documentation for a complete list of capabilities associated with each default SCC."
+  reference      : "800-171|3.1.1,800-171|3.1.5,800-171|3.3.8,800-171|3.3.9,800-53|AC-2,800-53|AC-3,800-53|AC-6,800-53|AC-6(1),800-53|AC-6(7),800-53|AU-9(4),800-53r5|AC-2,800-53r5|AC-3,800-53r5|AC-6,800-53r5|AC-6(1),800-53r5|AC-6(7),800-53r5|AU-9(4),CN-L3|7.1.3.2(b),CN-L3|7.1.3.2(d),CN-L3|7.1.3.2(g),CN-L3|8.1.4.2(d),CN-L3|8.1.4.2(f),CN-L3|8.1.4.3(d),CN-L3|8.1.4.11(b),CN-L3|8.1.10.2(c),CN-L3|8.1.10.6(a),CN-L3|8.5.3.1,CN-L3|8.5.4.1(a),CSCv7|4.7,CSCv8|6.8,CSF|DE.CM-1,CSF|DE.CM-3,CSF|PR.AC-1,CSF|PR.AC-4,CSF|PR.DS-5,CSF|PR.PT-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),HIPAA|164.312(b),ISO/IEC-27001|A.9.2.1,ISO/IEC-27001|A.9.2.5,ISO/IEC-27001|A.9.4.1,ISO/IEC-27001|A.9.4.4,ISO/IEC-27001|A.9.4.5,ISO/IEC-27001|A.12.4.2,ITSG-33|AC-2,ITSG-33|AC-3,ITSG-33|AC-6,ITSG-33|AC-6(1),ITSG-33|AU-9(4),ITSG-33|AU-9(4)(a),ITSG-33|AU-9(4)(b),LEVEL|2M,NESA|M1.1.3,NESA|M1.2.2,NESA|M5.2.3,NESA|M5.5.2,NESA|T4.2.1,NESA|T5.1.1,NESA|T5.2.2,NESA|T5.4.1,NESA|T5.4.4,NESA|T5.4.5,NESA|T5.5.4,NESA|T5.6.1,NESA|T7.5.2,NESA|T7.5.3,NIAv2|AM1,NIAv2|AM3,NIAv2|AM23f,NIAv2|AM28,NIAv2|AM31,NIAv2|GS3,NIAv2|GS4,NIAv2|GS8c,NIAv2|NS5j,NIAv2|SM5,NIAv2|SM6,NIAv2|SS13c,NIAv2|SS14e,NIAv2|SS15c,NIAv2|SS29,NIAv2|VL3b,PCI-DSSv3.2.1|7.1.2,PCI-DSSv3.2.1|10.5,PCI-DSSv3.2.1|10.5.2,PCI-DSSv4.0|7.2.1,PCI-DSSv4.0|7.2.2,PCI-DSSv4.0|10.3.2,QCSC-v1|3.2,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|8.2.1,QCSC-v1|13.2,QCSC-v1|15.2,SWIFT-CSCv1|5.1,TBA-FIISB|31.1,TBA-FIISB|31.4.2,TBA-FIISB|31.4.3"
+  see_also       : "https://workbench.cisecurity.org/benchmarks/16094"
+  request        : "getSecurityContextConstraints"
+  json_transform : ".items[] | .spec.clusterID as $clusterID | .items[] | select((.allowHostIPC or .allowHostPID or .allowHostPorts or .allowHostNetwork or .allowHostDirVolumePlugin or .allowPrivilegedContainer or .runAsUser.type != \"MustRunAsRange\") and (.groups != []) or (.users != [])) | \"Cluster ID: \($clusterID), Name: \(.metadata.name), UID: \(.metadata.uid), Groups: \(.groups), Users: \(.users)\""
+  regex          : "Cluster ID:"
+  not_expect     : "Cluster ID:"
+  severity       : MEDIUM
+</custom_item>
+
+<if>
+  <condition auto:"WARNING" type:"AND">
+    <custom_item>
+      type           : REST_API
+      description    : "Namespaces"
+      request        : "getNamespaces"
+      json_transform : ".items[] | .spec.clusterID as $clusterID | .items[] | \"Cluster ID: \($clusterID), Name: \(.metadata.name), UID: \(.metadata.uid)\""
+    </custom_item>
+
+    <custom_item>
+      type           : REST_API
+      description    : "NetworkPolicies"
+      request        : "getNetworkPolicies"
+      json_transform : ".items[] | .spec.clusterID as $clusterID | .items[] | \"Cluster ID: \($clusterID), Name: \(.metadata.name), UID: \(.metadata.uid), Namespace: \(.metadata.namespace)\""
+      expect         : "MANUAL_REVIEW_REQUIRED"
+      severity       : MEDIUM
+    </custom_item>
+  </condition>
+
+  <then>
+    <report type:"PASSED">
+      description : "5.3.2 Ensure that all Namespaces have Network Policies defined"
+      info        : "Use network policies to isolate traffic in your cluster network.
+
+Rationale:
+
+Running different applications on the same Kubernetes cluster creates a risk of one compromised application attacking a neighboring application. Network segmentation is important to ensure that containers can communicate only with those they are supposed to. A network policy is a specification of how selections of pods are allowed to communicate with each other and other network endpoints.
+
+Once there is any Network Policy in a namespace selecting a particular pod, that pod will reject any connections that are not allowed by any Network Policy. Other pods in the namespace that are not selected by any Network Policy will continue to accept all traffic
+
+Impact:
+
+Once there is any Network Policy in a namespace selecting a particular pod, that pod will reject any connections that are not allowed by any Network Policy. Other pods in the namespace that are not selected by any Network Policy will continue to accept all traffic'
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+      solution    : "Follow the documentation and create NetworkPolicy objects as you need them.
+
+Default Value:
+
+By default, all Pods in a project are accessible from other Pods and network endpoints; network policies are not created."
+      reference   : "800-171|3.13.1,800-171|3.13.5,800-171|3.13.6,800-53|CA-9,800-53|SC-7,800-53|SC-7(5),800-53r5|CA-9,800-53r5|SC-7,800-53r5|SC-7(5),CN-L3|7.1.2.2(c),CN-L3|8.1.10.6(j),CSCv7|14.2,CSCv8|4.4,CSF|DE.CM-1,CSF|ID.AM-3,CSF|PR.AC-5,CSF|PR.DS-5,CSF|PR.PT-4,GDPR|32.1.b,GDPR|32.1.d,GDPR|32.2,HIPAA|164.306(a)(1),ISO/IEC-27001|A.13.1.3,ITSG-33|SC-7,ITSG-33|SC-7(5),LEVEL|2M,NESA|T4.5.4,NIAv2|GS1,NIAv2|GS2a,NIAv2|GS2b,NIAv2|GS7b,NIAv2|NS25,PCI-DSSv3.2.1|1.1,PCI-DSSv3.2.1|1.2,PCI-DSSv3.2.1|1.2.1,PCI-DSSv3.2.1|1.3,PCI-DSSv4.0|1.2.1,PCI-DSSv4.0|1.4.1,QCSC-v1|4.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|5.2.3,QCSC-v1|6.2,QCSC-v1|8.2.1,SWIFT-CSCv1|2.1,TBA-FIISB|43.1"
+      see_also    : "https://workbench.cisecurity.org/benchmarks/16094"
+      show_output : YES
+    </report>
+  </then>
+</if>
+
+<report type:"WARNING">
+  description : "5.4.1 Prefer using secrets as files over secrets as environment variables"
+  info        : "Kubernetes supports mounting secrets as data volumes or as environment variables. Minimize the use of environment variable secrets.
+
+Rationale:
+
+It is reasonably common for application code to log out its environment (particularly in the event of an error). This will include any secret values passed in as environment variables, so secrets can easily be exposed to any user or entity who has access to the logs.
+
+Impact:
+
+Application code which expects to read secrets in the form of environment variables would need modification
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+  solution    : "If possible, rewrite application code to read secrets from mounted secret files, rather than from environment variables.
+
+Default Value:
+
+By default, application secrets are not defined.
+
+In a default OpenShift 4 cluster, the following platform objects are returned
+
+Pod aws-ebs-csi-driver-controller-699844b6d7-2pl8k
+
+Pod aws-ebs-csi-driver-controller-6dcc794464-gnl6l
+
+Pod aws-ebs-csi-driver-controller-6dcc794464-kkhr9
+
+Deployment aws-ebs-csi-driver-controller
+
+Deployment aws-ebs-csi-driver-controller
+
+ReplicaSet aws-ebs-csi-driver-controller-699844b6d7
+
+ReplicaSet aws-ebs-csi-driver-controller-777d8fbb87
+
+ReplicaSet aws-ebs-csi-driver-controller-658754b8c8
+
+ReplicaSet aws-ebs-csi-driver-controller-6dcc794464"
+  reference   : "800-171|3.1.13,800-171|3.5.2,800-171|3.13.8,800-53|AC-17(2),800-53|IA-5,800-53|IA-5(1),800-53|SC-8,800-53|SC-8(1),800-53r5|AC-17(2),800-53r5|IA-5,800-53r5|IA-5(1),800-53r5|SC-8,800-53r5|SC-8(1),CN-L3|7.1.2.7(g),CN-L3|7.1.3.1(d),CN-L3|8.1.2.2(a),CN-L3|8.1.2.2(b),CN-L3|8.1.4.1(c),CN-L3|8.1.4.7(a),CN-L3|8.1.4.8(a),CN-L3|8.2.4.5(c),CN-L3|8.2.4.5(d),CN-L3|8.5.2.2,CSCv7|14.4,CSCv8|3.10,CSF|PR.AC-1,CSF|PR.AC-3,CSF|PR.DS-2,CSF|PR.DS-5,CSF|PR.PT-4,GDPR|32.1.a,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),HIPAA|164.312(a)(2)(i),HIPAA|164.312(d),HIPAA|164.312(e)(1),HIPAA|164.312(e)(2)(i),ISO/IEC-27001|A.6.2.2,ISO/IEC-27001|A.10.1.1,ISO/IEC-27001|A.13.2.3,ITSG-33|AC-17(2),ITSG-33|IA-5,ITSG-33|IA-5(1),ITSG-33|SC-8,ITSG-33|SC-8a.,ITSG-33|SC-8(1),LEVEL|2M,NESA|T4.3.1,NESA|T4.3.2,NESA|T4.5.1,NESA|T4.5.2,NESA|T5.2.3,NESA|T5.4.2,NESA|T7.3.3,NESA|T7.4.1,NIAv2|AM37,NIAv2|IE8,NIAv2|IE9,NIAv2|IE12,NIAv2|NS5d,NIAv2|NS6b,NIAv2|NS29,NIAv2|SS24,PCI-DSSv3.2.1|2.3,PCI-DSSv3.2.1|4.1,PCI-DSSv4.0|2.2.7,PCI-DSSv4.0|4.2.1,QCSC-v1|3.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|13.2,SWIFT-CSCv1|2.1,SWIFT-CSCv1|2.6,SWIFT-CSCv1|4.1,TBA-FIISB|29.1"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/16094"
+</report>
+
+<report type:"WARNING">
+  description : "5.4.2 Consider external secret storage"
+  info        : "Consider the use of an external secrets storage and management system, instead of using Kubernetes Secrets directly, if you have more complex secret management needs. Ensure the solution requires authentication to access secrets, has auditing of access to and use of secrets, and encrypts secrets. Some solutions also make it easier to rotate secrets.
+
+Rationale:
+
+Kubernetes supports secrets as first-class objects, but care needs to be taken to ensure that access to secrets is carefully limited. Using an external secrets provider can ease the management of access to secrets, especially where secrets are used across both Kubernetes and non-Kubernetes environments.
+
+Impact:
+
+None
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+  solution    : "Refer to the secrets management options offered by your cloud provider or a third-party secrets management solution.
+
+Default Value:
+
+By default, no external secret management is configured."
+  reference   : "800-171|3.13.4,800-53|SC-4,800-53r5|SC-4,CSCv7|14.6,CSCv8|3.12,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-4,ITSG-33|SC-4a.,LEVEL|2M"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/16094"
+</report>
+
+<report type:"WARNING">
+  description : "5.5.1 Configure Image Provenance using image controller configuration parameters"
+  info        : "Configure Image Provenance for your deployment.
+
+Rationale:
+
+Kubernetes supports plugging in provenance rules to accept or reject the images in your deployments. You could configure such rules to ensure that only approved images are deployed in the cluster.
+
+You can control which images can be imported, tagged, and run in a cluster using the image controller. For additional information on the image controller, see Image configuration resources
+
+Impact:
+
+You need to regularly maintain your provenance configuration based on container image updates.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+  solution    : "Follow the OpenShift documentation: Image configuration resources
+
+Default Value:
+
+By default, image provenance is not set."
+  reference   : "800-171|3.4.1,800-171|3.4.2,800-171|3.4.6,800-171|3.4.7,800-171|3.13.1,800-171|3.13.2,800-53|CM-1,800-53|CM-2,800-53|CM-6,800-53|CM-7,800-53|CM-7(1),800-53|CM-9,800-53|SA-3,800-53|SA-8,800-53|SA-10,800-53r5|CM-1,800-53r5|CM-2,800-53r5|CM-6,800-53r5|CM-7,800-53r5|CM-7(1),800-53r5|CM-9,800-53r5|SA-3,800-53r5|SA-8,800-53r5|SA-10,CSCv7|5.4,CSCv8|4.1,CSF|DE.AE-1,CSF|ID.GV-1,CSF|ID.GV-3,CSF|PR.DS-7,CSF|PR.IP-1,CSF|PR.IP-2,CSF|PR.IP-3,CSF|PR.PT-3,GDPR|32.1.b,GDPR|32.4,HIPAA|164.306(a)(1),ITSG-33|CM-1,ITSG-33|CM-2,ITSG-33|CM-6,ITSG-33|CM-7,ITSG-33|CM-7(1),ITSG-33|CM-9,ITSG-33|SA-3,ITSG-33|SA-8,ITSG-33|SA-8a.,ITSG-33|SA-10,LEVEL|2M,NESA|M1.2.2,NESA|T1.2.1,NESA|T1.2.2,NESA|T3.2.5,NESA|T3.4.1,NESA|T4.5.3,NESA|T4.5.4,NESA|T7.2.1,NESA|T7.5.1,NESA|T7.5.3,NESA|T7.6.1,NESA|T7.6.2,NESA|T7.6.3,NESA|T7.6.5,NIAv2|GS8b,NIAv2|SS3,NIAv2|SS15a,NIAv2|SS16,NIAv2|VL2,NIAv2|VL7a,NIAv2|VL7b,PCI-DSSv3.2.1|2.2.2,QCSC-v1|3.2,QCSC-v1|4.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|7.2,SWIFT-CSCv1|2.3"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/16094"
+</report>
+
+<report type:"WARNING">
+  description : "5.7.2 Ensure that the seccomp profile is set to docker/default in your pod definitions"
+  info        : "Enable default seccomp profile in your pod definitions.
+
+Rationale:
+
+Seccomp (secure computing mode) is used to restrict the set of system calls applications can make, allowing cluster administrators greater control over the security of workloads running in the cluster. Kubernetes disables seccomp profiles by default for historical reasons. You should enable it to ensure that the workloads have restricted actions available within the container.
+
+Impact:
+
+If the default seccomp profile is too restrictive for you, you will need to create and manage your own seccomp profiles, which can be done using OpenShift Security Context Constraints and custom seccomp profiles.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+  solution    : "For any non-privileged pods or containers that do not have seccomp profiles, consider using the RuntimeDefault or creating a custom seccomp profile specifically for the workload.
+Please refer to the OpenShift documentation for working with custom seccomp profiles.
+
+Default Value:
+
+By default, OpenShift applies the restricted-v2 SCC to all pods, which uses the RuntimeDefault seccomp profile."
+  reference   : "800-171|3.4.1,800-171|3.4.2,800-171|3.4.6,800-171|3.4.7,800-171|3.13.1,800-171|3.13.2,800-53|CM-1,800-53|CM-2,800-53|CM-6,800-53|CM-7,800-53|CM-7(1),800-53|CM-9,800-53|SA-3,800-53|SA-8,800-53|SA-10,800-53r5|CM-1,800-53r5|CM-2,800-53r5|CM-6,800-53r5|CM-7,800-53r5|CM-7(1),800-53r5|CM-9,800-53r5|SA-3,800-53r5|SA-8,800-53r5|SA-10,CSCv7|5.2,CSCv8|4.1,CSF|DE.AE-1,CSF|ID.GV-1,CSF|ID.GV-3,CSF|PR.DS-7,CSF|PR.IP-1,CSF|PR.IP-2,CSF|PR.IP-3,CSF|PR.PT-3,GDPR|32.1.b,GDPR|32.4,HIPAA|164.306(a)(1),ITSG-33|CM-1,ITSG-33|CM-2,ITSG-33|CM-6,ITSG-33|CM-7,ITSG-33|CM-7(1),ITSG-33|CM-9,ITSG-33|SA-3,ITSG-33|SA-8,ITSG-33|SA-8a.,ITSG-33|SA-10,LEVEL|2M,NESA|M1.2.2,NESA|T1.2.1,NESA|T1.2.2,NESA|T3.2.5,NESA|T3.4.1,NESA|T4.5.3,NESA|T4.5.4,NESA|T7.2.1,NESA|T7.5.1,NESA|T7.5.3,NESA|T7.6.1,NESA|T7.6.2,NESA|T7.6.3,NESA|T7.6.5,NIAv2|GS8b,NIAv2|SS3,NIAv2|SS15a,NIAv2|SS16,NIAv2|VL2,NIAv2|VL7a,NIAv2|VL7b,PCI-DSSv3.2.1|2.2.2,QCSC-v1|3.2,QCSC-v1|4.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|7.2,SWIFT-CSCv1|2.3"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/16094"
+</report>
+
+<report type:"WARNING">
+  description : "5.7.3 Apply Security Context to Your Pods and Containers"
+  info        : "Apply Security Context to Your Pods and Containers
+
+Rationale:
+
+A security context defines the operating system security settings (uid, gid, capabilities, SELinux role, etc..) applied to a container. When designing your containers and pods, make sure that you configure the security context for your pods, containers, and volumes. A security context is a property defined in the deployment yaml. It controls the security parameters that will be assigned to the pod/container/volume. There are two levels of security context: pod level security context, and container level security context.
+
+Impact:
+
+If you incorrectly apply security contexts, you may have trouble running the pods.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+  solution    : "Follow the Kubernetes documentation and apply security contexts to your pods. For a suggested list of security contexts, you may refer to the CIS Security Benchmark for Docker Containers.
+
+Default Value:
+
+By default, no security contexts are automatically applied to pods."
+  reference   : "800-171|3.11.2,800-171|3.11.3,800-171|3.14.1,800-53|RA-5,800-53|SI-2,800-53|SI-2(2),800-53r5|RA-5,800-53r5|SI-2,800-53r5|SI-2(2),CN-L3|8.1.4.4(e),CN-L3|8.1.10.5(a),CN-L3|8.1.10.5(b),CN-L3|8.5.4.1(b),CN-L3|8.5.4.1(d),CN-L3|8.5.4.1(e),CSCv7|8.3,CSCv8|7.3,CSF|DE.CM-8,CSF|DE.DP-4,CSF|DE.DP-5,CSF|ID.RA-1,CSF|PR.IP-12,CSF|RS.CO-3,CSF|RS.MI-3,GDPR|32.1.b,GDPR|32.1.d,HIPAA|164.306(a)(1),ISO/IEC-27001|A.12.6.1,ITSG-33|RA-5,ITSG-33|SI-2,ITSG-33|SI-2(2),LEVEL|2M,NESA|M1.2.2,NESA|M5.4.1,NESA|T7.6.2,NESA|T7.7.1,NIAv2|PR9,PCI-DSSv3.2.1|6.1,PCI-DSSv3.2.1|6.2,PCI-DSSv4.0|6.3,PCI-DSSv4.0|6.3.1,PCI-DSSv4.0|6.3.3,QCSC-v1|3.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|5.2.3,QCSC-v1|8.2.1,QCSC-v1|10.2.1,QCSC-v1|11.2,SWIFT-CSCv1|2.2,SWIFT-CSCv1|2.7"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/16094"
+</report>
+
+<if>
+  <condition auto:"FAILED" type:"AND">
+    <custom_item>
+      type           : REST_API
+      description    : "BuildConfigs"
+      request        : "getBuildConfigs_default"
+      json_transform : ".items[] | .spec.clusterID as $clusterID | .items[] | \"Cluster ID: \($clusterID), Name: \(.metadata.name), UID: \(.metadata.uid)\""
+      not_expect     : "Name: .+"
+    </custom_item>
+
+    <custom_item>
+      type           : REST_API
+      description    : "Builds"
+      request        : "getBuilds_default"
+      json_transform : ".items[] | .spec.clusterID as $clusterID | .items[] | \"Cluster ID: \($clusterID), Name: \(.metadata.name), UID: \(.metadata.uid)\""
+      not_expect     : "Name: .+"
+    </custom_item>
+
+    <custom_item>
+      type           : REST_API
+      description    : "CronJobs"
+      request        : "getCronJobs_default"
+      json_transform : ".items[] | .spec.clusterID as $clusterID | .items[] | \"Cluster ID: \($clusterID), Name: \(.metadata.name), UID: \(.metadata.uid)\""
+      not_expect     : "Name: .+"
+    </custom_item>
+
+    <custom_item>
+      type           : REST_API
+      description    : "DaemonSets"
+      request        : "getDaemonSets_default"
+      json_transform : ".items[] | .spec.clusterID as $clusterID | .items[] | \"Cluster ID: \($clusterID), Name: \(.metadata.name), UID: \(.metadata.uid)\""
+      not_expect     : "Name: .+"
+    </custom_item>
+
+    <custom_item>
+      type           : REST_API
+      description    : "DeploymentConfigs"
+      request        : "getDeploymentConfigs_default"
+      json_transform : ".items[] | .spec.clusterID as $clusterID | .items[] | \"Cluster ID: \($clusterID), Name: \(.metadata.name), UID: \(.metadata.uid)\""
+      not_expect     : "Name: .+"
+    </custom_item>
+
+    <custom_item>
+      type           : REST_API
+      description    : "Deployments"
+      request        : "getDeployments_default"
+      json_transform : ".items[] | .spec.clusterID as $clusterID | .items[] | \"Cluster ID: \($clusterID), Name: \(.metadata.name), UID: \(.metadata.uid)\""
+      not_expect     : "Name: .+"
+    </custom_item>
+
+    <custom_item>
+      type           : REST_API
+      description    : "HorizontalPodAutoScalers"
+      request        : "getHorizontalPodAutoScalers_default"
+      json_transform : ".items[] | .spec.clusterID as $clusterID | .items[] | \"Cluster ID: \($clusterID), Name: \(.metadata.name), UID: \(.metadata.uid)\""
+      not_expect     : "Name: .+"
+    </custom_item>
+
+    <custom_item>
+      type           : REST_API
+      description    : "ImageStreams"
+      request        : "getImageStreams_default"
+      json_transform : ".items[] | .spec.clusterID as $clusterID | .items[] | \"Cluster ID: \($clusterID), Name: \(.metadata.name), UID: \(.metadata.uid)\""
+      not_expect     : "Name: .+"
+    </custom_item>
+
+    <custom_item>
+      type           : REST_API
+      description    : "Jobs"
+      request        : "getJobs_default"
+      json_transform : ".items[] | .spec.clusterID as $clusterID | .items[] | \"Cluster ID: \($clusterID), Name: \(.metadata.name), UID: \(.metadata.uid)\""
+      not_expect     : "Name: .+"
+    </custom_item>
+
+    <custom_item>
+      type           : REST_API
+      description    : "Pods"
+      request        : "getPods_default"
+      json_transform : ".items[] | .spec.clusterID as $clusterID | .items[] | \"Cluster ID: \($clusterID), Name: \(.metadata.name), UID: \(.metadata.uid)\""
+      not_expect     : "Name: .+"
+    </custom_item>
+
+    <custom_item>
+      type           : REST_API
+      description    : "ReplicaSets"
+      request        : "getReplicaSets_default"
+      json_transform : ".items[] | .spec.clusterID as $clusterID | .items[] | \"Cluster ID: \($clusterID), Name: \(.metadata.name), UID: \(.metadata.uid)\""
+      not_expect     : "Name: .+"
+    </custom_item>
+
+    <custom_item>
+      type           : REST_API
+      description    : "ReplicationControllers"
+      request        : "getReplicationControllers_default"
+      json_transform : ".items[] | .spec.clusterID as $clusterID | .items[] | \"Cluster ID: \($clusterID), Name: \(.metadata.name), UID: \(.metadata.uid)\""
+      not_expect     : "Name: .+"
+    </custom_item>
+
+    <custom_item>
+      type           : REST_API
+      description    : "Routes"
+      request        : "getRoutes_default"
+      json_transform : ".items[] | .spec.clusterID as $clusterID | .items[] | \"Cluster ID: \($clusterID), Name: \(.metadata.name), UID: \(.metadata.uid)\""
+      not_expect     : "Name: .+"
+    </custom_item>
+
+    <custom_item>
+      type           : REST_API
+      description    : "Services"
+      request        : "getServices_default"
+      json_transform : ".items[] | .spec.clusterID as $clusterID | .items[] | \"Cluster ID: \($clusterID), Name: \(.metadata.name), UID: \(.metadata.uid)\""
+      expect         : "Name: (kubernetes|openshift), UID:"
+      match_all      : YES
+    </custom_item>
+
+    <custom_item>
+      type           : REST_API
+      description    : "StatefulSets"
+      request        : "getStatefulSets_default"
+      json_transform : ".items[] | .spec.clusterID as $clusterID | .items[] | \"Cluster ID: \($clusterID), Name: \(.metadata.name), UID: \(.metadata.uid)\""
+      not_expect     : "Name: .+"
+    </custom_item>
+  </condition>
+
+  <then>
+    <report type:"PASSED">
+      description : "5.7.4 The default namespace should not be used"
+      info        : "Kubernetes provides a default namespace, where objects are placed if no namespace is specified for them. Placing objects in this namespace makes application of RBAC and other controls more difficult.
+
+Rationale:
+
+Resources in a Kubernetes cluster should be segregated by namespace, to allow for security controls to be applied at that level and to make it easier to manage resources.
+
+Impact:
+
+None"
+      solution    : "Ensure that namespaces are created to allow for appropriate segregation of Kubernetes resources and that all new resources are created in a specific namespace.
+
+Default Value:
+
+Unless a namespace is specific on object creation, the default namespace will be used"
+      reference   : "800-53|SC-20,800-53|SC-21,800-53|SC-22,800-53r5|SC-20,800-53r5|SC-21,800-53r5|SC-22,CSCv7|5,CSCv8|4.9,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-20,ITSG-33|SC-21,ITSG-33|SC-21a.,ITSG-33|SC-22,ITSG-33|SC-22a.,LEVEL|2M,NESA|T4.5.1,NIAv2|NS17,NIAv2|NS18,NIAv2|NS19,NIAv2|NS20,NIAv2|NS21,NIAv2|NS22,NIAv2|NS23,QCSC-v1|5.2.1"
+      see_also    : "https://workbench.cisecurity.org/benchmarks/16094"
+      show_output : YES
+    </report>
+  </then>
+</if>
+
+</check_type>

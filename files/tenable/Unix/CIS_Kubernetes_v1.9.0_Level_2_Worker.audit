@@ -1,0 +1,199 @@
+#TRUSTED 6b6f1688697ba44d67255d8bdf0e35676efaadfa3c5903be88117ea9a9f0da1536b4f4b63ce9126c383445eef5db9b341c46f1bb6abdb0af0360c313c683fd29cb20f8720406258aeaef6b2b313f4676a0163e108acf8f9bce22b3805f38655c29e538e949edb2042dc890ae8772b5422afcad2c557a772e06a35a4d2873b2dc12e6f3e5fd4555f5fb74ea82893eb2c365e773a2e18b422027ba8d3eb1761e7ff58ebb3ad9bb02290783bd93de07f1a8ef64f0a4c946c66a8c4e4fbd7f3d69598791abef93ae9b74d260374c802c69f03b717199f476dbf97c5bc3eb8b966bff3fad5c096298d7f9b840fb4233d3185c682ae704dcbaf08d73e974eda95021618df56dbec55e69697a8ca2edc5a85e1781a9e5adf609562627b305db88b09b956c2be9173793afc24eda544a1358ef8471bd6e9f4ca058b72237f494f182b61e3e18d41dac366892858b952edff69f9e43f622c0c385884c81fcbe9070ef36c4e1a83136fae211820e7cbcb7fe2a62dc7455b87964b6f166a7a704e0887a4ea8656a09a3ab68c13f784fdbfdad05cffbc8907902bdff8d1e8204c335631b8125d99106accadb2b4327ff1986b6cb60e36f691486f7631ccc0bcb30aa7b3d4be4920e1bf1344457378d5a10a95d18daac3c7a57d2c9e4a61651b3884384235b87e2223a57b47ff057e9015ea33c9b16e6bd9a7d3add91f9fc0c5886bb084d490f
+#TRUST-RSA-SHA256 2d72225671ec8670c478c6a94c5d828d4446c9b240762a12fabe28e6cd42cfde92d8ce34cc07f3b9cd17c59d3eced568f5b4bac22d438dc60d695e516d9a9da6c19c8ffc1c3c92bd242528041c43f58e97f4bc34dc2788768575af95489f2615dd6d426f9b6671d8500b8ead92950ffc82db576a8614a5489c4966eae5a7faeb4c4a6448c1eef4c61553d6e454a52215e9df193e7c18aa6ebf50ec4801bc2a23dec26a99d9eba23825b74d636c92db214d62776f1dfe137a98ab27bf2a7dced6375689b7d525356f5185e310f6aef9e444cb80c3c5337fda5d7afa2050e74a5f9a4cee1f885300396662090122f6cf0eb6268532cc5517a5295d2aaeb3d0a1c4af8fcb5a7b79cbf58e1f9c90fc9970b6a76cc58b5c329bda3a8fff51078dc90478ee772f9b6f6a0151469fc6cce2522695c594a101c9c0515eb4afdfc70f1c3a325c3cba2361ab67287e64d58eacfaf2839bf662691088c0eabeeb078ce5e0ff059909a53df204a1cff94aa8bc0a30dae4928a178ea28f31ee03be41b5ea2d7ca3c47e58d58e61e443260c82cf73a8aba0b4e1811ea89b55a7154b31f9f6c2f90dfe750f29bd977fbdb4e2b57ed3c72903e257cbaeddaaaa8027873ef39e9d3cc08ff795d547d61296a1feb8e093fcd00b3bc68158723904658b7cb2a62c5807bab21f28b858717fdaa8c1cfb0a0b533fdff6b827c3057f8bc3d9332ae56642c
+#
+# This script is Copyright (C) 2004-2024 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.1 $
+# $Date: 2024/06/17 $
+#
+# description : This document implements the security configuration as recommended by the
+#               CIS Kubernetes Benchmark v1.9.0
+#
+#<ui_metadata>
+#<display_name>CIS Kubernetes Benchmark v1.9.0 L2 Worker</display_name>
+#<spec>
+#  <type>CIS</type>
+#  <name>Kubernetes</name>
+#  <profile>L2 Worker</profile>
+#  <version>1.9.0</version>
+#  <link>https://workbench.cisecurity.org/benchmarks/16828</link>
+#</spec>
+#<labels>unix,kubernetes,agent</labels>
+#<benchmark_refs>CCE,CSCv6,CSCv7,CSCv8,LEVEL</benchmark_refs>
+#<variables>
+#  <variable>
+#    <name>KUBELET_CONFIG_FILE</name>
+#    <default>/var/lib/kubelet/config.yaml</default>
+#    <description>Kubelet Config File</description>
+#    <info>The kubelet config file controls various parameters that set the behavior of the kubelet service.</info>
+#    <value_type>UNIX_FILE_PATH</value_type>
+#  </variable>
+#  <variable>
+#    <name>EVENT_QPS</name>
+#    <default>0</default>
+#    <description>Event QPS rate</description>
+#    <info>The Event QPS can be used to limit the rate at which events are gathered.</info>
+#    <value_type>INTEGER</value_type>
+#  </variable>
+#</variables>
+#</ui_metadata>
+
+<check_type:"Unix">
+
+<if>
+  <condition type:"AND">
+    <custom_item>
+      type        : PROCESS_CHECK
+      description : "Check if kubelet is running"
+      name        : "kubelet"
+      status      : ON
+    </custom_item>
+
+    <custom_item>
+      type        : CMD_EXEC
+      description : "Check if this is a Docker Vessel/Host"
+      cmd         : "/usr/bin/docker info; /usr/bin/containerd --version"
+      expect      : "(Containers|containerd)"
+    </custom_item>
+  </condition>
+
+  <then>
+    <if>
+      <condition type:"AND">
+        <custom_item>
+          type        : CMD_EXEC
+          description : "4.2.8 Ensure that the eventRecordQPS argument is set to a level which ensures appropriate event capture"
+          cmd         : "ps -ef | grep kubelet | grep -v grep"
+          expect      : "--event-qps="
+        </custom_item>
+      </condition>
+
+      <then>
+        <custom_item>
+          system        : "Linux"
+          type          : CMD_EXEC
+          description   : "4.2.8 Ensure that the eventRecordQPS argument is set to a level which ensures appropriate event capture"
+          info          : "Security relevant information should be captured. The eventRecordQPS on the Kubelet configuration can be used to limit the rate at which events are gathered and sets the maximum event creations per second. Setting this too low could result in relevant events not being logged, however the unlimited setting of 0 could result in a denial of service on the kubelet.
+
+Rationale:
+
+It is important to capture all events and not restrict event creation. Events are an important source of security information and analytics that ensure that your environment is consistently monitored using the event data.
+
+Impact:
+
+Setting this parameter to 0 could result in a denial of service condition due to excessive events being created. The cluster's event processing and storage systems should be scaled to handle expected event loads."
+          solution      : "If using a Kubelet config file, edit the file to set eventRecordQPS: to an appropriate level.
+If using command line arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubeadm.conf on each worker node and set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable.
+Based on your system, restart the kubelet service. For example:
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+
+Default Value:
+
+By default, eventRecordQPS argument is set to 5."
+          reference     : "800-171|3.3.1,800-171|3.3.2,800-171|3.3.6,800-53|AU-2,800-53|AU-7,800-53|AU-12,800-53r5|AU-2,800-53r5|AU-7,800-53r5|AU-12,CN-L3|7.1.2.3(c),CN-L3|8.1.4.3(a),CSCv7|6.2,CSCv8|8.2,CSF|DE.CM-1,CSF|DE.CM-3,CSF|DE.CM-7,CSF|PR.PT-1,CSF|RS.AN-3,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ITSG-33|AU-2,ITSG-33|AU-7,ITSG-33|AU-12,LEVEL|2M,NESA|M1.2.2,NESA|M5.5.1,NIAv2|AM7,NIAv2|AM11a,NIAv2|AM11b,NIAv2|AM11c,NIAv2|AM11d,NIAv2|AM11e,NIAv2|SS30,NIAv2|VL8,PCI-DSSv3.2.1|10.1,QCSC-v1|3.2,QCSC-v1|6.2,QCSC-v1|8.2.1,QCSC-v1|10.2.1,QCSC-v1|11.2,QCSC-v1|13.2,SWIFT-CSCv1|6.4"
+          see_also      : "https://workbench.cisecurity.org/benchmarks/16828"
+          cmd           : "ps -ef | grep kubelet | grep -v grep"
+          expect        : "--event-qps=@EVENT_QPS@([\\s]|$)"
+          dont_echo_cmd : YES
+        </custom_item>
+      </then>
+
+      <else>
+        <if>
+          <condition type:"AND">
+            <custom_item>
+              type        : CMD_EXEC
+              description : "Check if Kubelet config file is used"
+              cmd         : "ps -ef | grep kubelet | grep -v grep"
+              expect      : "--config=@KUBELET_CONFIG_FILE@([\\s]|$)"
+            </custom_item>
+          </condition>
+
+          <then>
+            <custom_item>
+              system      : "Linux"
+              type        : FILE_CONTENT_CHECK
+              description : "4.2.8 Ensure that the eventRecordQPS argument is set to a level which ensures appropriate event capture"
+              info        : "Security relevant information should be captured. The eventRecordQPS on the Kubelet configuration can be used to limit the rate at which events are gathered and sets the maximum event creations per second. Setting this too low could result in relevant events not being logged, however the unlimited setting of 0 could result in a denial of service on the kubelet.
+
+Rationale:
+
+It is important to capture all events and not restrict event creation. Events are an important source of security information and analytics that ensure that your environment is consistently monitored using the event data.
+
+Impact:
+
+Setting this parameter to 0 could result in a denial of service condition due to excessive events being created. The cluster's event processing and storage systems should be scaled to handle expected event loads."
+              solution    : "If using a Kubelet config file, edit the file to set eventRecordQPS: to an appropriate level.
+If using command line arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubeadm.conf on each worker node and set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable.
+Based on your system, restart the kubelet service. For example:
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+
+Default Value:
+
+By default, eventRecordQPS argument is set to 5."
+              reference   : "800-171|3.3.1,800-171|3.3.2,800-171|3.3.6,800-53|AU-2,800-53|AU-7,800-53|AU-12,800-53r5|AU-2,800-53r5|AU-7,800-53r5|AU-12,CN-L3|7.1.2.3(c),CN-L3|8.1.4.3(a),CSCv7|6.2,CSCv8|8.2,CSF|DE.CM-1,CSF|DE.CM-3,CSF|DE.CM-7,CSF|PR.PT-1,CSF|RS.AN-3,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ITSG-33|AU-2,ITSG-33|AU-7,ITSG-33|AU-12,LEVEL|2M,NESA|M1.2.2,NESA|M5.5.1,NIAv2|AM7,NIAv2|AM11a,NIAv2|AM11b,NIAv2|AM11c,NIAv2|AM11d,NIAv2|AM11e,NIAv2|SS30,NIAv2|VL8,PCI-DSSv3.2.1|10.1,QCSC-v1|3.2,QCSC-v1|6.2,QCSC-v1|8.2.1,QCSC-v1|10.2.1,QCSC-v1|11.2,QCSC-v1|13.2,SWIFT-CSCv1|6.4"
+              see_also    : "https://workbench.cisecurity.org/benchmarks/16828"
+              file        : "@KUBELET_CONFIG_FILE@"
+              regex       : "^[\\s]*eventRecordQPS[\\s]*:"
+              expect      : "^[\\s]*eventRecordQPS[\\s]*:[\\s]*@EVENT_QPS@([\\s]|$)"
+            </custom_item>
+          </then>
+
+          <else>
+            <report type:"FAILED">
+              description : "4.2.8 Ensure that the eventRecordQPS argument is set to a level which ensures appropriate event capture"
+              info        : "Security relevant information should be captured. The eventRecordQPS on the Kubelet configuration can be used to limit the rate at which events are gathered and sets the maximum event creations per second. Setting this too low could result in relevant events not being logged, however the unlimited setting of 0 could result in a denial of service on the kubelet.
+
+Rationale:
+
+It is important to capture all events and not restrict event creation. Events are an important source of security information and analytics that ensure that your environment is consistently monitored using the event data.
+
+Impact:
+
+Setting this parameter to 0 could result in a denial of service condition due to excessive events being created. The cluster's event processing and storage systems should be scaled to handle expected event loads."
+              solution    : "If using a Kubelet config file, edit the file to set eventRecordQPS: to an appropriate level.
+If using command line arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubeadm.conf on each worker node and set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable.
+Based on your system, restart the kubelet service. For example:
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+
+Default Value:
+
+By default, eventRecordQPS argument is set to 5."
+              reference   : "800-171|3.3.1,800-171|3.3.2,800-171|3.3.6,800-53|AU-2,800-53|AU-7,800-53|AU-12,800-53r5|AU-2,800-53r5|AU-7,800-53r5|AU-12,CN-L3|7.1.2.3(c),CN-L3|8.1.4.3(a),CSCv7|6.2,CSCv8|8.2,CSF|DE.CM-1,CSF|DE.CM-3,CSF|DE.CM-7,CSF|PR.PT-1,CSF|RS.AN-3,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ITSG-33|AU-2,ITSG-33|AU-7,ITSG-33|AU-12,LEVEL|2M,NESA|M1.2.2,NESA|M5.5.1,NIAv2|AM7,NIAv2|AM11a,NIAv2|AM11b,NIAv2|AM11c,NIAv2|AM11d,NIAv2|AM11e,NIAv2|SS30,NIAv2|VL8,PCI-DSSv3.2.1|10.1,QCSC-v1|3.2,QCSC-v1|6.2,QCSC-v1|8.2.1,QCSC-v1|10.2.1,QCSC-v1|11.2,QCSC-v1|13.2,SWIFT-CSCv1|6.4"
+              see_also    : "https://workbench.cisecurity.org/benchmarks/16828"
+            </report>
+          </else>
+        </if>
+      </else>
+    </if>
+  </then>
+</if>
+
+<custom_item>
+  system      : "Linux"
+  type        : PROCESS_CHECK
+  description : "CIS_Kubernetes_v1.9.0_Level_2_Worker.audit from CIS Kubernetes Benchmark v1.9.0"
+  info        : "NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+  reference   : "800-171|3.4.2,800-53|CM-6,800-53r5|CM-6,CSF|PR.IP-1,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6,SWIFT-CSCv1|2.3"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/16828"
+  name        : "kubelet"
+  status      : ON
+  severity    : MEDIUM
+</custom_item>
+
+</check_type>

@@ -1,0 +1,1712 @@
+---
+
+inspec_rules:
+  "1.1":
+    title: '1.1 | Ensure packages are obtained from authorized repositories - manual'
+    section: 'Installation and Patches'
+    description: |
+        When obtaining and installing software packages typically via  yum , its imperative that packages are sourced only from
+        valid and authorized repositories. For PostgreSQL, a short list of valid repositories would include CentOS
+        www.centos.org  and the official PostgreSQL website  yum.postgresql.org .
+    remediation: |
+        Alter the configured repositories so they only include valid and authorized sources of packages. As an example of adding
+        an authorized repository, we will install the PGDG repository RPM from ' yum.postgresql.org ': $ whoami root $ rpm -ivh
+        https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-centos10-10-2.noarch.rpm Retrieving
+        https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-centos10-10-2.noarch.rpm warning:
+        /var/tmp/rpm-tmp.xU8FK1: Header V4 DSA/SHA1 Signature, key ID 442df0f8: NOKEY Preparing...
+        ########################################### [100%]    1:pgdg-centos10
+        ########################################### [100%]
+         Verify the repository has been added and is enabled: $ whoami root $ yum repolist all | grep enabled: base
+        CentOS-6 - Base                    enabled: 6,713 extras                      CentOS-6 - Extras
+        enabled:    31 pgdg10                      PostgreSQL 10.7 - x86_64           enabled:   536 updates
+        CentOS-6 - Updates                 enabled:    96
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_1.1', 'cis_postgresql_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2":
+    title: '1.2 | Ensure Installation of Binary Packages'
+    section: 'Installation and Patches'
+    description: |
+        The PostgreSQL packages are installed on the Operating System from valid source.
+    remediation: |
+        If the version of PostgreSQL installed is not 10.x, the packages may be uninstalled using this command: $ whoami root $
+        yum remove $(rpm -qa|grep postgres)
+         The next recommendation "1.3 Ensure Installation of Community Packages" describes how to explicitly choose which
+        version of PostgreSQL to install, regardless of Linux distribution association. Impact: If the PostgreSQL version
+        shipped as part of the default binary installation associated with your Linux distribution satisfies your requirements,
+        this may be adequate  for development and testing purposes . However,  for production instances  it's generally
+        recommended to install the  latest stable release  of PostgreSQL.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_1.2', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.3":
+    title: '1.3 | Ensure Installation of Community Packages'
+    section: 'Installation and Patches'
+    description: |
+        Adding, and installing, the PostgreSQL community packages to the hosts package repository.
+    remediation: |
+        The following example blocks the outdated distro packages, adds the PGDG repository RPM for PostgreSQL version 10, and
+        installs the client-server-contributions rpms to the host where you want to install the RDBMS: $ whoami root $ vi
+        /etc/yum.repos.d/CentOS-Base.repo [base] name=CentOS-$releasever - Base
+        mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo =os&infra=$infra
+        #baseurl=http://mirror.centos.org/centos/$releasever/os/$basearch/ gpgcheck=1 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-
+        KEY-CentOS-6 exclude=postgresql*  <-- add this line
+                              #released updates [updates] name=CentOS-$releasever - Updates
+        mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo =updates&infra=$infra
+        #baseurl=http://mirror.centos.org/centos/$releasever/updates/$basearch/ gpgcheck=1 gpgkey=file:///etc/pki/rpm-gpg/RPM-
+        GPG-KEY-CentOS-6 exclude=postgresql*  <-- add this line
+         Using a web browser, go to  http://yum.postgresql.org  and navigate to the repo download link for your OS and version:
+        $ whoami root $ yum -y install https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-
+        centos10-10-2.noarch.rpm
+         Finally, install the PostgreSQL packages: $ whoami root $ yum -y groupinstall "PostgreSQL Database Server 10 PGDG"
+        Loaded plugins: fastestmirror Setting up Group Process Loading mirror speeds from cached hostfile  * base:
+        mirror.us.oneandone.net  * extras: centos.mirrors.tds.net  * updates: mirror.cisp.com base
+        | 3.7 kB     00:00 extras                                                   | 3.4 kB     00:00 updates
+        | 3.4 kB     00:00 base/group_gz                                            | 242 kB     00:00 pgdg10/group_gz
+        |  249 B     00:00 Resolving Dependencies --> Running transaction check ---> Package postgresql10.x86_64
+        0:10.7-1PGDG.rhel7 will be installed ---> Package postgresql10-contrib.x86_64 0:10.7-1PGDG.rhel7 will be installed -->
+        Processing Dependency: libxslt.so.1(LIBXML2_1.0.22)(64bit) for package: postgresql10-contrib-10.7-1PGDG.rhel7.x86_64 -->
+        Processing Dependency: libxslt.so.1(LIBXML2_1.0.18)(64bit) for package: postgresql10-contrib-10.7-1PGDG.rhel7.x86_64 -->
+        Processing Dependency: libxslt.so.1(LIBXML2_1.0.11)(64bit) for package: postgresql10-contrib-10.7-1PGDG.rhel7.x86_64 -->
+        Processing Dependency: libxslt.so.1()(64bit) for package: postgresql10-contrib-10.7-1PGDG.rhel7.x86_64 ---> Package
+        postgresql10-libs.x86_64 0:10.7-1PGDG.rhel7 will be installed ---> Package postgresql10-server.x86_64 0:10.7-1PGDG.rhel7
+        will be installed --> Running transaction check ---> Package libxslt.x86_64 0:1.1.26-2.el7_3.1 will be installed -->
+        Finished Dependency Resolution
+                              Dependencies Resolved
+                              ================================================================================  Package
+        Arch       Version                   Repository  Size
+        ================================================================================ Installing:  postgresql10
+        x86_64     10.7-1PGDG.rhel7          pgdg10     1.4 M  postgresql10-contrib     x86_64     10.7-1PGDG.rhel7
+        pgdg10     492 k  postgresql10-libs        x86_64     10.7-1PGDG.rhel7          pgdg10     289 k  postgresql10-server
+        x86_64     10.7-1PGDG.rhel7          pgdg10     5.0 M Installing for dependencies:  libxslt                  x86_64
+        1.1.26-2.el7_3.1          base       452 k
+                              Transaction Summary
+        ================================================================================ Install       5 Package(s)
+                              Total download size: 7.7 M Installed size: 31 M Downloading Packages: (1/5):
+        libxslt-1.1.26-2.el7_3.1.x86_64.rpm               | 452 kB     00:00 (2/5): postgresql10-10.7-1PGDG.rhel7.x86_64.rpm
+        | 1.4 MB     00:01 (3/5): postgresql10-contrib-10.7-1PGDG.rhel7.x86_64.rpm  | 492 kB     00:00 (4/5):
+        postgresql10-libs-10.7-1PGDG.rhel7.x86_64.rpm     | 289 kB     00:00 (5/5):
+        postgresql10-server-10.7-1PGDG.rhel7.x86_64.rpm   | 5.0 MB     00:00
+        -------------------------------------------------------------------------------- Total
+        2.5 MB/s | 7.7 MB     00:03 Running rpm_check_debug Running Transaction Test Transaction Test Succeeded Running
+        Transaction   Installing : postgresql10-libs-10.7-1PGDG.rhel7.x86_64                    1/5   Installing :
+        postgresql10-10.7-1PGDG.rhel7.x86_64                         2/5   Installing : libxslt-1.1.26-2.el7_3.1.x86_64
+        3/5   Installing : postgresql10-contrib-10.7-1PGDG.rhel6.x86_64                 4/5   Installing :
+        postgresql10-server-10.7-1PGDG.rhel6.x86_64                  5/5   Verifying  : libxslt-1.1.26-2.el7_3.1.x86_64
+        1/5   Verifying  : postgresql10-10.7-1PGDG.rhel7.x86_64                         2/5   Verifying  :
+        postgresql10-libs-10.7-1PGDG.rhel7.x86_64                    3/5   Verifying  :
+        postgresql10-server-10.7-1PGDG.rhel7.x86_64                  4/5   Verifying  :
+        postgresql10-contrib-10.7-1PGDG.rhel7.x86_64                 5/5
+                              Installed:   postgresql10.x86_64 0:10.7-1PGDG.rhel7   postgresql10-contrib.x86_64
+        0:10.7-1PGDG.rhel7   postgresql10-libs.x86_64 0:10,7-1PGDG.rhel7   postgresql10-server.x86_64 0:10,7-1PGDG.rhel7
+                              Dependency Installed:   libxslt.x86_64 0:1.1.26-2.el7_3.1
+                              Complete!
+         Note:  The above-mentioned example is referenced as an illustration only. Package names and versions may differ.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_1.3', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.4":
+    title: '1.4 | Ensure systemd Service Files Are Enabled'
+    section: 'Installation and Patches'
+    description: |
+        Confirm, and correct if necessary, the PostgreSQL  systemd  service is enabled.
+    remediation: |
+        Irrespective of package source, PostgreSQL services can be identified because it typically includes the text string
+        "postgresql". PGDG installs do not automatically register the service as a "want" of the default  systemd  target.
+        Multiple instances of PostgreSQL services often distinguish themselves using a version number. $ whoami root $ systemctl
+        enable postgresql-10 Created symlink from /etc/systemd/system/multi-user.target.wants/postgresql-10.service to
+        /usr/lib/systemd/system/postgresql-10.service. $ systemctl list-dependencies multi-user.target | grep -i postgres ●
+        ├─postgresql-10.service
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_1.4', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.5":
+    title: '1.5 | Ensure Data Cluster Initialized Successfully'
+    section: 'Installation and Patches'
+    description: |
+        First time installs of PostgreSQL requires the instantiation of the database cluster. A database cluster is a collection
+        of databases that are managed by a single server instance.
+    remediation: |
+        Attempting to instantiate a data cluster to an existing non-empty directory will fail: $ whoami root $
+        /usr/pgsql-10/bin/postgresql-10-setup initdb Data directory is not empty!
+         In the case of a cluster instantiation failure, one must delete/remove the entire data cluster directory and repeat the
+        initdb  command: $ whoami root $ rm -rf ~postgres/10 $ /usr/pgsql-10/bin/postgresql-10-setup initdb Initializing
+        database ... OK
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_1.5', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.1":
+    title: '2.1 | Ensure the file permissions mask is correct - manual'
+    section: 'Directory and File Permissions'
+    description: |
+        Files are always created using a default set of permissions. File permissions can be restricted by applying a
+        permissions mask called the  umask . The  postgres  user account should use a umask of  077  to deny file access to all
+        user accounts except the owner.
+    remediation: |
+        Depending upon the  postgres  user's environment, the umask is typically set in the initialization file  .bash_profile ,
+        but may also be set in  .profile  or  .bashrc . To set the umask, add the following to the appropriate profile file: $
+        whoami postgres $ cd ~ $ ls -ld .{bash_profile,profile,bashrc} ls: cannot access .profile: No such file or directory ls:
+        cannot access .bashrc: No such file or directory -rwx------. 1 postgres postgres 267 Aug 14 12:59 .bash_profile $ echo
+        "umask 077" >> .bash_profile $ source .bash_profile $ umask 0077
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_2.1', 'cis_postgresql_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.2":
+    title: '2.2 | Ensure the PostgreSQL pg wheel group membership is correct - manual'
+    section: 'Directory and File Permissions'
+    description: |
+        The group  pgwheel  is explicitly created on a host where the PostgreSQL server is installed. Membership in this group
+        enables an ordinary user account to gain superuser access to a database cluster by using the  sudo  command See Ensure
+        sudo is configured correctly later in this benchmark. Only user accounts authorized to have superuser access should be
+        members of the  pgwheel  group.
+    remediation: |
+        If the  pg_wheel  group does not exist, use the following command to create it: $ whoami root $ groupadd pg_wheel &&
+        getent group pg_wheel pg_wheel:x:502:
+         Note:  that your system's group number may not be 502. That's OK. Adding the  postgres  user to the newly created group
+        is done by issuing: $ whoami root $ gpasswd -a postgres pg_wheel Adding user postgres to group pg_wheel $ # verify
+        membership $ awk -F':' '/pg_wheel/{print $4}' /etc/group postgres
+         Removing a user account from the 'pg_wheel' group is achieved by executing the following command: $ whoami root $
+        gpasswd -d pg_wheel postgres Removing user postgres from group pg_wheel $ # verify the user was removed $ awk -F':'
+        '/pg_wheel/{print $4}' /etc/group $
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_2.2', 'cis_postgresql_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.1.2":
+    title: '3.1.2 | Ensure the log destinations are set correctly'
+    section: 'PostgreSQL Logging'
+    description: |
+        PostgreSQL supports several methods for logging server messages, including  stderr ,  csvlog  and  syslog . On Windows,
+        eventlog  is also supported. One or more of these destinations should be set for server log output.
+    remediation: |
+        Execute the following SQL statements to remediate this setting (in this example, setting the log destination to  csvlog
+        ): postgres=# alter system set log_destination = 'csvlog'; ALTER SYSTEM postgres=# select pg_reload_conf();
+        pg_reload_conf ----------------  t (1 row)
+         Note:  If more than one log destination is to be used, set this parameter to a list of desired log destinations
+        separated by commas (e.g. 'csvlog, stderr').
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_3.1.2', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.3":
+    title: '3.1.3 | Ensure the logging collector is enabled'
+    section: 'PostgreSQL Logging'
+    description: |
+        The logging collector is a background process that captures log messages sent to  stderr  and redirects them into log
+        files. The  loggingcollector  setting must be enabled in order for this process to run. It can only be set at server
+        start.
+    remediation: |
+        Execute the following SQL statement(s) to remediate this setting: postgres=# alter system set logging_collector = 'on';
+        ALTER SYSTEM
+         Unfortunately, this setting can only be changed at server (re)start. As root, restart the PostgreSQL service for this
+        change to take effect: $ service postgresql-9.6 restart Stopping postgresql-9.6 service:                           [  OK
+        ] Starting postgresql-9.6 service:                           [  OK  ]
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_3.1.3', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.4":
+    title: '3.1.4 | Ensure the log file destination directory is set correctly'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  logdirectory  setting specifies the destination directory for log files when  logdestination  is  stderr  or
+        csvlog . It can be specified as relative to the cluster data directory  PGDATA  or as an absolute path.  logdirectory
+        should be set according to your organizations logging policy.
+    remediation: |
+        Execute the following SQL statement(s) to remediate this setting: postgres=# alter system set log_directory='logs';
+        ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf ----------------  t (1 row) postgres=# show
+        log_directory;  log_directory ---------------  logs (1 row)
+         Note:  The use of  logs , above, is an example. This should be set to an appropriate path as defined by your
+        organization's logging requirements.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_3.1.4', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.5":
+    title: '3.1.5 | Ensure the filename pattern for log files is set correctly'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  logfilename  setting specifies the filename pattern for log files. The value for  logfilename  should match your
+        organizations logging policy. The value is treated as a  strftime  pattern, so  escapes  can be used to specify
+        timevarying filenames. The supported  escapes  are similar to those listed in the Open Groups  strftime  specification.
+        If you specify a filename without escapes, you should plan to use a log rotation utility to avoid eventually filling the
+        partition that contains  logdirectory . If there are any timezonedependent  escapes , the computation is done in the
+        zone specified by  logtimezone . Also, the systems  strftime  is not used directly, so platformspecific nonstandard
+        extensions do not work. If CSVformat output is enabled in  logdestination ,  .csv  will be appended to the log filename.
+        If  logfilename  ends in  .log , the suffix is replaced instead.
+    remediation: |
+        Execute the following SQL statement(s) to remediate this setting: postgres=# alter system set
+        log_filename='postgresql-%Y%m%d.log'; ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf ----------------
+        t (1 row) postgres=# show log_filename;    log_filename -------------------  postgresql-%Y%m%d.log (1 row)
+         Note:  In this example, a new logfile will be created for each day (e.g. postgresql-20180901.log)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_3.1.5', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.6":
+    title: '3.1.6 | Ensure the log file permissions are set correctly'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  logfilemode  setting determines the file permissions for log files when  loggingcollector  is enabled. The
+        parameter value is expected to be a numeric mode specification in the form accepted by the  chmod  and  umask  system
+        calls. To use the customary octal format, the number must start with a  0  zero. The permissions should be set to allow
+        only the necessary access to authorized personnel. In most cases the best setting is  0600 , so that only the server
+        owner can read or write the log files. The other commonly useful setting is  0640 , allowing members of the owners group
+        to read the files, although to make use of that, you will need to alter the  logdirectory  setting to store the log
+        files outside the cluster data directory.
+    remediation: |
+        Execute the following SQL statement(s) to remediate this setting (with the example assuming a desired value of  0600 ):
+        postgres=# alter system set log_file_mode = '0600'; ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf
+        ----------------  t (1 row) postgres=# show log_file_mode;  log_file_mode ---------------  0600 (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_3.1.6', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.7":
+    title: '3.1.7 | Ensure log truncate on rotation is enabled'
+    section: 'PostgreSQL Logging'
+    description: |
+        Enabling the  logtruncateonrotation  setting when  loggingcollector  is enabled causes PostgreSQL to truncate overwrite
+        existing log files with the same name during log rotation instead of appending to them. For example, using this setting
+        in combination with a  logfilename  setting value like  postgresqlH.log  would result in generating 24 hourly log files
+        and then cyclically overwriting them postgresql00.log postgresql01.log ... postgresql23.log
+         Note  Truncation will occur  only  when a new file is being opened due to timebased rotation, not during server startup
+        or sizebased rotation see later in this benchmark for sizebased rotation details.
+    remediation: |
+        Execute the following SQL statement(s) to remediate this setting: postgres=# alter system set log_truncate_on_rotation =
+        'off'; ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf ----------------  t (1 row) postgres=# show
+        log_truncate_on_rotation;  log_truncate_on_rotation --------------------------  off (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_3.1.7', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.8":
+    title: '3.1.8 | Ensure the maximum log file lifetime is set correctly'
+    section: 'PostgreSQL Logging'
+    description: |
+        When  loggingcollector  is enabled, the  logrotationage  parameter determines the maximum lifetime of an individual log
+        file depending on the value of  logfilename . After this many minutes have elapsed, a new log file will be created via
+        automatic log file rotation. Current best practices advise log rotation  at least  daily, but your organizations logging
+        policy should dictate your rotation schedule.
+    remediation: |
+        Execute the following SQL statement(s) to remediate this setting (in this example, setting it to one hour): postgres=#
+        alter system set log_rotation_age='1h'; ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf
+        ----------------  t (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_3.1.8', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.9":
+    title: '3.1.9 | Ensure the maximum log file size is set correctly'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  logrotationsize  setting determines the maximum size of an individual log file. Once the maximum size is reached,
+        automatic log file rotation will occur.
+    remediation: |
+        Execute the following SQL statement(s) to remediate this setting (in this example, setting it to 1GB): postgres=# alter
+        system set log_rotation_size = '1GB'; ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf ----------------
+        t (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_3.1.9', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.10":
+    title: '3.1.10 | Ensure the correct syslog facility is selected'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  syslogfacility  setting specifies the syslog facility to be used when logging to  syslog  is enabled. You can
+        choose from any of the local facilities LOCAL0 LOCAL1 LOCAL2 LOCAL3 LOCAL4 LOCAL5 LOCAL6 LOCAL7 Your organizations
+        logging policy should dictate which facility to use based on the  syslog  daemon in use.
+    remediation: |
+        Execute the following SQL statement(s) to remediate this setting (in this example, setting it to the  LOCAL1  facility):
+        postgres=# alter system set syslog_facility = 'LOCAL1'; ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf
+        ----------------  t (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_3.1.10', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.11":
+    title: '3.1.11 | Ensure the program name for PostgreSQL syslog messages is correct'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  syslogident  setting specifies the program name used to identify PostgreSQL messages in syslog logs. An example of
+        a possible program name is postgres.
+    remediation: |
+        Execute the following SQL statement(s) to remediate this setting (in this example, assuming a program name of "pg96"):
+        postgres=# alter system set syslog_ident = 'pg96'; ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf
+        ----------------  t (1 row) postgres=# show syslog_ident;  syslog_ident --------------  pg96 (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_3.1.11', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.12":
+    title: '3.1.12 | Ensure the correct messages are written to the server log'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  logminmessages  setting specifies the message levels that are written to the server log. Each level includes all
+        the levels that follow it. The later the level, the fewer messages are sent. Valid values are DEBUG5 DEBUG4 DEBUG3
+        DEBUG2 DEBUG1 INFO NOTICE WARNING ERROR LOG FATAL PANIC WARNING  is considered the best practice unless indicated
+        otherwise by your organizations logging policy.
+    remediation: |
+        Execute the following SQL statement(s) as superuser to remediate this setting (in this example, to set it to  warning ):
+        postgres=# alter system set log_min_messages = 'warning'; ALTER SYSTEM postgres=# select pg_reload_conf();
+        pg_reload_conf ----------------  t (1 row)
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_3.1.12', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.13":
+    title: '3.1.13 | Ensure the correct SQL statements generating errors are recorded'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  logminerrorstatement  setting causes all SQL statements generating errors at or above the specified severity level
+        to be recorded in the server log. Each level includes all the levels that follow it. The later the level, the fewer
+        messages are recorded. Valid values are DEBUG5 DEBUG4 DEBUG3 DEBUG2 DEBUG1 INFO NOTICE WARNING ERROR LOG FATAL PANIC
+        Note  To effectively turn off logging of failing statements, set this parameter to  PANIC . ERROR  is considered the
+        best practice setting. Changes should only be made in accordance with your organizations logging policy.
+    remediation: |
+        Execute the following SQL statement(s) as superuser to remediate this setting (in the example, to  error ): postgres=#
+        alter system set log_min_error_statement = 'error'; ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf
+        ----------------  t (1 row)
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_3.1.13', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.14":
+    title: '3.1.14 | Ensure debug print parse is disabled'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  debugprintparse  setting enables printing the resulting parse tree for each executed query. These messages are
+        emitted at the  LOG  message level. Unless directed otherwise by your organizations logging policy, it is recommended
+        this setting be disabled by setting it to  off .
+    remediation: |
+        Execute the following SQL statement(s) to remediate this setting: postgres=# alter system set debug_print_parse='off';
+        ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf ----------------  t (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_3.1.14', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.15":
+    title: '3.1.15 | Ensure debug print rewritten is disabled'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  debugprintrewritten  setting enables printing the query rewriter output for each executed query. These messages are
+        emitted at the  LOG  message level. Unless directed otherwise by your organizations logging policy, it is recommended
+        this setting be disabled by setting it to  off .
+    remediation: |
+        Execute the following SQL statement(s) to disable this setting: postgres=# alter system set debug_print_rewritten =
+        'off'; ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf ----------------  t (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_3.1.15', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.16":
+    title: '3.1.16 | Ensure debug print plan is disabled'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  debugprintplan  setting enables printing the execution plan for each executed query. These messages are emitted at
+        the  LOG  message level. Unless directed otherwise by your organizations logging policy, it is recommended this setting
+        be disabled by setting it to  off .
+    remediation: |
+        Execute the following SQL statement(s) to disable this setting: postgres=# alter system set debug_print_plan = 'off';
+        ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf ----------------  t (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_3.1.16', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.17":
+    title: '3.1.17 | Ensure debug pretty print is enabled'
+    section: 'PostgreSQL Logging'
+    description: |
+        Enabling  debugprettyprint  indents the messages produced by  debugprintparse ,  debugprintrewritten , or
+        debugprintplan  making them significantly easier to read.
+    remediation: |
+        Execute the following SQL statement(s) to enable this setting: postgres=# alter system set debug_pretty_print = 'on';
+        ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf ----------------  t (1 row)
+         Impact: Be advised that the aforementioned  DEBUG  printing options are  disabled , but if your organizational logging
+        policy requires them to be  on  then this option comes into play.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_3.1.17', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.18":
+    title: '3.1.18 | Ensure log connections is enabled'
+    section: 'PostgreSQL Logging'
+    description: |
+        Enabling the  logconnections  setting causes each attempted connection to the server to be logged, as well as successful
+        completion of client authentication. This parameter cannot be changed after session start.
+    remediation: |
+        Execute the following SQL statement(s) to enable this setting: postgres=# alter system set log_connections = 'on'; ALTER
+        SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf ----------------  t (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_3.1.18', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.19":
+    title: '3.1.19 | Ensure log disconnections is enabled'
+    section: 'PostgreSQL Logging'
+    description: |
+        Enabling the  logdisconnections  setting logs the end of each session, including session duration. This parameter cannot
+        be changed after session start.
+    remediation: |
+        Execute the following SQL statement(s) to enable this setting: postgres=# alter system set log_disconnections = 'on';
+        ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf ----------------  t (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_3.1.19', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.20":
+    title: '3.1.20 | Ensure log error verbosity is set correctly'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  logerrorverbosity  setting specifies the verbosity amount of detail of logged messages. Valid values are TERSE
+        DEFAULT VERBOSE with each containing the fields of the level above it as well as additional fields. TERSE  excludes the
+        logging of  DETAIL ,  HINT ,  QUERY , and  CONTEXT  error information. VERBOSE  output includes the  SQLSTATE  error
+        code and the source code file name, function name, and line number that generated the error. The appropriate value
+        should be set based on your organizations logging policy.
+    remediation: |
+        Execute the following SQL statement(s) as superuser to remediate this setting (in this example, to  verbose ):
+        postgres=# alter system set log_error_verbosity = 'verbose'; ALTER SYSTEM postgres=# select pg_reload_conf();
+        pg_reload_conf ----------------  t (1 row)
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_3.1.20', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.21":
+    title: '3.1.21 | Ensure log hostname is set correctly'
+    section: 'PostgreSQL Logging'
+    description: |
+        Enabling the  loghostname  setting causes the hostname of the connecting host to be logged  in addition  to the hosts IP
+        address for connection log messages. Disabling the setting causes only the connecting hosts IP address to be logged, and
+        not the hostname. Unless your organizations logging policy requires hostname logging, it is best to disable this setting
+        so as not to incur the overhead of DNS resolution for each statement that is logged.
+    remediation: |
+        Execute the following SQL statement(s) to remediate this setting (in this example, to  off ): postgres=# alter system
+        set log_hostname='off'; ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf ----------------  t (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_3.1.21', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.22":
+    title: '3.1.22 | Ensure log line prefix is set correctly'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  loglineprefix  setting specifies a  printf style string that is prefixed to each log line. If blank, no prefix is
+        used. You should configure this as recommended by the  pgBadger  development team unless directed otherwise by your
+        organizations logging policy. The default value is   m  .   characters begin escape sequences that are replaced with
+        status information as outlined below. Unrecognized escapes are ignored. Other characters are copied straight to the log
+        line. Some escapes are only recognized by session processes and will be treated as empty by background processes such as
+        the main server process. Status information may be aligned either left or right by specifying a numeric literal after
+        the    and before the option. A negative value will cause the status information to be padded on the right with spaces
+        to give it a minimum width, whereas a positive value will pad on the left. Padding can be useful to aid human
+        readability in log files. The default is   m  , but any of the following escape sequences can be used Escape  Effect
+        Session only a      Application name                                  yes u      User name
+        yes d      Database name                                     yes r      Remote host name or IP address, and remote port
+        yes h      Remote host name or IP address                    yes p      Process ID
+        no t      Time stamp without milliseconds                   no m      Time stamp with milliseconds
+        no i      Command tag type of sessions current command    yes e      SQLSTATE error code
+        no c      Session ID see below                             no l      Number of the log line for each session          or
+        process, starting at 1                         no s      Process start time stamp                          no v
+        Virtual transaction ID backendID/localXID       no x      Transaction ID 0 if none is assigned            no q
+        Produces no output, but tells nonsession          processes to stop at this point in the string         ignored by
+        session processes                      no       Literal
+    remediation: |
+        Execute the following SQL statement(s) to remediate this setting: postgres=# alter system set log_line_prefix = '%m
+        [%p]: [%l-1] db=%d,user=%u,app=%a,client=%h '; ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf
+        ----------------  t (1 row)
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_3.1.22', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.23":
+    title: '3.1.23 | Ensure log statement is set correctly'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  logstatement  setting specifies the types of SQL statements that are logged. Valid values are none  off ddl mod all
+        all statements It is recommended this be set to  ddl  unless otherwise directed by your organizations logging policy.
+        ddl  logs all data definition statements CREATE ALTER DROP mod  logs all  ddl  statements, plus datamodifying statements
+        INSERT UPDATE DELETE TRUNCATE COPY FROM  PREPARE ,  EXECUTE , and  EXPLAIN ANALYZE  statements are also logged if their
+        contained command is of an appropriate type. For clients using extended query protocol, logging occurs when an Execute
+        message is received, and values of the Bind parameters are included with any embedded singlequote marks doubled.
+    remediation: |
+        Execute the following SQL statement(s) as superuser to remediate this setting: postgres=# alter system set
+        log_statement='ddl'; ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf ----------------  t (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_3.1.23', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.24":
+    title: '3.1.24 | Ensure log timezone is set correctly'
+    section: 'PostgreSQL Logging'
+    description: |
+        The  logtimezone  setting specifies the time zone to use in timestamps within log messages. This value is clusterwide,
+        so that all sessions will report timestamps consistently. Unless directed otherwise by your organizations logging
+        policy, set this to either  GMT  or  UTC .
+    remediation: |
+        Execute the following SQL statement(s) to remediate this setting: postgres=# alter system set log_timezone = 'GMT';
+        ALTER SYSTEM postgres=# select pg_reload_conf();  pg_reload_conf ----------------  t (1 row)
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_3.1.24', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.2":
+    title: '3.2 | Ensure the PostgreSQL Audit Extension pgAudit is enabled'
+    section: 'Logging Monitoring And Auditing (Centos 6)'
+    description: |
+        The PostgreSQL Audit Extension  pgAudit  provides detailed session and/or object audit logging via the standard
+        PostgreSQL logging facility. The goal of pgAudit is to provide PostgreSQL users with the capability to produce audit
+        logs often required to comply with government, financial, or ISO certifications.
+    remediation: |
+        To install and enable pgAudit, simply install the appropriate rpm from the PGDG repo: $ yum -y install pgaudit12_10
+        Loaded plugins: fastestmirror Setting up Install Process Loading mirror speeds from cached hostfile  * base:
+        mirror.vtti.vt.edu  * extras: mirror.cogentco.com  * updates: bay.uchicago.edu Resolving Dependencies --> Running
+        transaction check ---> Package pgaudit12_10.x86_64 0:1.2.0-1.rhel6 will be installed --> Finished Dependency Resolution
+                              Dependencies Resolved
+                              ================================================================================  Package
+        Arch           Version                 Repository      Size
+        ================================================================================ Installing:  pgaudit12_10
+        x86_64         1.2.0-1.rhel6           pgdg10        20 k
+                              Transaction Summary
+        ================================================================================ Install       1 Package(s)
+                              Total download size: 18 k Installed size: 41 k Downloading Packages:
+        pgaudit12_10-1.2.0-1.rhel6.x86_64.rpm                    |  20 kB     00:00 Running rpm_check_debug Running Transaction
+        Test Transaction Test Succeeded Running Transaction   Installing : pgaudit12_10-1.2.0-1.rhel6.x86_64
+        1/1   Verifying  : pgaudit12_10-1.2.0-1.rhel6.x86_64                              1/1
+                              Installed:   pgaudit12_10.x86_64 0:1.2.0-1.rhel6
+                              Complete!
+         pgAudit is now installed and ready to be configured. Next, we need to alter the  postgresql.conf  configuration file
+        to: enable pgAudit as an extension in the  shared_preload_libraries  parameter indicate which classes of statements we
+        want to log via the  pgaudit.log  parameter and, finally, restart the PostgreSQL service: $ vi ${PGDATA}/postgresql.conf
+         Find the  shared_preload_libraries  entry, and add 'pgaudit' to it (preserving any existing entries):
+        shared_preload_libraries = 'pgaudit'
+                              OR
+                              shared_preload_libraries = 'pgaudit,somethingelse'
+         Now, add a new  pgaudit -specific entry: # for this example we are logging the ddl and write operations
+        pgaudit.log='ddl,write'
+         Restart the PostgreSQL server for changes to take affect: $ whoami root $ systemctl restart postgresql-10
+         Impact: Depending on settings, it is possible for pgAudit to generate an  enormous volume of logging . Be careful to
+        determine exactly what needs to be audit logged in your environment to avoid logging too much.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_3.2', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == pgaudit'
+            - name: Undefined
+              rule: 'Undefined'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "4.1":
+    title: '4.1 | Ensure sudo is configured correctly - manual'
+    section: 'User Access and Authorization'
+    description: |
+        It is common to have more than one authorized individual administering the PostgreSQL service at the Operating System
+        level. It is also quite common to permit login privileges to individuals on a PostgreSQL host who otherwise are not
+        authorized to access the servers data cluster and files. Administering the PostgreSQL data cluster, as opposed to its
+        data, is to be accomplished via a localhost login of a regular UNIX user account. Access to the  postgres  superuser
+        account is restricted in such a manner as to interdict unauthorized access.  sudo  satisfies the requirements by
+        escalating ordinary user account privileges as the PostgreSQL RDBMS superuser.
+    remediation: |
+        As superuser  root , execute the command  visudo  to edit the  /etc/sudoers  file so the following line is present:
+        %pg_wheel ALL= /bin/su - postgres
+         This grants any Operating System user that is a member of the  pg_wheel  group to use  sudo  to become the  postgres
+        user. Ensure that all Operating System user's that need such access are members of the group as detailed earlier in this
+        benchmark.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_4.1', 'cis_postgresql_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.2":
+    title: '4.2 | Ensure excessive administrative privileges are revoked - manual'
+    section: 'User Access and Authorization'
+    description: |
+        With respect to PostgreSQL administrative SQL commands, only superusers should have elevated privileges. PostgreSQL
+        regular, or application, users should not possess the ability to create roles, create new databases, manage replication,
+        or perform any other action deemed privileged . Typically, regular users should only be granted the minimal set of
+        privileges commensurate with managing the application DDL create table, create view, create index, etc. DML select,
+        insert, update, delete Further, it has become best practice to create separate roles for DDL and DML. Given an
+        application called payroll, one would create the following users payrollowner payrolluser Any DDL privileges would be
+        granted to the payrollowner account only, while DML privileges would be given to the payrolluser account only. This
+        prevents accidental creation/altering/dropping of database objects by application code that run as the payrolluser
+        account.
+    remediation: |
+        If any regular or application users have been granted excessive administrative rights, those privileges should be
+        removed immediately via the PostgreSQL  ALTER ROLE  SQL command. Using the same example above, the following SQL
+        statements revoke all unnecessary elevated administrative privileges from the regular user  appuser : $ whoami postgres
+        $ psql -c "ALTER ROLE appuser NOSUPERUSER;" ALTER ROLE $ psql -c "ALTER ROLE appuser NOCREATEROLE;" ALTER ROLE $ psql -c
+        "ALTER ROLE appuser NOCREATEDB;" ALTER ROLE $ psql -c "ALTER ROLE appuser NOREPLICATION;" ALTER ROLE $ psql -c "ALTER
+        ROLE appuser NOBYPASSRLS;" ALTER ROLE $ psql -c "ALTER ROLE appuser NOINHERIT;" ALTER ROLE
+         Verify the appuser now passes your check by having no defined Attributes: $ whoami postgres $ psql -c "\du appuser"
+        List of roles Role name | Attributes | Member of ----------+------------+----------- appuser   |            | {}
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_4.2', 'cis_postgresql_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.3":
+    title: '4.3 | Ensure excessive function privileges are revoked - manual'
+    section: 'User Access and Authorization'
+    description: |
+        In certain situations, to provide required functionality, PostgreSQL needs to execute internal logic stored procedures,
+        functions, triggers, etc. and/or external code modules with elevated privileges. However, if the privileges required for
+        execution are at a higher level than the privileges assigned to organizational users invoking the functionality
+        applications/programs, those users are indirectly provided with greater privileges than assigned by their organization.
+        This is known as privilege elevation. Privilege elevation must be utilized only where necessary. Execute privileges for
+        application functions should be restricted to authorized users only.
+    remediation: |
+        Where possible, revoke  SECURITY DEFINER  on PostgreSQL functions. To change a  SECURITY DEFINER  function to  SECURITY
+        INVOKER , run the following SQL: $ whoami root $ sudo su - postgres $ psql -c "ALTER FUNCTION [functionname] SECURITY
+        INVOKER;"
+         If it is not possible to revoke  SECURITY DEFINER , ensure the function can be executed by only the accounts that
+        absolutely need such functionality: REVOKE EXECUTE ON FUNCTION delete_customer(integer,boolean) FROM appreader; REVOKE
+         Confirm that the  appreader  user may no longer execute the function: SELECT proname, proacl FROM pg_proc WHERE proname
+        = 'delete_customer';      proname     |                         proacl
+        -----------------+--------------------------------------------------------  delete_customer |
+        {=X/postgres,postgres=X/postgres,appwriter=X/postgres} (1 row)
+         Based on output above,  appreader=X/postgres  no longer exists in the  proacl  column results returned from query and
+        confirms  appreader  is no longer granted execute privilege on the function.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_4.3', 'cis_postgresql_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.4":
+    title: '4.4 | Ensure excessive DML privileges are revoked - manual'
+    section: 'User Access and Authorization'
+    description: |
+        DML insert, update, delete operations at the table level should be restricted to only authorized users. PostgreSQL
+        manages table level DML permissions via the GRANT statement.
+    remediation: |
+        If a given database user has been granted excessive DML privileges for a given database table, those privileges should
+        be revoked immediately using the  REVOKE  SQL command. Continuing with the example above, remove unauthorized grants for
+        appreader  user using the  REVOKE  statement and verify the Boolean values are now false. postgres=# REVOKE INSERT,
+        UPDATE, DELETE ON TABLE customer FROM appreader; REVOKE
+                              postgres=# select t.tablename, u.usename,        has_table_privilege(u.usename, t.tablename,
+        'select') as select,        has_table_privilege(u.usename, t.tablename, 'insert') as insert,
+        has_table_privilege(u.usename, t.tablename, 'update') as update,        has_table_privilege(u.usename, t.tablename,
+        'delete') as delete from   pg_tables t, pg_user u where  t.tablename = 'customer'  and    u.usename in
+        ('appwriter','appreader');
+                              tablename |  usename  | select | insert | update | delete
+        ----------+-----------+--------+--------+--------+-------- customer  | appwriter | t      | t      | t      | t customer
+        | appreader | t      | f      | f      | f (2 rows)
+         With the publication of  CVE-2018-1058 , it is also recommended that all privileges be revoked from the  public  schema
+        for all users on all databases: postgres=# REVOKE CREATE ON SCHEMA public FROM PUBLIC; REVOKE
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_4.4', 'cis_postgresql_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.5":
+    title: '4.5 | Use pg permission extension to audit object permissions - manual'
+    section: 'User Access and Authorization'
+    description: |
+        Using a PostgreSQL extension called  pgpermissions  it is possible to declare which DB users should have which
+        permissions on a given object and generate a report showing compliance/deviation.
+    remediation: |
+        At this time,  pg_permission  is not packaged by the PGDG packaging team. As such, download the latest from the
+        extension's  site , compile it, and then install it: [root@instance-1 ~]# whoami root [root@instance-1 ~]# yum -y
+        install postgresql10-devel [snip] Running transaction   Installing : libicu-devel-50.1.2-17.el7.x86_64
+        1/2    Installing : postgresql10-devel-10.7-1PGDG.rhel7.x86_64                                                      2/2
+        Verifying  : postgresql10-devel-10.7-1PGDG.rhel7.x86_64                                                      1/2
+        Verifying  : libicu-devel-50.1.2-17.el7.x86_64                                                               2/2
+                              Installed:   postgresql10-devel.x86_64 0:10.7-1PGDG.rhel7
+                              Dependency Installed:   libicu-devel.x86_64 0:50.1.2-17.el7  [root@instance-1 ~]# curl -L -o
+        pg_permission_1.1.tgz https://github.com/cybertec-postgresql/pg_permission/archive/REL_1_1.tar.gz   % Total    %
+        Received % Xferd  Average Speed   Time    Time     Time  Current                                  Dload  Upload   Total
+        Spent    Left  Speed 100   142    0   142    0     0    581      0 --:--:-- --:--:-- --:--:--   579   0     0    0  9437
+        0     0  24799      0 --:--:-- --:--:-- --:--:-- 24799 [root@instance-1 ~]# tar xf pg_permission_1.1.tgz
+        [root@instance-1 ~]# cd pg_permission-REL_1_1/ [root@instance-1 ~]# which pg_config /usr/bin/which: no pg_config in
+        (/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin) [root@instance-1 ~]# export PATH=/usr/pgsql-10/bin:$PATH
+        [root@instance-1 ~]# which pg_config /usr/pgsql-10/bin/pg_config [root@instance-1 ~]# make install /usr/bin/mkdir -p
+        '/usr/pgsql-10/share/extension' /usr/bin/mkdir -p '/usr/pgsql-10/share/extension' /usr/bin/mkdir -p
+        '/usr/pgsql-10/doc/extension' /usr/bin/install -c -m 644 .//pg_permissions.control '/usr/pgsql-10/share/extension/'
+        /usr/bin/install -c -m 644 .//pg_permissions--*.sql  '/usr/pgsql-10/share/extension/' /usr/bin/install -c -m 644
+        .//README.pg_permissions '/usr/pgsql-10/doc/extension/' [root@instance-1 ~]# su - postgres bash-4.2$ whoami postgres
+        bash-4.2$ psql -c "create extension pg_permissions;" CREATE EXTENSION
+         Now you need to add entries to  permission_target  that correspond to your  desired permissions . Let's assume we have
+        a schema  appschema , and  appuser  should have  SELECT ,  UPDATE ,  DELETE , and  INSERT  permissions on all tables and
+        views in that schema: postgres=# INSERT INTO public.permission_target postgres=#   (id, role_name, permissions,
+        postgres=#    object_type, schema_name) postgres=# VALUES postgres=#   (1, 'appuser', '{SELECT,INSERT,UPDATE,DELETE}',
+        postgres=#    'TABLE', 'appschema'); INSERT 0 1
+                              postgres=# INSERT INTO public.permission_target postgres=#   (id, role_name, permissions,
+        postgres=#    object_type, schema_name) postgres=# VALUES postgres=#   (2, 'appuser', '{SELECT,INSERT,UPDATE,DELETE}',
+        postgres=#    'VIEW', 'appschema'); INSERT 0 1
+         Of course, the user will need the  USAGE  privilege on the schema: postgres=# INSERT INTO public.permission_target
+        postgres=#   (id, role_name, permissions,i postgres=#    object_type, schema_name) postgres=# VALUES postgres=#   (3,
+        'appuser', '{USAGE}', postgres=#    'SCHEMA', 'appschema'); INSERT 0 1
+         The user also needs  USAGE  privileges on the  appseq  sequence in that schema: postgres=# INSERT INTO
+        public.permission_target postgres=#   (id, role_name, permissions, postgres=#    object_type, schema_name, object_name)
+        postgres=# VALUES postgres=#   (4, 'appuser', '{USAGE}', postgres=#    'SEQUENCE', 'appschema', 'appseq'); INSERT 0 1
+         Now we can review which permissions are missing and which additional permissions are granted: postgres=# SELECT * FROM
+        public.permission_diffs();
+                               missing | role_name | object_type | schema_name | object_name | column_name | permission
+        ---------+-----------+-------------+-------------+-------------+-------------+------------  f       | laurenz   | VIEW
+        | appschema   | appview     |             | SELECT  t       | appuser   | TABLE       | appschema   | apptable    |
+        | DELETE (2 rows)
+         That means that  appuser  is missing (missing is TRUE) the DELETE privilege on  appschema.apptable  which should be
+        GRANT ed, while user  laurenz  has the  additional
+                              SELECT  privilege on  appschema.appview  (missing is FALSE). To review the actual permissions on
+        an object, we can use the  _permissions  views: postgres=# SELECT * FROM schema_permissions postgres=#   WHERE role_name
+        = 'appuser' AND schema_name = 'appschema';
+                               object_type | role_name | schema_name | object_name | column_name | permissions | granted
+        -------------+-----------+-------------+-------------+-------------+-------------+---------  SCHEMA      | appuser   |
+        appschema   |             |             | USAGE       | t  SCHEMA      | appuser   | appschema   |             |
+        | CREATE      | f (2 rows)
+         For more details and examples, visit the online  documentation .
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_4.5', 'cis_postgresql_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.6":
+    title: '4.6 | Ensure Row Level Security RLS is configured correctly - manual'
+    section: 'User Access and Authorization'
+    description: |
+        In addition to the SQLstandard privilege system available through  GRANT , tables can have row security policies that
+        restrict, on a peruser basis, which individual rows can be returned by normal queries or inserted, updated, or deleted
+        by data modification commands. This feature is also known as Row Level Security RLS. By default, tables do not have any
+        policies, so if a user has access privileges to a table according to the SQL privilege system, all rows within it are
+        equally available for querying or updating. Row security policies can be specific to commands, to roles, or to both. A
+        policy can be specified to apply to  ALL  commands, or to any combination of  SELECT ,  INSERT ,  UPDATE , or  DELETE .
+        Multiple roles can be assigned to a given policy, and normal role membership and inheritance rules apply. If you use RLS
+        and apply restrictive policies to certain users, it is important that the  Bypass RLS  privilege not be granted to any
+        unauthorized users. This privilege overrides RLSenabled tables and associated policies. Generally, only superusers and
+        elevated users should possess this privilege.
+    remediation: |
+        Again, we are using the example from the PostgreSQL documentation using the example  passwd  table. We will create three
+        database roles to illustrate the workings of RLS: postgres=# CREATE ROLE admin; CREATE ROLE postgres=# CREATE ROLE bob;
+        CREATE ROLE postgres=# CREATE ROLE alice; CREATE ROLE
+         Now, we will insert known data into the  passwd  table: postgres=# INSERT INTO passwd VALUES
+        ('admin','xxx',0,0,'Admin','111-222-3333',null,'/root','/bin/dash'); INSERT 0 1 postgres=# INSERT INTO passwd VALUES
+        ('bob','xxx',1,1,'Bob','123-456-7890',null,'/home/bob','/bin/zsh'); INSERT 0 1 postgres=# INSERT INTO passwd VALUES
+        ('alice','xxx',2,1,'Alice','098-765-4321',null,'/home/alice','/bin/zsh'); INSERT 0 1
+         And we will enable RLS on the table: postgres=# ALTER TABLE passwd ENABLE ROW LEVEL SECURITY; ALTER TABLE
+         Now that RLS is enabled, we need to define one or more policies. Create the administrator policy and allow it access to
+        all rows: postgres=# CREATE POLICY admin_all ON passwd TO admin USING (true) WITH CHECK (true); CREATE POLICY
+         Create a policy for normal users to  view  all rows: postgres=# CREATE POLICY all_view ON passwd FOR SELECT USING
+        (true); CREATE POLICY
+         Create a policy for normal users that allows them to update only their own rows and to limit what values can be set for
+        their login shell: postgres=# CREATE POLICY user_mod ON passwd FOR UPDATE   USING (current_user = user_name)   WITH
+        CHECK (     current_user = user_name AND     shell IN ('/bin/bash','/bin/sh','/bin/dash','/bin/zsh','/bin/tcsh')   );
+        CREATE POLICY
+         Grant all the normal rights on the table to the  admin  user: postgres=# GRANT SELECT, INSERT, UPDATE, DELETE ON passwd
+        TO admin; GRANT
+         Grant only select access on non-sensitive columns to everyone: postgres=# GRANT SELECT   (user_name, uid, gid,
+        real_name, home_phone, extra_info, home_dir, shell)   ON passwd TO public; GRANT
+         Grant update to only the sensitive columns: postgres=# GRANT UPDATE   (pwhash, real_name, home_phone, extra_info,
+        shell)   ON passwd TO public; GRANT
+         Ensure that no one has been granted  Bypass RLS  inadvertently, by running the  psql  display command  \du+ . If
+        unauthorized users do have  Bypass RLS  granted then resolve this using the  ALTER ROLE
+                              <user>
+                              NOBYPASSRLS;  command. You can now verify that 'admin', 'bob', and 'alice' are properly restricted
+        by querying the  passwd  table as each of these roles.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_4.6', 'cis_postgresql_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.7":
+    title: '4.7 | Ensure the set user extension is installed - manual'
+    section: 'User Access and Authorization'
+    description: |
+        PostgreSQL access to the superuser database role must be controlled and audited to prevent unauthorized access.
+    remediation: |
+        At the time this benchmark is being written,  set_user  is not available as a package in the PGDG repository. As such,
+        we will build it from source: $ whoami root $ yum -y install postgresql10-devel Loaded plugins: fastestmirror Setting up
+        Install Process Loading mirror speeds from cached hostfile  * base: mirror.cisp.com  * extras: packages.oit.ncsu.edu  *
+        updates: mirror.cisp.com Resolving Dependencies --> Running transaction check ---> Package postgresql10-devel.x86_64
+        0:10.6-1PGDG.rhel6 will be installed --> Finished Dependency Resolution
+                              Dependencies Resolved
+        ===========================================================================================================  Package
+        Arch               Version                        Repository          Size
+        =========================================================================================================== Installing:
+        postgresql10-devel             x86_64             10.6-1PGDG.rhel6             pgdg10             1.7 M
+                              Transaction Summary
+        =========================================================================================================== Install
+        1 Package(s)
+                              Total download size: 1.9 M Installed size: 8.8 M Downloading Packages:
+        postgresql10-devel-10.6-1PGDG.rhel6.x86_64.rpm                                    | 1.9 MB     00:01 Running
+        rpm_check_debug Running Transaction Test Transaction Test Succeeded Running Transaction Warning: RPMDB altered outside
+        of yum.   Installing : postgresql10-devel-10.6-1PGDG.rhel6.x86_64                                            1/1
+        Verifying  : postgresql10-devel-10.6-1PGDG.rhel6.x86_64                                            1/1
+                              Installed:   postgresql10-devel.x86_64 0:10.6-1PGDG.rhel6
+                              Complete! $ $ curl https://codeload.github.com/pgaudit/set_user/tar.gz/REL1_6_1 >
+        set_user-1.6.1.tgz   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+        Dload  Upload   Total   Spent    Left  Speed 100 14916    0 14916    0     0  57215      0 --:--:-- --:--:-- --:--:--
+        184k $ $ tar xf set_user-1.6.1.tgz $ cd set_user-REL1_6_1 $ export PATH=/usr/pgsql-10/bin:$PATH [root@centos6 set_user-
+        REL1_6_1]# make USE_PGXS=1 gcc -Wall -Wmissing-prototypes -Wpointer-arith -Wdeclaration-after-statement -Wendif-labels
+        -Wmissing-format-attribute -Wformat-security -fno-strict-aliasing -fwrapv -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2
+        -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic -fPIC -I. -I./
+        -I/usr/pgsql-10/include/server -I/usr/pgsql-10/include/internal -D_GNU_SOURCE -I/usr/include/libxml2  -I/usr/include  -c
+        -o set_user.o set_user.c gcc -Wall -Wmissing-prototypes -Wpointer-arith -Wdeclaration-after-statement -Wendif-labels
+        -Wmissing-format-attribute -Wformat-security -fno-strict-aliasing -fwrapv -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2
+        -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic -fPIC -L/usr/pgsql-10/lib -Wl,--as-needed
+        -L/usr/lib64 -Wl,--as-needed -Wl,-rpath,'/usr/pgsql-10/lib',--enable-new-dtags -lm  -shared -o set_user.so set_user.o
+        [root@centos6 set_user-REL1_6_1]# make USE_PGXS=1 install /bin/mkdir -p '/usr/pgsql-10/share/extension' /bin/mkdir -p
+        '/usr/pgsql-10/share/extension' /bin/mkdir -p '/usr/pgsql-10/lib' /usr/bin/install -c -m 644 "set_user.h"
+        /usr/pgsql-10/include /usr/bin/install -c -m 644 .//set_user.control '/usr/pgsql-10/share/extension/' /usr/bin/install
+        -c -m 644 .//set_user--1.6.sql .//set_user--1.5--1.6.sql .//set_user--1.4--1.5.sql .//set_user--1.1--1.4.sql .//set_user
+        --1.0--1.1.sql  '/usr/pgsql-10/share/extension/' /usr/bin/install -c -m 755  set_user.so '/usr/pgsql-10/lib/'
+         Now that  set_user  is installed, we need to tell PostgreSQL to load its library: $ whoami root $ vi
+        ~postgres/10/data/postgresql.conf # load set_user libs before anything else shared_preload_libraries = 'set_user,
+        other_libs' $ systemctl restart postgresql-10
+         And now, we can install the extension from with SQL: postgres=# select * from pg_available_extensions where name =
+        'set_user';    name   | default_version | installed_version |                  comment
+        ----------+-----------------+-------------------+--------------------------------------------  set_user | 1.6.1
+        |                   | similar to SET ROLE but with added logging (1 row)
+                              postgres=# create extension set_user; CREATE EXTENSION postgres=# select * from
+        pg_available_extensions where name = 'set_user';    name   | default_version | installed_version |
+        comment ----------+-----------------+-------------------+--------------------------------------------  set_user | 1.6.1
+        | 1.6.1             | similar to SET ROLE but with added logging (1 row)
+         Now, we use  GRANT  to configure each DBA role to allow it to use the  set_user  functions. In the example below, we
+        will configure my db user  doug . (You would do this for each DBA's normal user role.) postgres=# grant execute on
+        function set_user(text) to doug; GRANT postgres=# grant execute on function set_user_u(text) to doug; GRANT
+         Connect to PostgreSQL as yourself and verify it works as expected: $ whoami psql $ psql -U doug -d postgres postgres=>
+        select set_user('postgres'); ERROR:  switching to superuser not allowed HINT:  Use 'set_user_u' to escalate. postgres=>
+        select set_user_u('postgres');  set_user_u ------------  OK (1 row)
+                              postgres=# select current_user, session_user;  current_user | session_user
+        --------------+--------------  postgres     | doug (1 row)
+                              postgres=# select reset_user();  reset_user ------------  OK (1 row)
+                              postgres=> select current_user, session_user;  current_user | session_user
+        --------------+--------------  doug         | doug (1 row)
+         Once all DBA's normal user accounts have been  GRANT ed permission, revoke the ability to login as the  postgres
+        (superuser) user: postgres=# alter user postgres NOLOGIN; ALTER ROLE
+         Which results in: $ psql psql: FATAL:  role "postgres" is not permitted to log in $ psql -U doug -d postgres psql
+        (10.7)
+         Make sure there are no other roles that are superuser's and can still login: postgres=# SELECT rolname FROM pg_authid
+        WHERE rolsuper and rolcanlogin;  rolname --------- (0 rows)
+         Verify there are no unprivileged roles that can login directly that are granted a superuser role even if it is multiple
+        layers removed: postgres=# DROP VIEW IF EXISTS roletree; NOTICE:  view "roletree" does not exist, skipping DROP VIEW
+        postgres=# CREATE OR REPLACE VIEW roletree AS postgres-# WITH RECURSIVE postgres-# roltree AS ( postgres(#   SELECT
+        u.rolname AS rolname, postgres(#          u.oid AS roloid, postgres(#          u.rolcanlogin, postgres(#
+        u.rolsuper, postgres(#          '{}'::name[] AS rolparents, postgres(#          NULL::oid AS parent_roloid, postgres(#
+        NULL::name AS parent_rolname postgres(#   FROM pg_catalog.pg_authid u postgres(#   LEFT JOIN pg_catalog.pg_auth_members
+        m on u.oid = m.member postgres(#   LEFT JOIN pg_catalog.pg_authid g on m.roleid = g.oid postgres(#   WHERE g.oid IS NULL
+        postgres(#   UNION ALL postgres(#   SELECT u.rolname AS rolname, postgres(#          u.oid AS roloid, postgres(#
+        u.rolcanlogin, postgres(#          u.rolsuper, postgres(#          t.rolparents || g.rolname AS rolparents, postgres(#
+        g.oid AS parent_roloid, postgres(#          g.rolname AS parent_rolname postgres(#   FROM pg_catalog.pg_authid u
+        postgres(#   JOIN pg_catalog.pg_auth_members m on u.oid = m.member postgres(#   JOIN pg_catalog.pg_authid g on m.roleid
+        = g.oid postgres(#   JOIN roltree t on t.roloid = g.oid postgres(# ) postgres-# SELECT postgres-#   r.rolname,
+        postgres-#   r.roloid, postgres-#   r.rolcanlogin, postgres-#   r.rolsuper, postgres-#   r.rolparents postgres-# FROM
+        roltree r postgres-# ORDER BY 1; CREATE VIEW postgres=# SELECT postgres-#   ro.rolname, postgres-#   ro.roloid,
+        postgres-#   ro.rolcanlogin, postgres-#   ro.rolsuper, postgres-#   ro.rolparents postgres-# FROM roletree ro postgres-#
+        WHERE (ro.rolcanlogin AND ro.rolsuper) postgres-# OR postgres-# ( postgres(#     ro.rolcanlogin AND EXISTS postgres(#
+        ( postgres(#       SELECT TRUE FROM roletree ri postgres(#       WHERE ri.rolname = ANY (ro.rolparents) postgres(#
+        AND ri.rolsuper postgres(#     ) postgres(# );  rolname | roloid | rolcanlogin | rolsuper | rolparents
+        ---------+--------+-------------+----------+------------ (0 rows)
+         If any roles are identified by this query, use  REVOKE  to correct. Impact: Much like the venerable  sudo  does for the
+        OS,  set_user  manages superuser access for PostgreSQL. Complete configuration of  set_user  is documented at the
+        extension's  website  and should be reviewed to ensure the logging entries that your organization cares about are
+        properly configured. Note that some external tools assume they can connect as the  postgres  user by default and this is
+        no longer true. You may find some tools need different options, reconfigured, or even abandoned to compensate for this.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_4.7', 'cis_postgresql_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.8":
+    title: '4.8 | Make use of default roles - manual'
+    section: 'User Access and Authorization'
+    description: |
+        PostgreSQL provides a set of default roles which provide access to certain, commonly needed, privileged capabilities and
+        information. Administrators can GRANT these roles to users and/or other roles in their environment, providing those
+        users with access to the specified capabilities and information.
+    remediation: |
+        If you've determined that one or more of the default roles can be used, simply  GRANT  it: postgres=# GRANT pg_monitor
+        TO doug; GRANT ROLE
+         And then remove  superuser  from the account: postgres=# ALTER ROLE doug NOSUPERUSER; ALTER ROLE postgres=# select
+        rolname from pg_roles where rolsuper is true;  rolname   ----------  postgres (1 row)
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_4.8', 'cis_postgresql_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.1":
+    title: '5.1 | Ensure login via local UNIX Domain Socket is configured correctly - manual'
+    section: 'Connection and Login'
+    description: |
+        A remote host login, via ssh, is arguably the most secure means of remotely accessing and administering the PostgreSQL
+        server. Connecting with the  psql  client, via UNIX DOMAIN SOCKETS, using the  peer  authentication method is the most
+        secure mechanism available for local connections. Provided a database user account of the same name of the UNIX account
+        has already been defined in the database, even ordinary user accounts can access the cluster in a similarly highly
+        secure manner.
+    remediation: |
+        Creation of a database account that matches the local account allows PEER authentication: $ psql -c "CREATE ROLE user1
+        WITH LOGIN;" CREATE ROLE
+         Execute the following as the UNIX user account, the default authentication rules should now permit the login: $ su -
+        user1 $ whoami user1 $ psql -d postgres psql (10.6) Type "help" for help.
+                              postgres=>
+         As per the host-based authentication rules in  $PGDATA/pg_hba.conf , all login attempts via UNIX DOMAIN SOCKETS are
+        processed on the line beginning with  local . This is the minimal rule that must be in place allowing PEER connections:
+        # TYPE  DATABASE        USER            ADDRESS                 METHOD local   all             postgres
+        peer
+         More traditionally, a rule like the following would be used to allow any local PEER connection: # TYPE  DATABASE
+        USER            ADDRESS                 METHOD local   all             all                                     peer
+         Once edited, the server process must reload the authentication file before it can take effect. Improperly configured
+        rules cannot update i.e. the old rules remain in place. The PostgreSQL logs will report the outcome of the SIGHUP:
+        postgres=# select pg_reload_conf();  pg_reload_conf ----------------  t (1 row)
+         The following examples illustrate other possible configurations. The resultant "rule" of success/failure depends upon
+        the first matching line: # allow postgres user logins
+        # TYPE  DATABASE        USER            ADDRESS                 METHOD local   all             postgres
+        peer
+         # allow all local users
+        # TYPE  DATABASE        USER            ADDRESS                 METHOD local   all             all
+        peer
+         # allow all local users only if they are connecting to a db named the same as their username # e.g. if user 'bob' is
+        connecting to a db named 'bob' # TYPE  DATABASE        USER                                    METHOD local   samerole
+        all                                     peer
+         # allow only local users who are members of the 'rw' role in the db # TYPE  DATABASE        USER            ADDRESS
+        METHOD local   all             +rw                                     peer
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_5.1', 'cis_postgresql_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2":
+    title: '5.2 | Ensure login via host TCPIP Socket is configured correctly - manual'
+    section: 'Connection and Login'
+    description: |
+        A large number of authentication METHODs are available for hosts connecting using TCP/IP sockets, including trust reject
+        md5 scramsha256 password gss sspi ident pam ldap radius cert METHODs  trust ,  password , and  ident  are  not  to be
+        used for remote logins. METHOD  md5  is the most popular and can be used in both encrypted and unencrypted
+        sessions,however,  it is vulnerable to packet replay attacks . It is recommended that  scramsha256  be used instead of
+        md5 . Use of the  gss ,  sspi ,  pam ,  ldap ,  radius , and  cert  METHODs, while more secure than  md5 , are dependent
+        upon the availability of external authenticating processes/services and thus are not covered in this benchmark.
+    remediation: |
+        Confirm a login attempt has been made by looking for a logged error message detailing the nature of the authenticating
+        failure. In the case of failed login attempts, whether encrypted or unencrypted, check the following: The server should
+        be sitting on a port exposed to the remote connecting host i.e. NOT ip address 127.0.0.1
+         listen_addresses = '*'    ``` * An authenticating rule must exist in the file `pg_hba.conf`
+                                    This example permits only encrypted sessions for the `postgres` role and denies all
+        unencrypted session for the `postgres` role:
+
+                               # TYPE    DATABASE           USER            ADDRESS                 METHOD
+         hostssl    all             postgres         0.0.0.0/0                 scram-sha-256
+         hostnossl  all             postgres         0.0.0.0/0                 reject
+         The following examples illustrate other possible configurations. The resultant "rule" of success/failure depends upon
+        the  first matching line . # allow 'postgres' user only from 'localhost/loopback' connections
+        # and only if you know the password
+        # TYPE    DATABASE        USER            ADDRESS                 METHOD
+        host      all             postgres        127.0.0.1/32            scram-sha-256
+
+        # allow users to connect remotely only to the database named after them,
+        # with the correct user password:
+        # (accepts both SSL and non-SSL connections)
+        # TYPE    DATABASE        USER            ADDRESS                 METHOD
+        host      samerole        all             0.0.0.0/0               scram-sha-256
+
+        # allow only those users who are a member of the 'rw' role to connect
+        # only to the database named after them, with the correct user password:
+        # (accepts both SSL and non-SSL connections)
+        # TYPE    DATABASE        USER            ADDRESS                 METHOD
+        host      samerole        +rw             0.0.0.0/0               scram-sha-256
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_5.2', 'cis_postgresql_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.1":
+    title: '6.1 | Ensure Attack Vectors Runtime Parameters are Configured - manual'
+    section: 'PostgreSQL Settings'
+    description: |
+        Understanding the vulnerability of PostgreSQL runtime parameters by the particular delivery method, or attack vector.
+    remediation: |
+        In the case of a changed parameter, the value is returned back to its default value. In the case of a successful exploit
+        of an already set runtime parameter then an analysis must be carried out determining the best approach mitigating the
+        risk. Impact: It can be difficult to totally eliminate risk. Once changed, detecting a miscreant parameter can become
+        problematic.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_6.1', 'cis_postgresql_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.2":
+    title: '6.2 | Ensure backend runtime parameters are configured correctly'
+    section: 'PostgreSQL Settings'
+    description: |
+        In order to serve multiple clients efficiently, the PostgreSQL server launches a new backend process for each client.
+        The runtime parameters in this benchmark section are controlled by the backend process. The servers performance, in the
+        form of slow queries causing a denial of service, and the RDBMs auditing abilities for determining root cause analysis
+        can be compromised via these parameters.
+    remediation: |
+        Once detected, the unauthorized/undesired change can be corrected by altering the configuration file and executing a
+        server restart. In the case where the parameter has been on the command line invocation of  pg_ctl  the  restart
+        invocation is insufficient and an explicit  stop  and  start  must instead be made. Query the view  pg_settings  and
+        compare with previous query outputs for any changes. Review configuration files  postgresql.conf  and
+        postgresql.auto.conf  and compare them with previously archived file copies for any changes. Examine the process output
+        and look for parameters that were used at server startup:
+         ps aux | grep -E '[p]ostgres|[p]ostmaster'
+
+                              Impact: All changes made on this level will affect the overall behavior of the server. These
+        changes can only be affected by a server restart after the parameters have been altered in the configuration files.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_6.2', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == off'
+            - name: Undefined
+              rule: 'Undefined'
+            - name: Undefined
+              rule: 'should cmp == on'
+            - name: Undefined
+              rule: 'Undefined'
+            - name: Undefined
+              rule: 'should cmp == on'
+            - name: Undefined
+              rule: 'Undefined'
+            - name: Undefined
+              rule: 'should eq 0'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.3":
+    title: '6.3 | Ensure Postmaster Runtime Parameters are Configured'
+    section: 'PostgreSQL Settings'
+    description: |
+        PostgreSQL runtime parameters that are executed by the postmaster process.
+    remediation: |
+        Once detected, the unauthorized/undesired change can be corrected by editing the altered configuration file and
+        executing a server restart. In the case where the parameter has been on the command line invocation of  pg_ctl  the
+        restart  invocation is insufficient and an explicit  stop  and  start  must instead be made. Detecting a change is
+        possible by one of the following methods: Query the view  pg_settings  and compare with previous query outputs for any
+        changes Review the configuration files  postgresql.conf  and  postgresql.auto.conf  and compare with previously archived
+        file copies for any changes Examine the process output and look for parameters that were used at server startup:
+         ps aux | grep -E '[p]ostgres|[p]ostmaster'
+
+                              Impact: All changes made on this level will affect the overall behavior of the server. These
+        changes can be effected by editing the PostgreSQL configuration files and by either executing a server SIGHUP from the
+        command line or, as superuser  postgres , executing the SQL command  select pg_reload_conf() . A denial of service is
+        possible by the over-allocating of limited resources, such as RAM. Data can be corrupted by allowing damaged pages to
+        load or by changing parameters to reinterpret values in an unexpected fashion, e.g. changing the time zone. Client
+        messages can be altered in such a way as to interfere with the application logic. Logging can be altered and obfuscated
+        inhibiting root cause analysis.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_6.3', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.4":
+    title: '6.4 | Ensure SIGHUP Runtime Parameters are Configured'
+    section: 'PostgreSQL Settings'
+    description: |
+        PostgreSQL runtime parameters that are executed by the SIGHUP signal.
+    remediation: |
+        Restore all values in the PostgreSQL configuration files and invoke the server to reload the configuration files.
+        Impact: All changes made on this level will affect the overall behavior of the server. These changes can be effected by
+        editing the PostgreSQL configuration files and by either executing a server SIGHUP from the command line or, as
+        superuser  postgres , executing the SQL command  select pg_reload_conf() . A denial of service is possible by the over-
+        allocating of limited resources, such as RAM. Data can be corrupted by allowing damaged pages to load or by changing
+        parameters to reinterpret values in an unexpected fashion, e.g. changing the time zone. Client messages can be altered
+        in such a way as to interfere with the application logic. Logging can be altered and obfuscated inhibiting root cause
+        analysis.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_6.4', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.5":
+    title: '6.5 | Ensure Superuser Runtime Parameters are Configured'
+    section: 'PostgreSQL Settings'
+    description: |
+        PostgreSQL runtime parameters that can only be executed by the servers superuser, which is traditionally  postgres .
+    remediation: |
+        The exploit is made in the configuration files. These changes are effected upon server restart. Once detected, the
+        unauthorized/undesired change can be made by editing the altered configuration file and executing a server restart. In
+        the case where the parameter has been set on the command line invocation of  pg_ctl  the  restart  invocation is
+        insufficient and an explicit  stop  and  start  must instead be made. Detecting a change is possible by one of the
+        following methods: Query the view  pg_settings  and compare with previous query outputs for any changes. Review the
+        configuration files  postgreql.conf  and  postgreql.auto.conf  and compare with previously archived file copies for any
+        changes Examine the process output and look for parameters that were used at server startup:
+         ps aux | grep -E '[p]ostgres|[p]ostmaster'
+
+                              Impact: All changes made on this level will affect the overall behavior of the server. These
+        changes can only be affected by a server restart after the parameters have been altered in the configuration files. A
+        denial of service is possible by the over allocating of limited resources, such as RAM. Data can be corrupted by
+        allowing damaged pages to load or by changing parameters to reinterpret values in an unexpected fashion, e.g. changing
+        the time zone. Client messages can be altered in such a way as to interfere with the application logic. Logging can be
+        altered and obfuscated inhibiting root cause analysis.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_6.5', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.6":
+    title: '6.6 | Ensure User Runtime Parameters are Configured'
+    section: 'PostgreSQL Settings'
+    description: |
+        These PostgreSQL runtime parameters are managed at the user account ROLE level.
+    remediation: |
+        In the matter of a user session, the login sessions must be validated that it is not executing undesired parameter
+        changes. In the matter of attributes that have been changed in entities, they must be manually reverted to its default
+        value(s). Impact: A denial of service is possible by the over-allocating of limited resources, such as RAM. Changing
+        VACUUM  parameters can force a server shutdown which is standard procedure preventing data corruption from transaction
+        ID wraparound. Data can be corrupted by changing parameters to reinterpret values in an unexpected fashion, e.g.
+        changing the time zone. Logging can be altered and obfuscated to inhibit root cause analysis.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_6.6', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.7":
+    title: '6.7 | Ensure FIPS 140-2 OpenSSL Cryptography Is Used - manual'
+    section: 'PostgreSQL Settings'
+    description: |
+        Install, configure, and use OpenSSL on a platform that has a NIST certified FIPS 1402 installation of OpenSSL. This
+        provides PostgreSQL instances the ability to generate and validate cryptographic hashes to protect unclassified
+        information requiring confidentiality and cryptographic protection, in accordance with the data owners requirements.
+    remediation: |
+        Configure OpenSSL to be FIPS compliant. PostgreSQL uses OpenSSL for cryptographic modules. To configure OpenSSL to be
+        FIPS 140-2 compliant, see the  official RHEL Documentation . Below is a general summary of the steps required: Install
+        the  dracut-fips  package   $ yum -y install dracut-fips Loaded plugins: fastestmirror Loading mirror speeds from cached
+        hostfile [snip] Resolving Dependencies --> Running transaction check ---> Package dracut-fips.x86_64 0:033-554.el7 will
+        be installed --> Processing Dependency: hmaccalc for package: dracut-fips-033-554.el7.x86_64 --> Running transaction
+        check ---> Package hmaccalc.x86_64 0:0.9.13-4.el7 will be installed --> Finished Dependency Resolution Dependencies
+        Resolved
+                               Package                      Arch                    Version                          Repository
+        Size
+                              Installing:  dracut-fips                  x86_64                  033-554.el7
+        base                   61 k Installing for dependencies:  hmaccalc                     x86_64
+        0.9.13-4.el7                     base                   26 k
+                              Transaction Summary Install  1 Package (+1 Dependent package)
+                              Total download size: 87 k Installed size: 107 k Downloading packages: [snip] Running transaction
+        check Running transaction test Transaction test succeeded Running transaction   Installing :
+        hmaccalc-0.9.13-4.el7.x86_64                                                                    1/2    Installing :
+        dracut-fips-033-554.el7.x86_64                                                                  2/2    Verifying  :
+        hmaccalc-0.9.13-4.el7.x86_64                                                                    1/2    Verifying  :
+        dracut-fips-033-554.el7.x86_64                                                                  2/2
+                              Installed:   dracut-fips.x86_64 0:033-554.el7
+                              Dependency Installed:   hmaccalc.x86_64 0:0.9.13-4.el7
+                              Complete!
+         Recreate the  initramfs  file
+         $ dracut -f
+
+                              Modify the kernel command line of the current kernel in the  /boot/grub/grub.conf  file by adding
+        the following option:  fips=1
+                              Reboot the system for changes to take effect. Verify  fips_enabled  according to Audit Procedure
+        above.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_6.7', 'cis_postgresql_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.8":
+    title: '6.8 | Ensure SSL is enabled and configured correctly'
+    section: 'PostgreSQL Settings'
+    description: |
+        SSL on a PostgreSQL server should be enabled set to  on  and configured to encrypt TCP traffic to and from the server.
+    remediation: |
+        For this example, and ease of illustration, we will be using a self-signed certificate for the server generated via
+        openssl , and the PostgreSQL defaults for file naming and location in the PostgreSQL  $PGDATA  directory. $ whoami
+        postgres $ # create new certificate and enter details at prompts $ openssl req -new -text -out server.req Generating a
+        2048 bit RSA private key .....................+++ ..................................................................+++
+        writing new private key to 'privkey.pem' Enter PEM pass phrase: Verifying - Enter PEM pass phrase: ----- You are about
+        to be asked to enter information that will be incorporated into your certificate request. What you are about to enter is
+        what is called a Distinguished Name or a DN. There are quite a few fields but you can leave some blank For some fields
+        there will be a default value, If you enter '.', the field will be left blank. ----- Country Name (2 letter code)
+        [XX]:US State or Province Name (full name) []:Ohio Locality Name (eg, city) [Default City]:Columbus Organization Name
+        (eg, company) [Default Company Ltd]:Me Inc Organizational Unit Name (eg, section) []:IT Common Name (eg, your name or
+        your server's hostname) []:my.me.inc Email Address []:me@meinc.com
+                              Please enter the following 'extra' attributes to be sent with your certificate request A challenge
+        password []: An optional company name []:
+                              $ # remove passphrase (required for automatic server start up) $ openssl rsa -in privkey.pem -out
+        server.key && rm privkey.pem Enter pass phrase for privkey.pem: writing RSA key
+                              $ # modify certificate to self signed, generate .key and .crt files $ openssl req -x509 -in
+        server.req -text -key server.key -out server.crt
+                              $ # copy .key and .crt files to appropriate location, here default $PGDATA $ cp server.key
+        server.crt $PGDATA
+                              $ # restrict file mode for server.key $ chmod og-rwx server.key
+         Edit the PostgreSQL configuration file  postgresql.conf  to ensure the following items are set. Again, we are using
+        defaults. Note that altering these parameters will require restarting the cluster. # (change requires restart) ssl = on
+                              # allowed SSL ciphers ssl_ciphers = 'HIGH:MEDIUM:+3DES:!aNULL'
+                              # (change requires restart) ssl_cert_file = 'server.crt'
+                              # (change requires restart) ssl_key_file = 'server.key'
+                              password_encryption = on
+         Finally, restart PostgreSQL and confirm  ssl  using commands outlined in Audit Procedures: postgres=# show ssl;  ssl
+        -----  on (1 row)
+         Impact: A self-signed certificate can be used for testing, but a certificate signed by a certificate authority (CA)
+        (either one of the global CAs or a local one) should be used in production so that clients can verify the server's
+        identity. If all the database clients are local to the organization, using a local CA is recommended. To ultimately
+        enable and enforce  ssl  authentication for the server, appropriate  hostssl  records must be added to the  pg_hba.conf
+        file. Be sure to  reload  PostgreSQL after any changes (restart not required). Note:  The  hostssl  record matches
+        connection attempts made using TCP/IP, but  only  when the connection is made with SSL encryption. The  host  record
+        matches attempts made using TCP/IP, but allows both SSL and non-SSL connections. The  hostnossl  record matches attempts
+        made using TCP/IP, but only those  without  SSL.  Care should be taken to enforce SSL as appropriate.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_6.8', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.9":
+    title: '6.9 | Ensure the pgcrypto extension is installed and configured correctly'
+    section: 'PostgreSQL Settings'
+    description: |
+        PostgreSQL must implement cryptographic mechanisms to prevent unauthorized disclosure or modification of
+        organizationdefined information at rest to include, at a minimum, PII and classified information on organizationdefined
+        information system components.
+    remediation: |
+        The  pgcrypto  extension is included with the PostgreSQL 'contrib' package. Although included, it needs to be created in
+        the database. As the database administrator, run the following: postgres=# CREATE EXTENSION pgcrypto; CREATE EXTENSION
+         Verify  pgcrypto  is installed: postgres=# SELECT * FROM pg_available_extensions WHERE name='pgcrypto';    name   |
+        default_version | installed_version |         comment
+        ----------+-----------------+-------------------+-------------------------  pgcrypto | 1.3             | 1.3
+        | cryptographic functions (1 row)
+         Impact: When considering or undertaking any form of encryption, it is critical to understand the state of the encrypted
+        data at all stages of the data lifecycle. The use of  pgcrypto  ensures that the data at rest in the tables (and
+        therefore on disk) is encrypted, but for the data to be accessed by any users or applications, said users/applications
+        will, by necessity, have access to the encrypt and decrypt keys and the data in question will be encrypted/decrypted in
+        memory and then transferred to/from the user/application in that form.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_6.9', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "7.1":
+    title: '7.1 | Ensure a replication-only user is created and used for streaming replication - manual'
+    section: 'Replication'
+    description: |
+        Create a new user specifically for use by streaming replication instead of using the superuser account.
+    remediation: |
+        It will be necessary to create a new role for replication purposes: postgres=# create user replication_user REPLICATION
+        encrypted password 'XXX'; CREATE ROLE postgres=# select rolname from pg_roles where rolreplication is true;      rolname
+        ------------------  postgres  replication_user (2 rows)
+         When using  pg_basebackup  (or other replication tools) and when configuring  recovery.conf  on your standby server,
+        you would use the  replication_user  (and its password). Ensure you allow the new user via your  pg_hba.conf  file: #
+        note that 'replication' in the 2nd column is required and is a special # keyword, not a real database hostssl
+        replication     replication_user       0.0.0.0/0               md5
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_7.1', 'cis_postgresql_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "7.2":
+    title: '7.2 | Ensure base backups are configured and functional - manual'
+    section: 'Replication'
+    description: |
+        A base backup is a copy of the PRIMARY hosts data cluster PGDATA and is used to create STANDBY hosts and for Point In
+        Time Recovery PITR mechanisms. Base backups should be copied across networks in a secure manner using an encrypted
+        transport mechanism. The PostgreSQL CLI  pgbasebackup  can be used, however, SSL encryption should be enabled on the
+        server as per section 6.8 of this benchmark. The pgBackRest tool detailed in section 8.3 of this benchmark can also be
+        used to create a base backup.
+    remediation: |
+        Executing base backups using  pg_basebackup  requires the following steps on the  standby  server: $ whoami postgres $
+        pg_basebackup -h name_or_IP_of_master \ -p 5432 \ -U replication_user \ -D ~postgres/10/data \ -P -v -R -Xs \
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_7.2', 'cis_postgresql_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "7.3":
+    title: '7.3 | Ensure WAL archiving is configured and functional'
+    section: 'Replication'
+    description: |
+        Write Ahead Log WAL Archiving, or Log Shipping, is the process of sending transaction log files from the PRIMARY host
+        either to one or more STANDBY hosts or to be archived on a remote storage device for later use, e.g.  PITR . There are
+        several utilities that can copy WALs including, but not limited to,  cp ,  scp ,  sftp , and  rynsc . Basically, the
+        server follows a set of runtime parameters which defines when the WAL should be copied using one of the aforementioned
+        utilities.
+    remediation: |
+        Change parameters and restart the server as required. Note:  SSH public keys must be generated and installed as per
+        industry standards.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_7.3', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+            - name: Undefined
+              rule: 'Undefined'
+            - name: Undefined
+              rule: 'Undefined'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "7.4":
+    title: '7.4 | Ensure streaming replication parameters are configured correctly'
+    section: 'Replication'
+    description: |
+        Streaming replication from a PRIMARY host transmits DDL, DML, passwords, and other potentially sensitive activities and
+        data. These connections should be protected with Secure Sockets Layer SSL.
+    remediation: |
+        Review prior sections in this benchmark regarding SSL certificates, replication user, and WAL archiving. Confirm the
+        file  recovery.conf  is present on the STANDBY host and contains lines similar to the following: standby_mode=on
+        primary_conninfo = 'user=replication_user password=mypassword host=mySrcHost port=5432 sslmode=require sslcompression=1'
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_7.4', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "8.1":
+    title: '8.1 | Ensure PostgreSQL configuration files are outside the data cluster'
+    section: 'Special Configuration Considerations'
+    description: |
+        PostgreSQL configuration files within the data clusters directory tree can be changed by anyone logging into the data
+        cluster as the superuser, i.e.  postgres . As a matter of default policy, configuration files such as  postgresql.conf ,
+        pghba.conf , and  pgident , are placed in the data clusters directory,  PGDATA . PostgreSQL can be configured to
+        relocate these files to locations outside the data cluster which cannot then be accessed by an ordinary superuser login
+        session. Consideration should also be given to include directives these are cluster subdirectories where one can locate
+        files containing additional configuration parameters. Include directives are meant to add more flexibility for unique
+        installs or large network environments while maintaining order and consistent architectural design.
+    remediation: |
+        Follow these steps to remediate the configuration file locations and permissions: Determine appropriate locations for
+        relocatable configuration files based on your organization's security policies. If necessary, relocate and/or rename
+        configuration files outside of the data cluster. Ensure their file permissions are restricted as much as possible, i.e.
+        only superuser read access. Change the settings accordingly in the  postgresql.conf  configuration file. Restart the
+        database cluster for the changes to take effect.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_8.1', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "8.2":
+    title: '8.2 | Ensure PostgreSQL subdirectory locations are outside the data cluster'
+    section: 'Special Configuration Considerations'
+    description: |
+        The PostgreSQL cluster is organized to carry out specific tasks in subdirectories. For the purposes of performance,
+        reliability, and security these subdirectories should be relocated outside the data cluster.
+    remediation: |
+        Perform the following steps to remediate the subdirectory locations and permissions: Determine appropriate data, log,
+        and tablespace directories and locations based on your organization's security policies. If necessary, relocate all
+        listed directories outside the data cluster. Ensure file permissions are restricted as much as possible, i.e. only
+        superuser read access. When directories are relocated to other partitions, ensure that they are of sufficient size to
+        mitigate against excessive space utilization. Lastly, change the settings accordingly in the  postgresql.conf
+        configuration file and restart the database cluster for changes to take effect.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_8.2', 'cis_postgresql_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "8.3":
+    title: '8.3 | Ensure the backup and restore tool pgBackRest is installed and configured - manual'
+    section: 'Special Configuration Considerations'
+    description: |
+        pgBackRest aims to be a simple, reliable backup and restore system that can seamlessly scale up to the largest databases
+        and workloads. Instead of relying on traditional backup tools like  tar  and  rsync , pgBackRest implements all backup
+        features internally and uses a custom protocol for communicating with remote systems. Removing reliance on  tar  and
+        rsync  allows for better solutions to databasespecific backup challenges. The custom remote protocol allows for more
+        flexibility and limits the types of connections that are required to perform a backup which increases security.
+    remediation: |
+        pgBackRest  is not installed nor configured for PostgreSQL by default, but instead is maintained as a GitHub project.
+        Fortunately, it is a part of the PGDG repository and can be easily installed: $ whoami root $ Loaded plugins:
+        fastestmirror Loading mirror speeds from cached hostfile  * base: mirror.cc.columbia.edu  * epel: mirror.us.leaseweb.net
+        * extras: mirror.es.its.nyu.edu  * updates: mirror.cogentco.com Resolving Dependencies [snip]
+                              Dependencies Resolved
+        =================================================================================================================
+        Package                               Arch               Version                         Repository          Size
+        =================================================================================================================
+        Installing:  pgbackrest                            x86_64             2.10-1.rhel7                    pgdg10
+        241 k Installing for dependencies:  mailcap                               noarch             2.1.41-2.el7
+        base                31 k  perl-Business-ISBN                    noarch             2.06-2.el7                      base
+        25 k  perl-Business-ISBN-Data               noarch             20120719.001-2.el7              base                24 k
+        perl-Compress-Raw-Bzip2               x86_64             2.061-3.el7                     base                32 k  perl-
+        Compress-Raw-Zlib                x86_64             1:2.061-4.el7                   base                57 k  perl-DBD-
+        Pg                           x86_64             2.19.3-4.el7                    base               195 k  perl-DBI
+        x86_64             1.627-4.el7                     base               802 k  perl-Data-Dumper
+        x86_64             2.145-3.el7                     base                47 k  perl-Digest
+        noarch             1.17-245.el7                    base                23 k  perl-Digest-MD5
+        x86_64             2.52-3.el7                      base                30 k  perl-Digest-SHA
+        x86_64             1:5.85-4.el7                    base                58 k  perl-Encode-Locale
+        noarch             1.03-5.el7                      base                16 k  perl-File-Listing
+        noarch             6.04-7.el7                      base                13 k  perl-HTML-Parser
+        x86_64             3.71-4.el7                      base               115 k  perl-HTML-Tagset
+        noarch             3.20-15.el7                     base                18 k  perl-HTTP-Cookies
+        noarch             6.01-5.el7                      base                26 k  perl-HTTP-Daemon
+        noarch             6.01-8.el7                      base                21 k  perl-HTTP-Date
+        noarch             6.02-8.el7                      base                14 k  perl-HTTP-Message
+        noarch             6.06-6.el7                      base                82 k  perl-HTTP-Negotiate
+        noarch             6.01-5.el7                      base                17 k  perl-IO-Compress
+        noarch             2.061-2.el7                     base               260 k  perl-IO-HTML
+        noarch             1.00-2.el7                      base                23 k  perl-IO-Socket-IP
+        noarch             0.21-5.el7                      base                36 k  perl-IO-Socket-SSL
+        noarch             1.94-7.el7                      base               115 k  perl-JSON-PP
+        noarch             2.27202-2.el7                   base                55 k  perl-LWP-MediaTypes
+        noarch             6.02-2.el7                      base                24 k  perl-Mozilla-CA
+        noarch             20130114-5.el7                  base                11 k  perl-Net-Daemon
+        noarch             0.48-5.el7                      base                51 k  perl-Net-HTTP
+        noarch             6.06-2.el7                      base                29 k  perl-Net-LibIDN
+        x86_64             0.12-15.el7                     base                28 k  perl-Net-SSLeay
+        x86_64             1.55-6.el7                      base               285 k  perl-PlRPC
+        noarch             0.2020-14.el7                   base                36 k  perl-TimeDate
+        noarch             1:2.30-2.el7                    base                52 k  perl-URI
+        noarch             1.60-9.el7                      base               106 k  perl-WWW-RobotRules
+        noarch             6.02-5.el7                      base                18 k  perl-XML-LibXML
+        x86_64             1:2.0018-5.el7                  base               373 k  perl-XML-NamespaceSupport
+        noarch             1.11-10.el7                     base                18 k  perl-XML-SAX
+        noarch             0.99-9.el7                      base                63 k  perl-XML-SAX-Base
+        noarch             1.08-7.el7                      base                32 k  perl-libwww-perl
+        noarch             6.05-2.el7                      base               205 k  perl-version
+        x86_64             3:0.99.07-3.el7                 base                84 k
+                              Transaction Summary
+        ===================================================================================================================
+        Install  1 Package (+41 Dependent packages)
+                              Total download size: 3.7 M Installed size: 9.4 M [snip] Running transaction check Running
+        transaction test Transaction test succeeded Running transaction [snip] Installed:   pgbackrest.x86_64 0:2.10-1.rhel7
+                              Dependency Installed:   mailcap.noarch 0:2.1.41-2.el7                               perl-Business-
+        ISBN.noarch 0:2.06-2.el7                 perl-Business-ISBN-Data.noarch 0:20120719.001-2.el7         perl-Compress-Raw-
+        Bzip2.x86_64 0:2.061-3.el7           perl-Compress-Raw-Zlib.x86_64 1:2.061-4.el7                 perl-DBD-Pg.x86_64
+        0:2.19.3-4.el7                      perl-DBI.x86_64 0:1.627-4.el7                               perl-Data-Dumper.x86_64
+        0:2.145-3.el7                  perl-Digest.noarch 0:1.17-245.el7                           perl-Digest-MD5.x86_64
+        0:2.52-3.el7                    perl-Digest-SHA.x86_64 1:5.85-4.el7                         perl-Encode-Locale.noarch
+        0:1.03-5.el7                 perl-File-Listing.noarch 0:6.04-7.el7                       perl-HTML-Parser.x86_64
+        0:3.71-4.el7                   perl-HTML-Tagset.noarch 0:3.20-15.el7                       perl-HTTP-Cookies.noarch
+        0:6.01-5.el7                  perl-HTTP-Daemon.noarch 0:6.01-8.el7                        perl-HTTP-Date.noarch
+        0:6.02-8.el7                     perl-HTTP-Message.noarch 0:6.06-6.el7                       perl-HTTP-Negotiate.noarch
+        0:6.01-5.el7                perl-IO-Compress.noarch 0:2.061-2.el7                       perl-IO-HTML.noarch 0:1.00-2.el7
+        perl-IO-Socket-IP.noarch 0:0.21-5.el7                       perl-IO-Socket-SSL.noarch 0:1.94-7.el7                 perl-
+        JSON-PP.noarch 0:2.27202-2.el7                         perl-LWP-MediaTypes.noarch 0:6.02-2.el7                perl-
+        Mozilla-CA.noarch 0:20130114-5.el7                     perl-Net-Daemon.noarch 0:0.48-5.el7                    perl-Net-
+        HTTP.noarch 0:6.06-2.el7                           perl-Net-LibIDN.x86_64 0:0.12-15.el7                   perl-Net-
+        SSLeay.x86_64 0:1.55-6.el7                         perl-PlRPC.noarch 0:0.2020-14.el7                      perl-
+        TimeDate.noarch 1:2.30-2.el7                           perl-URI.noarch 0:1.60-9.el7                           perl-WWW-
+        RobotRules.noarch 0:6.02-5.el7                     perl-XML-LibXML.x86_64 1:2.0018-5.el7                  perl-XML-
+        NamespaceSupport.noarch 0:1.11-10.el7              perl-XML-SAX.noarch 0:0.99-9.el7                       perl-XML-SAX-
+        Base.noarch 0:1.08-7.el7                       perl-libwww-perl.noarch 0:6.05-2.el7                   perl-
+        version.x86_64 3:0.99.07-3.el7
+                              Complete!
+         Once installed,  pgBackRest  must be configured for things like stanza name, backup location, retention policy,
+        logging, etc. Please consult the  configuration guide . If employing  pgBackRest  for your backup/recovery solution,
+        ensure the repository, base backups, and WAL archives are stored on a reliable file system separate from the database
+        server. Further, the external storage system where backups resided should have limited access to only those system
+        administrators as necessary. Finally, as with any backup/recovery solution, stringent testing must be conducted. A
+        backup is only good if it can be restored successfully.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_8.3', 'cis_postgresql_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "8.4":
+    title: '8.4 | Ensure miscellaneous configuration settings are correct - manual'
+    section: 'Special Configuration Considerations'
+    description: |
+        This recommendation covers nonregular, special files, and dynamic libraries. PostgreSQL permits local logins via the
+        UNIX DOMAIN SOCKET and, for the most part, anyone with a legitimate Unix login account can make the attempt. Limiting
+        PostgreSQL login attempts can be made by relocating the UNIX DOMAIN SOCKET to a subdirectory with restricted
+        permissions. The creation and implementation of userdefined dynamic libraries is an extraordinary powerful capability.
+        In the hands of an experienced DBA/programmer, it can significantly enhance the power and flexibility of the RDBMS. But
+        new and unexpected behavior can also be assigned to the RDBMS, resulting in a very dangerous environment in what should
+        otherwise be trusted.
+    remediation: |
+        Follow these steps to remediate the configuration: Determine permissions based on your organization's security policies.
+        Relocate all files and ensure their permissions are restricted as much as possible, i.e. only superuser read access.
+        Ensure all directories where these files are located have restricted permissions such that the superuser can read but
+        not write. Lastly, change the settings accordingly in the  postgresql.conf  configuration file and restart the database
+        cluster for changes to take effect.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_postgresql_10_benchmark', 'rule_8.4', 'cis_postgresql_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:

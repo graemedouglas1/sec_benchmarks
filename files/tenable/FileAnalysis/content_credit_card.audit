@@ -1,0 +1,154 @@
+#TRUSTED 72a35381d8d4f14a9ba04e292a86de6feed64a9238f78f69eb3b1a5fa2fa5ed557da5c744b5cc38361652b40e541cee2a979cae3dd12b3cacb9a826b206fea77c4cb19f35e7357d8d56d7ee0db81445fc88257b0405222a383ed8ecb6134775f2313138662560d391a087e89542f0d809b76868f51ca506fe594664509196ce23bc142372d65197b76663016d652515bae4bb45529d078aa32484b03ab5e1bfd54bb2294f2c9cec4a30a304cb6b5ba0bcd1d2459d9d0cdff24753df91003a8a4e879f9c356d85d8329113881a38dd68eb1310f87caed846e9f5acd38a66e295ac258f4533a6d61262122b805cd84b3e5fa30d41e1d39e677d37812d5555317c6f4339105d7247597807bcbe025dfc623d6d75b34c583c952e5589b39f27aca5dfb370ed9d40f3eaf9845e63a4d31f61cae6db20d1141faace2080d838a54fcb91e2cd84bd338f20c79ebba5e6ed1fbd349e1e5bf09928019812692e43ad1623b8fecd6deb1db3564dd7805ec5c439ddf4f81663ddeba2b97a4285416883f4be91e1cde2a2c18957ce19bc713a410d7681fa43cb5fc5974a70cb9418b1e86d267f3ab9dbd48a9d3fb68aa7b4f3825a9cef464cd5a8d36f13253e13f91733bee8588827d5e19c8279288344afa489f726566e0d7829312aa2147160a78042be799b536efd4e763d341f5f83b120b51fee5e6588dc74c0d41c4ea9884471e0711cc
+#TRUST-RSA-SHA256 9dcae25dd8a77ee4a8d95efebd002b8c350b6156a321ede3e2a21e626d8f7567bd16ba07d0a835b43b6b3b5d5f1f9116af7501de896deb778dfb0063763bc4aacc7adad52af57ea2f5b7f40d044fbd4d4f0f8df80985e56fce347df1528ff69c046a72f5d9224ac2df3cafce0e832fff85f2115f5405e7b800c06dd167791fd52aaf6bd737774a5994e0e05d71d36cff56557774b6206040b31c0e5aa734291834eda34d1b2a0cef03460066e0a4067bf18ba813143ea20fe48c90d1ddaef0861c267272734fd9cb1038b52d363b57d4dff4e95ab5b3880bfba08e22df5bcb6bbe6f17e2f1760c7ffd559244f4e8dbbd8084f17a02b8f67541d078eb8207763ad2322c567097b19b4c82b159420a0cf6e1ca5fd9536be9a113846bded0931eadbbf038ea1b9664a08515bc89cfc526813c713667fd12ecb4ca4b5e8f6181ed0dea01e2091d80c56b17628e791f653769c5f91e322ea82f8c6f6bac0a92b3b2793a61565930bd8c9abaea0a19640f9fe89c59904f979b18e052c21eb04162a68cc5d4e7e02dc15c27000cba5e0c11f1f8950c2e85884405d53931a0de504952f509c4a30017b46d0ced5a5e36e741eb67b52b328362bc80bd7d1f0961bc777569b91ebba90c868bb9067f8d3a0641cc8b75dbc22270e0334ff08f0acaaad8bef594801df1952247e8dd5f81fba055bad0ce85f2a2bb8d0d03f25cba19e60e8ba2
+#
+# This script is Copyright (C) 2004-2023 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.11 $
+# $Date: 2023/12/22 $
+#
+# This .audit file searches the first 50k bytes of several file
+# types looking for valid credit card numbers. Exact regular
+# expressions are provided for valid American Express, VISA,
+# Discover and MasterCard numbers. A "generic" example that simply
+# looks for the numbers and minus signs in the format of a credit
+# card number is also provided. Since we are dealing with potential
+# credit card data, for each match, only the last four digits of
+# the number are shown.
+#
+#<ui_metadata>
+#<display_name>TNS File Analysis - Credit Card Number</display_name>
+#<spec>
+#  <type>TNS</type>
+#  <name>File Analysis - Credit Card Number</name>
+#  <version>1.0.0</version>
+#</spec>
+#<labels>filecontent,content,credit,card,update_20230227</labels>
+#</ui_metadata>
+
+<check_type:"FileContent">
+
+#
+# GENERIC
+#
+#<item>
+#  type           : FILE_CONTENT_CHECK
+#  description    : "PII - Determine if a file contains a potential Credit Card Number"
+#  file_extension : "xls" | "pdf" | "txt"
+#  regex          : "(([0-9]{4}\-){3}[0-9]{4})"
+#  expect         : "credit"
+#  max_size       : "50K"
+#  only_show      : "4"
+#</item>
+#
+# AMEX
+#
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "PII - Determine if a file contains a valid American Express credit card number."
+  file_extension : "pdf" | "doc" | "xls" | "xlsx" | "xlsm" | "xlsb" | "xml" | "xltx" | "xltm" | "docx" | "docm" | "dotx" | "dot" | "txt"
+  regex          : "([^0-9-]|^)(3[47][0-9]{2}( |-|)[0-9]{6}( |-|)[0-9]{5})([^0-9-]|$)"
+  expect         : "American Express" | "CCAX" | "amex" | "credit" | "AMEX" | "CCN"
+  max_size       : "50K"
+  only_show      : "4"
+  regex_replace  : "\3"
+</item>
+
+#
+# Discover
+#
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "PII - Determine if a file contains a valid Discover credit card number"
+  file_extension : "pdf" | "doc" | "xls" | "xlsx" | "xlsm" | "xlsb" | "xml" | "xltx" | "xltm" | "docx" | "docm" | "dotx" | "dot" | "txt"
+  regex          : "([^0-9-]|^)((6011|6[45][0-9]{2})( |-|)[0-9]{4}( |-|)[0-9]{4}( |-|)[0-9]{4})([^0-9\-]|$)"
+  expect         : "Discover" | "CCDI" | "CCDS" | "DISCOVER" | "CCN"
+  max_size       : "50K"
+  only_show      : "4"
+  regex_replace  : "\3"
+</item>
+
+#
+# Maestro
+#
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "PII - Determine if a file contains a valid Maestro credit card number."
+  file_extension : "pdf" | "doc" | "xls" | "xlsx" | "xlsm" | "xlsb" | "xml" | "xltx" | "xltm" | "docx" | "docm" | "dotx" | "dot" | "txt"
+  regex          : "([^0-9-]|^)((5[0678][0-9]{2}|6[0-9]{3})( |-|)([0-9]{4})( |-|)([0-9]{4})( |-|)([0-9]{4}))([^0-9-]|$)"
+  expect         : "Maestro" | "credit" | "CCN"
+  max_size       : "50K"
+  only_show      : "4"
+  regex_replace  : "\3"
+</item>
+
+#
+# MasterCard
+#
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "PII - Determine if a file contains a valid MasterCard credit card number."
+  file_extension : "pdf" | "doc" | "xls" | "xlsx" | "xlsm" | "xlsb" | "xml" | "xltx" | "xltm" | "docx" | "docm" | "dotx" | "dot" | "txt"
+  regex          : "([^0-9-]|^)((222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[0-1][0-9]|2720|5[1-5][0-9]{2})( |-|)([0-9]{4})( |-|)([0-9]{4})( |-|)([0-9]{4}))([^0-9-]|$)"
+  expect         : "Master" | "credit" | "MASTER" | "CCN" | "MC"
+  max_size       : "50K"
+  only_show      : "4"
+  regex_replace  : "\3"
+</item>
+
+#
+# UnionPay
+#
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "PII - Determine if a file contains a valid UnionPay credit card number."
+  file_extension : "pdf" | "doc" | "xls" | "xlsx" | "xlsm" | "xlsb" | "xml" | "xltx" | "xltm" | "docx" | "docm" | "dotx" | "dot" | "txt"
+  regex          : "([^0-9-]|^)(62[0-9]{2}( |-|)([0-9]{4})( |-|)([0-9]{4})( |-|)([0-9]{4}))([^0-9-]|$)"
+  expect         : "UnionPay" | "credit" | "CCN"
+  max_size       : "50K"
+  only_show      : "4"
+  regex_replace  : "\3"
+</item>
+
+#
+# Visa
+#
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "PII - Determine if a file contains a valid VISA credit card number."
+  file_extension : "pdf" | "doc" | "xls" | "xlsx" | "xlsm" | "xlsb" | "xml" | "xltx" | "xltm" | "docx" | "docm" | "dotx" | "dot" | "txt"
+  regex          : "([^0-9-]|^)(4[0-9]{3}( |-|)([0-9]{4})( |-|)([0-9]{4})( |-|)([0-9]{4}))([^0-9-]|$)"
+  expect         : "VISA" | "credit" | "Visa" | "CCN" | "debit"
+  max_size       : "50K"
+  only_show      : "4"
+  regex_replace  : "\3"
+</item>
+
+#
+# Look for  card verification code
+#
+#<item>
+#  type: FILE_CONTENT_CHECK
+#  description: "PII - Determine if a file contains a valid card verification code (CVV) or PIN"
+#  file_extension: "pdf" | "doc" | "xls" | "xlsx" | "xlsm" | "xlsb" | "xml" | "xltx" | "xltm" | "docx" | "docm" | "dotx" | "dot" | "txt"
+#  regex: "([^0-9-]|^)([0-9]{3,4})([^0-9\-]|$)"
+#  expect: "CVV" | "CVV2" | "CVC2" | "CID" | "CAV2" | "CVC1" | "CVV1" | "CVC2" | "[Vv]erification [Cc]ode" | "PIN"
+#  max_size : "50K"
+#  only_show : "2"
+#</item>
+
+</check_type>

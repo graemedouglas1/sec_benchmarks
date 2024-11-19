@@ -1,0 +1,142 @@
+1.2.1 - L1 Ensure Enable Google Cast is set to Disabled
+1.3.1 - L2 Ensure Allow read access via the File System API on these sites is set to Disabled
+1.3.2 - L1 Ensure Control use of insecure content exceptions is set to Enabled Do not allow any site to load mixed content
+1.3.3 - L2 Ensure Control use of JavaScript JIT is set to Enabled Do not allow any site to run JavaScript JIT
+1.3.4 - L2 Ensure Control use of the File System API for reading is set to Enabled Dont allow any site to request read access to files and directories via the File System API
+1.3.5 - L1 Ensure Control use of the File System API for writing is set to Enabled Dont allow any site to request write access to files and directories
+1.3.6 - L2 Ensure Control use of the Web Bluetooth API is set to Enabled Do not allow any site to request access to Bluetooth devices via the Web Bluetooth API
+1.3.7 - L2 Ensure Control use of the WebHID API is set to Enabled Do not allow any site to request access to HID devices via the WebHID API
+1.3.8 - L1 Ensure Default automatic downloads setting is set to Enabled Dont allow any website to perform automatic downloads
+1.3.9 - L1 Ensure Default geolocation setting is set to Enabled Dont allow any site to track users physical location
+1.3.10 - L2 Ensure Default setting for third-party storage partitioning is set to Enabled Block third-party storage partitioning from being enabled.
+1.5.1 - L1 Ensure Configure Edge Website Typo Protection is set to Enabled
+1.7.1 - L1 Ensure Configure users ability to override feature flags is set to Enabled Prevent users from overriding feature flags
+1.8.1 - L1 Ensure Blocks external extensions from being installed is set to Enabled
+1.8.2 - L2 Ensure Configure extension management settings is set to Enabled 
+1.9.1 - Ensure Enable Gamer Mode is set to Disabled
+1.10.1 - L1 Ensure Allow Basic authentication for HTTP is set to Disabled
+1.10.2 - L1 Ensure Allow cross-origin HTTP Authentication prompts is set to Disabled
+1.10.3 - L2 Ensure Supported authentication schemes is set to Enabled ntlm negotiate
+1.11.1 - L1 Ensure Enable the linked account feature is set to Disabled
+1.11.2 - L1 Ensure Guided Switch Enabled is set to Disabled
+1.17.1 - L1 Ensure Enable saving passwords to the password manager is set to Disabled
+1.18.1 - L1 Ensure Enable startup boost is set to Disabled
+1.21.1 - L1 Ensure Specifies whether to allow websites to make requests to more-private network endpoints is set to Disabled
+1.25.1 - L1 Ensure Configure Microsoft Defender SmartScreen is set to Enabled
+1.25.2 - L1 Ensure Configure Microsoft Defender SmartScreen to block potentially unwanted apps is set to Enabled
+1.25.3 - L1 Ensure Enable Microsoft Defender SmartScreen DNS requests is set to Disabled
+1.25.4 - L1 Ensure Force Microsoft Defender SmartScreen checks on downloads from trusted sources is set to Enabled
+1.25.5 - L1 Ensure Prevent bypassing Microsoft Defender SmartScreen prompts for sites is set to Enabled
+1.25.6 - L1 Ensure Prevent bypassing of Microsoft Defender SmartScreen warnings about downloads is set to Enabled
+1.26.1 - L1 Ensure Disable Bing chat entry-points on Microsoft Edge Enterprise new tab page is set to Enabled
+1.27 - L1 Ensure Ads setting for sites with intrusive ads is set to Enabled Block ads on sites with intrusive ads.
+1.28 - L1 Ensure Allow download restrictions is set to Enabled  Block malicious downloads
+1.29 - L2 Ensure Allow features to download assets from the Asset Delivery Service is set to Disabled
+1.30 - L2 Ensure Allow file selection dialogs is set to Disabled
+1.31 - L1 Ensure Allow Google Cast to connect to Cast devices on all IP addresses is set to Disabled
+1.32 - L1 Ensure Allow import of data from other browsers on each Microsoft Edge launch is set to Disabled
+1.33 - L1 Ensure Allow importing of autofill form data is set to Disabled
+1.34 - L1 Ensure Allow importing of browser settings is set to Disabled
+1.35 - L1 Ensure Allow importing of home page settings is set to Disabled
+1.36 - L1 Ensure Allow importing of payment info is set to Disabled
+1.37 - L1 Ensure Allow importing of saved passwords is set to Disabled
+1.38 - L1 Ensure Allow importing of search engine settings is set to Disabled
+1.39 - L1 Ensure Allow managed extensions to use the Enterprise Hardware Platform API is set to Disabled
+1.40 - L2 Ensure Allow or block audio capture is set to Disabled
+1.41 - L2 Ensure Allow or block video capture is set to Disabled
+1.42 - L2 Ensure Allow or deny screen capture is set to Disabled
+1.43 - L1 Ensure Allow personalization of ads Microsoft Edge search news and other Microsoft services by sending browsing history favorites and collections usage and other browsing data to Microsoft is set to Disabled
+1.44 - L1 Ensure Allow queries to a Browser Network Time service is set to Enabled
+1.45 - L1 Ensure Allow remote debugging is set to Disabled
+1.46 - L1 Ensure Allow the audio sandbox to run is set to Enabled
+1.47 - L2 Ensure Allow unconfigured sites to be reloaded in Internet Explorer mode is set to Disabled
+1.48 - L1 Ensure Allow user feedback is set to Disabled
+1.49 - L2 Ensure Allow users to open files using the ClickOnce protocol is set to Disabled
+1.50 - L2 Ensure Allow users to open files using the DirectInvoke protocol is set to Disabled
+1.51 - L2 Ensure Allow users to proceed from the HTTPS warning page is set to Disabled
+1.52 - L1 Ensure Allow websites to query for available payment methods is set to Disabled
+1.53 - L2 Ensure AutoLaunch Protocols Component Enabled is set to Disabled
+1.54 - L1 Ensure Automatically import another browsers data and settings at first run is set to Enabled Disables automatic import and the import section of the first-run experience is skipped
+1.55 - L1 Ensure Automatically open downloaded MHT or MHTML files from the web in Internet Explorer mode is set to Disabled
+1.56 - L2 Ensure Block third party cookies is set to Enabled
+1.57 - L1 Ensure Block tracking of users web-browsing activity is set to Enabled Balanced Blocks harmful trackers and trackers from sites user has not visited content and ads will be less personalized or higher
+1.58 - L2 Ensure Browser sign-in settings is set to Enabled Disable browser sign-in
+1.59 - L1 Ensure Clear browsing data when Microsoft Edge closes is set to Disabled
+1.60 - L1 Ensure Clear cached images and files when Microsoft Edge closes is set to Disabled
+1.61 - L1 Ensure Clear history for IE and IE mode every time you exit is set to Disabled
+1.62 - L1 Ensure Compose is enabled for writing on the web is set to Disabled
+1.63 - L1 Ensure Configure browser process code integrity guard setting is set to Enabled Enable code integrity guard enforcement in the browser process.
+1.64 - L1 Ensure Configure InPrivate mode availability is set to Enabled InPrivate mode disabled
+1.65 - L2 Ensure Configure Online Text To Speech is set to Disabled
+1.66 - L1 Ensure Configure Related Matches in Find on Page is set to Disabled
+1.67 - L2 Ensure Configure Speech Recognition is set to Disabled
+1.68 - L1 Ensure Configure the list of names that will bypass the HSTS policy check is set to Disabled
+1.69 - L1 Ensure Configure the list of types that are excluded from synchronization is set to Enabled
+1.70 - L1 Ensure Configure the Share experience is set to Enabled Dont allow using the Share experience
+1.71 - L1 Ensure Configure whether form data and HTTP headers will be sent when entering or exiting Internet Explorer mode is set to Enabled Do not send form data or headers
+1.72 - L1 Ensure Continue running background apps after Microsoft Edge closes is set to Disabled
+1.73 - L1 Ensure Control communication with the Experimentation and Configuration Service is set to Enabled Disable communication with the Experimentation and Configuration Service
+1.74 - L2 Ensure Control use of the Headless Mode is set to Disabled
+1.75 - L2 Ensure Control use of the Serial API is set to Enable Do not allow any site to request access to serial ports via the Serial API
+1.76 - L2 Ensure Control where security restrictions on insecure origins apply is set to Disabled
+1.77 - L2 Ensure Default sensor setting is set to Enabled Do not allow any site to access sensors
+1.78 - L1 Ensure Delete old browser data on migration is set to Disabled
+1.79 - L1 Ensure Disable saving browser history is set to Disabled
+1.80 - L1 Ensure Disable synchronization of data using Microsoft sync services is set to Enabled
+1.81 - L1 Ensure DNS interception checks enabled is set to Enabled
+1.82 - L1 Ensure Edge 3P SERP Telemetry Enabled is set to Disabled
+1.83 - L1 Ensure Edge Wallet E-Tree Enabled is set to Disabled
+1.84 - L1 Ensure Enable AutoFill for addresses is set to Disabled
+1.85 - L1 Ensure Enable AutoFill for payment instructions is set to Disabled
+1.86 - L1 Ensure Enable browser legacy extension point blocking is set to Enabled
+1.87 - L1 Ensure Enable component updates in Microsoft Edge is set to Enabled
+1.88 - L1 Ensure Enable CryptoWallet feature is set to Disabled
+1.89 - L1 Ensure Enable deleting browser and download history is set to Disabled
+1.90 - L1 Ensure Enable Discover access to page contents for AAD profiles is set to Disabled
+1.91 - L2 Ensure Enable Drop feature in Microsoft Edge is set to Disabled
+1.92 - L1 Ensure Enable Follow service in Microsoft Edge is set to Disabled
+1.93 - L1 Ensure Enable globally scoped HTTP auth cache is set to Disabled
+1.94 - L2 Ensure Enable guest mode is set to Disabled
+1.95 - L1 Ensure Enable network prediction is set to Enabled Dont predict network actions on any network connection
+1.96 - L1 Ensure Enable profile creation from the Identity flyout menu or the Settings page is set to Disabled
+1.97 - L1 Ensure Enable resolution of navigation errors using a web service is set to Disabled
+1.98 - L2 Ensure Enable Search suggestions is set to Disabled
+1.99 - L1 Ensure Enable security warnings for command-line flags is set to Enabled
+1.100 - L1 Ensure Enable site isolation for every site is set to Enabled
+1.101 - L1 Ensure Enable tab organization suggestions is set to Disabled
+1.102 - L1 Ensure Enable the Search bar is set to Disabled
+1.103 - L2 Ensure Enable Translate is set to Disabled
+1.104 - L1 Ensure Enable upload files from mobile in Microsoft Edge desktop is set to Disabled
+1.105 - L1 Ensure Enable use of ephemeral profiles is set to Disabled
+1.106 - L1 Ensure Enable warnings for insecure forms is set to Enabled
+1.107 - L1 Ensure Enables DALL-E themes generation is set to Disabled
+1.108 - L2 Ensure Enforce Bing SafeSearch is set to Enabled Configure moderate search restrictions in Bing
+1.109 - L2 Ensure Enforce Google SafeSearch is set to Enabled
+1.110 - L1 Ensure Enhance the security state in Microsoft Edge is set to Enabled Balanced mode or higher
+1.111 - L2 Ensure Enhanced Security Mode configuration for Intranet zone sites is set to Disabled
+1.112 - L1 Ensure Hide the First-run experience and splash screen is set to Enabled
+1.113 - L1 Ensure In-app support Enabled is set to Disabled
+1.114 - L2 Ensure Let users snip a Math problem and get the solution with a step-by-step explanation in Microsoft Edge is set to Disabled
+1.115 - L2 Ensure Live captions allowed is set to Disabled
+1.116 - L1 Ensure Manage exposure of local IP addresses by WebRTC is set to Disabled
+1.117 - L1 Ensure Notify a user that a browser restart is recommended or required for pending updates is set to Enabled Required - Show a recurring prompt to the user indicating that a restart is required
+1.118 - L1 Ensure Restrict exposure of local IP address by WebRTC is set to Enabled Allow public interface over http default route. This doesnt expose the local IP address
+1.119 - L1 Ensure Set disk cache size in bytes is set to Enabled 250609664
+1.120 - L1 Ensure Set the time period for update notifications is set to Enabled 86400000
+1.121 - L1 Ensure Shopping in Microsoft Edge Enabled is set to Disabled
+1.122 - L2 Ensure Show an Always open checkbox in external protocol dialog is set to Disabled
+1.123 - L1 Ensure Show Microsoft Rewards experiences is set to Disabled
+1.124 - L1 Ensure Show the Reload in Internet Explorer mode button in the toolbar is set to Disabled
+1.125 - L1 Ensure Specifies whether SharedArrayBuffers can be used in a non cross-origin-isolated context is set to Disabled
+1.126 - L2 Ensure Specify if online OCSPCRL checks are required for local trust anchors is set to Enabled
+1.127 - L2 Ensure Spell checking provided by Microsoft Editor is set to Disabled
+1.128 - L1 Ensure Standalone Sidebar Enabled is set to Disabled
+1.129 - L1 Ensure Suggest similar pages when a webpage cant be found is set to Disabled
+1.130 - L1 Ensure Suppress the unsupported OS warning is set to Disabled
+1.131 - L2 Ensure Tab Services enabled is set to Disabled
+1.132 - L2 Ensure Text prediction enabled by default is set to Disabled
+1.133 - L1 Ensure Wait for Internet Explorer mode tabs to completely unload before ending the browser session is set to Disabled
+1.134 - L1 Ensure Wallet Donation Enabled is set to Disabled
+1.135 - L2 Ensure Enable QR Code Generator is set to Disabled
+3.1.1 - L1 Ensure Update policy override default is set to Enabled Always allow updates recommended
+3.3.1 - L1 Ensure Auto-update check period override is set to any value except 0

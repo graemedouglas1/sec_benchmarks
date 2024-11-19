@@ -1,0 +1,282 @@
+1.1.1.1 - Ensure cramfs kernel module is not available - manual
+1.1.1.2 - Ensure freevxfs kernel module is not available - manual
+1.1.1.3 - Ensure hfs kernel module is not available - manual
+1.1.1.4 - Ensure hfsplus kernel module is not available - manual
+1.1.1.5 - Ensure jffs2 kernel module is not available - manual
+1.1.1.6 - Ensure squashfs kernel module is not available - manual
+1.1.1.7 - Ensure udf kernel module is not available - manual
+1.1.1.8 - Ensure usb-storage kernel module is not available - manual
+1.1.2.1.1 - Ensure tmp is a separate partition - manual
+1.1.2.1.2 - Ensure nodev option set on tmp partition - manual
+1.1.2.1.3 - Ensure nosuid option set on tmp partition - manual
+1.1.2.1.4 - Ensure noexec option set on tmp partition - manual
+1.1.2.2.1 - Ensure devshm is a separate partition - manual
+1.1.2.2.2 - Ensure nodev option set on devshm partition - manual
+1.1.2.2.3 - Ensure nosuid option set on devshm partition - manual
+1.1.2.2.4 - Ensure noexec option set on devshm partition - manual
+1.1.2.3.1 - Ensure separate partition exists for home - manual
+1.1.2.3.2 - Ensure nodev option set on home partition - manual
+1.1.2.3.3 - Ensure nosuid option set on home partition - manual
+1.1.2.4.1 - Ensure separate partition exists for var - manual
+1.1.2.4.2 - Ensure nodev option set on var partition - manual
+1.1.2.4.3 - Ensure nosuid option set on var partition - manual
+1.1.2.5.1 - Ensure separate partition exists for vartmp - manual
+1.1.2.5.2 - Ensure nodev option set on vartmp partition - manual
+1.1.2.5.3 - Ensure nosuid option set on vartmp partition - manual
+1.1.2.5.4 - Ensure noexec option set on vartmp partition - manual
+1.1.2.6.1 - Ensure separate partition exists for varlog - manual
+1.1.2.6.2 - Ensure nodev option set on varlog partition - manual
+1.1.2.6.3 - Ensure nosuid option set on varlog partition - manual
+1.1.2.6.4 - Ensure noexec option set on varlog partition - manual
+1.1.2.7.1 - Ensure separate partition exists for varlogaudit - manual
+1.1.2.7.2 - Ensure nodev option set on varlogaudit partition - manual
+1.1.2.7.3 - Ensure nosuid option set on varlogaudit partition - manual
+1.1.2.7.4 - Ensure noexec option set on varlogaudit partition - manual
+1.2.1 - Ensure GPG keys are configured - manual
+1.2.2 - Ensure gpgcheck is globally activated
+1.2.3 - Ensure repo gpgcheck is globally activated - manual
+1.2.4 - Ensure package manager repositories are configured - manual
+1.2.5 - Ensure updates patches and additional security software are installed - manual
+1.3.1 - Ensure bootloader password is set
+1.3.2 - Ensure permissions on bootloader config are configured - manual
+1.4.1 - Ensure address space layout randomization ASLR is enabled - manual
+1.4.2 - Ensure ptrace scope is restricted - manual
+1.4.3 - Ensure core dump backtraces are disabled - manual
+1.4.4 - Ensure core dump storage is disabled - manual
+1.5.1.1 - Ensure SELinux is installed
+1.5.1.2 - Ensure SELinux is not disabled in bootloader configuration - manual
+1.5.1.3 - Ensure SELinux policy is configured
+1.5.1.4 - Ensure the SELinux mode is not disabled
+1.5.1.5 - Ensure the SELinux mode is enforcing
+1.5.1.6 - Ensure no unconfined services exist - manual
+1.5.1.7 - Ensure the MCS Translation Service mcstrans is not installed
+1.6.1 - Ensure system wide crypto policy is not set to legacy
+1.6.2 - Ensure system wide crypto policy disables sha1 hash and signature support
+1.6.3 - Ensure system wide crypto policy disables cbc for ssh
+1.6.4 - Ensure system wide crypto policy disables macs less than 128 bits
+1.7.1 - Ensure message of the day is configured properly - manual
+1.7.2 - Ensure local login warning banner is configured properly
+1.7.3 - Ensure remote login warning banner is configured properly
+1.7.4 - Ensure access to etcmotd is configured - manual
+1.7.5 - Ensure access to etcissue is configured - manual
+1.7.6 - Ensure access to etcissue.net is configured - manual
+1.8.2 - Ensure GDM login banner is configured
+1.8.3 - Ensure GDM disable-user-list option is enabled
+1.8.4 - Ensure GDM screen locks when the user is idle
+1.8.5 - Ensure GDM screen locks cannot be overridden
+1.8.6 - Ensure GDM automatic mounting of removable media is disabled
+1.8.7 - Ensure GDM disabling automatic mounting of removable media is not overridden
+1.8.8 - Ensure GDM autorun-never is enabled
+1.8.9 - Ensure GDM autorun-never is not overridden
+1.8.10 - Ensure XDMCP is not enabled
+2.1.1 - Ensure time synchronization is in use
+2.1.2 - Ensure chrony is configured
+2.1.3 - Ensure chrony is not run as the root user
+2.2.1 - Ensure autofs services are not in use
+2.2.2 - Ensure avahi daemon services are not in use
+2.2.3 - Ensure dhcp server services are not in use
+2.2.4 - Ensure dns server services are not in use
+2.2.5 - Ensure dnsmasq services are not in use
+2.2.6 - Ensure samba file server services are not in use
+2.2.7 - Ensure ftp server services are not in use
+2.2.8 - Ensure message access server services are not in use
+2.2.9 - Ensure network file system services are not in use
+2.2.10 - Ensure nis server services are not in use
+2.2.12 - Ensure rpcbind services are not in use
+2.2.13 - Ensure rsync services are not in use
+2.2.14 - Ensure snmp services are not in use
+2.2.15 - Ensure telnet server services are not in use
+2.2.16 - Ensure tftp server services are not in use
+2.2.17 - Ensure web proxy server services are not in use
+2.2.18 - Ensure web server services are not in use
+2.2.19 - Ensure xinetd services are not in use
+2.2.21 - Ensure mail transfer agents are configured for local-only mode - manual
+2.2.22 - Ensure only approved services are listening on a network interface - manual
+2.3.1 - Ensure ftp client is not installed
+2.3.2 - Ensure ldap client is not installed
+2.3.3 - Ensure nis client is not installed
+2.3.4 - Ensure telnet client is not installed
+2.3.5 - Ensure tftp client is not installed
+3.1.1 - Ensure IPv6 status is identified - manual
+3.1.3 - Ensure bluetooth services are not in use
+3.2.1 - Ensure dccp kernel module is not available - manual
+3.2.2 - Ensure tipc kernel module is not available - manual
+3.2.3 - Ensure rds kernel module is not available - manual
+3.2.4 - Ensure sctp kernel module is not available - manual
+3.3.1 - Ensure ip forwarding is disabled - manual
+3.3.2 - Ensure packet redirect sending is disabled - manual
+3.3.3 - Ensure bogus icmp responses are ignored - manual
+3.3.4 - Ensure broadcast icmp requests are ignored - manual
+3.3.5 - Ensure icmp redirects are not accepted - manual
+3.3.6 - Ensure secure icmp redirects are not accepted - manual
+3.3.7 - Ensure reverse path filtering is enabled - manual
+3.3.8 - Ensure source routed packets are not accepted - manual
+3.3.9 - Ensure suspicious packets are logged - manual
+3.3.10 - Ensure tcp syn cookies is enabled - manual
+3.3.11 - Ensure ipv6 router advertisements are not accepted - manual
+3.4.1.1 - Ensure nftables is installed
+3.4.1.2 - Ensure a single firewall configuration utility is in use
+3.4.2.1 - Ensure nftables base chains exist - manual
+3.4.2.2 - Ensure host based firewall loopback traffic is configured - manual
+3.4.2.3 - Ensure firewalld drops unnecessary services and ports - manual
+3.4.2.4 - Ensure nftables established connections are configured - manual
+3.4.2.5 - Ensure nftables default deny firewall policy
+4.1.1.1 - Ensure cron daemon is enabled and active
+4.1.1.2 - Ensure permissions on etccrontab are configured
+4.1.1.3 - Ensure permissions on etccron.hourly are configured
+4.1.1.4 - Ensure permissions on etccron.daily are configured
+4.1.1.5 - Ensure permissions on etccron.weekly are configured
+4.1.1.6 - Ensure permissions on etccron.monthly are configured
+4.1.1.7 - Ensure permissions on etccron.d are configured
+4.1.1.8 - Ensure crontab is restricted to authorized users
+4.1.2.1 - Ensure at is restricted to authorized users
+4.2.1 - Ensure permissions on etcsshsshd config are configured
+4.2.2 - Ensure permissions on SSH private host key files are configured
+4.2.3 - Ensure permissions on SSH public host key files are configured
+4.2.4 - Ensure sshd access is configured
+4.2.5 - Ensure sshd Banner is configured
+4.2.6 - Ensure sshd Ciphers are configured
+4.2.7 - Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured
+4.2.8 - Ensure sshd DisableForwarding is enabled
+4.2.9 - Ensure sshd HostbasedAuthentication is disabled
+4.2.10 - Ensure sshd IgnoreRhosts is enabled
+4.2.11 - Ensure sshd KexAlgorithms is configured
+4.2.12 - Ensure sshd LoginGraceTime is configured
+4.2.13 - Ensure sshd LogLevel is configured
+4.2.14 - Ensure sshd MACs are configured
+4.2.15 - Ensure sshd MaxAuthTries is configured
+4.2.16 - Ensure sshd MaxSessions is configured
+4.2.17 - Ensure sshd MaxStartups is configured
+4.2.18 - Ensure sshd PermitEmptyPasswords is disabled
+4.2.19 - Ensure sshd PermitRootLogin is disabled
+4.2.20 - Ensure sshd PermitUserEnvironment is disabled
+4.2.21 - Ensure sshd UsePAM is enabled
+4.2.22 - Ensure sshd crypto policy is not set
+4.3.1 - Ensure sudo is installed
+4.3.2 - Ensure sudo commands use pty
+4.3.3 - Ensure sudo log file exists
+4.3.4 - Ensure users must provide password for escalation
+4.3.5 - Ensure re-authentication for privilege escalation is not disabled globally
+4.3.6 - Ensure sudo authentication timeout is configured correctly
+4.3.7 - Ensure access to the su command is restricted
+4.4.1.1 - Ensure latest version of pam is installed - manual
+4.4.1.2 - Ensure latest version of authselect is installed - manual
+4.4.2.1 - Ensure active authselect profile includes pam modules - manual
+4.4.2.2 - Ensure pam faillock module is enabled
+4.4.2.3 - Ensure pam pwquality module is enabled
+4.4.2.4 - Ensure pam pwhistory module is enabled
+4.4.2.5 - Ensure pam unix module is enabled
+4.4.3.1.1 - Ensure password failed attempts lockout is configured
+4.4.3.1.2 - Ensure password unlock time is configured
+4.4.3.1.3 - Ensure password failed attempts lockout includes root account
+4.4.3.2.1 - Ensure password number of changed characters is configured
+4.4.3.2.2 - Ensure password length is configured
+4.4.3.2.3 - Ensure password complexity is configured - manual
+4.4.3.2.4 - Ensure password same consecutive characters is configured
+4.4.3.2.5 - Ensure password maximum sequential characters is configured
+4.4.3.2.6 - Ensure password dictionary check is enabled
+4.4.3.2.7 - Ensure password quality is enforced for the root user
+4.4.3.3.1 - Ensure password history remember is configured
+4.4.3.3.2 - Ensure password history is enforced for the root user
+4.4.3.3.3 - Ensure pam pwhistory includes use authtok
+4.4.3.4.1 - Ensure pam unix does not include nullok
+4.4.3.4.2 - Ensure pam unix does not include remember
+4.4.3.4.3 - Ensure pam unix includes a strong password hashing algorithm
+4.4.3.4.4 - Ensure pam unix includes use authtok
+4.5.1.1 - Ensure strong password hashing algorithm is configured
+4.5.1.2 - Ensure password expiration is 365 days or less
+4.5.1.3 - Ensure password expiration warning days is 7 or more
+4.5.1.4 - Ensure inactive password lock is 30 days or less
+4.5.1.5 - Ensure all users last password change date is in the past - manual
+4.5.2.1 - Ensure default group for the root account is GID 0 - manual
+4.5.2.2 - Ensure root user umask is configured
+4.5.2.3 - Ensure system accounts are secured - manual
+4.5.2.4 - Ensure root password is set
+4.5.3.1 - Ensure nologin is not listed in etcshells
+4.5.3.2 - Ensure default user shell timeout is configured - manual
+4.5.3.3 - Ensure default user umask is configured - manual
+5.1.1.1 - Ensure rsyslog is installed
+5.1.1.2 - Ensure rsyslog service is enabled
+5.1.1.3 - Ensure journald is configured to send logs to rsyslog
+5.1.1.4 - Ensure rsyslog default file permissions are configured
+5.1.1.5 - Ensure logging is configured - manual
+5.1.1.6 - Ensure rsyslog is configured to send logs to a remote log host
+5.1.1.7 - Ensure rsyslog is not configured to receive logs from a remote client
+5.1.2.1.1 - Ensure systemd-journal-remote is installed
+5.1.2.1.2 - Ensure systemd-journal-remote is configured - manual
+5.1.2.1.3 - Ensure systemd-journal-remote is enabled
+5.1.2.1.4 - Ensure journald is not configured to receive logs from a remote client
+5.1.2.2 - Ensure journald service is enabled
+5.1.2.3 - Ensure journald is configured to compress large log files
+5.1.2.4 - Ensure journald is configured to write logfiles to persistent disk
+5.1.2.5 - Ensure journald is not configured to send logs to rsyslog
+5.1.2.6 - Ensure journald log rotation is configured per site policy - manual
+5.1.3 - Ensure logrotate is configured - manual
+5.1.4 - Ensure all logfiles have appropriate access configured - manual
+5.2.1.1 - Ensure audit is installed
+5.2.1.2 - Ensure auditing for processes that start prior to auditd is enabled - manual
+5.2.1.3 - Ensure audit backlog limit is sufficient - manual
+5.2.1.4 - Ensure auditd service is enabled
+5.2.2.1 - Ensure audit log storage size is configured
+5.2.2.2 - Ensure audit logs are not automatically deleted
+5.2.2.3 - Ensure system is disabled when audit logs are full
+5.2.2.4 - Ensure system warns when audit logs are low on space
+5.2.3.1 - Ensure changes to system administration scope sudoers is collected - manual
+5.2.3.2 - Ensure actions as another user are always logged - manual
+5.2.3.3 - Ensure events that modify the sudo log file are collected - manual
+5.2.3.4 - Ensure events that modify date and time information are collected - manual
+5.2.3.5 - Ensure events that modify the systems network environment are collected - manual
+5.2.3.6 - Ensure use of privileged commands are collected - manual
+5.2.3.7 - Ensure unsuccessful file access attempts are collected - manual
+5.2.3.8 - Ensure events that modify usergroup information are collected - manual
+5.2.3.9 - Ensure discretionary access control permission modification events are collected - manual
+5.2.3.10 - Ensure successful file system mounts are collected - manual
+5.2.3.11 - Ensure session initiation information is collected - manual
+5.2.3.12 - Ensure login and logout events are collected - manual
+5.2.3.13 - Ensure file deletion events by users are collected - manual
+5.2.3.14 - Ensure events that modify the systems Mandatory Access Controls are collected - manual
+5.2.3.15 - Ensure successful and unsuccessful attempts to use the chcon command are recorded - manual
+5.2.3.16 - Ensure successful and unsuccessful attempts to use the setfacl command are recorded - manual
+5.2.3.17 - Ensure successful and unsuccessful attempts to use the chacl command are recorded - manual
+5.2.3.18 - Ensure successful and unsuccessful attempts to use the usermod command are recorded - manual
+5.2.3.19 - Ensure kernel module loading unloading and modification is collected - manual
+5.2.3.20 - Ensure the audit configuration is immutable - manual
+5.2.3.21 - Ensure the running and on disk configuration is the same - manual
+5.2.4.1 - Ensure the audit log directory is 0750 or more restrictive - manual
+5.2.4.2 - Ensure audit log files are mode 0640 or less permissive - manual
+5.2.4.3 - Ensure only authorized users own audit log files - manual
+5.2.4.4 - Ensure only authorized groups are assigned ownership of audit log files - manual
+5.2.4.5 - Ensure audit configuration files are 640 or more restrictive
+5.2.4.6 - Ensure audit configuration files are owned by root
+5.2.4.7 - Ensure audit configuration files belong to group root
+5.2.4.8 - Ensure audit tools are 755 or more restrictive
+5.2.4.9 - Ensure audit tools are owned by root
+5.2.4.10 - Ensure audit tools belong to group root
+5.3.1 - Ensure AIDE is installed
+5.3.2 - Ensure filesystem integrity is regularly checked
+5.3.3 - Ensure cryptographic mechanisms are used to protect the integrity of audit tools - manual
+6.1.1 - Ensure permissions on etcpasswd are configured
+6.1.2 - Ensure permissions on etcpasswd- are configured
+6.1.3 - Ensure permissions on etcopasswd are configured - manual
+6.1.4 - Ensure permissions on etcgroup are configured
+6.1.5 - Ensure permissions on etcgroup- are configured
+6.1.6 - Ensure permissions on etcshadow are configured
+6.1.7 - Ensure permissions on etcshadow- are configured
+6.1.8 - Ensure permissions on etcgshadow are configured
+6.1.9 - Ensure permissions on etcgshadow- are configured
+6.1.10 - Ensure permissions on etcshells are configured
+6.1.11 - Ensure world writable files and directories are secured - manual
+6.1.12 - Ensure no unowned or ungrouped files or directories exist - manual
+6.1.13 - Ensure SUID and SGID files are reviewed - manual
+6.1.14 - Audit system file permissions - manual
+6.2.1 - Ensure accounts in etcpasswd use shadowed passwords
+6.2.2 - Ensure etcshadow password fields are not empty
+6.2.3 - Ensure all groups in etcpasswd exist in etcgroup - manual
+6.2.4 - Ensure no duplicate UIDs exist - manual
+6.2.5 - Ensure no duplicate GIDs exist - manual
+6.2.6 - Ensure no duplicate user names exist - manual
+6.2.7 - Ensure no duplicate group names exist - manual
+6.2.8 - Ensure root path integrity - manual
+6.2.9 - Ensure root is the only UID 0 account
+6.2.10 - Ensure local interactive user home directories are configured - manual
+6.2.11 - Ensure local interactive user dot files access is configured - manual

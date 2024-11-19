@@ -1,0 +1,407 @@
+1.1.1.1 - Set Account lockout threshold to 5 invalid logon attempts
+1.1.1.2 - Set Account lockout duration to 15 or more minutes
+1.1.1.3 - Set Reset account lockout counter after to 15 minutes
+1.1.1.4 - Set Minimum password length to 14 or more characters
+1.1.1.5 - Set Enforce password history to 24 or more passwords
+1.1.1.6 - Set Password must meet complexity requirements to Enabled
+1.1.1.7 - Set Store passwords using reversible encryption to Disabled
+1.1.1.8 - Set Minimum password age to 1 or more days
+1.1.1.9 - Set Maximum password age to 60 or fewer days
+1.1.2.1 - Set Audit Policy Privilege Use Sensitive Privilege Use to Success and Failure
+1.1.2.2 - Set Audit Policy Account Management Other Account Management Events to Success and Failure
+1.1.2.3 - Set Audit Policy Logon-Logoff IPsec Quick Mode to No Auditing
+1.1.2.4 - Set Audit Policy Detailed Tracking RPC Events to No Auditing
+1.1.2.5 - Set Audit Policy DS Access Directory Service Access to No Auditing
+1.1.2.6 - Set Audit Policy Policy Change MPSSVC Rule-Level Policy Change to No Auditing
+1.1.2.7 - Set Audit Policy Account Management Distribution Group Management to No Auditing
+1.1.2.8 - Set Audit Policy Detailed Tracking Process Termination to No Auditing
+1.1.2.9 - Set Audit Policy Object Access Detailed File Share to No Auditing
+1.1.2.10 - Set Audit Policy Account Management User Account Management to Success and Failure
+1.1.2.11 - Set Audit Policy Account Management Computer Account Management to No Auditing
+1.1.2.12 - Set Audit Policy System Security System Extension to Success and Failure
+1.1.2.13 - Set Audit Policy System Security State Change to Success and Failure
+1.1.2.14 - Set Audit Policy Logon-Logoff Network Policy Server to No Auditing
+1.1.2.15 - Set Audit Policy Detailed Tracking DPAPI Activity to No Auditing
+1.1.2.16 - Set Audit Policy System IPsec Driver to Success and Failure
+1.1.2.17 - Set Audit Policy Account Management Security Group Management to Success and Failure
+1.1.2.18 - Set Audit Policy Account Logon Other Account Logon Events to No Auditing
+1.1.2.19 - Set Audit Policy Object Access Registry to No Auditing
+1.1.2.20 - Set Audit Policy Privilege Use Other Privilege Use Events to No Auditing
+1.1.2.21 - Set Audit Policy Policy Change Filtering Platform Policy Change to No Auditing
+1.1.2.22 - Set Audit Policy Object Access Central Access Policy Staging to No Auditing
+1.1.2.23 - Set Audit Policy Policy Change Authorization Policy Change to No Auditing
+1.1.2.24 - Set Audit Policy Account Logon Kerberos Authentication Service to No Auditing
+1.1.2.25 - Set Audit Policy Logon-Logoff Logoff to Success
+1.1.2.26 - Set Audit Policy Account Management Application Group Management to No Auditing
+1.1.2.27 - Set Audit Policy DS Access Directory Service Changes to No Auditing
+1.1.2.28 - Set Audit Policy Object Access Kernel Object to No Auditing
+1.1.2.29 - Set Audit Policy Policy Change Other Policy Change Events to No Auditing
+1.1.2.30 - Set Audit Policy Object Access Application Generated to No Auditing
+1.1.2.31 - Set Audit Policy Logon-Logoff Account Lockout to No Auditing
+1.1.2.32 - Set Audit Policy Policy Change Audit Policy Change to Success and Failure
+1.1.2.33 - Set Audit Policy Object Access File Share to No Auditing
+1.1.2.34 - Set Audit Policy System System Integrity to Success and Failure
+1.1.2.35 - Set Audit Policy System Other System Events to No Auditing
+1.1.2.36 - Set Audit Policy Logon-Logoff Other LogonLogoff Events to No Auditing
+1.1.2.37 - Set Audit Policy DS Access Directory Service Replication to No Auditing
+1.1.2.38 - Set Audit Policy Object Access Filtering Platform Packet Drop to No Auditing
+1.1.2.39 - Set Audit Policy DS Access Detailed Directory Service Replication to No Auditing
+1.1.2.40 - Set Audit Policy Object Access Other Object Access Events to No Auditing
+1.1.2.41 - Set Audit Policy Object Access Filtering Platform Connection to No Auditing
+1.1.2.42 - Set Audit Policy Privilege Use Non Sensitive Privilege Use to No Auditing
+1.1.2.43 - Set Audit Policy Object Access Certification Services to No Auditing
+1.1.2.44 - Set Audit Policy Logon-Logoff Special Logon to Success
+1.1.2.45 - Set Audit Policy Object Access Handle Manipulation to No Auditing
+1.1.2.46 - Set Audit Policy Object Access Removable Storage to No Auditing
+1.1.2.47 - Set Audit Policy Logon-Logoff IPsec Main Mode to No Auditing
+1.1.2.48 - Set Audit Policy Account Logon Credential Validation to Success and Failure
+1.1.2.49 - Set Audit Policy Account Logon Kerberos Service Ticket Operations to No Auditing
+1.1.2.50 - Set Audit Policy Logon-Logoff Logon to Success and Failure
+1.1.2.51 - Set Audit Policy Detailed Tracking Process Creation to Success
+1.1.2.52 - Set Audit Policy Logon-Logoff IPsec Extended Mode to No Auditing
+1.1.2.53 - Set Audit Policy Object Access SAM to No Auditing
+1.1.2.54 - Set Audit Policy Object Access File System to No Auditing
+1.1.2.55 - Set Audit Policy Policy Change Authentication Policy Change to Success
+1.1.3.1.1 - Set Accounts Block Microsoft accounts to Users cant add or log on with Microsoft accounts
+1.1.3.1.2 - Configure Accounts Rename guest account
+1.1.3.1.3 - Set Accounts Administrator account status to Disabled
+1.1.3.1.4 - Configure Accounts Rename administrator account
+1.1.3.1.5 - Set Accounts Guest account status to Disabled
+1.1.3.1.6 - Set Accounts Limit local account use of blank passwords to console logon only to Enabled
+1.1.3.2.1 - Set Audit Shut down system immediately if unable to log security audits to Disabled
+1.1.3.2.2 - Set Audit Force audit policy subcategory settings Windows Vista or later to override audit policy category settings to Enabled
+1.1.3.2.3 - Configure Audit Audit the use of Backup and Restore privilege
+1.1.3.2.4 - Configure Audit Audit the access of global system objects
+1.1.3.3.1 - Configure DCOM Machine Launch Restrictions in Security Descriptor Definition Language SDDL syntax
+1.1.3.3.2 - Configure DCOM Machine Access Restrictions in Security Descriptor Definition Language SDDL syntax
+1.1.3.4.1 - Configure Devices Allow undock without having to log on
+1.1.3.4.2 - Configure Devices Restrict floppy access to locally logged-on user only
+1.1.3.4.3 - Set Devices Allowed to format and eject removable media to Administrators and Interactive Users
+1.1.3.4.4 - Configure Devices Restrict CD-ROM access to locally logged-on user only
+1.1.3.4.5 - Configure Devices Prevent users from installing printer drivers
+1.1.3.5.1 - Set Domain member Require strong Windows 2000 or later session key to Enabled
+1.1.3.5.2 - Set Domain member Digitally sign secure channel data when possible to Enabled
+1.1.3.5.3 - Set Domain member Digitally encrypt secure channel data when possible to Enabled
+1.1.3.5.4 - Set Domain member Maximum machine account password age to 30 or fewer days
+1.1.3.5.5 - Set Domain member Digitally encrypt or sign secure channel data always to Enabled
+1.1.3.5.6 - Set Domain member Disable machine account password changes to Disabled
+1.1.3.6.1 - Set Interactive logon Machine account lockout threshold to 10 or fewer invalid logon attempts
+1.1.3.6.2 - Set Interactive logon Smart card removal behavior to Lock Workstation
+1.1.3.6.3 - Configure Interactive logon Require smart card
+1.1.3.6.4 - Set startup minutes to 10 or more minutes
+1.1.3.6.5 - Set Interactive logon Do not display last user name to Enabled
+1.1.3.6.6 - Set Interactive logon Number of previous logons to cache in case domain controller is not available to 4 or fewer logons
+1.1.3.6.7 - Set Interactive logon Require Domain Controller authentication to unlock workstation to Disabled
+1.1.3.6.8 - Set Interactive logon Prompt user to change password before expiration to 14 or more days
+1.1.3.6.9 - Set Interactive logon Do not require CTRLALTDEL to Disabled
+1.1.3.6.10 - Configure Interactive logon Message text for users attempting to log on
+1.1.3.6.11 - Set Interactive logon Machine inactivity limit to 900 or fewer seconds
+1.1.3.6.12 - Configure Interactive logon Message title for users attempting to log on
+1.1.3.6.13 - Configure Interactive logon Display user information when the session is locked
+1.1.3.7.1 - Set Microsoft network client Send unencrypted password to third-party SMB servers to Disabled
+1.1.3.7.2 - Set Microsoft network client Digitally sign communications always to Enabled
+1.1.3.7.3 - Set Microsoft network client Digitally sign communications if server agrees to Enabled
+1.1.3.8.1 - Set Microsoft network server Disconnect clients when logon hours expire to Enabled
+1.1.3.8.2 - Set Microsoft network server Amount of idle time required before suspending session to 15 or fewer minutes
+1.1.3.8.3 - Set Microsoft network server Digitally sign communications if client agrees to Enabled
+1.1.3.8.4 - Set Microsoft network server Server SPN target name validation level to Accept if provided by client
+1.1.3.8.5 - Set Microsoft network server Digitally sign communications always to Enabled
+1.1.3.9.1 - Configure MSS AutoShareWks Enable Administrative Shares recommended except for highly secure environments
+1.1.3.9.2 - Set MSS SafeDllSearchMode Enable Safe DLL search mode recommended to Enabled
+1.1.3.9.3 - Configure MSS NtfsDisable8dot3NameCreation Enable the computer to stop generating 8.3 style filenames
+1.1.3.9.4 - Set MSS AutoAdminLogon Enable Automatic Logon not recommended to Disabled
+1.1.3.9.5 - Set MSS WarningLevel Percentage threshold for the security event log at which the system will generate a warning to 0.9 or less
+1.1.3.9.6 - Set MSS DisableIPSourceRouting IP source routing protection level protects against packet spoofing to Highest protection source routing is completely disabled
+1.1.3.9.7 - Configure MSS TcpMaxDataRetransmissions How many times unacknowledged data is retransmitted 3 recommended 5 is default
+1.1.3.9.8 - Configure MSS EnableICMPRedirect Allow ICMP redirects to override OSPF generated routes
+1.1.3.9.9 - Configure MSS NoDefaultExempt Configure IPSec exemptions for various types of network traffic.
+1.1.3.9.10 - Configure MSS KeepAliveTime How often keep-alive packets are sent in milliseconds
+1.1.3.9.11 - Configure MSS TcpMaxDataRetransmissions IPv6 How many times unacknowledged data is retransmitted 3 recommended 5 is default
+1.1.3.9.12 - Configure MSS NoNameReleaseOnDemand Allow the computer to ignore NetBIOS name release requests except from WINS servers
+1.1.3.9.13 - Configure MSS Hidden Hide Computer From the Browse List not recommended except for highly secure environments
+1.1.3.9.14 - Set MSS ScreenSaverGracePeriod The time in seconds before the screen saver grace period expires 0 recommended to 0
+1.1.3.9.15 - Set MSS DisableIPSourceRouting IPv6 IP source routing protection level protects against packet spoofing to Highest protection source routing is completely disabled
+1.1.3.9.16 - Configure MSS PerformRouterDiscovery Allow IRDP to detect and configure Default Gateway addresses could lead to DoS
+1.1.3.10.1 - Set Network access Let Everyone permissions apply to anonymous users to Disabled
+1.1.3.10.2 - Set Network access Allow anonymous SIDName translation to Disabled
+1.1.3.10.3 - Set Network access Do not allow anonymous enumeration of SAM accounts and shares to Enabled
+1.1.3.10.4 - Configure Network access Named Pipes that can be accessed anonymously
+1.1.3.10.5 - Set Network access Restrict anonymous access to Named Pipes and Shares to Enabled
+1.1.3.10.6 - Set Network access Sharing and security model for local accounts to Classic - local users authenticate as themselves
+1.1.3.10.7 - Set Network access Remotely accessible registry paths and sub-paths to the following list
+1.1.3.10.8 - Set Network access Shares that can be accessed anonymously to None
+1.1.3.10.9 - Set Network access Do not allow anonymous enumeration of SAM accounts to Enabled
+1.1.3.10.10 - Set Network access Remotely accessible registry paths to the following list
+1.1.3.10.11 - Configure Network access Do not allow storage of passwords and credentials for network authentication
+1.1.3.11.1 - Set Network security Do not store LAN Manager hash value on next password change to Enabled
+1.1.3.11.2 - Set Network security Minimum session security for NTLM SSP based including secure RPC servers to Require NTLMv2 session securityRequire 128-bit encryption
+1.1.3.11.3 - Set Network security Allow Local System to use computer identity for NTLM to Enabled
+1.1.3.11.4 - Set Network security Allow LocalSystem NULL session fallback to Disabled
+1.1.3.11.5 - Configure Network Security Restrict NTLM NTLM authentication in this domain
+1.1.3.11.6 - Configure Network Security Restrict NTLM Add server exceptions in this domain
+1.1.3.11.7 - Set Network security Minimum session security for NTLM SSP based including secure RPC clients to Require NTLMv2 session securityRequire 128-bit encryption
+1.1.3.11.8 - Configure Network Security Restrict NTLM Outgoing NTLM traffic to remote servers
+1.1.3.11.9 - Configure Network Security Restrict NTLM Add remote server exceptions for NTLM authentication
+1.1.3.11.10 - Set Network security LAN Manager authentication level to Send NTLMv2 response only. Refuse LM  NTLM
+1.1.3.11.11 - Set Network Security Allow PKU2U authentication requests to this computer to use online identities to Disabled
+1.1.3.11.12 - Configure Network Security Restrict NTLM Audit NTLM authentication in this domain
+1.1.3.11.13 - Configure Network Security Restrict NTLM Incoming NTLM traffic
+1.1.3.11.14 - Set Network Security Configure encryption types allowed for Kerberos to RC4AES128AES256Future types
+1.1.3.11.15 - Set Network security LDAP client signing requirements to Negotiate signing
+1.1.3.11.16 - Configure Network security Force logoff when logon hours expire
+1.1.3.12.1 - Set Recovery console Allow automatic administrative logon to Disabled
+1.1.3.12.2 - Set Recovery console Allow floppy copy and access to all drives and all folders to Disabled
+1.1.3.13.1 - Set Shutdown Clear virtual memory pagefile to Disabled
+1.1.3.13.2 - Set Shutdown Allow system to be shut down without having to log on to Enabled
+1.1.3.14.1 - Configure System cryptography Force strong key protection for user keys stored on the computer
+1.1.3.14.2 - Set System cryptography Use FIPS compliant algorithms for encryption hashing and signing to Enabled
+1.1.3.15.1 - Set System objects Strengthen default permissions of internal system objects eg Symbolic Links to Enabled
+1.1.3.15.2 - Set System objects Require case insensitivity for non-Windows subsystems to Enabled
+1.1.3.16.1 - Configure System settings Optional subsystems
+1.1.3.16.2 - Configure System settings Use Certificate Rules on Windows Executables for Software Restriction Policies
+1.1.3.17.1 - Set User Account Control Admin Approval Mode for the Built-in Administrator account to Enabled
+1.1.3.17.2 - Set User Account Control Detect application installations and prompt for elevation to Enabled
+1.1.3.17.3 - Set User Account Control Behavior of the elevation prompt for standard users to Automatically deny elevation requests
+1.1.3.17.4 - Set User Account Control Behavior of the elevation prompt for administrators in Admin Approval Mode to Prompt for consent on the secure desktop
+1.1.3.17.5 - Set User Account Control Only elevate UIAccess applications that are installed in secure locations to Enabled
+1.1.3.17.6 - Set User Account Control Virtualize file and registry write failures to per-user locations to Enabled
+1.1.3.17.7 - Set User Account Control Switch to the secure desktop when prompting for elevation to Enabled
+1.1.3.17.8 - Set User Account Control Allow UIAccess applications to prompt for elevation without using the secure desktop to Disabled
+1.1.3.17.9 - Set User Account Control Only elevate executables that are signed and validated to Disabled
+1.1.3.17.10 - Set User Account Control Run all administrators in Admin Approval Mode to Enabled
+1.1.4.1 - Configure Allow log on through Remote Desktop Services
+1.1.4.2 - Set Deny log on through Remote Desktop Services to Guests
+1.1.4.3 - Set Deny access to this computer from the network to Guests
+1.1.4.4 - Set Create a pagefile to Administrators
+1.1.4.5 - Set Create permanent shared objects to No One
+1.1.4.6 - Set Increase scheduling priority to Administrators
+1.1.4.7 - Set Access this computer from the network to Users Administrators
+1.1.4.8 - Set Force shutdown from a remote system to Administrators
+1.1.4.9 - Set Change the time zone to LOCAL SERVICE Administrators Users
+1.1.4.10 - Set Create global objects to Administrators SERVICE LOCAL SERVICE NETWORK SERVICE
+1.1.4.11 - Set Enable computer and user accounts to be trusted for delegation to No One
+1.1.4.12 - Set Profile single process to Administrators
+1.1.4.13 - Set Shut down the system to Administrators Users
+1.1.4.14 - Set Take ownership of files or other objects to Administrators
+1.1.4.15 - Set Create symbolic links to Administrators
+1.1.4.16 - Set Act as part of the operating system to No One
+1.1.4.17 - Set Modify firmware environment values to Administrators
+1.1.4.18 - Set Back up files and directories to Administrators
+1.1.4.19 - Set Debug programs to Administrators
+1.1.4.20 - Set Access Credential Manager as a trusted caller to No One
+1.1.4.21 - Set Deny log on locally to Guests
+1.1.4.22 - Set Profile system performance to NT SERVICEWdiServiceHostAdministrators
+1.1.4.23 - Set Restore files and directories to Administrators
+1.1.4.24 - Set Perform volume maintenance tasks to Administrators
+1.1.4.25 - Set Impersonate a client after authentication to Administrators SERVICE Local Service Network Service
+1.1.4.26 - Configure Log on as a batch job
+1.1.4.27 - Set Adjust memory quotas for a process to Administrators Local Service Network Service
+1.1.4.28 - Set Manage auditing and security log to Administrators
+1.1.4.29 - Set Deny log on as a batch job to Guests
+1.1.4.30 - Set Bypass traverse checking to Users NETWORK SERVICE LOCAL SERVICE Administrators
+1.1.4.31 - Set Increase a process working set to Administrators Local Service
+1.1.4.32 - Set Change the system time to LOCAL SERVICE Administrators
+1.1.4.33 - Configure Deny log on as a service
+1.1.4.34 - Configure Log on as a service
+1.1.4.35 - Set Generate security audits to Local Service Network Service
+1.1.4.36 - Set Allow log on locally to Administrators Users
+1.1.4.37 - Set Lock pages in memory to No One
+1.1.4.38 - Set Load and unload device drivers to Administrators
+1.1.4.39 - Configure Remove computer from docking station
+1.1.4.40 - Set Replace a process level token to Local Service Network Service
+1.1.4.41 - Set Create a token object to No One
+1.1.4.42 - Set Modify an object label to No one
+1.1.5.1.1 - Set Windows Firewall Domain Display a notification to Yes default
+1.1.5.1.2 - Set Windows Firewall Domain Logging Size limit KB to 16384 KB or greater 
+1.1.5.1.3 - Set Windows Firewall Domain Logging Name to SYSTEMROOTSystem32logfilesfirewalldomainfw.log
+1.1.5.1.4 - Set Windows Firewall Domain Apply local firewall rules to Yes default
+1.1.5.1.5 - Set Windows Firewall Domain Apply local connection security rules to Yes default
+1.1.5.1.6 - Set Windows Firewall Domain Allow unicast response to No
+1.1.5.1.7 - Set Windows Firewall Domain Outbound connections to Allow default
+1.1.5.1.8 - Set Windows Firewall Domain Logging Log dropped packets to Yes
+1.1.5.1.9 - Set Windows Firewall Domain Logging Log successful connections to Yes
+1.1.5.1.10 - Set Inbound Connections to EnabledBlock default
+1.1.5.1.11 - Set Windows Firewall Domain Firewall state to On recommended
+1.1.5.2.1 - Set Windows Firewall Private Firewall state to On recommended
+1.1.5.2.2 - Set Windows Firewall Private Outbound connections to Allow default
+1.1.5.2.3 - Set Windows Firewall Private Apply local firewall rules to Yes default
+1.1.5.2.4 - Set Windows Firewall Private Logging Size limit KB to 16384 KB or greater
+1.1.5.2.5 - Set Windows Firewall Private Apply local connection security rules to Yes default
+1.1.5.2.6 - Set Windows Firewall Private Display a notification to Yes default
+1.1.5.2.7 - Set Inbound Connections to EnabledBlock default
+1.1.5.2.8 - Set Windows Firewall Private Logging Name to SYSTEMROOTSystem32logfilesfirewallprivatefw.log
+1.1.5.2.9 - Set Windows Firewall Private Allow unicast response to No
+1.1.5.2.10 - Set Windows Firewall Private Logging Log successful connections to Yes
+1.1.5.2.11 - Set Windows Firewall Private Logging Log dropped packets to Yes
+1.1.5.3.1 - Set Windows Firewall Public Outbound connections to Allow default
+1.1.5.3.2 - Set Windows Firewall Public Apply local firewall rules to Yes default
+1.1.5.3.3 - Set Windows Firewall Public Apply local connection security rules to No
+1.1.5.3.4 - Set Windows Firewall Public Logging Log dropped packets to Yes
+1.1.5.3.5 - Set Windows Firewall Public Display a notification to No
+1.1.5.3.6 - Set Windows Firewall Public Allow unicast response to No
+1.1.5.3.7 - Set Windows Firewall Public Logging Name to SYSTEMROOTSystem32logfilesfirewallpublicfw.log
+1.1.5.3.8 - Set Windows Firewall Public Logging Log successful connections to Yes
+1.1.5.3.9 - Set Windows Firewall Public Logging Size limit KB to 16384 KB or greater
+1.1.5.3.10 - Set Windows Firewall Public Firewall state to On recommended
+1.1.5.3.11 - Set Inbound Connections to EnabledBlock default
+1.2.1.1 - Configure Set IP Stateless Autoconfiguration Limits State
+1.2.1.2 - Configure Minimize the number of simultaneous connections to the Internet or a Windows Domain
+1.2.1.3 - Configure Prohibit connection to non-domain networks when connected to domain authenticated network
+1.2.2.1 - Configure Point and Print Restrictions
+1.2.3.5 - Set RPC Runtime Unauthenticated Client Restriction to Apply to EnabledAuthenticated
+1.2.3.6 - Set Enable RPC Endpoint Mapper Client Authentication to Disabled
+1.2.3.7 - Set Do not apply during periodic background processing to EnabledFALSE
+1.2.3.8 - Set Process even if the Group Policy objects have not changed to EnabledTRUE
+1.2.3.9 - Set Choose the boot-start drivers that can be initialized to EnabledGood unknown and bad but critical
+1.2.3.10 - Configure Detect compatibility issues for applications and drivers
+1.2.3.11 - Set Select update server to EnabledSearch Managed Server
+1.2.3.12 - Configure Specify settings for optional component installation and component repair
+1.2.3.13 - Set Prevent installation of devices using drivers that match these device setup classes to Enabled
+1.2.3.14 - Set Also apply to matching devices that are already installed to True
+1.2.3.15 - Configure Prevent installation of devices using drivers for these device setup classes
+1.2.3.1.1 - Configure Turn off access to the Store
+1.2.3.1.2 - Set Turn off downloading of print drivers over HTTP to Enabled
+1.2.3.1.3 - Set Turn off Windows Update device driver searching to Enabled
+1.2.3.1.4 - Set Turn off the Publish to Web task for files and folders to Enabled
+1.2.3.1.5 - Set Turn off the Windows Messenger Customer Experience Improvement Program to Enabled
+1.2.3.1.6 - Set Turn off Search Companion content file updates to Enabled
+1.2.3.1.7 - Configure Turn off Event Viewer Events.asp links
+1.2.3.1.8 - Set Turn off Internet download for Web publishing and online ordering wizards to Enabled
+1.2.3.1.9 - Set Turn off printing over HTTP to Enabled
+1.2.3.2.1 - Set Turn on PIN sign-in to Disabled
+1.2.3.2.2 - Configure Do not process the run once list
+1.2.3.2.3 - Configure Do not process the legacy run list
+1.2.3.2.4 - Set Do not enumerate connected users on domain-joined computers to Enabled
+1.2.3.2.5 - Configure Turn off app notifications on the lock screen
+1.2.3.2.6 - Set Enumerate local users on domain-joined computers to Disabled
+1.2.3.3.1 - Set Require a Password When a Computer Wakes Plugged In to Enabled
+1.2.3.3.2 - Set Require a Password When a Computer Wakes On Battery to Enabled
+1.2.3.4.1 - Set Configure Solicited Remote Assistance to Disabled
+1.2.3.4.2 - Set Configure Offer Remote Assistance to Disabled
+1.2.3.4.3 - Configure Customize Warning Messages
+1.2.4.8 - Configure Allow the use of biometrics
+1.2.4.9 - Set Turn off Data Execution Prevention for Explorer to Disabled
+1.2.4.10 - Configure Turn off the Store application
+1.2.4.11 - Set Always install with elevated privileges to Disabled
+1.2.4.12 - Configure Allow deployment operations in special profiles
+1.2.4.13 - Configure Allow all trusted apps to install
+1.2.4.14 - Set Pick one of the following settings to EnabledRequire approval from an administrator before running downloaded unknown software
+1.2.4.15 - Configure Turn off Automatic Download of updates
+1.2.4.16 - Set Allow Remote Shell Access to Enabled
+1.2.4.17 - Configure Turn off location
+1.2.4.18 - Configure Prevent the computer from joining a homegroup
+1.2.4.19 - Configure Turn off Windows Location Provider
+1.2.4.1.1 - Set Turn off Autoplay on to EnabledAll drives
+1.2.4.2.4 - Configure Validate smart card certificate usage rule compliance
+1.2.4.2.5 - Set Select the encryption method to EnabledAES 256-bit
+1.2.4.2.6 - Configure Prevent memory overwrite on restart
+1.2.4.2.7 - Configure Choose default folder for recovery password
+1.2.4.2.8 - Configure Provide the unique identifiers for your organization
+1.2.4.2.9 - Set Allow Standby States S1-S3 When Sleeping On Battery to Disabled
+1.2.4.2.10 - Set Allow Standby States S1-S3 When Sleeping Plugged In to Disabled
+1.2.4.2.1.1 - Set Configure use of hardware-based encryption for fixed data drives to Enabled
+1.2.4.2.1.2 - Configure Enforce drive encryption type on fixed data drives
+1.2.4.2.1.3 - Set Configure use of passwords for fixed data drives to Disabled
+1.2.4.2.1.4 - Set Recovery Key to Allow 256-bit recovery key
+1.2.4.2.1.5 - Set Recovery Password to Allow 48-digit recovery password
+1.2.4.2.1.6 - Set Use BitLocker software-based encryption when hardware encryption is not available to True
+1.2.4.2.1.7 - Set Restrict crypto algorithms or cipher suites to the following to 2.16.840.1.101.3.4.1.22.16.840.1.101.3.4.1.42
+1.2.4.2.1.8 - Set Restrict encryption algorithms and cipher suites allowed for hardware-based encryption to False
+1.2.4.2.1.9 - Set Allow data recovery agent to True
+1.2.4.2.1.10 - Set Choose how BitLocker-protected fixed drives can be recovered to Enabled
+1.2.4.2.1.11 - Set Do not enable BitLocker until recovery information is stored to AD DS for fixed data drives to False
+1.2.4.2.1.12 - Set Configure storage of BitLocker recovery information to AD DS to Backup recovery passwords and key packages
+1.2.4.2.1.13 - Set Save BitLocker recovery information to AD DS for fixed data drives to False
+1.2.4.2.1.14 - Set Omit recovery options from the BitLocker setup wizard to True
+1.2.4.2.1.15 - Set Configure use of smart cards on fixed data drives to Enabled
+1.2.4.2.1.16 - Set Require use of smart cards on fixed data drives to True
+1.2.4.2.1.17 - Configure Deny write access to fixed drives not protected by BitLocker
+1.2.4.2.1.18 - Set Allow access to BitLocker-protected fixed data drives from earlier versions of Windows to Disabled
+1.2.4.2.2.1 - Set Configure use of hardware-based encryption for operating system drives to Enabled
+1.2.4.2.2.2 - Configure Enforce drive encryption type on operating system drives
+1.2.4.2.2.3 - Set Configure use of passwords for operating system drives to Disabled
+1.2.4.2.2.4 - Set Recovery Key to Do not allow 256-bit recovery key
+1.2.4.2.2.5 - Set Recovery Password to Require 48-digit recovery password
+1.2.4.2.2.6 - Set Use BitLocker software-based encryption when hardware encryption is not available to True
+1.2.4.2.2.7 - Set Allow data recovery agent to False
+1.2.4.2.2.8 - Set Choose how BitLocker-protected operating system drives can be recovered to Enabled
+1.2.4.2.2.9 - Set Do not enable BitLocker until recovery information is stored to AD DS for operating system drives to True
+1.2.4.2.2.10 - Set Configure storage of BitLocker recovery information to AD DS to Store recovery passwords and key packages
+1.2.4.2.2.11 - Set Save BitLocker recovery information to AD DS for operating system drives to True
+1.2.4.2.2.12 - Set Omit recovery options from the BitLocker setup wizard to True
+1.2.4.2.2.13 - Set Require additional authentication at startup to Enabled
+1.2.4.2.2.14 - Set Allow BitLocker without a compatible TPM to False
+1.2.4.2.2.15 - Set Configure TPM startup key and PIN to Do not allow startup key and PIN with TPM
+1.2.4.2.2.16 - Set Configure TPM startup PIN to Require startup PIN with TPM
+1.2.4.2.2.17 - Set Configure TPM startup to Do not allow TPM
+1.2.4.2.2.18 - Set Configure TPM startup key to Do not allow startup key with TPM
+1.2.4.2.2.19 - Configure Use enhanced Boot Configuration Data validation profile
+1.2.4.2.2.20 - Configure Enable use of BitLocker authentication requiring preboot keyboard input on slates
+1.2.4.2.2.21 - Configure Configure TPM platform validation profile for BIOS-based firmware configurations
+1.2.4.2.2.22 - Configure Configure TPM platform validation profile for native UEFI firmware configurations
+1.2.4.2.2.23 - Set Allow enhanced PINs for startup to Enabled
+1.2.4.2.2.24 - Configure Disallow standard users from changing the PIN or password
+1.2.4.2.2.25 - Set Allow Secure Boot for integrity validation to Enabled
+1.2.4.2.2.26 - Set Minimum characters to Enabled7 or more characters
+1.2.4.2.2.27 - Configure Allow network unlock at startup
+1.2.4.2.2.28 - Configure Reset platform validation data after BitLocker recovery
+1.2.4.2.3.1 - Set Configure use of hardware-based encryption for removable data drives to Enabled
+1.2.4.2.3.2 - Configure Enforce drive encryption type on removable data drives
+1.2.4.2.3.3 - Set Configure use of passwords for removable data drives to Disabled
+1.2.4.2.3.4 - Set Recovery Key to Do not allow 256-bit recovery key
+1.2.4.2.3.5 - Set Recovery Password to Do not allow 48-digit recovery password
+1.2.4.2.3.6 - Set Use BitLocker software-based encryption when hardware encryption is not available to True
+1.2.4.2.3.7 - Set Restrict crypto algorithms or cipher suites to the following to 2.16.840.1.101.3.4.1.22.16.840.1.101.3.4.1.42
+1.2.4.2.3.8 - Set Restrict encryption algorithms and cipher suites allowed for hardware-based encryption to False
+1.2.4.2.3.9 - Set Allow data recovery agent to True
+1.2.4.2.3.10 - Set Choose how BitLocker-protected removable drives can be recovered to Enabled
+1.2.4.2.3.11 - Set Do not enable BitLocker until recovery information is stored to AD DS for removable data drives to False
+1.2.4.2.3.12 - Set Configure storage of BitLocker recovery information to AD DS to Backup recovery passwords and key packages
+1.2.4.2.3.13 - Set Save BitLocker recovery information to AD DS for removable data drives to False
+1.2.4.2.3.14 - Set Omit recovery options from the BitLocker setup wizard to True
+1.2.4.2.3.15 - Set Configure use of smart cards on removable data drives to Enabled
+1.2.4.2.3.16 - Set Require use of smart cards on removable data drives to True
+1.2.4.2.3.17 - Set Deny write access to removable drives not protected by BitLocker to Enabled
+1.2.4.2.3.18 - Set Allow access to BitLocker-protected removable data drives from earlier versions of Windows to Disabled
+1.2.4.2.3.19 - Configure Control use of BitLocker on removable drives
+1.2.4.2.3.20 - Set Do not allow write access to devices configured in another organization to True
+1.2.4.3.1 - Configure Require trusted path for credential entry
+1.2.4.3.2 - Configure Do not display the password reveal button
+1.2.4.3.3 - Set Enumerate administrator accounts on elevation to Disabled
+1.2.4.4.1 - Set Security Maximum Log Size KB to Enabled20480 or greater
+1.2.4.4.2 - Set System Control Event Log behavior when the log file reaches its maximum size to Disabled
+1.2.4.4.3 - Set Security Control Event Log behavior when the log file reaches its maximum size to Disabled
+1.2.4.4.4 - Set Application Maximum Log Size KB to Enabled20480 or greater
+1.2.4.4.5 - Set System Maximum Log Size KB to Enabled20480 or greater
+1.2.4.4.6 - Set Application Control Event Log behavior when the log file reaches its maximum size to Disabled
+1.2.4.5.1 - Set Do not allow drive redirection to Enabled
+1.2.4.5.2 - Configure Allow users to connect remotely by using Remote Desktop Services
+1.2.4.5.3 - Set Encryption Level to EnabledHigh Level
+1.2.4.5.4 - Set Always prompt for password upon connection to Enabled
+1.2.4.5.5 - Set Do not allow passwords to be saved to Enabled
+1.2.4.6.1 - Set Disallow Digest authentication to Enabled
+1.2.4.6.2 - Set Allow Basic authentication to Disabled
+1.2.4.6.3 - Set Allow Basic authentication to Disabled
+1.2.4.6.4 - Set Disallow WinRM from storing RunAs credentials to Enabled
+1.2.4.6.5 - Set Allow unencrypted traffic to Disabled
+1.2.4.6.6 - Set Allow unencrypted traffic to Disabled
+1.2.4.7.1 - Configure Specify intranet Microsoft update service location
+1.2.4.7.2 - Set Reschedule Automatic Updates scheduled installations to Enabled
+1.2.4.7.3 - Set Do not adjust default option to Install Updates and Shut Down in Shut Down Windows dialog box to Disabled
+1.2.4.7.4 - Set Configure Automatic Updates to Enabled
+1.2.4.7.5 - Set Scheduled install day to 0 - Every day
+1.2.4.7.6 - Set No auto-restart with logged on users for scheduled automatic updates installations to Disabled
+1.2.4.7.7 - Set Do not display Install Updates and Shut Down option in Shut Down Windows dialog box to Disabled
+2.1 - Configure Disable regedit from running silently
+2.2 - Configure Prevent Codec Download
+2.3 - Set Notify antivirus programs when opening attachments to Enabled
+2.4 - Set Do not preserve zone information in file attachments to Disabled
+2.5 - Configure Hide mechanisms to remove zone information
+2.6 - Configure Remove CD Burning features
+2.7 - Configure Remove Security tab
+2.8 - Set Password protect the screen saver to Enabled
+2.9 - Set Enable screen saver to Enabled
+2.10 - Set Seconds to Enabled900 or fewer seconds
+2.11 - Set Screen saver executable name to Enabledscrnsave.scr
+2.12 - Configure Prevent changing screen saver
+2.13 - Configure Turn off toast notifications on the lock screen

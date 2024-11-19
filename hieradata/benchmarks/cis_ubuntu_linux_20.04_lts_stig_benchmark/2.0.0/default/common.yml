@@ -1,0 +1,3307 @@
+---
+
+inspec_rules:
+  "1.1.1.9":
+    title: '1.1.1.9 | Ensure usb-storage kernel module is not available - manual'
+    section: 'Configure Filesystem Kernel Modules'
+    description: |
+        USB storage provides a means to transfer and store files ensuring persistence and availability of the files independent
+        of network connection status.  Its popularity and utility has led to USBbased malware being a simple and common means
+        for network infiltration and a first step to establishing a persistent threat within a networked environment.
+    remediation: |
+        Run the following script to disable the                    usb-storage
+         module:                 If the module is available in the running kernel:
+        Create a file with                      install usb-storage /bin/false
+         in the                      /etc/modprobe.d/
+         directory
+        Create a file with                      blacklist usb-storage
+         in the                      /etc/modprobe.d/
+         directory
+        Unload                      usb-storage
+         from the kernel                   If available in ANY installed kernel:
+        Create a file with                      blacklist usb-storage
+         in the                      /etc/modprobe.d/
+         directory                   If the kernel module is not available on the system or pre-compiled into the kernel: No
+        remediation is necessary
+        #!/usr/bin/env bash
+
+        {
+           l_mname="usb-storage" # set module name
+           l_mtype="drivers" # set module type
+           l_mpath="/lib/modules/**/kernel/$l_mtype"
+           l_mpname="$(tr '-' '_' <<< "$l_mname")"
+           l_mndir="$(tr '-' '/' <<< "$l_mname")"
+
+           module_loadable_fix()
+           {
+              # If the module is currently loadable, add "install {MODULE_NAME} /bin/false" to a file in "/etc/modprobe.d"
+              l_loadable="$(modprobe -n -v "$l_mname")"
+              [ "$(wc -l <<< "$l_loadable")" -gt "1" ] && l_loadable="$(grep -P -- "(^\h*install|\b$l_mname)\b" <<<
+        "$l_loadable")"
+              if ! grep -Pq -- '^\h*install \/bin\/(true|false)' <<< "$l_loadable"; then
+                 echo -e "\n - setting module: \"$l_mname\" to be not loadable"
+                 echo -e "install $l_mname /bin/false" >> /etc/modprobe.d/"$l_mpname".conf
+              fi
+           }
+           module_loaded_fix()
+           {
+              # If the module is currently loaded, unload the module
+              if lsmod | grep "$l_mname" > /dev/null 2>&1; then
+                 echo -e "\n - unloading module \"$l_mname\""
+                 modprobe -r "$l_mname"
+              fi
+           }
+           module_deny_fix()
+           {
+              # If the module isn't deny listed, denylist the module
+              if ! modprobe --showconfig | grep -Pq -- "^\h*blacklist\h+$l_mpname\b"; then
+                 echo -e "\n - deny listing \"$l_mname\""
+                 echo -e "blacklist $l_mname" >> /etc/modprobe.d/"$l_mpname".conf
+              fi
+           }
+           # Check if the module exists on the system
+           for l_mdir in $l_mpath; do
+              if [ -d "$l_mdir/$l_mndir" ] && [ -n "$(ls -A $l_mdir/$l_mndir)" ]; then
+                 echo -e "\n - module: \"$l_mname\" exists in \"$l_mdir\"\n - checking if disabled..."
+                 module_deny_fix
+                 if [ "$l_mdir" = "/lib/modules/$(uname -r)/kernel/$l_mtype" ]; then
+                    module_loadable_fix
+                    module_loaded_fix
+                 fi
+              else
+                 echo -e "\n - module: \"$l_mname\" doesn't exist in \"$l_mdir\"\n"
+              fi
+           done
+           echo -e "\n - remediation of module: \"$l_mname\" complete\n"
+        }
+                         Impact:
+        Disabling the                      usb-storage
+         module will disable any usage of USB storage devices.
+        If requirements and local site policy allow the use of such devices, other solutions should be configured accordingly
+        instead. One example of a commonly used solution is                      USBGuard
+        .
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_1.1.1.9', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == usb-storage:drivers'
+
+  "1.1.1.10":
+    title: '1.1.1.10 | Ensure data-at-rest encryption is enabled - manual'
+    section: 'Configure Filesystem Kernel Modules'
+    description: |
+        The operating systems handling data requiring data at rest protections must employ cryptographic mechanisms to prevent
+        unauthorized disclosure and modification of the information at rest.
+    remediation: |
+        To encrypt an entire partition, dedicate a partition for encryption in the partition layout. Note:
+         Encrypting a partition in an already-installed system is more difficult because it will need to be resized and existing
+        partitions changed.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_1.1.1.10', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.1.1.11":
+    title: '1.1.1.11 | Ensure data-at-rest employs cryptographic mechanisms to prevent unauthorized modification - manual'
+    section: 'Configure Filesystem Kernel Modules'
+    description: |
+        The operating system must implement cryptographic mechanisms to prevent unauthorized modification of all information at
+        rest.
+    remediation: |
+        To encrypt an entire partition, dedicate a partition for encryption in the partition layout. Note:
+         Encrypting a partition in an already-installed system is more difficult because it will need to be resized and existing
+        partitions changed.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_1.1.1.11', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.1.1.12":
+    title: '1.1.1.12 | Ensure sticky bit is set on all world-writable directories - manual'
+    section: 'Configure Filesystem Kernel Modules'
+    description: |
+        Setting the sticky bit on world writable directories prevents users from deleting or renaming files in that directory
+        that are not owned by them.
+    remediation: |
+        Run the following command to set the sticky bit on all world writable directories: # df --local -P | awk '{if (NR!=1)
+        print $6}' | xargs -I '{}' find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null | xargs -I '{}' chmod
+        a+t '{}'
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_1.1.1.12', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.4":
+    title: '1.2.4 | Ensure apt is configured to prevent installation without verification of a recognized and approved digital signature'
+    section: 'Configure Software and Patch Management'
+    description: |
+        The operating systems Advance Package Tool APT must be configured to prevent the installation of patches, service packs,
+        device drivers, or Ubuntu operating system components without verification they have been digitally signed using a
+        certificate that is recognized and approved by the organization.
+    remediation: |
+        Configure APT to prevent the installation of patches, service packs, device drivers, or Ubuntu operating system
+        components without verification they have been digitally signed using a certificate that is recognized and approved by
+        the organization. Remove/update any APT configuration files that contain the variable "AllowUnauthenticated" to "false",
+        or remove "AllowUnauthenticated" entirely from each file. Below is an example of setting the "AllowUnauthenticated"
+        variable to "false": APT::Get::AllowUnauthenticated "false";
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_1.2.4', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.2.5":
+    title: '1.2.5 | Ensure the Advance Package Tool removes all software components after updated versions have been installed'
+    section: 'Configure Software and Patch Management'
+    description: |
+        The Ubuntu operating system must be configured so that Advance Package Tool APT removes all software components after
+        updated versions have been installed.
+    remediation: |
+        Configure APT to remove all software components after updated versions have been installed. Add or updated the following
+        options to the "/etc/apt/apt.conf.d/50unattended-upgrades" file:
+        Unattended-Upgrade::Remove-Unused-Dependencies "true";
+        Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_1.2.5', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.4.1":
+    title: '1.4.1 | Ensure XDNX support is enabled - manual'
+    section: 'Additional Process Hardening'
+    description: |
+        Recent processors in the x86 family support the ability to prevent code execution on a per memory page basis.
+        Generically and on AMD processors, this ability is called No Execute NX, while on Intel processors it is called Execute
+        Disable XD. This ability can help prevent exploitation of buffer overflow vulnerabilities and should be activated
+        whenever possible. Extra steps must be taken to ensure that this protection is enabled, particularly on 32bit x86
+        systems. Other processors, such as Itanium and POWER, have included such support since inception and the standard kernel
+        for those platforms supports the feature. Note
+         Ensure your system supports the XD or NX bit and has PAE support before implementing this recommendation as this may
+        prevent it from booting if these are not supported by your hardware
+    remediation: |
+        On 32 bit systems install a kernel with PAE support, no installation is required on 64 bit systems: If necessary
+        configure your bootloader to load the new kernel and reboot the system. You may need to enable NX or XD support in your
+        bios.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_1.4.1', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.4.5":
+    title: '1.4.5 | Ensure maxlogins is 10 or less'
+    section: 'Additional Process Hardening'
+    description: |
+        The operating system must limit the number of concurrent sessions to ten for all accounts and/or account types.
+    remediation: |
+        Configure the Ubuntu operating system to limit the number of concurrent sessions to 10 for all accounts and/or account
+        types.
+        Add the following line to the top of the                  /etc/security/limits.conf
+         file:               * hard maxlogins 10
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_1.4.5', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.4.7":
+    title: '1.4.7 | Ensure kdump service is not enabled'
+    section: 'Additional Process Hardening'
+    description: |
+        The operating system must disable kernel core dumps so that it can fail to a secure state if system initialization
+        fails, shutdown fails or aborts fail.
+    remediation: |
+        If kernel core dumps are not required, disable the "kdump" service with the following command: # systemctl disable
+        kdump.service
+         If kernel core dumps are required, document the need with the ISSO.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_1.4.7', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == inactive'
+
+  "1.4.9":
+    title: '1.4.9 | Ensure the Ctrl-Alt-Delete key sequence is disabled'
+    section: 'Additional Process Hardening'
+    description: |
+        The operating system must disable the x86 CtrlAltDelete key sequence.
+    remediation: |
+        Configure the system to disable the Ctrl-Alt-Delete sequence for the command line with the following command: # sudo
+        systemctl mask ctrl-alt-del.target
+         Reload the daemon to take effect: # sudo systemctl daemon-reload
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_1.4.9', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == masked'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "1.4.10":
+    title: '1.4.10 | Ensure dmesg restrict is enabled - manual'
+    section: 'Additional Process Hardening'
+    description: |
+        The              kernel.dmesgrestrict
+         kernel parameter can be used to configure the Linux kernel and restrict access to information from dmesg.
+    remediation: |
+        Set the following parameter in                  /etc/sysctl.conf
+         or a file in                  /etc/sysctl.d/
+         ending in                  .conf
+        :                kernel.dmesg_restrict = 1 Example: # printf '\n%s' "kernel.dmesg_restrict = 1" >>
+        /etc/sysctl.d/60-kernel_sysctl.conf
+         Run the following command to set the active kernel parameter: # sysctl -w  kernel.dmesg_restrict=1
+         Note:
+         If these settings appear in a conically later file, or later in the same file, these settings will be overwritten
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_1.4.10', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == kernel.dmesg_restrict=1'
+
+  "1.5.1.3":
+    title: '1.5.1.3 | Ensure AppArmor is installed enabled and active'
+    section: 'Configure AppArmor'
+    description: |
+        The Ubuntu operating system must be configured to use AppArmor.
+    remediation: |
+        Install "AppArmor" (if it is not installed) with the following command:
+        # apt-get install apparmor
+        # systemctl enable apparmor.service
+                         Start "apparmor" with the following command: # systemctl start apparmor.service
+         Note:
+         AppArmor must have properly configured profiles for applications and home directories. All configurations will be based
+        on the actual system setup and organization and normally are on a per role basis. See the AppArmor documentation for
+        more information on configuring profiles.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_1.5.1.3', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == enabled'
+            - name: Undefined
+              rule: 'should cmp == active'
+
+  "1.7.4":
+    title: '1.7.4 | Ensure GDM screen locks when the user is idle'
+    section: 'GNOME Display Manager'
+    description: |
+        GNOME Desktop Manager can make the screen lock automatically whenever the user is idle for some amount of time.
+        idledelayuint32 n
+          Number of seconds of inactivity before the screen goes blank             lockdelayuint32 n
+          Number of seconds after the screen is blank before locking the screen             Example key file
+         Specify the dconf path
+        org/gnome/desktop/session
+
+         Number of seconds of inactivity before the screen goes blank
+         Set to 0 seconds if you want to deactivate the screensaver.
+        idledelayuint32 900
+
+         Specify the dconf path
+        org/gnome/desktop/screensaver
+
+         Number of seconds after the screen is blank before locking the screen
+        lockdelayuint32 5
+    remediation: |
+        Create or edit a file in the                  /etc/dconf/profile/
+         and verify it includes the following:
+        user-db:user
+        system-db:{NAME_OF_DCONF_DATABASE}
+                       Note: local
+         is the name of a dconf database used in the examples.               Example: # echo -e '\nuser-db:user\nsystem-
+        db:local' >> /etc/dconf/profile/user
+
+        Create the directory                  /etc/dconf/db/{NAME_OF_DCONF_DATABASE}.d/
+         if it doesn't already exist:               Example: # mkdir /etc/dconf/db/local.d
+         Create the key file `/etc/dconf/db/{NAME_OF_DCONF_DATABASE}.d/{FILE_NAME} to provide information for the
+        {NAME_OF_DCONF_DATABASE} database: Example script:
+        #!/usr/bin/env bash
+
+        {
+           l_key_file="/etc/dconf/db/local.d/00-screensaver"
+           l_idmv="900" # Set max value for idle-delay in seconds (between 1 and 900)
+           l_ldmv="5" # Set max value for lock-delay in seconds (between 0 and 5)
+           {
+              echo '# Specify the dconf path'
+              echo '[org/gnome/desktop/session]'
+              echo ''
+              echo '# Number of seconds of inactivity before the screen goes blank'
+              echo '# Set to 0 seconds if you want to deactivate the screensaver.'
+              echo "idle-delay=uint32 $l_idmv"
+              echo ''
+              echo '# Specify the dconf path'
+              echo '[org/gnome/desktop/screensaver]'
+              echo ''
+              echo '# Number of seconds after the screen is blank before locking the screen'
+              echo "lock-delay=uint32 $l_ldmv"
+           } > "$l_key_file"
+        }
+                       Note:
+         You must include the uint32 along with the integer key values as shown.               Run the following command to
+        update the system databases: # dconf update
+         Note:
+         Users must log out and back in again before the system-wide settings take effect.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_1.7.4', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == 900:5'
+
+  "1.7.7":
+    title: '1.7.7 | Ensure users session lock is enabled'
+    section: 'GNOME Display Manager'
+    description: |
+        The operating system must retain a users session lock until that user reestablishes access using established
+        identification and authentication procedures.
+    remediation: |
+        Configure the Ubuntu operating system to allow a user to lock the current graphical user interface session. Note:
+         If the Ubuntu operating system does not have a graphical user interface installed, this requirement is Not Applicable.
+        Set the "lock-enabled" setting to allow graphical user interface session locks with the following command: # gsettings
+        set org.gnome.desktop.screensaver lock-enabled true
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_1.7.7', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.7.12":
+    title: '1.7.12 | Ensure Standard Mandatory DoD Notice and Consent Banner displayed via a graphical user logon - manual'
+    section: 'GNOME Display Manager'
+    description: |
+        The operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting local access to
+        the system via a graphical user logon.
+    remediation: |
+        Edit the "/etc/gdm3/greeter.dconf-defaults" file. Set the "banner-message-text" line to contain the appropriate banner
+        message text as shown below: banner-message-text='You are accessing a U.S. Government (USG) Information System (IS) that
+        is provided for USG-authorized use only.\n\nBy using this IS (which includes any device attached to this IS), you
+        consent to the following conditions:\n\n-The USG routinely intercepts and monitors communications on this IS for
+        purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense,
+        personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations.\n\n-At any time, the USG
+        may inspect and seize data stored on this IS.\n\n-Communications using, or data stored on, this IS are not private, are
+        subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized
+        purpose.\n\n-This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not
+        for your personal benefit or privacy.\n\n-Notwithstanding the above, using this IS does not constitute consent to PM, LE
+        or CI investigative searching or monitoring of the content of privileged communications, or work product, related to
+        personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications
+        and work product are private and confidential. See User Agreement for details.'
+         Update the GDM with the new configuration:
+        # dconf update
+        # systemctl restart gdm3
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_1.7.12', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.7.13":
+    title: '1.7.13 | Ensure the graphical user Ctrl-Alt-Delete key sequence is disabled'
+    section: 'GNOME Display Manager'
+    description: |
+        The operating system must disable the x86 CtrlAltDelete key sequence if a graphical user interface is installed.
+    remediation: |
+        Configure the system to disable the Ctrl-Alt-Delete sequence when using a graphical user interface by creating or
+        editing the                  /etc/dconf/db/local.d/00-disable-CAD file
+        .               Add the setting to disable the Ctrl-Alt-Delete sequence for the graphical user interface:
+        [org/gnome/settings-daemon/plugins/media-keys]
+        logout=''
+                       Update the dconf settings: # dconf update
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_1.7.13', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.8.1":
+    title: '1.8.1 | Ensure vlock is installed'
+    section: 'Additional Software'
+    description: |
+        The operating system must allow users to directly initiate a session lock for all connection types.
+    remediation: |
+        Install the "vlock" package (if it is not already installed) by running the following command: # apt install vlock
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_1.8.1', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.8.2":
+    title: '1.8.2 | Ensure Endpoint Security for Linux Threat Prevention is installed'
+    section: 'Additional Software'
+    description: |
+        The operating system must deploy Endpoint Security for Linux Threat Prevention ENSLTP.
+    remediation: |
+        The operating system is not compliant with this requirement; however, the severity level can be mitigated to a CAT III
+        if the ENSLTP module is installed and running. Configure the Ubuntu operating system to use ENSLTP. Install the "mfetp"
+        package: # apt-get install mcafeetp
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_1.8.2', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.9.1":
+    title: '1.9.1 | Ensure FIPS mode is enabled'
+    section: 'Federal Information Processing Standards (FIPS) Cryptographic Modules'
+    description: |
+        The operating system must implement NIST FIPSvalidated cryptography to protect classified information and for the
+        following to provision digital signatures, to generate cryptographic hashes, and to protect unclassified information
+        requiring confidentiality and cryptographic protection in accordance with applicable federal laws, Executive Orders,
+        directives, policies, regulations, and standards.
+    remediation: |
+        Configure the system to run in FIPS mode. Add "fips=1" to the kernel parameter during the Ubuntu operating systems
+        install. Impact: Enabling a FIPS mode on a pre-existing system involves a number of modifications to the Ubuntu
+        operating system. Refer to the Ubuntu Server 18.04 FIPS 140-2 security policy document for instructions. Note:
+         A subscription to the "Ubuntu Pro" plan is required in order to obtain the FIPS Kernel cryptographic modules and enable
+        FIPS.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_1.9.1', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.1.5":
+    title: '2.1.5 | Ensure system clocks are synchronize to the authoritative time source when the time difference is greater than one second'
+    section: 'Configure Time Synchronization'
+    description: |
+        The operating system must synchronize internal information system clocks to the authoritative time source when the time
+        difference is greater than one second.
+    remediation: |
+        Configure chrony to synchronize the internal system clocks to the authoritative source when the time difference is
+        greater than one second by doing the following: Edit the "/etc/chrony/chrony.conf" file and add: makestep 1 -1
+         Restart the chrony service: # systemctl restart chrony.service
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_2.1.5', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.1.6":
+    title: '2.1.6 | Ensure system clocks are synchronized with a time server designated for the appropriate DoD network'
+    section: 'Configure Time Synchronization'
+    description: |
+        The operating system must, for networked systems, compare internal information system clocks at least every 24 hours
+        with a server which is synchronized to one of the redundant United States Naval Observatory USNO time servers, or a time
+        server designated for the appropriate DoD network NIPRNet/SIPRNet, and/or the Global Positioning System GPS.
+    remediation: |
+        If the system is not networked, this requirement is Not Applicable. To configure the system clock to compare the system
+        clock at least every 24 hours to the authoritative time source, edit the "/etc/chrony/chrony.conf" file. Add or correct
+        the following lines, by replacing "[source]" in the following line with an authoritative DoD time source: server
+        [source] iburst maxpoll = 17
+         If the "chrony" service was running and the value of "maxpoll" or "server" was updated, the service must be restarted
+        using the following command: # systemctl restart chrony.service
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_2.1.6', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.1.7":
+    title: '2.1.7 | Ensure system timezone is set to UTC or GMT - manual'
+    section: 'Configure Time Synchronization'
+    description: |
+        The Ubuntu operating system must record time stamps for audit records that can be mapped to Coordinated Universal Time
+        UTC or Greenwich Mean Time GMT.
+    remediation: |
+        To configure the system time zone to use UTC or GMT, run the following command, replacing [ZONE] with UTC or GMT: #
+        timedatectl set-timezone [ZONE]
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_2.1.7', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.2.17":
+    title: '2.2.17 | Ensure telnetd is not installed'
+    section: 'Special Purpose Services'
+    description: |
+        The operating system must not have the telnet package installed.
+    remediation: |
+        Remove the telnet package from the Ubuntu operating system by running the following command: # apt-get remove telnetd
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_2.2.17', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.2.19":
+    title: '2.2.19 | Ensure rsh-server is not installed'
+    section: 'Special Purpose Services'
+    description: |
+        The operating system must not have the rshserver package installed.
+    remediation: |
+        Configure the Ubuntu operating system to disable non-essential capabilities by removing the rsh-server package from the
+        system with the following command: # apt-get remove rsh-server
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_2.2.19', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1.2":
+    title: '3.1.2 | Ensure wireless interfaces are disabled - manual'
+    section: 'Configure Network Devices'
+    description: |
+        Wireless networking is used when wired networks are unavailable. Debian contains a wireless tool kit to allow system
+        administrators to configure and use wireless networks.
+    remediation: |
+        Run the following script to disable any wireless interfaces:
+        #!/usr/bin/env bash
+
+        {
+           module_fix()
+           {
+              if ! modprobe -n -v "$l_mname" | grep -P -- '^\h*install \/bin\/(true|false)'; then
+                 echo -e " - setting module: \"$l_mname\" to be un-loadable"
+                 echo -e "install $l_mname /bin/false" >> /etc/modprobe.d/"$l_mname".conf
+              fi
+              if lsmod | grep "$l_mname" > /dev/null 2>&1; then
+                 echo -e " - unloading module \"$l_mname\""
+                 modprobe -r "$l_mname"
+              fi
+              if ! grep -Pq -- "^\h*blacklist\h+$l_mname\b" /etc/modprobe.d/*; then
+                 echo -e " - deny listing \"$l_mname\""
+                 echo -e "blacklist $l_mname" >> /etc/modprobe.d/"$l_mname".conf
+              fi
+           }
+           if [ -n "$(find /sys/class/net/*/ -type d -name wireless)" ]; then
+              l_dname=$(for driverdir in $(find /sys/class/net/*/ -type d -name wireless | xargs -0 dirname); do basename
+        "$(readlink -f "$driverdir"/device/driver/module)";done | sort -u)
+              for l_mname in $l_dname; do
+                 module_fix
+              done
+           fi
+        }
+                       Impact: Many if not all laptop workstations and some desktop workstations will connect via wireless
+        requiring these interfaces be enabled.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_3.1.2', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.3.8":
+    title: '3.3.8 | Ensure tcp syn Cookies is enabled - manual'
+    section: 'Configure Network Kernel Parameters'
+    description: |
+        When              tcpsyncookies
+         is set, the kernel will handle TCP SYN packets normally until the halfopen connection queue is full, at which time, the
+        SYN cookie functionality kicks in. SYN cookies work by not using the SYN queue at all. Instead, the kernel simply
+        replies to the SYN with a SYNACK, but will include a specially crafted TCP sequence number that encodes the source and
+        destination IP address and port number and the time the packet was sent. A legitimate connection would send the ACK
+        packet of the three way handshake with the specially crafted sequence number. This allows the system to verify that it
+        has received a valid response to a SYN cookie and allow the connection, even though there is no corresponding SYN in the
+        queue.
+    remediation: |
+        Set the following parameter in                  /etc/sysctl.conf
+         or a file in                  /etc/sysctl.d/
+         ending in                  .conf
+        :               net.ipv4.tcp_syncookies = 1 Example: # printf '\n%s' "net.ipv4.tcp_syncookies = 1" >>
+        /etc/sysctl.d/60-netipv4_sysctl.conf
+         Run the following command to set the active kernel parameters:
+        # {
+           sysctl -w net.ipv4.ip_forward=0
+           sysctl -w net.ipv4.route.flush=1
+        }
+                       Note:
+         If these settings appear in a conically later file, or later in the same file, these settings will be overwritten
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_3.3.8', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == net.ipv4.tcp_syncookies=1'
+
+  "3.4.1.1":
+    title: '3.4.1.1 | Ensure ufw is installed'
+    section: 'Configure UncomplicatedFirewall'
+    description: |
+        The Uncomplicated Firewall ufw is a frontend for iptables and is particularly wellsuited for hostbased firewalls. ufw
+        provides a framework for managing netfilter, as well as a commandline interface for manipulating the firewall
+    remediation: |
+        Run the following command to install Uncomplicated Firewall (UFW): apt install ufw
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_3.4.1.1', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.4.1.3":
+    title: '3.4.1.3 | Ensure ufw service is enabled - manual'
+    section: 'Configure UncomplicatedFirewall'
+    description: |
+        UncomplicatedFirewall ufw is a frontend for iptables. ufw provides a framework for managing netfilter, as well as a
+        commandline and available graphical user interface for manipulating the firewall. Notes When running ufw enable or
+        starting ufw via its initscript, ufw will flush its chains. This is required so ufw can maintain a consistent state, but
+        it may drop existing connections eg ssh.  ufw does support adding rules before enabling the firewall.
+        Run the following command before running                  ufw enable
+        .                ufw allow proto tcp from any to any port 22
+         The rules will still be flushed, but the ssh port will be open after enabling the firewall. Please note that once ufw
+        is enabled, ufw will not flush the chains when adding or removing rules but will when modifying a rule or changing the
+        default policy
+        By default, ufw will prompt when enabling the firewall while running under ssh. This can be disabled by using
+        ufw force enable
+    remediation: |
+        Run the following command to enable ufw: # ufw enable
+         Impact: Changing firewall settings while connected over network can result in being locked out of the system.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_3.4.1.3', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.4.1.8":
+    title: '3.4.1.8 | Ensure UFW rate-limits impacted network interfaces - manual'
+    section: 'Configure UncomplicatedFirewall'
+    description: |
+        The operating system must configure the uncomplicated firewall to ratelimit impacted network interfaces.
+    remediation: |
+        Configure the application firewall to protect against or limit the effects of DoS attacks by ensuring the Ubuntu
+        operating system is implementing rate-limiting measures on impacted network interfaces. Check all the services listening
+        to the ports with the following command:
+        # ss -l46ut
+
+        Netid State Recv-Q Send-Q Local Address:Port Peer Address:Port Process
+        tcp LISTEN 0 128 [::]:ssh [::]:*
+                         For each service with a port listening to connections, run the following command, replacing "[service]"
+        with the service that needs to be rate limited. # ufw limit [service]
+         Rate-limiting can also be done on an interface. An example of adding a rate-limit on the eth0 interface follows: # ufw
+        limit in on eth0
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_3.4.1.8', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.2.1":
+    title: '4.2.1 | Ensure SSH is installed and active'
+    section: 'Configure SSH Server'
+    description: |
+        The operating system must use SSH to protect the confidentiality and integrity of transmitted information.
+    remediation: |
+        Install the "ssh" meta-package on the system with the following command: # apt install ssh
+         Enable the "ssh" service to start automatically on reboot with the following command: # systemctl enable sshd.service
+         ensure the "ssh" service is running # systemctl start sshd.service
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.2.1', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == active'
+
+  "4.2.7":
+    title: '4.2.7 | Ensure SSH PAM is enabled'
+    section: 'Configure SSH Server'
+    description: |
+        The              UsePAM
+         directive enables the Pluggable Authentication Module PAM interface. If set to              yes
+         this will enable PAM authentication using              ChallengeResponseAuthentication
+         and              PasswordAuthentication
+         directives in addition to PAM account and session module processing for all authentication types.
+    remediation: |
+        Edit the                  /etc/ssh/sshd_config
+         file to set the parameter above any                  Include
+         entries as follows:               UsePAM yes
+         Note:
+         First occurrence of a option takes precedence. If                  Include
+         locations are enabled, used, and order of precedence is understood in your environment, the entry may be created in a
+        file in                  Include
+         location.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.2.7', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*usepam\h+"?yes"?\b'
+
+  "4.2.10":
+    title: '4.2.10 | Ensure SSH PermitEmptyPasswords is disabled'
+    section: 'Configure SSH Server'
+    description: |
+        The              PermitEmptyPasswords
+         parameter specifies if the SSH server allows login to accounts with empty password strings.
+    remediation: |
+        Edit the                  /etc/ssh/sshd_config
+         file to set the parameter above any                  Include
+         entries as follows:               PermitEmptyPasswords no
+         Note:
+         First occurrence of a option takes precedence,                  Match
+         set statements withstanding. If                  Include
+         locations are enabled, used, and order of precedence is understood in your environment, the entry may be created in a
+        file in                  Include
+         location.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.2.10', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*permitemptypasswords\h+\"?no\b'
+
+  "4.2.11":
+    title: '4.2.11 | Ensure SSH PermitUserEnvironment is disabled'
+    section: 'Configure SSH Server'
+    description: |
+        The              PermitUserEnvironment
+         option allows users to present environment options to the SSH daemon.
+    remediation: |
+        Edit the                  /etc/ssh/sshd_config
+         file to set the parameter above any Include entries as follows:               PermitUserEnvironment no
+         Note:
+         First occurrence of a option takes precedence. If                  Include
+         locations are enabled, used, and order of precedence is understood in your environment, the entry may be created in a
+        file in                  Include
+         location.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.2.11', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*permituserenvironment\h+"?no"?\b'
+
+  "4.2.13":
+    title: '4.2.13 | Ensure SSH X11 forwarding is disabled'
+    section: 'Configure SSH Server'
+    description: |
+        The              X11Forwarding
+         parameter provides the ability to tunnel X11 traffic through the connection to enable remote graphic connections.
+    remediation: |
+        Edit the                  /etc/ssh/sshd_config
+         file to set the parameter above any                  Include
+         entries as follows:               X11Forwarding no
+         Note:
+         First occurrence of a option takes precedence,                  Match
+         set statements withstanding. If                  Include
+         locations are enabled, used, and order of precedence is understood in your environment, the entry may be created in a
+        file in                  Include
+         location.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.2.13', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*x11forwarding\h+"?no"?\b'
+
+  "4.2.24":
+    title: '4.2.24 | Ensure network connections associated with SSH traffic are terminated after a period of inactivity'
+    section: 'Configure SSH Server'
+    description: |
+        The operating system must immediately terminate all network connections associated with SSH traffic after a period of
+        inactivity.
+    remediation: |
+        Configure the Ubuntu operating system to automatically terminate inactive SSH sessions after a period of inactivity.
+        Modify or append the following line in the "/etc/ssh/sshd_config" file, replacing "[Count]" with a value of 1:
+        ClientAliveCountMax 1
+         Restart the SSH daemon for the changes to take effect: # systemctl restart sshd.service
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.2.24', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.2.25":
+    title: '4.2.25 | Ensure network connections associated with SSH traffic  are terminated at the end of the session or 10 minutes of inactivity'
+    section: 'Configure SSH Server'
+    description: |
+        The operating system must immediately terminate all network connections associated with SSH traffic at the end of the
+        session or after 10 minutes of inactivity.
+    remediation: |
+        Configure the Ubuntu operating system to automatically terminate all network connections associated with SSH traffic at
+        the end of a session or after a 10-minute period of inactivity. Modify or append the following line in the
+        "/etc/ssh/sshd_config" file replacing "[Interval]" with a value of "600" or less: ClientAliveInterval 600
+         Restart the SSH daemon for the changes to take effect: # systemctl restart sshd.service
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.2.25', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.2.26":
+    title: '4.2.26 | Ensure Standard Mandatory DoD Notice and Consent Banner displayed before granting any local or remote connection to the system'
+    section: 'Configure SSH Server'
+    description: |
+        The operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting any local or
+        remote connection to the system.
+    remediation: |
+        Set the parameter Banner in "/etc/ssh/sshd_config" to point to the "/etc/issue.net" file:
+        # sed -i '/^Banner/d' /etc/ssh/sshd_config
+        # sed -i '$aBanner /etc/issue.net' /etc/ssh/sshd_config
+                       Either create the file containing the banner or replace the text in the file with the Standard Mandatory
+        DoD Notice and Consent Banner. The DoD required text is:
+        "You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.
+
+        By using this IS (which includes any device attached to this IS), you consent to the following conditions:
+
+        -The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to,
+        penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE),
+        and counterintelligence (CI) investigations.
+
+        -At any time, the USG may inspect and seize data stored on this IS.
+
+        -Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and
+        search, and may be disclosed or used for any USG-authorized purpose.
+
+        -This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your
+        personal benefit or privacy.
+
+        -Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or
+        monitoring of the content of privileged communications, or work product, related to personal representation or services
+        by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and
+        confidential. See User Agreement for details."
+                       Restart the SSH daemon for the changes to take effect and then signal the SSH server to reload the
+        configuration file: # systemctl -s SIGHUP kill sshd
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.2.26', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.2.27":
+    title: '4.2.27 | Ensure only FIPS validated MAC algorithms are used'
+    section: 'Configure SSH Server'
+    description: |
+        The Ubuntu operating system must configure the SSH daemon to use Message Authentication Codes MACs employing FIPS 1402
+        approved cryptographic hashes to prevent the unauthorized disclosure of information and/or detect changes to information
+        during transmission.
+    remediation: |
+        Configure the Ubuntu operating system to allow the SSH daemon to only use MACs that employ FIPS 140-2 approved ciphers.
+        Add the following line (or modify the line to have the required value) to the "/etc/ssh/sshd_config" file (this file may
+        be named differently or be in a different location if using a version of SSH that is provided by a third-party vendor):
+        MACs hmac-sha2-512,hmac-sha2-256
+         Restart the SSH daemon for the changes to take effect: # systemctl reload sshd.service
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.2.27', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.2.28":
+    title: '4.2.28 | Ensure only FIPS validated Ciphers are used'
+    section: 'Configure SSH Server'
+    description: |
+        The operating system must configure the SSH daemon to use FIPS 1402 approved ciphers to prevent the unauthorized
+        disclosure of information and/or detect changes to information during transmission.
+    remediation: |
+        Configure the Ubuntu operating system to allow the SSH daemon to only implement FIPS-approved algorithms. Add the
+        following line (or modify the line to have the required value) to the "/etc/ssh/sshd_config" file (this file may be
+        named differently or be in a different location if using a version of SSH that is provided by a third-party vendor):
+        Ciphers aes256-ctr,aes192-ctr,aes128-ctr
+         Restart the SSH daemon for the changes to take effect: # systemctl restart sshd.service
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.2.28', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.2.29":
+    title: '4.2.29 | Ensure only FIPS validated Key Exchange algorithms are used'
+    section: 'Configure SSH Server'
+    description: |
+        Key exchange is any method in cryptography by which cryptographic keys are exchanged between two parties, allowing use
+        of a cryptographic algorithm. If the sender and receiver wish to exchange encrypted messages, each must be equipped to
+        encrypt messages to be sent and decrypt messages received Notes Kex algorithms have a higher preference the earlier they
+        appear in the list Some organizations may have stricter requirements for approved Key exchange algorithms Ensure that
+        Key exchange algorithms used are in compliance with site policy
+        The only Key Exchange Algorithms currently FIPS 1402 approved are
+                       ecdhsha2nistp256 ecdhsha2nistp384 ecdhsha2nistp521 diffiehellmangroupexchangesha256
+    remediation: |
+        Edit the /etc/ssh/sshd_config file add/modify the KexAlgorithms line to contain a comma separated list of FIPS validated
+        key exchange algorithms above any                  Include
+         entries:               KexAlgorithms ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-
+        exchange-sha256
+         Note:
+         First occurrence of a option takes precedence. If Include locations are enabled, used, and order of precedence is
+        understood in your environment, the entry may be created in a file in Include location.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.2.29', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == (?i)^\h*kexalgorithms\h+([^#\n\r]+,)?(curve25519-sha256|curve25519-sha256@libssh.org|sntrup761x25519-sha512@openssh.com|diffie-hellman-group16-sha512|diffie-hellman-group18-sha512|diffie-hellman-group14-sha256|diffie-hellman-group1-sha1|diffie-hellman-group14-sha1|diffie-hellman-group-exchange-sha1)\b'
+
+  "4.2.30":
+    title: '4.2.30 | Ensure X11UseLocalhost is enabled'
+    section: 'Configure SSH Server'
+    description: |
+        The operating system SSH daemon must prevent remote hosts from connecting to the proxy display.
+    remediation: |
+        Configure the SSH daemon to prevent remote hosts from connecting to the proxy display. Edit the "/etc/ssh/sshd_config"
+        file to uncomment or add the line for the "X11UseLocalhost" keyword and set its value to "yes" (this file may be named
+        differently or be in a different location if using a version of SSH that is provided by a third-party vendor):
+        X11UseLocalhost yes
+         Restart the SSH daemon for the changes to take effect: # systemctl restart sshd.service
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.2.30', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.3.3":
+    title: '4.3.3 | Ensure sudo log file exists'
+    section: 'Configure privilege escalation'
+    description: |
+        sudo can use a custom log file
+    remediation: |
+        Edit the file                  /etc/sudoers
+         or a file in                  /etc/sudoers.d/
+         with                  visudo
+         or                  visudo -f <PATH TO FILE>
+         and add the following line:               Example: Defaults logfile="/var/log/sudo.log"
+         Note:
+        sudo will read each file in                    /etc/sudoers.d
+        , skipping file names that end in                    ~
+         or contain a                    .
+         character to avoid causing problems with package manager or editor temporary/backup files.
+        Files are parsed in sorted lexical order. That is,                    /etc/sudoers.d/01_first
+         will be parsed before                    /etc/sudoers.d/10_second
+        .
+        Be aware that because the sorting is lexical, not numeric,                    /etc/sudoers.d/1_whoops
+         would be loaded after                    /etc/sudoers.d/10_second
+        .                 Using a consistent number of leading zeroes in the file names can be used to avoid such problems.
+        Impact: WARNING:
+         Editing the                    sudo
+         configuration incorrectly can cause                    sudo
+         to stop functioning. Always use                    visudo
+         to modify                    sudo
+         configuration files.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.3.3', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.3.4":
+    title: '4.3.4 | Ensure only users who need access to security functions are part of sudo group - manual'
+    section: 'Configure privilege escalation'
+    description: |
+        The operating system must ensure only users who need access to security functions are part of sudo group.
+    remediation: |
+        Configure the sudo group with only members requiring access to security functions. To remove a user from the sudo group,
+        run: # sudo gpasswd -d <username> sudo
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.3.4', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.3.5":
+    title: '4.3.5 | Ensure users must provide password for privilege escalation'
+    section: 'Configure privilege escalation'
+    description: |
+        The operating system must be configured so that users must provide a password for privilege escalation.
+    remediation: |
+        Based on the outcome of the audit procedure, use                  visudo -f <PATH TO FILE>
+         to edit the relevant sudoers file.
+        Remove any line with occurrences of                  NOPASSWD
+         tags in the file.               Impact: This will prevent automated processes from being able to elevate privileges.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.3.5', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.3.6":
+    title: '4.3.6 | Ensure re-authentication for privilege escalation is not disabled globally'
+    section: 'Configure privilege escalation'
+    description: |
+        The operating system must be configured so that users must reauthenticate for privilege escalation.
+    remediation: |
+        Configure the operating system to require users to reauthenticate for privilege escalation.
+        Based on the outcome of the audit procedure, use                  visudo -f <PATH TO FILE>
+         to edit the relevant sudoers file.
+        Remove any occurrences of                  !authenticate
+         tags in the file(s).
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.3.6', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.4.1.1":
+    title: '4.4.1.1 | Ensure new and changed passwords use pwquality'
+    section: 'Configure pam_pwquality module'
+    description: |
+        The operating system must be configured so that when passwords are changed or new passwords are established, pwquality
+        must be used.
+    remediation: |
+        Configure the operating system to use "pwquality" to enforce password complexity rules. Install the "pam_pwquality"
+        package by using the following command: # apt-get install libpam-pwquality -y
+         Add the following line to "/etc/security/pwquality.conf" (or modify the line to have the required value): enforcing = 1
+         Add the following line to "/etc/pam.d/common-password" (or modify the line to have the required value): password
+        requisite pam_pwquality.so retry=3
+         Note:
+         The value of "retry" should be between "1" and "3".
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.4.1.1', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.4.1.5":
+    title: '4.4.1.5 | Ensure preventing the use of dictionary words for passwords is configured'
+    section: 'Configure pam_pwquality module'
+    description: |
+        The                pwquality
+                              dictcheck
+         option sets whether to check for the words from the                cracklib
+         dictionary.
+    remediation: |
+        Edit or add the following line in                    /etc/security/pwquality.conf
+         to a value of                    1
+        :                 dictcheck = 1
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.4.1.5', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.4.1.6":
+    title: '4.4.1.6 | Ensure password includes at least one upper-case character'
+    section: 'Configure pam_pwquality module'
+    description: |
+        The operating system must enforce password complexity by requiring that at least one uppercase character be used.
+    remediation: |
+        Add or update the "/etc/security/pwquality.conf" file to contain the "ucredit" parameter: ucredit=-1
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.4.1.6', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.4.1.7":
+    title: '4.4.1.7 | Ensure password includes at least one lower-case character'
+    section: 'Configure pam_pwquality module'
+    description: |
+        The operating system must enforce password complexity by requiring that at least one lowercase character be used.
+    remediation: |
+        Add or update the "/etc/security/pwquality.conf" file to contain the "lcredit" parameter: lcredit=-1
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.4.1.7', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.4.1.8":
+    title: '4.4.1.8 | Ensure password includes at least one numeric character'
+    section: 'Configure pam_pwquality module'
+    description: |
+        The operating system must enforce password complexity by requiring that at least one numeric character be used.
+    remediation: |
+        Configure the Ubuntu operating system to enforce password complexity by requiring that at least one numeric character be
+        used. Add or update the "/etc/security/pwquality.conf" file to contain the "dcredit" parameter: dcredit=-1
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.4.1.8', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.4.1.9":
+    title: '4.4.1.9 | Ensure password includes at least one special character'
+    section: 'Configure pam_pwquality module'
+    description: |
+        The operating system must enforce password complexity by requiring that at least one special character be used.
+    remediation: |
+        Configure the Ubuntu operating system to enforce password complexity by requiring that at least one special character be
+        used. Add or update the following line in the "/etc/security/pwquality.conf" file to include the "ocredit=-1" parameter:
+        ocredit=-1
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.4.1.9', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.4.1.10":
+    title: '4.4.1.10 | Ensure change of at least 8 characters when passwords are changed'
+    section: 'Configure pam_pwquality module'
+    description: |
+        The operating system must require the change of at least 8 characters when passwords are changed.
+    remediation: |
+        Configure the Ubuntu operating system to require the change of at least eight characters when passwords are changed. Add
+        or update the "/etc/security/pwquality.conf" file to include the "difok=8" parameter: difok=8
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.4.1.10', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.4.1.11":
+    title: '4.4.1.11 | Ensure password is at least 15 characters'
+    section: 'Configure pam_pwquality module'
+    description: |
+        The operating system must enforce a minimum 15character password length.
+    remediation: |
+        Configure the Ubuntu operating system to enforce a minimum 15-character password length. Add or modify the "minlen"
+        parameter value to the "/etc/security/pwquality.conf" file: minlen=15
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.4.1.11', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.4.2.1":
+    title: '4.4.2.1 | Ensure password reuse is limited'
+    section: 'Configure pam_pwhistory module'
+    description: |
+        The                /etc/security/opasswd
+         file stores the users old passwords and can be checked to ensure that users are not recycling recent passwords.
+    remediation: |
+        NOTE:
+         Pay special attention to the configuration. Incorrect configuration can cause system lock outs or unexpected behavior.
+        This is example configuration. You configuration may differ based on previous changes to the files.
+        Edit the                    /etc/pam.d/common-password
+         file to include:                 password     required       pam_pwhistory.so   remember=5 use_authtok use_authtok
+         on the                      pam_unix.so
+         line                   Example:
+        password     requisite                        pam_pwquality.so
+        password     required                         pam_pwhistory.so   remember=5  use_authtok
+        password     [success=1 default=ignore]       pam_unix.so        obscure sha512  use_authtok
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.4.2.1', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.4.3.2":
+    title: '4.4.3.2 | Ensure lockout for three or more failed password attempts is configured'
+    section: 'Configure pam_faillock module'
+    description: |
+        Lock out users after                n
+         unsuccessful consecutive login attempts. The first sets of changes are made to the common PAM configuration files. The
+        second set of changes are applied to the program specific PAM configuration file. The second set of changes must be
+        applied to each program that will lock out users. Check the documentation for each secondary program for instructions on
+        how to configure them to work with PAM.
+        All configuration of                faillock
+         is located in                /etc/security/faillock.conf
+         and well commented.             audit
+          Will log the user name into the system log if the user is not found.               silent
+          Dont print informative messages to the user. Please note that when this option is not used there will be difference in
+        the authentication behavior for users which exist on the system and nonexisting users.               deny
+           Deny access if the number of consecutive authentication failures for this user during the recent interval exceeds n
+        tries.               failinterval
+          The length of the interval, in seconds, during which the consecutive authentication failures must happen for the user
+        account to be locked out               unlocktime
+          The access will be reenabled after n seconds after the lock out. The value                  0
+         has the same meaning as value                  never
+          the access will not be reenabled without resetting the faillock entries by the                  faillock
+         command.               Set the lockout number and unlock time in accordance with local site policy.
+    remediation: |
+        Note:
+         Pay special attention to the configuration. Incorrect configuration can cause system lock outs. This is example
+        configuration. You configuration may differ based on previous changes to the files.                 Common auth
+        Edit                    /etc/pam.d/common-auth
+         and ensure that                    faillock
+         is configured.                 Note:
+         It is critical to understand each line and the relevant arguments for successful implementation. The order of these
+        entries is very specific. The                    pam_faillock.so
+         lines surround the                    pam_unix.so
+         line.                     The comment "Added to enable faillock" is shown to highlight the additional lines and their
+        order in the file.
+
+        # here are the per-package modules (the "Primary" block)
+        auth    required                        pam_faillock.so preauth # Added to enable faillock
+        auth    [success=1 default=ignore]      pam_unix.so
+        auth    [default=die]                   pam_faillock.so authfail # Added to enable faillock
+        auth    sufficient                      pam_faillock.so authsucc # Added to enable faillock
+        # here's the fallback if no module succeeds
+        auth    requisite                       pam_deny.so
+        # prime the stack with a positive return value if there isn't one already;
+        # this avoids us returning an error just because nothing sets a success code
+        # since the modules above will each just jump around
+        auth    required                        pam_permit.so
+                         Common account
+        Edit                    /etc/pam.d/common-account
+         and                    ensure that the following stanza is at the end of the file
+        .                 account     required      pam_faillock.so
+         Faillock configuration
+        Edit                    /etc/security/faillock.conf
+         and edit or add the following lines:
+        audit
+        silent
+        deny = 3
+        fail_interval = 900
+        unlock_time = 0
+                         Impact: It is critical to test and validate any PAM changes before deploying. Any misconfiguration
+        could cause the system to be inaccessible.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.4.3.2', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.4.4.2":
+    title: '4.4.4.2 | Ensure pam modules do not include nullok'
+    section: 'Configure pam_unix module'
+    description: |
+        The operating system must not allow accounts configured with blank or null passwords
+    remediation: |
+        Edit the                    /etc/pam.d/common-password
+         file and ensure any occurrence of                    nullok
+         is removed from the pam modules listed:
+        Example                      /etc/pam.d/common-password
+         file
+        password    requisite                       pam_pwquality.so
+        password    requisite                       pam_pwhistory.so use_authtok
+        password    [success=1 default=ignore]      pam_unix.so obscure  sha512  use_authtok
+        password    requisite                       pam_deny.so
+        password    required                        pam_permit.so
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.4.4.2', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.4.5.1":
+    title: '4.4.5.1 | Ensure PAM prohibits the use of cached authentications after one day'
+    section: 'Configure System Security Services'
+    description: |
+        The operating system must be configured such that Pluggable Authentication Module PAM prohibits the use of cached
+        authentications after one day.
+    remediation: |
+        Configure PAM to prohibit the use of cached authentications after one day. Add or change the following line in
+        "/etc/sssd/sssd.conf" just below the line "[pam]": offline_credentials_expiration = 1
+         Note:
+         It is valid for this configuration to be in a file with a name that ends with ".conf" and does not begin with a "." in
+        the "/etc/sssd/conf.d/" directory instead of the "/etc/sssd/sssd.conf" file.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.4.5.1', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.4.6.1":
+    title: '4.4.6.1 | Ensure the libpam-pkcs11 package is installed'
+    section: 'Configure pam_pkcs11 module'
+    description: |
+        The operating system must implement multifactor authentication for remote access to privileged accounts in such a way
+        that one of the factors is provided by a device separate from the system gaining access.
+    remediation: |
+        Configure the Ubuntu operating system to implement multifactor authentication by installing the required packages.
+        Install the "libpam-pkcs11" package on the system with the following command: # apt install libpam-pkcs11
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.4.6.1', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.4.6.2":
+    title: '4.4.6.2 | Ensure the opensc-pcks11 is installed'
+    section: 'Configure pam_pkcs11 module'
+    description: |
+        The operating system must accept Personal Identity Verification PIV credentials.
+    remediation: |
+        Configure the Ubuntu operating system to accept PIV credentials. Install the "opensc-pkcs11" package using the following
+        command: # apt-get install opensc-pkcs11
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.4.6.2', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.4.6.3":
+    title: '4.4.6.3 | Ensure authenticated identity is mapped to the user or group account for PKI-based authentication'
+    section: 'Configure pam_pkcs11 module'
+    description: |
+        The operating system must map the authenticated identity to the user or group account for PKIbased authentication.
+    remediation: |
+        Set "use_mappers=pwent" in "/etc/pam_pkcs11/pam_pkcs11.conf" or, if there is already a comma-separated list of mappers,
+        add it to the list, separated by comma, and before the null mapper. If the system is missing an "/etc/pam_pkcs11/"
+        directory and an "/etc/pam_pkcs11/pam_pkcs11.conf", find an example to copy into place and modify accordingly at
+        "/usr/share/doc/libpam-pkcs11/examples/pam_pkcs11.conf.example.gz".
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.4.6.3', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.4.6.4":
+    title: '4.4.6.4 | Ensure smart card logins for multifactor authentication for local and network access'
+    section: 'Configure pam_pkcs11 module'
+    description: |
+        The operating system must implement smart card logins for multifactor authentication for local and network access to
+        privileged and nonprivileged accounts.
+    remediation: |
+        Configure the Ubuntu operating system to use multifactor authentication for network access to accounts. Add or update
+        "pam_pkcs11.so" in "/etc/pam.d/common-auth" to match the following line: auth [success=2 default=ignore] pam_pkcs11.so
+         Set the sshd option "PubkeyAuthentication yes" in the "/etc/ssh/sshd_config" file.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.4.6.4', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.4.6.5":
+    title: '4.4.6.5 | Ensure certificates are validated by constructing a certification path to an accepted trust anchor - manual'
+    section: 'Configure pam_pkcs11 module'
+    description: |
+        The Ubuntu operating system, for PKIbased authentication, must validate certificates by constructing a certification
+        path which includes status information to an accepted trust anchor.
+    remediation: |
+        Configure the Ubuntu operating system, for PKI-based authentication, to validate certificates by constructing a
+        certification path to an accepted trust anchor. Determine which pkcs11 module is being used via the "use_pkcs11_module"
+        in "/etc/pam_pkcs11/pam_pkcs11.conf" and ensure "ca" is enabled in "cert_policy". Add or update the "cert_policy" to
+        ensure "ca" is enabled: cert_policy = ca,signature,ocsp_on; If the system is missing an "/etc/pam_pkcs11/" directory and
+        an "/etc/pam_pkcs11/pam_pkcs11.conf", find an example to copy into place and modify accordingly at
+        "/usr/share/doc/libpam-pkcs11/examples/pam_pkcs11.conf.example.gz".
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.4.6.5', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.4.6.6":
+    title: '4.4.6.6 | Ensure Personal Identity Verification credentials are electronically verified - manual'
+    section: 'Configure pam_pkcs11 module'
+    description: |
+        The operating system must electronically verify Personal Identity Verification PIV credentials.
+    remediation: |
+        Configure the Ubuntu operating system to do certificate status checking for multifactor authentication.
+        Modify all of the                    cert_policy
+         lines in                    /etc/pam_pkcs11/pam_pkcs11.conf
+         to include                    ocsp_on
+        .
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.4.6.6', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.4.6.7":
+    title: '4.4.6.7 | Ensure PKI local cache of revocation data - manual'
+    section: 'Configure pam_pkcs11 module'
+    description: |
+        The operating system for PKIbased authentication, must implement a local cache of revocation data in case of the
+        inability to access revocation information via the network.
+    remediation: |
+        Configure the Ubuntu operating system, for PKI-based authentication, to use local revocation data when unable to access
+        the network to obtain it remotely.
+        Add or update the "cert_policy" option in                    /etc/pam/_pkcs11/pam_pkcs11.conf
+         to include                    crl_auto
+         or                    crl_offline
+        .                 cert_policy = ca,signature,ocsp_on, crl_auto;
+         If the system is missing an "/etc/pam_pkcs11/" directory and an "/etc/pam_pkcs11/pam_pkcs11.conf", find an example to
+        copy into place and modify accordingly at "/usr/share/doc/libpam-pkcs11/examples/pam_pkcs11.conf.example.gz".
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.4.6.7', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.4.7.1":
+    title: '4.4.7.1 | Ensure last successful account logon is displayed upon logon'
+    section: 'Configure pam_lastlog module'
+    description: |
+        The operating system must display the date and time of the last successful account logon upon logon
+    remediation: |
+        Configure the Ubuntu operating system to provide users with feedback on when account accesses last occurred by setting
+        the required configuration options in "/etc/pam.d/login". Add the following line to the top of "/etc/pam.d/login":
+        session required pam_lastlog.so showfailed
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.4.7.1', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.4.8.1":
+    title: '4.4.8.1 | Ensure login delay after failed logon attempt'
+    section: 'Configure pam_faildelay'
+    description: |
+        The operating system must enforce a delay of at least 4 seconds between logon prompts following a failed logon attempt.
+    remediation: |
+        Configure the Ubuntu operating system to enforce a delay of at least 4 seconds between logon prompts following a failed
+        logon attempt.
+        Edit the file "/etc/pam.d/common-auth" and set the parameter                    pam_faildelay
+         to a value of                    4000000
+         or greater:                 auth required pam_faildelay.so delay=4000000
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.4.8.1', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.5.1.1":
+    title: '4.5.1.1 | Ensure minimum days between password changes is  configured'
+    section: 'Set Shadow Password Suite Parameters'
+    description: |
+        The                PASSMINDAYS
+         parameter in                /etc/login.defs
+         allows an administrator to prevent users from changing their password until a minimum number of days have passed since
+        the last time the user changed their password. It is recommended that                PASSMINDAYS
+         parameter be set to 1 or more days.
+    remediation: |
+        Set the                    PASS_MIN_DAYS
+          parameter to 1 in                    /etc/login.defs
+        :                 PASS_MIN_DAYS 1
+         Modify user parameters for all users with a password set to match: # chage --mindays 1 <user>
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.5.1.1', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "4.5.1.4":
+    title: '4.5.1.4 | Ensure inactive password lock is 30 days or less'
+    section: 'Set Shadow Password Suite Parameters'
+    description: |
+        User accounts that have been inactive for over a given period of time can be automatically disabled. It is recommended
+        that accounts that are inactive for 30 days after password expiration be disabled.
+    remediation: |
+        Run the following command to set the default password inactivity period to 30 days: # useradd -D -f 30
+         Modify user parameters for all users with a password set to match: # chage --inactive 30 <user>
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.5.1.4', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "4.5.1.6":
+    title: '4.5.1.6 | Ensure ENCRYPT METHOD is SHA512'
+    section: 'Set Shadow Password Suite Parameters'
+    description: |
+        The operating system must encrypt all stored passwords with a FIPS 1402 approved cryptographic hashing algorithm.
+    remediation: |
+        Configure the Ubuntu operating system to encrypt all stored passwords. Edit/modify the following line in the
+        "/etc/login.defs" file and set "ENCRYPT_METHOD" to SHA512: ENCRYPT_METHOD SHA512
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.5.1.6', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.5.1.7":
+    title: '4.5.1.7 | Ensure temporary accounts expiration time of 72 hours or less - manual'
+    section: 'Set Shadow Password Suite Parameters'
+    description: |
+        The operating system must provision temporary user accounts with an expiration time of 72 hours or less.
+    remediation: |
+        If a temporary account must be created, configure the system to terminate the account after a 72-hour time period with
+        the following command to set an expiration date on it. Substitute "system_account_name" with the account to be created.
+        # chage -E $(date -d "+3 days" +%F) system_account_name
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.5.1.7', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.5.1.8":
+    title: '4.5.1.8 | Ensure root account is locked - manual'
+    section: 'Set Shadow Password Suite Parameters'
+    description: |
+        The operating system must prevent direct login into the root account.
+    remediation: |
+        Configure the Ubuntu operating system to prevent direct logins to the root account by performing the following
+        operations: # passwd -l root
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.5.1.8', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.5.1.9":
+    title: '4.5.1.9 | Ensure password expiration is 60 days or less'
+    section: 'Set Shadow Password Suite Parameters'
+    description: |
+        The                PASSMAXDAYS
+         parameter in                /etc/login.defs
+         allows an administrator to force passwords to expire once they reach a defined age.
+    remediation: |
+        Set the                    PASS_MAX_DAYS
+         parameter to conform to site policy in                    /etc/login.defs
+         :                 PASS_MAX_DAYS 60
+         Modify user parameters for all users with a password set to match: # chage --maxdays 60 <user>
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.5.1.9', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "4.5.1.10":
+    title: '4.5.1.10 | Ensure  emergency accounts are removed or disabled after 72 hours - manual'
+    section: 'Set Shadow Password Suite Parameters'
+    description: |
+        The operating system must automatically remove or disable emergency accounts after 72 hours.
+    remediation: |
+        If an emergency account must be created, configure the system to terminate the account after a 72-hour time period with
+        the following command to set an expiration date on it. Substitute "account_name" with the account to be created. # chage
+        -E $(date -d "+3 days" +%F) account_name
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.5.1.10', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.5.1.11":
+    title: '4.5.1.11 | Ensure immediate change to a permanent password - manual'
+    section: 'Set Shadow Password Suite Parameters'
+    description: |
+        The operating system must allow the use of a temporary password for system logons with an immediate change to a
+        permanent password.
+    remediation: |
+        Create a policy that ensures when a user is created, it is created using a method that forces a user to change their
+        password upon their next login. Below are two examples of how to create a user account that requires the user to change
+        their password upon their next login. $ sudo chage -d 0 [UserName]
+         OR $ sudo passwd -e [UserName]
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.5.1.11', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.5.6":
+    title: '4.5.6 | Ensure default user umask is 077 or more restrictive'
+    section: 'User Accounts and Environment'
+    description: |
+        The operating system must define default permissions for all authenticated users in such a way that the user can only
+        read and modify their own files.
+    remediation: |
+        Configure the operating system to define default permissions for all authenticated users in such a way that the user can
+        only read and modify their own files.
+        Add or edit the line for the                  UMASK
+         parameter in                  /etc/login.defs
+         file to                  077
+        :               Add, uncomment or update the following line: UMASK 077
+         Impact:
+        Setting                    USERGROUPS_ENAB no
+         in                    /etc/login.defs
+         may change the expected behavior of                    useradd
+         and                    userdel
+        .
+        Setting                    USERGROUPS_ENAB yes
+         in                    /etc/login.defs
+                                 userdel
+         will remove the user's group if it contains no more members                   useradd
+         will create by default a group with the name of the user.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.5.6', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.5.8":
+    title: '4.5.8 | Ensure default user shell timeout is 600 seconds or less'
+    section: 'User Accounts and Environment'
+    description: |
+        TMOUT
+         is an environmental setting that determines the timeout of a shell in seconds.
+        TMOUT               n
+          Sets the shell timeout to                n
+         seconds.  A setting of                TMOUT0
+         disables timeout.             readonly TMOUT Sets the TMOUT environmental variable as readonly, preventing unwanted
+        modification during runtime. export TMOUT  exports the TMOUT variable System Wide Shell Configuration Files /etc/profile
+          used to set system wide environmental variables on users shells. The variables are sometimes the same ones that are in
+        the                .bashprofile
+        , however this file is used to set an initial PATH or PS1 for all shell users of the system.
+        is only executed for interactive                  login
+         shells, or shells executed with the login parameter.
+                           /etc/profile.d
+                         /etc/profile
+         will execute the scripts within                /etc/profile.d/.sh
+        . It is recommended to place your configuration in a shell script within                /etc/profile.d
+         to set your own system wide environmental variables.             /etc/bash.bashrc
+          System wide version of                bash.bashrc
+        .                etc/bash.bashrc
+         also invokes /etc/profile.d/.sh if                nonlogin
+         shell, but redirects output to                /dev/null
+         if                noninteractive.
+
+        Is only executed for                  interactive
+         shells or if                  BASHENV
+         is set to                  /etc/bash.bashrc
+        .
+    remediation: |
+        Review                  /etc/bash.bashrc
+        ,                  /etc/profile
+        , and all files ending in                  *.sh
+         in the                  /etc/profile.d/
+         directory and remove or edit all                  TMOUT=_n_
+         entries to follow local site policy.                   TMOUT
+         should not exceed 900 or be equal to                  0
+        .
+        Configure                  TMOUT
+         in                  one
+         of the following files:
+        A file in the                    /etc/profile.d/
+         directory ending in                    .sh
+                                 /etc/profile /etc/bash.bashrc TMOUT
+         configuration examples:                 As multiple lines:
+        TMOUT=600
+        readonly TMOUT
+        export TMOUT
+                       As a single line: readonly TMOUT=600 ; export TMOUT
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.5.8', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.6":
+    title: '4.6 | Ensure etcsslcerts only contains certificate files whose sha256 fingerprint match the fingerprint of DoD PKI-established certificate authorities - manual'
+    section: 'Access, Authentication and Authorization'
+    description: |
+        The operating system must only allow the use of DoD PKIestablished certificate authorities for verification of the
+        establishment of protected sessions.
+    remediation: |
+        Configure the Ubuntu operating system to only allow the use of DoD PKI-established certificate authorities for
+        verification of the establishment of protected sessions. Edit the "/etc/ca-certificates.conf" file, adding the character
+        "!" to the beginning of all uncommented lines that do not start with the "!" character with the following command: # sed
+        -iE 's/^([^!#]+)/!\1/' /etc/ca-certificates.conf
+         Add at least one DoD certificate authority to the "/usr/local/share/ca-certificates" directory in the PEM format.
+        Update the "/etc/ssl/certs" directory with the following command: # update-ca-certificates
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_4.6', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.1.2.1":
+    title: '5.1.2.1 | Ensure rsyslog is installed'
+    section: 'Configure rsyslog'
+    description: |
+        The                rsyslog
+         software is a recommended replacement to the original                syslogd
+         daemon which provide improvements over                syslogd
+        , such as connectionoriented i.e. TCP transmission of logs, the option to log to database formats, and the encryption of
+        log data en route to a central logging server.
+    remediation: |
+        Install rsyslog: # apt install rsyslog
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.1.2.1', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.1.2.7":
+    title: '5.1.2.7 | Ensure remote access methods are monitored'
+    section: 'Configure rsyslog'
+    description: |
+        The operating system must monitor remote access methods
+    remediation: |
+        Configure the Ubuntu operating system to monitor all remote access methods by adding the following lines to the
+        "/etc/rsyslog.d/50-default.conf" file:
+        auth.*,authpriv.* /var/log/secure
+        daemon.notice /var/log/messages
+                         For the changes to take effect, restart the "rsyslog" service with the following command: # systemctl
+        restart rsyslog.service
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.1.2.7', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.1.3.1":
+    title: '5.1.3.1 | Ensure varlog is owned by root'
+    section: 'Configure logfile access'
+    description: |
+        The operating system must configure the /var/log directory to be owned by root.
+    remediation: |
+        Configure the Ubuntu operating system to have root own the "/var/log" directory by running the following command: #
+        chown root /var/log
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.1.3.1', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.1.3.2":
+    title: '5.1.3.2 | Ensure varlog is group-owned by syslog - manual'
+    section: 'Configure logfile access'
+    description: |
+        The operating system must configure the /var/log directory to be groupowned by syslog.
+    remediation: |
+        Configure the Ubuntu operating system to have syslog group-own the "/var/log" directory by running the following
+        command: # chgrp syslog /var/log
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.1.3.2', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.1.3.3":
+    title: '5.1.3.3 | Ensure varlog is mode 0755 or more restrictive'
+    section: 'Configure logfile access'
+    description: |
+        Log files stored in                /var/log/
+         contain logged information from many services on the system, or on log hosts others as well.
+    remediation: |
+        Run the following command to remove additional assess on                    /var/log/
+        :                 chmod go-w /var/log/
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.1.3.3', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.1.3.4":
+    title: '5.1.3.4 | Ensure all logfiles have appropriate access configured - manual'
+    section: 'Configure logfile access'
+    description: |
+        Log files stored in                /var/log/
+         contain logged information from many services on the system and potentially from other logged hosts as well.
+    remediation: |
+        Run the following script to update permissions and ownership on files in                    /var/log
+        .                 Although the script is not destructive, ensure that the output is captured in the event that the
+        remediation causes issues.
+        #!/usr/bin/env bash
+
+        {
+           l_op2="" l_output2=""
+           l_uidmin="$(awk '/^\s*UID_MIN/{print $2}' /etc/login.defs)"
+           file_test_fix()
+           {
+              l_op2=""
+              l_fuser="root"
+              l_fgroup="root"
+              if [ $(( $l_mode & $perm_mask )) -gt 0 ]; then
+                 l_op2="$l_op2\n  - Mode: \"$l_mode\" should be \"$maxperm\" or more restrictive\n   - Removing excess
+        permissions"
+                 chmod "$l_rperms" "$l_fname"
+              fi
+              if [[ ! "$l_user" =~ $l_auser ]]; then
+                 l_op2="$l_op2\n  - Owned by: \"$l_user\" and should be owned by \"${l_auser//|/ or }\"\n   - Changing ownership
+        to: \"$l_fuser\""
+                 chown "$l_fuser" "$l_fname"
+              fi
+              if [[ ! "$l_group" =~ $l_agroup ]]; then
+                 l_op2="$l_op2\n  - Group owned by: \"$l_group\" and should be group owned by \"${l_agroup//|/ or }\"\n   -
+        Changing group ownership to: \"$l_fgroup\""
+                 chgrp "$l_fgroup" "$l_fname"
+              fi
+              [ -n "$l_op2" ] && l_output2="$l_output2\n - File: \"$l_fname\" is:$l_op2\n"
+           }
+           unset a_file && a_file=() # clear and initialize array
+           # Loop to create array with stat of files that could possibly fail one of the audits
+           while IFS= read -r -d $'\0' l_file; do
+              [ -e "$l_file" ] && a_file+=("$(stat -Lc '%n^%#a^%U^%u^%G^%g' "$l_file")")
+           done < <(find -L /var/log -type f \( -perm /0137 -o ! -user root -o ! -group root \) -print0)
+           while IFS="^" read -r l_fname l_mode l_user l_uid l_group l_gid; do
+              l_bname="$(basename "$l_fname")"
+              case "$l_bname" in
+                 lastlog | lastlog.* | wtmp | wtmp.* | wtmp-* | btmp | btmp.* | btmp-* | README)
+                    perm_mask='0113'
+                    maxperm="$( printf '%o' $(( 0777 & ~$perm_mask)) )"
+                    l_rperms="ug-x,o-wx"
+                    l_auser="root"
+                    l_agroup="(root|utmp)"
+                    file_test_fix
+                    ;;
+                 secure | auth.log | syslog | messages)
+                    perm_mask='0137'
+                    maxperm="$( printf '%o' $(( 0777 & ~$perm_mask)) )"
+                    l_rperms="u-x,g-wx,o-rwx"
+                    l_auser="(root|syslog)"
+                    l_agroup="(root|adm)"
+                    file_test_fix
+                    ;;
+                 SSSD | sssd)
+                    perm_mask='0117'
+                    maxperm="$( printf '%o' $(( 0777 & ~$perm_mask)) )"
+                    l_rperms="ug-x,o-rwx"
+                    l_auser="(root|SSSD)"
+                    l_agroup="(root|SSSD)"
+                    file_test_fix
+                    ;;
+                 gdm | gdm3)
+                    perm_mask='0117'
+                    l_rperms="ug-x,o-rwx"
+                    maxperm="$( printf '%o' $(( 0777 & ~$perm_mask)) )"
+                    l_auser="root"
+                    l_agroup="(root|gdm|gdm3)"
+                    file_test_fix
+                    ;;
+                 *.journal | *.journal~)
+                    perm_mask='0137'
+                    maxperm="$( printf '%o' $(( 0777 & ~$perm_mask)) )"
+                    l_rperms="u-x,g-wx,o-rwx"
+                    l_auser="root"
+                    l_agroup="(root|systemd-journal)"
+                    file_test_fix
+                    ;;
+                 *)
+                    perm_mask='0137'
+                    maxperm="$( printf '%o' $(( 0777 & ~$perm_mask)) )"
+                    l_rperms="u-x,g-wx,o-rwx"
+                    l_auser="(root|syslog)"
+                    l_agroup="(root|adm)"
+                    if [ "$l_uid" -lt "$l_uidmin" ] && [ -z "$(awk -v grp="$l_group" -F: '$1==grp {print $4}' /etc/group)" ];
+        then
+                       if [[ ! "$l_user" =~ $l_auser ]]; then
+                          l_auser="(root|syslog|$l_user)"
+                       fi
+                       if [[ ! "$l_group" =~ $l_agroup ]]; then
+                          l_tst=""
+                          while l_out3="" read -r l_duid; do
+                             [ "$l_duid" -ge "$l_uidmin" ] && l_tst=failed
+                          done <<< "$(awk -F: '$4=='"$l_gid"' {print $3}' /etc/passwd)"
+                          [ "$l_tst" != "failed" ] && l_agroup="(root|adm|$l_group)"
+                       fi
+                    fi
+                    file_test_fix
+                    ;;
+              esac
+           done <<< "$(printf '%s\n' "${a_file[@]}")"
+           unset a_file # Clear array
+           # If all files passed, then we report no changes
+           if [ -z "$l_output2" ]; then
+              echo -e "- All files in \"/var/log/\" have appropriate permissions and ownership\n  - No changes required\n"
+           else
+              # print report of changes
+              echo -e "\n$l_output2"
+           fi
+        }
+                         Note:
+         You may also need to change the configuration for your logging software or services for any logs that had incorrect
+        permissions.                 If there are services that log to other locations, ensure that those log files have the
+        appropriate access configured.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.1.3.4', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.1.3.5":
+    title: '5.1.3.5 | Ensure varlogsyslog is owned by syslog - manual'
+    section: 'Configure logfile access'
+    description: |
+        The operating system must configure /var/log/syslog file to be owned by syslog.
+    remediation: |
+        Configure the Ubuntu operating system to have syslog own the "/var/log/syslog" file by running the following command:
+        # chown syslog /var/log/syslog
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.1.3.5', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == /var/log/syslog:syslog'
+
+  "5.1.3.6":
+    title: '5.1.3.6 | Ensure varlogsyslog is group-owned by adm - manual'
+    section: 'Configure logfile access'
+    description: |
+        The operating system must configure the /var/log/syslog file to be groupowned by adm.
+    remediation: |
+        Configure the Ubuntu operating system to have adm group-own the "/var/log/syslog" file by running the following command:
+        # chgrp adm /var/log/syslog
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.1.3.6', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == /var/log/syslog:adm'
+
+  "5.1.3.7":
+    title: '5.1.3.7 | Ensure varlogsyslog is 0640 or more restrictive'
+    section: 'Configure logfile access'
+    description: |
+        The operating system must configure /var/log/syslog file with mode 0640 or less permissive.
+    remediation: |
+        Configure the Ubuntu operating system to have permissions of 0640 for the "/var/log/syslog" file by running the
+        following command: # chmod 0640 /var/log/syslog
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.1.3.7', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.2.2.4":
+    title: '5.2.2.4 | Ensure crontab scrip running to offload audit events of standalone systems - manual'
+    section: 'Configure Data Retention'
+    description: |
+        The operating system must have a crontab script running weekly to offload audit events of standalone systems.
+    remediation: |
+        Create a script that offloads audit logs to external media and runs weekly. The script must be located in the
+        "/etc/cron.weekly" directory.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.2.4', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2.2.5":
+    title: '5.2.2.5 | Ensure shut down by default upon audit failure'
+    section: 'Configure Data Retention'
+    description: |
+        The operating system must shut down by default upon audit failure unless availability is an overriding concern.
+    remediation: |
+        Configure the Ubuntu operating system to shut down by default upon audit failure (unless availability is an overriding
+        concern). Add or update the following line (depending on configuration, "disk_full_action" can be set to "SYSLOG",
+        "HALT" or "SINGLE") in "/etc/audit/auditd.conf" file: disk_full_action = HALT
+         Restart the "auditd" service so the changes take effect: # systemctl restart auditd.service
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.2.5', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.2.2.6":
+    title: '5.2.2.6 | Ensure security personnel are notified when storage volume reaches 75 percent utilization - manual'
+    section: 'Configure Data Retention'
+    description: |
+        The operating system must immediately notify the SA and ISSO at a minimum when allocated audit record storage volume
+        reaches 75 of the repository maximum audit record storage capacity.
+    remediation: |
+        Edit "/etc/audit/auditd.conf" and set the "space_left_action" parameter to "exec" or "email". If the "space_left_action"
+        parameter is set to "email", set the "action_mail_acct" parameter to an email address for the SA and ISSO. If the
+        "space_left_action" parameter is set to "exec", ensure the command being executed notifies the SA and ISSO. Edit
+        "/etc/audit/auditd.conf" and set the "space_left" parameter to be at least 25% of the repository maximum audit record
+        storage capacity.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.2.6', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2.2.7":
+    title: '5.2.2.7 | Ensure sufficient storage capacity to store at least one week worth of audit records - manual'
+    section: 'Configure Data Retention'
+    description: |
+        The operating system must allocate audit record storage capacity to store at least one weeks worth of audit records,
+        when audit records are not immediately sent to a central audit record storage facility.
+    remediation: |
+        Allocate enough storage capacity for at least one week's worth of audit records when audit records are not immediately
+        sent to a central audit record storage facility. If audit records are stored on a partition made specifically for audit
+        records, use the "parted" program to resize the partition with sufficient space to contain one week's worth of audit
+        records. If audit records are not stored on a partition made specifically for audit records, a new partition with
+        sufficient amount of space will need be to be created. Set the auditd server to point to the mount point where the audit
+        records must be located: # sed -i -E 's@^(log_file\s*=\s*).*@\1 <log mountpoint>/audit.log@' /etc/audit/auditd.conf
+         where  is the aforementioned mount point.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.2.7', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2.2.8":
+    title: '5.2.2.8 | Ensure audit event multiplexor is configured to off-load audit logs onto a different system or storage media from the system being audited'
+    section: 'Configure Data Retention'
+    description: |
+        The operating system audit event multiplexor must be configured to offload audit logs onto a different system or storage
+        media from the system being audited.
+    remediation: |
+        Configure the audit event multiplexor to offload audit records to a different system or storage media from the system
+        being audited. Install the audisp-remote plugin: # apt-get install audispd-plugins -y
+         Set the audisp-remote plugin as active by editing the "/etc/audisp/plugins.d/au-remote.conf" file: # sed -i -E
+        's/active\s*=\s*no/active = yes/' /etc/audisp/plugins.d/au-remote.conf
+         Set the address of the remote machine by editing the "/etc/audisp/audisp-remote.conf" file: # sed -i -E
+        's/(remote_server\s*=).*/\1 <remote addr>/' /etc/audisp/audisp-remote.conf
+         where  must be substituted by the address of the remote server receiving the audit log. Make the audit service reload
+        its configuration files: # systemctl restart auditd.service
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.2.8', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.2.3.2":
+    title: '5.2.3.2 | Ensure actions as another user are always logged - manual'
+    section: 'Configure auditd rules'
+    description: |
+        sudo
+         provides users with temporary elevated privileges to perform operations, either as the superuser or another user.
+    remediation: |
+        Create audit rules
+        Edit or create a file in the                    /etc/audit/rules.d/
+         directory, ending in                    .rules
+         extension, with the relevant rules to monitor elevated privileges.                 64 Bit systems Example:
+        # printf "
+        -a always,exit -F arch=b64 -C euid!=uid -F auid!=unset -S execve -k user_emulation
+        -a always,exit -F arch=b32 -C euid!=uid -F auid!=unset -S execve -k user_emulation
+        " >> /etc/audit/rules.d/50-user_emulation.rules
+                         Load audit rules Merge and load the rules into active configuration: # augenrules --load
+         Check if reboot is required. # if [[ $(auditctl -s | grep "enabled") =~ "2" ]]; then printf "Reboot required to load
+        rules\n"; fi
+         32 Bit systems
+        Follow the same procedures as for 64 bit systems and ignore any entries with                    b64
+        .
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.3.2', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(?:always,exit|exit,always)\h+-F\h*arch=b32\h*(?!(?:\2\3))((?:-C\h+(?:euid!=uid|uid!=euid)\h*)|(?:-F\h+(?:auid!=(?:unset|-1|4294967295)|(?:unset|-1|4294967295)!=auid)\h*)|-S\h+execve\h*)(?!(?:\1\3))((?:-C\h+(?:euid!=uid|uid!=euid)\h*)|(?:-F\h+(?:auid!=(?:unset|-1|4294967295)|(?:unset|-1|4294967295)!=auid)\h*)|-S\h+execve\h*)(?!(?:\1\2))((?:-C\h+(?:euid!=uid|uid!=euid)\h*)|(?:-F\h+(?:auid!=(?:unset|-1|4294967295)|(?:unset|-1|4294967295)!=auid)\h*)|-S\h+execve\h*)(?:-k\h+\H+\b|-F\h*key=\H+\b)\h*(#[^\n\r]+)?$'
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(?:always,exit|exit,always)\h+-F\h*arch=b64\h*(?!(?:\2\3))((?:-C\h+(?:euid!=uid|uid!=euid)\h*)|(?:-F\h+(?:auid!=(?:unset|-1|4294967295)|(?:unset|-1|4294967295)!=auid)\h*)|-S\h+execve\h*)(?!(?:\1\3))((?:-C\h+(?:euid!=uid|uid!=euid)\h*)|(?:-F\h+(?:auid!=(?:unset|-1|4294967295)|(?:unset|-1|4294967295)!=auid)\h*)|-S\h+execve\h*)(?!(?:\1\2))((?:-C\h+(?:euid!=uid|uid!=euid)\h*)|(?:-F\h+(?:auid!=(?:unset|-1|4294967295)|(?:unset|-1|4294967295)!=auid)\h*)|-S\h+execve\h*)(?:-k\h+\H+\b|-F\h*key=\H+\b)\h*(#[^\n\r]+)?$'
+
+  "5.2.3.3":
+    title: '5.2.3.3 | Ensure events that modify the sudo log file are collected - manual'
+    section: 'Configure auditd rules'
+    description: |
+        Monitor the                sudo
+         log file. If the system has been properly configured to disable the use of the                su
+         command and force all administrators to have to log in first and then use                sudo
+         to execute privileged commands, then all administrator commands will be logged to                /var/log/sudo.log
+         . Any time a command is executed, an audit event will be triggered as the                /var/log/sudo.log
+         file will be opened for write and the executed administration command will be written to the log.
+    remediation: |
+        Edit or create a file in the                    /etc/audit/rules.d/
+         directory, ending in                    .rules
+         extension, with the relevant rules to monitor events that modify the sudo log file.                 Example:
+        # {
+        SUDO_LOG_FILE=$(grep -r logfile /etc/sudoers* | sed -e 's/.*logfile=//;s/,? .*//' -e 's/"//g')
+        [ -n "${SUDO_LOG_FILE}" ] && printf "
+        -w ${SUDO_LOG_FILE} -p wa -k sudo_log_file
+        " >> /etc/audit/rules.d/50-sudo.rules || printf "ERROR: Variable 'SUDO_LOG_FILE_ESCAPED' is unset.\n"
+        }
+                         Merge and load the rules into active configuration: # augenrules --load
+         Check if reboot is required. # if [[ $(auditctl -s | grep "enabled") =~ "2" ]]; then printf "Reboot required to load
+        rules\n"; fi
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.3.3', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2.3.9":
+    title: '5.2.3.9 | Ensure discretionary access control permission modification events are collected - manual'
+    section: 'Configure auditd rules'
+    description: |
+        Monitor changes to file permissions, attributes, ownership and group. The parameters in this section track changes for
+        system calls that affect file permissions and attributes. The following commands and system calls effect the
+        permissions, ownership and various attributes of files. chmod fchmod fchmodat chown fchown fchownat lchown setxattr
+        lsetxattr fsetxattr removexattr lremovexattr fremovexattr In all cases, an audit record will only be written for
+        nonsystem user ids and will ignore Daemon events. All audit records will be tagged with the identifier permmod.
+    remediation: |
+        Create audit rules
+        Edit or create a file in the                    /etc/audit/rules.d/
+         directory, ending in                    .rules
+         extension, with the relevant rules to monitor discretionary access control permission modification events.
+        64 Bit systems Example:
+        # {
+        UID_MIN=$(awk '/^\s*UID_MIN/{print $2}' /etc/login.defs)
+        [ -n "${UID_MIN}" ] && printf "
+        -a always,exit -F arch=b64 -S chmod,fchmod,fchmodat -F auid>=${UID_MIN} -F auid!=unset -F key=perm_mod
+        -a always,exit -F arch=b64 -S chown,fchown,lchown,fchownat -F auid>=${UID_MIN} -F auid!=unset -F key=perm_mod
+        -a always,exit -F arch=b32 -S chmod,fchmod,fchmodat -F auid>=${UID_MIN} -F auid!=unset -F key=perm_mod
+        -a always,exit -F arch=b32 -S lchown,fchown,chown,fchownat -F auid>=${UID_MIN} -F auid!=unset -F key=perm_mod
+        -a always,exit -F arch=b64 -S setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F auid>=${UID_MIN} -F
+        auid!=unset -F key=perm_mod
+        -a always,exit -F arch=b32 -S setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F auid>=${UID_MIN} -F
+        auid!=unset -F key=perm_mod
+        " >> /etc/audit/rules.d/50-perm_mod.rules || printf "ERROR: Variable 'UID_MIN' is unset.\n"
+        }
+                         Load audit rules Merge and load the rules into active configuration: # augenrules --load
+         Check if reboot is required. # if [[ $(auditctl -s | grep "enabled") =~ "2" ]]; then printf "Reboot required to load
+        rules\n"; fi
+         32 Bit systems
+        Follow the same procedures as for 64 bit systems and ignore any entries with                    b64
+        .
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.3.9', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == -a always,exit -F arch=b64 -S chmod,fchmod,fchmodat -F auid>=1000 -F auid!=unset -F key=perm_mod'
+            - name: Undefined
+              rule: 'should cmp == -a always,exit -F arch=b64 -S chown,fchown,lchown,fchownat -F auid>=1000 -F auid!=unset -F key=perm_mod'
+            - name: Undefined
+              rule: 'should cmp == -a always,exit -F arch=b32 -S chmod,fchmod,fchmodat -F auid>=1000 -F auid!=unset -F key=perm_mod'
+            - name: Undefined
+              rule: 'should cmp == -a always,exit -F arch=b32 -S lchown,fchown,chown,fchownat -F auid>=1000 -F auid!=unset -F key=perm_mod'
+            - name: Undefined
+              rule: 'should cmp == -a always,exit -F arch=b64 -S setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F auid>=1000 -F auid!=unset -F key=perm_mod'
+            - name: Undefined
+              rule: 'should cmp == -a always,exit -F arch=b32 -S setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F auid>=${UID_MIN} -F auid!=unset -F key=perm_mod'
+
+  "5.2.3.19":
+    title: '5.2.3.19 | Ensure kernel module loading unloading and modification is collected - manual'
+    section: 'Configure auditd rules'
+    description: |
+        Monitor the loading and unloading of kernel modules. All the loading / listing / dependency checking of modules is done
+        by                kmod
+         via symbolic links.             The following system calls control loading and unloading of modules initmodule
+          load a module               finitmodule
+          load a module used when the overhead of using cryptographically signed modules to determine the authenticity of a
+        module can be avoided               deletemodule
+          delete a module               createmodule
+          create a loadable module entry               querymodule
+          query the kernel for various bits pertaining to modules
+        Any execution of the loading and unloading module programs and system calls will trigger an audit record with an
+        identifier of                modules
+        .
+    remediation: |
+        Create audit rules
+        Edit or create a file in the                    /etc/audit/rules.d/
+         directory, ending in                    .rules
+         extension, with the relevant rules to monitor kernel module modification.                 64 Bit systems Example:
+        # {
+        UID_MIN=$(awk '/^\s*UID_MIN/{print $2}' /etc/login.defs)
+        [ -n "${UID_MIN}" ] && printf "
+        -a always,exit -F arch=b64 -S init_module,finit_module,delete_module,create_module,query_module -F auid>=${UID_MIN} -F
+        auid!=unset -k kernel_modules
+        -a always,exit -F path=/usr/bin/kmod -F perm=x -F auid>=${UID_MIN} -F auid!=unset -k kernel_modules
+        " >> /etc/audit/rules.d/50-kernel_modules.rules || printf "ERROR: Variable 'UID_MIN' is unset.\n"
+        }
+                         Load audit rules Merge and load the rules into active configuration: # augenrules --load
+         Check if reboot is required. # if [[ $(auditctl -s | grep "enabled") =~ "2" ]]; then printf "Reboot required to load
+        rules\n"; fi
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.3.19', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == -a always,exit -F arch=b64 -S create_module,init_module,delete_module,query_module,finit_module -F auid>=1000 -F auid!=-1 -F key=kernel_modules'
+            - name: Undefined
+              rule: 'should cmp == -a always,exit -F arch=b32 -S create_module,init_module,delete_module,query_module,finit_module -F auid>=1000 -F auid!=-1 -F key=kernel_modules'
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit,always)\h+(-S\h+all\h+)?-F\h+path=\/usr\/bin\/kmod\/?\h+-F\h+(perm=x|x=perm)\h+-F\h+auid>=1000\h+-F\h+(auid!=(unset|-1|4294967295)|(unset|-1|4294967295)!=auid)\h+(-k\h+\H+|-F\h*key=\H+)\h*(#.*)?$'
+
+  "5.2.3.20":
+    title: '5.2.3.20 | Ensure successful and unsuccessful uses of the su command are collected - manual'
+    section: 'Configure auditd rules'
+    description: |
+        The operating system must generate audit records for successful/unsuccessful uses of the su command.
+    remediation: |
+        Configure the Ubuntu operating system to generate audit records when successful/unsuccessful attempts to use the "su"
+        command occur. Add or update the following rules in the "/etc/audit/rules.d/50-stig.rules" file: Example: # printf
+        '\n%s' "-a always,exit -F path=/bin/su -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-priv_change" >>
+        "/etc/audit/rules.d/50-stig.rules"
+         To reload the rules file, issue the following command: # augenrules --load
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.3.20', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/bin\/su\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/bin\/su\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+
+  "5.2.3.21":
+    title: '5.2.3.21 | Ensure successful and unsuccessful uses of the chfn command are collected - manual'
+    section: 'Configure auditd rules'
+    description: |
+        The operating system must generate audit records for successful/unsuccessful uses of the chfn command.
+    remediation: |
+        Configure the audit system to generate an audit event for any successful/unsuccessful uses of the "chfn" command. Add or
+        update the following rules in the "/etc/audit/rules.d/50-stig.rules" file: Example: # printf '\n%s' "-a always,exit -F
+        path=/usr/bin/chfn -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-chfn" >> /etc/audit/rules.d/50-stig.rules
+         To reload the rules file, issue the following command: # augenrules --load
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.3.21', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/usr\/bin\/chfn\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/usr\/bin\/chfn\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+
+  "5.2.3.22":
+    title: '5.2.3.22 | Ensure successful and unsuccessful uses of the ssh-agent command are collected - manual'
+    section: 'Configure auditd rules'
+    description: |
+        The operating system must generate audit records for successful/unsuccessful uses of the sshagent command.
+    remediation: |
+        Configure the audit system to generate an audit event for any successful/unsuccessful use of the "ssh-agent" command.
+        Add or update the following rules in the "/etc/audit/rules.d/50-stig.rules" file: Example: # printf '\n%s' "-a
+        always,exit -F path=/usr/bin/ssh-agent -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-ssh" >>
+        /etc/audit/rules.d/50-stig.rules
+         To reload the rules file, issue the following command: # augenrules --load
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.3.22', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/usr/bin\/ssh-agent\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/usr/bin\/ssh-agent\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+
+  "5.2.3.23":
+    title: '5.2.3.23 | Ensure successful and unsuccessful uses of the ssh-keysign command are collected - manual'
+    section: 'Configure auditd rules'
+    description: |
+        The operating system must generate audit records for successful/unsuccessful uses of the sshkeysign command.
+    remediation: |
+        Configure the audit system to generate an audit event for any successful/unsuccessful use of the "ssh-keysign" command.
+        Add or update the following rules in the "/etc/audit/rules.d/50-stig.rules" file: Example: # printf '\n%s' "-a
+        always,exit -F path=/usr/lib/openssh/ssh-keysign -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-ssh" >>
+        /etc/audit/rules.d/50-stig.rules
+         To reload the rules file, issue the following command: # augenrules --load
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.3.23', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/usr\/lib\/openssh\/ssh-keysign\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/usr\/lib\/openssh\/ssh-keysign\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+
+  "5.2.3.24":
+    title: '5.2.3.24 | Ensure successful and unsuccessful attempts to use the fdisk command are recorded - manual'
+    section: 'Configure auditd rules'
+    description: |
+        The operating system must generate audit records when successful/unsuccessful attempts to use the fdisk command.
+    remediation: |
+        Configure the Ubuntu operating system to audit the execution of the partition management program "fdisk". Add or update
+        the following rule in the "/etc/audit/rules.d/50-stig.rules" file: Example: # printf '\n%s' "-w /bin/fdisk -p x -k
+        fdisk" >> /etc/audit/rules.d/50-stig.rules
+         To reload the rules file, issue the following command: # augenrules --load
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.3.24', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*-w\h+\/bin\/fdisk\/?\h+-p\h+x\h+((-F\h+)?key=|-k\h+)\H+\h*(#.*)?$'
+            - name: Undefined
+              rule: 'should cmp == ^\h*-w\h+\/bin\/fdisk\/?\h+-p\h+x\h+((-F\h+)?key=|-k\h+)\H+\h*(#.*)?$'
+
+  "5.2.3.25":
+    title: '5.2.3.25 | Ensure successful and unsuccessful uses of the sudo command are recorded - manual'
+    section: 'Configure auditd rules'
+    description: |
+        The operating system must generate audit records for successful/unsuccessful uses of the sudo command.
+    remediation: |
+        Configure the audit system to generate an audit event for any successful/unsuccessful use of the "sudo" command. Add or
+        update the following rules in the "/etc/audit/rules.d/50-stig.rules" file: Example: # printf '\n%s' "-a always,exit -F
+        path=/usr/bin/sudo -F perm=x -F auid>=1000 -F auid!=4294967295 -k priv_cmd" >> /etc/audit/rules.d/50-stig.rules
+         To reload the rules file, issue the following command: # augenrules --load
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.3.25', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/usr\/bin\/sudo\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/usr\/bin\/sudo\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+
+  "5.2.3.26":
+    title: '5.2.3.26 | Ensure successful and unsuccessful attempts to use the pam timestamp check command are recorded - manual'
+    section: 'Configure auditd rules'
+    description: |
+        The operating system must generate audit records for successful/unsuccessful uses of the pamtimestampcheck command.
+    remediation: |
+        Configure the audit system to generate an audit event for any successful/unsuccessful uses of the "pam_timestamp_check"
+        command. Add or update the following rules in the "/etc/audit/rules.d/50-stig.rules" file: Example: # printf '\n%s' "-a
+        always,exit -F path=/usr/sbin/pam_timestamp_check -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-
+        pam_timestamp_check" >> /etc/audit/rules.d/50-stig.rules
+         To reload the rules file, issue the following command: # augenrules --load
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.3.26', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/usr\/sbin\/pam_timestamp_check\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/usr\/sbin\/pam_timestamp_check\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+
+  "5.2.3.27":
+    title: '5.2.3.27 | Ensure successful and unsuccessful attempts to use the sudoedit command are recorded - manual'
+    section: 'Configure auditd rules'
+    description: |
+        The operating system must generate audit records for successful/unsuccessful uses of the sudoedit command.
+    remediation: |
+        Configure the audit system to generate an audit event for any successful/unsuccessful use of the "sudoedit" command. Add
+        or update the following rules in the "/etc/audit/rules.d/50-stig.rules": Example: # printf '\n%s' "-a always,exit -F
+        path=/usr/bin/sudoedit -F perm=x -F auid>=1000 -F auid!=4294967295 -k priv_cmd" >> /etc/audit/rules.d/50-stig.rules
+         To reload the rules file, issue the following command: # augenrules --load
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.3.27', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/usr\/bin\/sudoedit\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/usr\/bin\/sudoedit\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+
+  "5.2.3.28":
+    title: '5.2.3.28 | Ensure successful and unsuccessful attempts to use the crontab command are recorded - manual'
+    section: 'Configure auditd rules'
+    description: |
+        The operating system must generate audit records for successful/unsuccessful uses of the crontab command.
+    remediation: |
+        Configure the audit system to generate an audit event for any successful/unsuccessful uses of the "crontab" command. Add
+        or update the following rules in the "/etc/audit/rules.d/50-stig.rules" file: Example: # printf '\n%s' "-a always,exit
+        -F path=/usr/bin/crontab -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-crontab" >>
+        /etc/audit/rules.d/50-stig.rules
+         To reload the rules file, issue the following command: # augenrules --load
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.3.28', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/usr\/bin\/crontab\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/usr\/bin\/crontab\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+
+  "5.2.3.29":
+    title: '5.2.3.29 | Ensure successful and unsuccessful attempts to use the chsh command are recorded - manual'
+    section: 'Configure auditd rules'
+    description: |
+        The operating system must generate audit records for successful/unsuccessful uses of the chsh command.
+    remediation: |
+        Configure the audit system to generate an audit event for any successful/unsuccessful use of the "chsh" command. Add or
+        update the following rules in the "/etc/audit/rules.d/50-stig.rules" file: Example: # printf '\n%s' "-a always,exit -F
+        path=/usr/bin/chsh -F perm=x -F auid>=1000 -F auid!=4294967295 -k priv_cmd" >> /etc/audit/rules.d/50-stig.rules
+         To reload the rules file, issue the following command: # augenrules --load
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.3.29', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/usr\/bin\/chsh\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/usr\/bin\/chsh\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+
+  "5.2.3.30":
+    title: '5.2.3.30 | Ensure successful and unsuccessful attempts to use the chage command are recorded - manual'
+    section: 'Configure auditd rules'
+    description: |
+        The operating system must generate audit records for successful/unsuccessful uses of the chage command
+    remediation: |
+        Configure the audit system to generate an audit event for any successful/unsuccessful uses of the "chage" command. Add
+        or update the following rules in the "/etc/audit/rules.d/50-stig.rules" file: Example: # printf '\n%s' "-a always,exit
+        -F path=/usr/bin/chage -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-chage" >>
+        /etc/audit/rules.d/50-stig.rules
+         To reload the rules file, issue the following command: # augenrules --load
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.3.30', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/usr\/bin\/chage\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/usr\/bin\/chage\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+
+  "5.2.3.31":
+    title: '5.2.3.31 | Ensure successful and unsuccessful attempts to use the newgrp command are recorded - manual'
+    section: 'Configure auditd rules'
+    description: |
+        The operating system must generate audit records for successful/unsuccessful uses of the newgrp command.
+    remediation: |
+        Configure the audit system to generate an audit event for any successful/unsuccessful use of the "newgrp" command. Add
+        or update the following rules in the "/etc/audit/rules.d/50-stig.rules" file: Example: # printf '\n%s' "-a always,exit
+        -F path=/usr/bin/newgrp -F perm=x -F auid>=1000 -F auid!=4294967295 -k priv_cmd" >> /etc/audit/rules.d/50-stig.rules
+         To reload the rules file, issue the following command: # augenrules --load
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.3.31', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/usr\/bin\/newgrp\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/usr\/bin\/newgrp\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+
+  "5.2.3.32":
+    title: '5.2.3.32 | Ensure successful and unsuccessful attempts to use the gpasswd command are recorded - manual'
+    section: 'Configure auditd rules'
+    description: |
+        The operating system must generate audit records for successful/unsuccessful uses of the gpasswd command
+    remediation: |
+        Configure the audit system to generate an audit event for any successful/unsuccessful uses of the "gpasswd" command. Add
+        or update the following rules in the "/etc/audit/rules.d/50-stig.rules" file: Example: # printf '\n%s' "-a always,exit
+        -F path=/usr/bin/gpasswd -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-gpasswd" >>
+        /etc/audit/rules.d/50-stig.rules
+         To reload the rules file, issue the following command: # augenrules --load
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.3.32', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/usr\/bin\/gpasswd\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/usr\/bin\/gpasswd\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+
+  "5.2.3.33":
+    title: '5.2.3.33 | Ensure successful and unsuccessful attempts to use the unix update command are recorded - manual'
+    section: 'Configure auditd rules'
+    description: |
+        The operating system must generate audit records for successful/unsuccessful uses of the unixupdate command
+    remediation: |
+        Configure the audit system to generate an audit event for any successful/unsuccessful uses of the "unix_update" command.
+        Add or update the following rules in the "/etc/audit/rules.d/50-stig.rules" file: Example: # printf '\n%s' "-a
+        always,exit -F path=/sbin/unix_update -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-unix-update" >>
+        /etc/audit/rules.d/50-stig.rules
+         To reload the rules file, issue the following command: # augenrules --load
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.3.33', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/sbin\/unix_update\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/sbin\/unix_update\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+
+  "5.2.3.34":
+    title: '5.2.3.34 | Ensure successful and unsuccessful attempts to use the apparmor parser command are recorded - manual'
+    section: 'Configure auditd rules'
+    description: |
+        The operating system must generate audit records for successful/unsuccessful uses of the apparmorparser command.
+    remediation: |
+        Configure the audit system to generate an audit event for any successful/unsuccessful use of the "apparmor_parser"
+        command. Add or update the following rules in the "/etc/audit/rules.d/50-stig.rules" file: Example: # printf '\n%s' "-a
+        always,exit -F path=/sbin/apparmor_parser -F perm=x -F auid>=1000 -F auid!=4294967295 -k perm_chng" >>
+        /etc/audit/rules.d/50-stig.rules
+         To reload the rules file, issue the following command: # augenrules --load
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.3.34', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/sbin\/apparmor_parser\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/sbin\/apparmor_parser\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+
+  "5.2.3.35":
+    title: '5.2.3.35 | Ensure successful and unsuccessful attempts to use the passwd command are recorded - manual'
+    section: 'Configure auditd rules'
+    description: |
+        The operating system must generate audit records for successful/unsuccessful uses of the passwd command
+    remediation: |
+        Configure the audit system to generate an audit event for any successful/unsuccessful uses of the "passwd" command. Add
+        or update the following rule in the "/etc/audit/rules.d/50-stig.rules" file: Example: # printf '\n%s' "-a always,exit -F
+        path=/usr/bin/passwd -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-passwd" >>
+        /etc/audit/rules.d/50-stig.rules
+         To reload the rules file, issue the following command: # augenrules --load
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.3.35', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/usr\/bin\/passwd\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+            - name: Undefined
+              rule: 'should cmp == ^\h*-a\h+(always,exit|exit.always)(\h+-S\h+all)?\h+-F\h+path=\/usr\/bin\/passwd\/?\h+-F\h+perm=x\h+-F\h+auid>=1000\h+-F\h+auid!=(-1|4294967295)\h+(-k\h+|-F\h+key=)\H+\h*(#.*)?$'
+
+  "5.2.4.3":
+    title: '5.2.4.3 | Ensure audit log files are mode 0600 or more restrictive - manual'
+    section: 'Configure auditd file access'
+    description: |
+        The operating system must be configured so that audit log files are not read or writeaccessible by unauthorized users.
+    remediation: |
+        Configure the audit log files to have a mode of "0600" or less permissive. Determine where the audit logs are stored
+        with the following command:
+        # grep -iw log_file /etc/audit/auditd.conf
+
+        log_file = /var/log/audit/audit.log
+                         Using the path of the directory containing the audit logs, configure the audit log files to have a mode
+        of "0600" or less permissive by using the following command: # chmod 0600 /var/log/audit/*
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.4.3', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == 0177'
+
+  "5.2.4.4":
+    title: '5.2.4.4 | Ensure only authorized users own audit log files - manual'
+    section: 'Configure auditd file access'
+    description: |
+        Audit log files contain information about the system and system activity.
+    remediation: |
+        Run the following command to configure the audit log files to be owned by the                    root
+         user:                 # [ -f /etc/audit/auditd.conf ] && find "$(dirname "$(awk -F "=" '/^\s*log_file\s*/ {print $2}'
+        /etc/audit/auditd.conf | xargs)")" -type f ! -user root -exec chown root {} +
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.4.4', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == root'
+
+  "5.2.4.5":
+    title: '5.2.4.5 | Ensure only authorized groups own audit log files - manual'
+    section: 'Configure auditd file access'
+    description: |
+        Audit log files contain information about the system and system activity.
+    remediation: |
+        Run the following command to configure the audit log files to be group owned by                    adm
+        :                 # find $(dirname $(awk -F"=" '/^\s*log_file/ {print $2}' /etc/audit/auditd.conf | xargs)) -type f \( !
+        -group adm -a ! -group root \) -exec chgrp adm {} +
+
+        Run the following command to set the                    log_group
+         parameter in the audit configuration file to                    log_group = adm
+        :                 # sed -ri 's/^\s*#?\s*log_group\s*=\s*\S+(\s*#.*)?.*$/log_group = adm\1/' /etc/audit/auditd.conf
+         Run the following command to restart the audit daemon to reload the configuration file: # systemctl restart auditd
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.4.5', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == (adm|root)'
+
+  "5.2.4.7":
+    title: '5.2.4.7 | Ensure only authorized users own audit configuration files'
+    section: 'Configure auditd file access'
+    description: |
+        Audit configuration files control auditd and what events are audited.
+    remediation: |
+        Run the following command to change ownership to                    root
+         user:
+        # find /etc/audit/ -type f \( -name '*.conf' -o -name '*.rules' \) ! -user root -exec chown root {} +
+        find /etc/audit/rules.d/ -type f ! -user root -exec chown root {} +
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.4.7', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.2.4.8":
+    title: '5.2.4.8 | Ensure only authorized groups own audit configuration files'
+    section: 'Configure auditd file access'
+    description: |
+        Audit configuration files control auditd and what events are audited.
+    remediation: |
+        Run the following commands to change group to                    root
+        :
+        # find /etc/audit/ -type f \( -name '*.conf' -o -name '*.rules' \) ! -group root -exec chgrp root {} +
+        # find /etc/audit/rules.d -type f ! -group root -exec chgrp root {} +
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.4.8', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.2.4.11":
+    title: '5.2.4.11 | Ensure only authorized groups own audit tools - manual'
+    section: 'Configure auditd file access'
+    description: |
+        Audit tools include, but are not limited to, vendorprovided and open source audit tools needed to successfully view and
+        manipulate audit information system activity and records. Audit tools include custom queries and report generators.
+    remediation: |
+        Run the following command to remove more permissive mode from the audit tools: # chmod go-w /sbin/auditctl
+        /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/augenrules
+
+        Run the following command to change owner and group of the audit tools to                    root
+         user and group:                 # chown root:root /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace
+        /sbin/auditd /sbin/augenrules
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.2.4.11', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == root'
+
+  "5.3.1":
+    title: '5.3.1 | Ensure AIDE is installed'
+    section: 'Filesystem Integrity Checking'
+    description: |
+        AIDE takes a snapshot of filesystem state including modification times, permissions, and file hashes which can then be
+        used to compare against the current state of the filesystem to detect modifications to the system.
+    remediation: |
+        Install AIDE using the appropriate package manager or manual installation: # apt install aide aide-common
+         Configure AIDE as appropriate for your environment. Consult the AIDE documentation for options. Run the following
+        commands to initialize AIDE:
+        # aideinit
+        # mv /var/lib/aide/aide.db.new /var/lib/aide/aide.db
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.3.1', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.3.2":
+    title: '5.3.2 | Ensure aide script to check file integrity is the default - manual'
+    section: 'Filesystem Integrity Checking'
+    description: |
+        The operating system must be configured so that the script which runs each 30 days or less to check file integrity is
+        the default one.
+    remediation: |
+        The cron file for AIDE is fairly complex as it creates the report. This file is installed with the "aide-common"
+        package, and the default can be restored by copying it from the package: Download the original package to the /tmp dir:
+        # cd /tmp; apt download aide-common
+         Extract the aide script to its original place: # dpkg-deb --fsys-tarfile /tmp/aide-common_*.deb | sudo tar -x
+        ./usr/share/aide/config/cron.daily/aide -C /
+         Copy it to the cron.daily directory: # cp -f /usr/share/aide/config/cron.daily/aide /etc/cron.daily/aide
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.3.2', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.3.4":
+    title: '5.3.4 | Ensure System Administrator are notified of changes to the baseline configuration or anomalies'
+    section: 'Filesystem Integrity Checking'
+    description: |
+        The Ubuntu operating system must notify designated personnel if baseline configurations are changed in an unauthorized
+        manner. The file integrity tool must notify the System Administrator when changes to the baseline configuration or
+        anomalies
+    remediation: |
+        Configure the Ubuntu operating system to notify designated personnel if baseline configurations are changed in an
+        unauthorized manner. Modify the "SILENTREPORTS" parameter in the "/etc/default/aide" file with a value of "no" if it
+        does not already exist.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_5.3.4', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.1.14":
+    title: '6.1.14 | Ensure system command files are group-owned by root - manual'
+    section: 'System File Permissions'
+    description: |
+        The operating system must have system commands groupowned by root.
+    remediation: |
+        Configure the system commands to be protected from unauthorized access. Run the following command: # find /bin /sbin
+        /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin ! -group root -type f ! -perm /2000 -exec chgrp root '{}' \;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_6.1.14', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == /bin:root:*'
+            - name: Undefined
+              rule: 'should cmp == /sbin:root:*'
+            - name: Undefined
+              rule: 'should cmp == /usr/bin:root:*'
+            - name: Undefined
+              rule: 'should cmp == /usr/sbin:root:*'
+            - name: Undefined
+              rule: 'should cmp == /usr/local/bin:root:*'
+            - name: Undefined
+              rule: 'should cmp == /usr/local/sbin:root:*'
+
+  "6.1.15":
+    title: '6.1.15 | Ensure system command files are owned by root - manual'
+    section: 'System File Permissions'
+    description: |
+        The operating system must have system commands owned by root.
+    remediation: |
+        Configure the system commands and their respective parent directories to be protected from unauthorized access. Run the
+        following command: # find /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin ! -user root -type f -exec chown
+        root '{}' \;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_6.1.15', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == /bin:root:*'
+            - name: Undefined
+              rule: 'should cmp == /sbin:root:*'
+            - name: Undefined
+              rule: 'should cmp == /usr/bin:root:*'
+            - name: Undefined
+              rule: 'should cmp == /usr/sbin:root:*'
+            - name: Undefined
+              rule: 'should cmp == /usr/local/bin:root:*'
+            - name: Undefined
+              rule: 'should cmp == /usr/local/sbin:root:*'
+
+  "6.1.16":
+    title: '6.1.16 | Ensure directories that contain system commands set to 0755 or more restrictive - manual'
+    section: 'System File Permissions'
+    description: |
+        The operating system must have directories that contain system commands set to a mode of 0755 or less permissive.
+    remediation: |
+        Configure the system commands directories to be protected from unauthorized access. Run the following command: # find
+        /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin -perm /022 -type d -exec chmod -R 755 '{}' \;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_6.1.16', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == /bin:0022'
+            - name: Undefined
+              rule: 'should cmp == /sbin:0022'
+            - name: Undefined
+              rule: 'should cmp == /usr/bin:0022'
+            - name: Undefined
+              rule: 'should cmp == /usr/sbin:0022'
+            - name: Undefined
+              rule: 'should cmp == /usr/local/bin:0022'
+            - name: Undefined
+              rule: 'should cmp == /usr/local/sbin:0022'
+
+  "6.1.17":
+    title: '6.1.17 | Ensure system library directories are group-owned by root - manual'
+    section: 'System File Permissions'
+    description: |
+        The operating system library directories must be groupowned by root.
+    remediation: |
+        Configure the system library directories to be protected from unauthorized access. Run the following command: # find
+        /lib /usr/lib /lib64 ! -group root -type d -exec chgrp root '{}' \;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_6.1.17', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == /lib:root'
+            - name: Undefined
+              rule: 'should cmp == /usr/lib:root'
+            - name: Undefined
+              rule: 'should cmp == /lib64:root'
+
+  "6.1.18":
+    title: '6.1.18 | Ensure system library files are group-owned by root - manual'
+    section: 'System File Permissions'
+    description: |
+        The operating system operating system library files must be groupowned by root.
+    remediation: |
+        Configure the system library files to be protected from unauthorized access. Run the following command: # find /lib
+        /usr/lib /lib64 ! -group root -type f -exec chgrp root '{}' \;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_6.1.18', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == /lib:root:*'
+            - name: Undefined
+              rule: 'should cmp == /usr/lib:root:*'
+            - name: Undefined
+              rule: 'should cmp == /lib64:root:*'
+
+  "6.1.19":
+    title: '6.1.19 | Ensure directories that contain system commands set to 0755 or more restrictive - manual'
+    section: 'System File Permissions'
+    description: |
+        The operating system must have directories that contain system commands set to a mode of 0755 or less permissive.
+    remediation: |
+        Configure the system commands directories to be protected from unauthorized access. Run the following command: # find
+        /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin -perm /022 -type d -exec chmod -R 755 '{}' \;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_6.1.19', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == /bin:0022'
+            - name: Undefined
+              rule: 'should cmp == /sbin:0022'
+            - name: Undefined
+              rule: 'should cmp == /usr/bin:0022'
+            - name: Undefined
+              rule: 'should cmp == /usr/sbin:0022'
+            - name: Undefined
+              rule: 'should cmp == /usr/local/bin:0022'
+            - name: Undefined
+              rule: 'should cmp == /usr/local/sbin:0022'
+
+  "6.1.20":
+    title: '6.1.20 | Ensure system library directories are owned by root - manual'
+    section: 'System File Permissions'
+    description: |
+        The operating system library directories must be owned by root.
+    remediation: |
+        Configure the library files and their respective parent directories to be protected from unauthorized access. Run the
+        following command: # find /lib /usr/lib /lib64 ! -user root -type d -exec chown root '{}' \;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_6.1.20', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == /lib:root'
+            - name: Undefined
+              rule: 'should cmp == /usr/lib:root'
+            - name: Undefined
+              rule: 'should cmp == /lib64:root'
+
+  "6.1.21":
+    title: '6.1.21 | Ensure directories that contain system commands are owned by root - manual'
+    section: 'System File Permissions'
+    description: |
+        The operating system must have directories that contain system commands owned by root.
+    remediation: |
+        Configure the system commands directories to be protected from unauthorized access. Run the following command: # find
+        /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin ! -user root -type d -exec chown root '{}' \;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_6.1.21', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == /bin:root'
+            - name: Undefined
+              rule: 'should cmp == /sbin:root'
+            - name: Undefined
+              rule: 'should cmp == /usr/bin:root'
+            - name: Undefined
+              rule: 'should cmp == /usr/sbin:root'
+            - name: Undefined
+              rule: 'should cmp == /usr/local/bin:root'
+            - name: Undefined
+              rule: 'should cmp == /usr/local/sbin:root'
+
+  "6.1.22":
+    title: '6.1.22 | Ensure system library files are owned by root - manual'
+    section: 'System File Permissions'
+    description: |
+        The operating system operating system library files must be owned by root.
+    remediation: |
+        Configure the system library files to be protected from unauthorized access. Run the following command: # find /lib
+        /usr/lib /lib64 ! -user root -type f -exec chown root '{}' \;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_6.1.22', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == /lib:root:*'
+            - name: Undefined
+              rule: 'should cmp == /usr/lib:root:*'
+            - name: Undefined
+              rule: 'should cmp == /lib64:root:*'
+
+  "6.1.23":
+    title: '6.1.23 | Ensure directories that contain system commands are group-owned by root - manual'
+    section: 'System File Permissions'
+    description: |
+        The operating system must have directories that contain system commands groupowned by root.
+    remediation: |
+        Configure the system commands directories to be protected from unauthorized access. Run the following command: # find
+        /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin ! -group root -type d -exec chgrp root '{}' \;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_6.1.23', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == /bin:root'
+            - name: Undefined
+              rule: 'should cmp == /sbin:root'
+            - name: Undefined
+              rule: 'should cmp == /usr/bin:root'
+            - name: Undefined
+              rule: 'should cmp == /usr/sbin:root'
+            - name: Undefined
+              rule: 'should cmp == /usr/local/bin:root'
+            - name: Undefined
+              rule: 'should cmp == /usr/local/sbin:root'
+
+  "6.1.24":
+    title: '6.1.24 | Ensure system library directories are 0755 or more restrictive - manual'
+    section: 'System File Permissions'
+    description: |
+        The operating system library directories must have mode 0755 or less permissive.
+    remediation: |
+        Configure the shared library directories to be protected from unauthorized access. Run the following command: # find
+        /lib /lib64 /usr/lib -perm /022 -type d -exec chmod 755 '{}' \;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_6.1.24', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == /lib:0022'
+            - name: Undefined
+              rule: 'should cmp == /usr/lib:0022'
+            - name: Undefined
+              rule: 'should cmp == /lib64:0022'
+
+  "6.1.25":
+    title: '6.1.25 | Ensure system library files are 0755 or more restrictive - manual'
+    section: 'System File Permissions'
+    description: |
+        The operating system library files must have mode 0755 or less permissive.
+    remediation: |
+        Configure the library files to be protected from unauthorized access. Run the following command: # find /lib /lib64
+        /usr/lib -perm /022 -type f -exec chmod 755 '{}' \;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_6.1.25', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == /lib:0022:*'
+            - name: Undefined
+              rule: 'should cmp == /usr/lib:0022:*'
+            - name: Undefined
+              rule: 'should cmp == /lib64:0022:*'
+
+  "6.2.2":
+    title: '6.2.2 | Ensure etcshadow password fields are not empty'
+    section: 'Local User and Group Settings'
+    description: |
+        An account with an empty password field means that anybody may log in as that user without providing a password.
+    remediation: |
+        If any accounts in the                  /etc/shadow
+         file do not have a password, run the following command to lock the account until it can be determined why it does not
+        have a password:               # passwd -l <username>
+         Also, check to see if the account is logged in and investigate what it is being used for to determine if it needs to be
+        forced off.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_6.2.2', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.2.5":
+    title: '6.2.5 | Ensure no duplicate UIDs exist - manual'
+    section: 'Local User and Group Settings'
+    description: |
+        Although the              useradd
+         program will not let you create a duplicate User ID UID, it is possible for an administrator to manually edit the
+        /etc/passwd
+         file and change the UID field.
+    remediation: |
+        Based on the results of the audit script, establish unique UIDs and review all files owned by the shared UIDs to
+        determine which UID they are supposed to belong to.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_ubuntu_linux_20.04_lts_stig_benchmark', 'rule_6.2.5', 'cis_ubuntu_linux_20.04_lts_stig_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:

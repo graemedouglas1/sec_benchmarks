@@ -1,0 +1,55 @@
+#TRUSTED a213b3a5e6b9598c20d2f0bac8c8b662cfd7b2fcfb736923e1a81d2fa5acf95503129c28eeec3ff2e9df9506199bb4c205b9c1f29130771825ea6375d5a26658aad9af5f172cd42c0cd39d88b7d0ae024c7bf904df26ce55f40a01e4f453d92a3f87eca3447d81f5b08141e4f975f8270efa06d760020fc79b899b638d480f85008ecb18f689ed81b9f52b92baffc3461c87742466b601c4519a7d5f806213a7133517250967d65d7e3a6b8dd462adfe5285a4d5cf104935d79bbad149c3058adc402872a67453729aa9a2493c31baac24ba88dc9dcc18d750d8a046e391dbedd1bde9a2036538b79903357c6ce448da23457941b09ec49efb1c091b2d9348d78e848141e9427b28d4e672df4c54199094f634a51d9b22ce7598068026c35349b43fb240101cf6f77a28684e9ef7e59a99c373a7f4491d703caa3b022709c72f09c96970244ac0a22553a4a43b605289d64aeb3d9c1fdd2a2e88fa0d673e5f48bd5a56bc9e151ab0911c1fce25983e2a0fb97dbc52a8587e5bcc6e22ada209304966ae3a82786b3a98166d95bd69595d8f57b3f278a47e68c07774e6dee8a0f32d3df56db2ec8b7db2ee185248f79a2ea833c574cd766d376e1ff5785bd4c33c3f1bb1c04032ed625d2ad88699b95df73358316b17b7322d955750966875f9d07b8a0123f4b07ff077c1600472069442f37e6f5e6b66c70bdefa08921afd4680
+#TRUST-RSA-SHA256 6cca1dd4941545438fb13d37677d70a15c7e7fb0cf841e4a6e51cb909c5bebabd955d52ebc32c6ea52a4b08c0ab508cc9ca92ceb64c7fc968c0c5a871f2a6e839cb8ba57d601dbe269ec31bd25baffea15c657c3251c805e31f5f371cb25f013f30c5f78131c05f7b8eeb5e03bc3236be10edc3e25f17c508230ef5fc895f54fa2eaedacdc643bf045751213b5ec20a537619ef539f35261460baec592adc5eef742e651fbdbbb77bf0192c91d9e220814300f1f3fb719c7abfadf02cd61e0a7e0fe7d7aec0f65587bef53839ce8b03b1af52edcd81d5652821b46b995a4d8dad7dcb00e328597cd3034c6b1caa2c11edb8205192a0dce4496b437a366908fe817ba20f962e70da7d7cfecd57d98af5ca9c9079730e7db27bf862001396aa4cc7833989b36ad9bdaa0fe73e289642b9542ac284cc1f6a47d7d341819e1f2cf0a759aa9458a58dc16c67771f93c74ea2c793be5704e3cb1067dad0d9bbb14bb82e424271e181f6a66e365a873ed12ff49414adc779860426442e74f97c11554d6cfdc8c9aa267f1475029a09a67e1c6f804c6b0f0a398d76165d1ec38e793b4e9040c7b1d7a2d403089530d9cf9eb4da9743a22aaae39bb6d3a099f1b07bd00e2c62e6a2cc666bbc734a657a0028457fe515d103019cdc825271c28e3a9393a6b7bccc80c9ad92a436fe29b5ec94e94dbefb9ba94c7b7a16f5faa196f6bb3bf8f
+#
+# This script is Copyright (C) 2004-2023 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.9 $
+# $Date: 2023/03/07 $
+#
+# This check looks for confidential files for a particular company
+# To use, modify the "Company Name" string to the name (or names) of your current company
+#
+# The second check looks for documents which may contain Attorney-client material
+#
+#<ui_metadata>
+#<display_name>TNS File Analysis - Corporate Confidential Information</display_name>
+#<spec>
+#  <type>TNS</type>
+#  <name>File Analysis - Corporate Confidential Information</name>
+#  <version>1.0.0</version>
+#</spec>
+#<labels>filecontent,content,corporate,confidential,update_20230227</labels>
+#</ui_metadata>
+
+<check_type:"FileContent">
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "DLP - Determine if server is hosting a companies confidential documents"
+  file_extension : "xls" | "pdf" | "doc"
+# Change the line below
+  expect         : "Company Name"
+  regex          : "[cC](ompany|orporate) [cC]onfidential"
+  max_size       : "50K"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "DLP - Determine if server is hosting Attorney-client confidential material"
+  file_extension : "xls" | "pdf" | "doc"
+  expect         : "Attorney"
+# # information is confidential and protected by the attorney-client and other applicable privileges
+  regex          : "[aA]ttorney.[cC]lient.*privilege"
+  max_size       : "5K"
+</item>
+
+</check_type>

@@ -1,0 +1,1027 @@
+---
+
+inspec_rules:
+  "1.1.1":
+    title: '1.1.1 | Ensure NGINX is installed'
+    section: 'Installation'
+    description: |
+        The CIS NGINX Benchmark recommends using the NGINX binary provided by your vendor for most situations.
+        As an alternative, packages from              nginx.org
+         are available for a variety of platforms, including Linux and FreeBSD.
+    remediation: |
+        Configure and setup Nginx
+        sudo su
+        dnf update -y && dnf install dnf-utils -y
+        cat << EOF > /etc/yum.repos.d/nginx.repo
+        [nginx-stable]
+        name=nginx stable repo
+        baseurl=http://nginx.org/packages/rhel/8/\$basearch/
+        gpgcheck=1
+        enabled=1
+        gpgkey=https://nginx.org/keys/nginx_signing.key
+        module_hotfixes=true
+        EOF
+        dnf install nginx -y
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.1', 'cis_nginx_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.1.2":
+    title: '1.1.2 | Ensure NGINX is installed from source - manual'
+    section: 'Installation'
+    description: |
+        Installing NGINX directly from source allows you to install NGINX without the use of a package manager.
+    remediation: |
+        Installation depends on the operating system platform. For a source build, consult the NGINX documentation
+        "Building nginx from Sources"
+        .               Impact: By installing NGINX from source, you will have to manually upgrade NGINX or automate upgrades
+        yourself. The default values for NGINX may also vary from this guide using this method.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_1.1.2', 'cis_nginx_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.1":
+    title: '1.2.1 | Ensure package manager repositories are properly configured - manual'
+    section: 'Configure Software Updates'
+    description: |
+        Systems need to have package manager repositories properly configured to ensure they receive the latest patches and
+        updates.
+    remediation: |
+        Configure your package manager repositories according to your vendor.
+        As an alternative, package manager repositories from                  nginx.org
+         are available for a variety of Linux platforms.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.1', 'cis_nginx_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.2":
+    title: '1.2.2 | Ensure the latest software package is installed - manual'
+    section: 'Configure Software Updates'
+    description: |
+        As new security vulnerabilities are discovered, the corresponding fixes are implemented by your NGINX software package
+        provider. Installing the latest software version ensures these fixes are available on your system.
+    remediation: |
+        To install the latest NGINX package, run the following command: Redhat: dnf update nginx -y
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.2', 'cis_nginx_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.1.1":
+    title: '2.1.1 | Ensure only required modules are installed - manual'
+    section: 'Minimize NGINX Modules'
+    description: |
+        This NGINX installation comes with several modules out of the box. These modules are not all always needed.
+        Installations of NGINX should be hardened to ensure only the necessary modules are installed.
+    remediation: |
+        Consult                  the NGINX module documentation
+         to determine which modules are needed for your specific installation.
+        Modules may be removed using the                  configure command.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_2.1.1', 'cis_nginx_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.1.2":
+    title: '2.1.2 | Ensure HTTP WebDAV module is not installed - manual'
+    section: 'Minimize NGINX Modules'
+    description: |
+        The httpdavmodule enables HTTP Extensions for Web Distributed Authoring and Versioning WebDAV as defined by RFC 4918.
+        This enables filebased operations on your web server, such as the ability to create, delete, change and move files on
+        your server. Most modern architectures have replaced this functionality with cloudbased object storage, in which case
+        the module should not be installed.
+    remediation: |
+        To remove the http_dav_module, recompile nginx from source without the --with-http_dav_module flag.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_2.1.2', 'cis_nginx_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == http_dav_module'
+
+  "2.1.3":
+    title: '2.1.3 | Ensure modules with gzip functionality are disabled - manual'
+    section: 'Minimize NGINX Modules'
+    description: |
+        gzip is used for compression. Compression functionality should be disabled to prevent certain types of attacks from
+        being performed successfully.
+    remediation: |
+        In order to disable the http_gzip_module and the http_gzip_static_module, NGINX must be recompiled from source. This can
+        be accomplished using the below command in the folder you used during your original compilation. This must be done
+        without the --with-http_gzip_static_module or --with-http_gzip_module configuration directives. ./configure --without-
+        http_gzip_module --without-http_gzip_static_module
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_2.1.3', 'cis_nginx_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == (http_gzip_module|http_gzip_static_module)'
+
+  "2.2.1":
+    title: '2.2.1 | Ensure that NGINX is run using a non-privileged dedicated service account - manual'
+    section: 'Account Security'
+    description: |
+        The nginx user directive designates which user account nginx worker processes run under. Ensuring a nonprivileged,
+        dedicated service account is used is a defense in depth measure to limit what an attacker who compromises the account
+        can do.
+    remediation: |
+        Add a system account for the nginx user with a home directory of /var/cache/nginx and a shell of /sbin/nologin so it
+        does not have the ability to log in, then add the nginx user to be used by nginx: useradd nginx -r -g nginx -d
+        /var/cache/nginx -s /sbin/nologin
+         Then add the nginx user to /etc/nginx/nginx.conf by adding the user directive as shown below: user nginx;
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.1', 'cis_nginx_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.2.2":
+    title: '2.2.2 | Ensure the NGINX service account is locked - manual'
+    section: 'Account Security'
+    description: |
+        The nginx user account should have a valid password, but the account should be locked. NOTE If a different account is
+        used to run nginx, that accounts name should be substituted for nginx in the audit and remediation procedures.
+    remediation: |
+        Use the                  passwd
+         command to lock the nginx service account:               passwd -l "$(awk '$1~/^\s*user\s*$/ {print $2}'
+        /etc/nginx/nginx.conf | sed -r 's/;.*//g')"
+         Impact: This ensures the nginx user account may not be used by a human user.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.2', 'cis_nginx_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.2.3":
+    title: '2.2.3 | Ensure the NGINX service account has an invalid shell'
+    section: 'Account Security'
+    description: |
+        The nginx account should not have the ability to log in, so the /sbin/nologin shell should be set for the account.
+    remediation: |
+        Change the login shell for the nginx account to /sbin/nologin by using the following command: usermod -s /sbin/nologin
+        nginx
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.3', 'cis_nginx_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.3.1":
+    title: '2.3.1 | Ensure NGINX directories and files are owned by root'
+    section: 'Permissions and Ownership'
+    description: |
+        The owner and group of the /etc/nginx directory and its files should be root.
+    remediation: |
+        Run the following command to ensure ownership and group ownership is set to root: chown -R root:root /etc/nginx
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.3.1', 'cis_nginx_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.3.2":
+    title: '2.3.2 | Ensure access to NGINX directories and files is restricted'
+    section: 'Permissions and Ownership'
+    description: |
+        Permissions on the /etc/nginx directory should enforce the principle of least privilege.
+    remediation: |
+        Permissions are set with the ability to read as other by default on all configuration files: -rw-r--r-- Permissions are
+        set with the ability to read and execute as other by default on all directories: drwxr-xr-x To set permissions to least
+        privilege on the nginx configuration files, issue these commands:
+        find /etc/nginx -type d -exec chmod go-w {} +
+        find /etc/nginx -type f -exec chmod ug-x,o-rwx {} +
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.3.2', 'cis_nginx_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.3.3":
+    title: '2.3.3 | Ensure the NGINX process ID PID file is secured'
+    section: 'Permissions and Ownership'
+    description: |
+        The PID file stores the main process ID of the nginx process. This file should be protected from unauthorized
+        modification.
+    remediation: |
+        If the PID file is not owned by root, issue this command: chown root:root /var/run/nginx.pid
+         If the PID file has permissions greater than 644, issue this command: chmod u-x,go-wx /var/run/nginx.pid
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.3.3', 'cis_nginx_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.4.1":
+    title: '2.4.1 | Ensure NGINX only listens for network connections on authorized ports - manual'
+    section: 'Network Configuration'
+    description: |
+        NGINX can be configured to listen on any port, but it should be configured to listen on authorized ports only.
+    remediation: |
+        If any ports are listening that are not authorized, comment out or delete the associated configuration for that
+        listener.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_2.4.1', 'cis_nginx_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.4.2":
+    title: '2.4.2 | Ensure requests for unknown host names are rejected'
+    section: 'Network Configuration'
+    description: |
+        Your host header should be part of a predefined allowlist of known good hosts, which enables blocking access to other
+        hosts. You should treat the host header as another input to be validated, as it is defined by the user agent.
+    remediation: |
+        Ensure your first server block mirrors the below in your nginx configuration, either at /etc/nginx/nginx.conf or any
+        included file within your nginx config:
+        server {
+            return 404;
+        }
+                       Then investigate each server block to ensure the server_name directive is explicitly defined. Each server
+        block should look similar to the below with the defined hostname of the associated server block in the server_name
+        directive. For example, if your server is cisecurity.org, the configuration should look like the below example:
+        server {
+            listen       443;
+            server_name  cisecurity.org;
+            .....
+        }
+                       Impact: If you are in an environment such as the cloud, you should not put an IP address or default
+        hostname as your server_name because these addresses are often ephemeral in nature. Additionally, you will be blocked
+        from accessing your site if you use a means of access that does not directly reference names in the server_name
+        directive. You should reserve a DNS name to use for implementing this recommendation.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.4.2', 'cis_nginx_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.4.3":
+    title: '2.4.3 | Ensure keepalive timeout is 10 seconds or less but not 0'
+    section: 'Network Configuration'
+    description: |
+        Persistent connections are leveraged by all modern browsers to facilitate greater web performance. The keepalive timeout
+        limits the time a persistent connection may remain open. Setting the keepalive timeout allows this timeout to be
+        controlled on the server side.
+    remediation: |
+        Find the HTTP or server block of your nginx configuration, and add the keepalive_timeout directive. Set it to 10 seconds
+        or less, but not 0. This example command sets it to 10 seconds: keepalive_timeout 10;
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.4.3', 'cis_nginx_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.4.4":
+    title: '2.4.4 | Ensure send timeout is set to 10 seconds or less but not 0'
+    section: 'Network Configuration'
+    description: |
+        The sendtimeout directive sets a timeout for transmitting a response to the client between two successive write
+        operations.
+    remediation: |
+        Find the HTTP or server block of your nginx configuration, and add the send_timeout directive. Set it to 10 seconds or
+        less, but not 0. send_timeout   10;
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.4.4', 'cis_nginx_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.5.2":
+    title: '2.5.2 | Ensure default error and index.html pages do not reference NGINX'
+    section: 'Information Disclosure'
+    description: |
+        The default error and index.html pages for NGINX reveal that the server is NGINX. These default pages should be removed
+        or modified so they do not advertise the underlying infrastructure of the server.
+    remediation: |
+        Edit                  /usr/share/nginx/html/index.html
+         and                  usr/share/nginx/html/50x.html
+         and remove any lines that reference                  NGINX
+        .
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.5.2', 'cis_nginx_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.5.4":
+    title: '2.5.4 | Ensure the NGINX reverse proxy does not enable information disclosure'
+    section: 'Information Disclosure'
+    description: |
+        The server and xpoweredby header may specify the underlying technology used by an application. The NGINX reverse proxy
+        may pass these headers if not explicitly directed to remove them.
+    remediation: |
+        Implement the below directives as part of your location block. Edit                  /etc/nginx/nginx.conf
+         and add the following:
+        location /docs {
+        ....
+        proxy_hide_header X-Powered-By;
+        proxy_hide_header Server;
+        ....
+        }
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.5.4', 'cis_nginx_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1":
+    title: '3.1 | Ensure detailed logging is enabled - manual'
+    section: 'Logging'
+    description: |
+        System logging should be configured to meet your organizational security and privacy policies. Enabling detailed logging
+        to include information about events, event sources, timestamps, and users may assist in incident response activities.
+        NOTE Aim to keep sensitive information out of logs. For example, keep sensitive information out of query strings and
+        URIs to avoid this.
+    remediation: |
+        Edit the log format directive in /etc/nginx/nginx.conf so it logs everything needed to meet your organizational
+        policies.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_3.1', 'cis_nginx_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.2":
+    title: '3.2 | Ensure access logging is enabled'
+    section: 'Logging'
+    description: |
+        The accesslog directive should be on for every core site. It is enabled by default.
+    remediation: |
+        Ensure the access_log directive is configured for every core site your organization requires logging for. This should
+        look similar to the below configuration snippet. You may use different log file locations based on your needs.
+        access_log  /var/log/nginx/host.access.log  main;
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_3.2', 'cis_nginx_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.3":
+    title: '3.3 | Ensure error logging is enabled and set to the info logging level'
+    section: 'Logging'
+    description: |
+        All errors for applications should be logged.
+    remediation: |
+        Edit /etc/nginx/nginx.conf so the error_log directive is present and not commented out. The error_log should be
+        configured to the logging location of your choice. The configuration should look similar to the below: error_log
+        /var/log/nginx/error_log.log  info;
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.3', 'cis_nginx_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.4":
+    title: '3.4 | Ensure log files are rotated'
+    section: 'Logging'
+    description: |
+        Log rotation ensures log files do not consume excessive disk space, potentially causing a denial of service.
+    remediation: |
+        Follow the below procedure to change the default configuration to the recommended log rotation configuration. You may
+        need to manually edit or change the below command if the configuration is not the default. To change log compression
+        from daily to weekly: sed -i "s/daily/weekly/" /etc/logrotate.d/nginx
+         To change log rotation from every year to every 13 weeks: sed -i "s/rotate 52/rotate 13/" /etc/logrotate.d/nginx
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.4', 'cis_nginx_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.5":
+    title: '3.5 | Ensure error logs are sent to a remote syslog server - manual'
+    section: 'Logging'
+    description: |
+        Centralized log management helps ensure logs are forensically sound and are available at a central location for auditing
+        and incident investigation.
+    remediation: |
+        To enable central logging for your error logs, add the below line to your server block in your server configuration
+        file. 192.168.2.1 should be replaced with the location of your central log server. error_log syslog:server=192.168.2.1
+        info;
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_3.5', 'cis_nginx_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.6":
+    title: '3.6 | Ensure access logs are sent to a remote syslog server - manual'
+    section: 'Logging'
+    description: |
+        Centralized log management helps ensure logs are forensically sound and are available at a central location for auditing
+        and incident investigation.
+    remediation: |
+        To enable central logging for your access logs, add the below line to your server block in your server configuration
+        file. 192.168.2.1 should be replaced with the location of your central log server. The local logging facility may be
+        changed to any unconfigured facility on your server. access_log
+        syslog:server=192.168.2.1,facility=local7,tag=nginx,severity=info combined;
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_3.6', 'cis_nginx_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.7":
+    title: '3.7 | Ensure proxies pass source IP information - manual'
+    section: 'Logging'
+    description: |
+        The xforwardedfor and remote address headers help identify and separate the originating client IP address of the user
+        agent and the proxy IP address. The two types of addresses are the same, and one should always be present.
+    remediation: |
+        To ensure your proxy or load balancer will forward information about the client and the proxy to the application, you
+        must set the below headers in your location block. Edit your location block so it shows the proxy_set_header directives
+        for the client and the proxy as shown below. These headers are the exact same and there is no need to have both present.
+        server {
+            ...
+         location / {
+             proxy_pass (Insert Application URL here);
+             proxy_set_header X-Real-IP $remote_addr;
+             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            }
+        }
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_3.7', 'cis_nginx_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.1.1":
+    title: '4.1.1 | Ensure HTTP is redirected to HTTPS - manual'
+    section: 'TLS / SSL Configuration'
+    description: |
+        Browsers and clients establish encrypted connections with servers by leveraging HTTPS. Requests leveraging HTTP are
+        unencrypted. Unencrypted requests should be redirected so they are encrypted. Any listening HTTP port on your web server
+        should redirect to a server profile that uses encryption. The default HTTP unencrypted port is 80.
+    remediation: |
+        Edit your web server or proxy configuration file to redirect all unencrypted listening ports, such as port 80, using a
+        redirection through the return directive (cisecurity.org is used as an example server name).
+        server {
+            listen 80;
+
+            server_name cisecurity.org;
+
+            return 301 https://$host$request_uri;
+        }
+                       Impact: Use of HTTPS does result in a performance reduction in traffic to your website, however, due to
+        the increased value of the security, many businesses consider this to be a cost of doing business.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_4.1.1', 'cis_nginx_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.1.2":
+    title: '4.1.2 | Ensure a trusted certificate and trust chain is installed'
+    section: 'TLS / SSL Configuration'
+    description: |
+        Certificates and their trust chains are needed to establish the identity of a web server as legitimate and trusted.
+        Certificate authorities validate a web servers identity and that you are the owner of that web server domain name.
+    remediation: |
+        Use the following procedure to install a certificate and its signing certificate chain onto your web server, load
+        balancer, or proxy. Step 1:
+         Create the server's private key and a certificate signing request.               The following command will create your
+        certificate's private key with 2048-bit key strength. Optionally, this parameter may be changed to 4096 for greater
+        security. It will also output your certificate signing request to the nginx.csr file in your present working directory.
+        openssl req -new -newkey rsa:2048 -keyout nginx.key -out nginx.csr
+         Enter the below information about your private key:
+        Country Name (2 letter code) [XX]: Your Country
+        State or Province Name (full name) []: Your State
+        Locality Name (eg, city) [Default City]: Your City
+        Organization Name (eg, company) [Default Company Ltd]: Your City
+        Organizational Unit Name (eg, section) []: Your Organizational Unit
+        Common Name (eg, your name or your server's hostname) []: Your server's DNS name
+        Email Address []: Your email address
+                       Step 2:
+         Obtain a signed certificate from your certificate authority.               Provide your chosen certificate authority
+        with your certificate signing request. Follow your certificate authority's signing procedures in order to obtain a
+        certificate and the certificate's trust chain. A full trust chain is typically delivered in .pem format. Step 3:
+         Install certificate and signing certificate chain on your web server.               Place the .pem file from your
+        certificate authority into the directory of your choice. Locate your created key file from the command you used to
+        generate your certificate signing request. Open your website configuration file and edit your encrypted listener to
+        leverage the ssl_certificate and ssl_certificate_key directives for a web server as shown below. You should also inspect
+        include files inside your nginx.conf. This should be part of the server block.
+        server {
+            listen 443 ssl http2;
+            listen [::]:443 ssl http2;
+            ssl_certificate /etc/nginx/cert.crt;
+            ssl_certificate_key /etc/nginx/nginx.key;
+            ...
+            }
+                       After editing this file, you must recycle nginx services for these changes to take effect. This can be
+        done with the following command: sudo systemctl restart nginx
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_4.1.2', 'cis_nginx_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.1.3":
+    title: '4.1.3 | Ensure private key permissions are restricted'
+    section: 'TLS / SSL Configuration'
+    description: |
+        The servers private key should be protected from unauthorized access by limiting access based on the principle of least
+        privilege.
+    remediation: |
+        Run the following command to remove excessive permissions on key files in the `/etc/nginx/ directory. Note:
+         The directory /etc/nginx/ should be replaced with the location of your key file.               find /etc/nginx/ -name
+        '*.key' -exec chmod u-wx,go-rwx {} +
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.1.3', 'cis_nginx_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.1.4":
+    title: '4.1.4 | Ensure only modern TLS protocols are used'
+    section: 'TLS / SSL Configuration'
+    description: |
+        Only modern TLS protocols should be enabled in NGINX for all client connections and upstream connections. Removing
+        legacy TLS and SSL protocols SSL 3.0, TLS 1.0 and 1.1, and enabling emerging and stable TLS protocols TLS 1.2, and TLS
+        1.3, ensures users are able to take advantage of strong security capabilities and protects them from insecure legacy
+        protocols.
+    remediation: |
+        Run the following commands to change your ssl_protocols if they are already configured. This remediation advice assumes
+        your nginx configuration file does not include server configuration outside of /etc/nginx/nginx.conf. You may have to
+        also inspect the include files in your nginx.conf to ensure this is properly implemented. Web Server: sed -i
+        "s/ssl_protocols[^;]*;/ssl_protocols TLSv1.2 TLSv1.3;/" /etc/nginx/nginx.conf
+         Proxy: sed -i "s/proxy_ssl_protocols[^;]*;/proxy_ssl_protocols TLSv1.2 TLSv1.3;/" /etc/nginx/nginx.conf
+         If your ssl_protocols are not already configured, this can be accomplished manually by opening your web server or proxy
+        server configuration file and manually adding the directives. Web Server:
+        server {
+            ssl_protocols TLSv1.2 TLSv1.3;
+        }
+                       Proxy:
+        location / {
+              proxy_pass cisecurity.org;
+              proxy_ssl_protocols TLSv1.2 TLSv1.3;
+            }
+                       Impact: Disabling certain TLS may not allow legacy user agents to connect to your server. Disabling
+        negotiation of specific protocols with your backend server may also limit your ability to connect with legacy servers.
+        You should always consider if you need to support legacy user agents or servers when selecting your TLS protocols.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.1.4', 'cis_nginx_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.1.5":
+    title: '4.1.5 | Disable weak ciphers - manual'
+    section: 'TLS / SSL Configuration'
+    description: |
+        The sslciphers directive should be used to configure the available ciphers on your web server, and the proxysslciphers
+        directive should be used to configure the available ciphers for your proxy. Weak ciphers should be disabled based on
+        your companys policy or an industry best practice compliance profile. The sslpreferserverciphers should be used to
+        ensure the user agent respects the servers preferred cipher order and does not set its own. If you are using a proxy or
+        load balancer, you should use the proxysslciphers directive to ensure your upstream connections are negotiated using
+        secure ciphers.
+    remediation: |
+        The following procedures may be used to implement industry standard cipher profiles if you have an existing profile
+        defined. These profiles may be modified to meet the requirements defined in your company's policy. This procedure
+        assumes that all server blocks will be in /etc/nginx/nginx.conf and not inside any included files in the configuration.
+        Set the ssl_cipher directive as part of your server block, and set the proxy_ssl_ciphers directive as part of the
+        location block for your upstream server. This should look similar to the below examples: Server block configuration for
+        client connectivity to web server, proxy, or load balancer:
+        server {
+          ssl_ciphers ALL:!EXP:!NULL:!ADH:!LOW:!SSLv2:!SSLv3:!MD5:!RC4;
+        }
+                       Proxy or load balancer configuration for defined upstream negotiation:
+        location / {
+          proxy_pass https://cisecurity.org;
+          proxy_ssl_ciphers ALL:!EXP:!NULL:!ADH:!LOW:!SSLv2:!SSLv3:!MD5:!RC4;
+        }
+                              The below procedure assumes the default configuration profile. If you do not have ssl_ciphers or
+        proxy_ssl_ciphers defined, add the directives to your proxy or web server configuration profile, then run the below
+        commands to configure them to your selected profile. No weak ciphers SSLLABS proxy configuration sed -i
+        "s/proxy_ssl_ciphers[^;]*;/proxy_ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-
+        AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-
+        AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;/" /etc/nginx/nginx.conf
+         No weak ciphers SSLLABS web server configuration: sed -i "s/ssl_ciphers[^;]*;/ssl_ciphers ECDHE-ECDSA-AES128-GCM-
+        SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-
+        CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;/"
+        /etc/nginx/nginx.conf
+         For changes to take effect, you must recycle nginx: systemctl restart nginx
+         Impact: Strong cipher configurations may not allow legacy user agents or user agents with weak configurations to
+        connect to your site. If your server must also pass to a legacy upstream server, this may prevent it from being able to
+        negotiate a cipher upstream.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_4.1.5', 'cis_nginx_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.1.6":
+    title: '4.1.6 | Ensure custom Diffie-Hellman parameters are used'
+    section: 'TLS / SSL Configuration'
+    description: |
+        Custom DiffieHellman DH key exchange parameters should be used. DH Ephemeral DHE parameters with at least 2048 bits
+        should be generated.
+    remediation: |
+        Generate strong DHE (Ephemeral Diffie-Hellman) parameters using the following commands:
+        mkdir /etc/nginx/ssl
+        openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048
+        chmod 400 /etc/nginx/ssl/dhparam.pem
+                       Alter the server configuration to use the new parameters:
+        http {
+            server {
+                ssl_dhparam /etc/nginx/ssl/dhparam.pem;
+            }
+        }
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.1.6', 'cis_nginx_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.1.7":
+    title: '4.1.7 | Ensure Online Certificate Status Protocol OCSP stapling is enabled'
+    section: 'TLS / SSL Configuration'
+    description: |
+        OCSP allows a users browser or another user agent to verify the certificate it is seeing is not revoked. OCSP stapling
+        ensures your server presents this information to the users browser in a way that best meets the performance and security
+        needs of your website. It polls the Certificate Authoritys CA OCSP server at regular intervals to ensure it is
+        continuously kept up to date. OCSP stapling helps improve performance and security, so it should be enabled.
+    remediation: |
+        Follow this procedure to enable OCSP validation: Step 1:
+         Ensure your NGINX server has access to your CA's OCSP server.               Your CA's OCSP server may be found on your
+        CA's website and will vary depending on your CA vendor. Issue the following command in order to check your connectivity
+        to their site: curl -I "insert certificate authority ocsp server here"
+         If you get a 200 code response, your server has access. Step 2:
+         Enable OCSP on nginx.               Implement the ssl_stapling and ssl_stapling_verify directives. The directive
+        ssl_stapling enables OCSP stapling, and the directive ssl_stapling_verify enables verification of the OCSP responses on
+        nginx.
+        server {
+          ssl_stapling on;
+          ssl_stapling_verify on;
+        }
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.1.7', 'cis_nginx_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.1.8":
+    title: '4.1.8 | Ensure HTTP Strict Transport Security HSTS is enabled'
+    section: 'TLS / SSL Configuration'
+    description: |
+        HTTP Strict Transport Security HSTS headers instruct a user agent on how to communicate with a web server. HSTS headers
+        ensure the strict transport security policies built into browsers and other user agents are informed only to communicate
+        over HTTPS. HSTS with long validity periods should be used to most effectively secure your user population.
+        StrictTransportSecurity should have a long maxage, which is recommended to be at least six months in length. This
+        ensures the browser remembers your website should only be accessible via HTTPS for this amount of time.
+    remediation: |
+        Ensure the below snippet of code can be found in your server configuration for your proxy or web server. This will
+        ensure the HSTS header is set with a validity period of six months, or 15768000 seconds.
+        server {
+          add_header Strict-Transport-Security "max-age=15768000;" always;
+        }
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.1.8', 'cis_nginx_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.1.9":
+    title: '4.1.9 | Ensure upstream server traffic is authenticated with a client certificate'
+    section: 'TLS / SSL Configuration'
+    description: |
+        Client certificate validation allows the upstream server to authenticate the identity of the client connecting to it.
+        This assists in the establishment of mutual authentication between the client and the server.
+    remediation: |
+        In order to implement this recommendation, you must create a client certificate to be authenticated against and have it
+        signed. Once you have a signed certificate, place the certificate in a location of your choice. In the below example, we
+        use /etc/nginx/ssl/cert.pem. Implement the configuration as part of the location block:
+        proxy_ssl_certificate /etc/nginx/ssl/nginx.pem;
+        proxy_ssl_certificate_key /etc/nginx/ssl/nginx.key;
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.1.9', 'cis_nginx_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.1.10":
+    title: '4.1.10 | Ensure the upstream traffic server certificate is trusted'
+    section: 'TLS / SSL Configuration'
+    description: |
+        The NGINX server should be configured to validate the identity of the upstream server it is sending information to.
+    remediation: |
+        Obtain the full certificate chain of the upstream server in .pem format. Then reference that file in the location block
+        as part of the proxy_ssl_trusted_certificate directive. Implement the proxy_ssl_trusted_certificate and proxy_ssl_verify
+        directives as shown below as part of the location block you are using to send traffic to your upstream server.
+        proxy_ssl_trusted_certificate /etc/nginx/trusted_ca_cert.crt;
+        proxy_ssl_verify        on;
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_4.1.10', 'cis_nginx_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.1.11":
+    title: '4.1.11 | Ensure your domain is preloaded - manual'
+    section: 'TLS / SSL Configuration'
+    description: |
+        Preloading your domain hardcodes it as only being accessible through HTTPS by browsers. Note Preloading should only be
+        done with careful consideration!
+         Your website and all its subdomains will be forced over HTTPS. If your website or any of its subdomains are not able to
+        support preloading, you should not preload your site. Preloading should be optin only, and if done, may impact more
+        sites than the nginx instance you are working on. Removing preloading can be slow and painful, and should only be done
+        with careful consideration according to              https//hstspreload.org
+        .
+    remediation: |
+        In order to successfully preload your website, you must meet the below criteria: Serve a valid certificate. This may be
+        accomplished by following recommendation 4.1.2. Redirect from HTTP to HTTPS if using port 80. This may be accomplished
+        by following recommendation 4.1.1. Configure all subdomains to support HTTPS only. This will require you to configure
+        all subdomains for HTTPS only. For example, a subdomain of cissecurity.org is workbench.cissecurity.org and would need
+        to be configured for HTTPS only. Configure an HSTS header on your base domain, as shown below for nginx. If your base
+        domain is nginx, you may accomplish this with several modifications from the HSTS recommendation. Change your header to
+        include the preload directive and the includesubdomains directive, and make your max-length one year or longer. The
+        header should be modified similar to the below snippet. add_header Strict-Transport-Security "Strict-Transport-Security:
+        max-age=31536000; includeSubDomains; preload";
+
+        After you have met these requirements, add your site to the list by following the instructions at
+        https://hstspreload.org/
+        .
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_4.1.11', 'cis_nginx_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.1.12":
+    title: '4.1.12 | Ensure session resumption is disabled to enable perfect forward security'
+    section: 'TLS / SSL Configuration'
+    description: |
+        Session resumption for HTTPS sessions should be disabled so perfect forward secrecy can be achieved.
+    remediation: |
+        Turn off the ssl_session_tickets directive as part of any server block in your nginx configuration: ssl_session_tickets
+        off;
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_4.1.12', 'cis_nginx_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.1.14":
+    title: '4.1.14 | Ensure only Perfect Forward Secrecy Ciphers are Leveraged - manual'
+    section: 'TLS / SSL Configuration'
+    description: |
+        Perfect forward secrecy protects users of your website by ensuring that even if your private key is compromised that
+        your users sessions are not able to be compromised. This improves upon other ciphers where if your private key was
+        compromised all user sessions can also be compromised retroactively.
+    remediation: |
+        Ensure that only ciphers that are compatible with perfect forward secrecy are used. ECDHE/EECDH ciphers and DHE/EDH
+        ciphers support this capability. Its recommended to leverage ECDHE ciphers unless you need to support legacy clients
+        because they are considered stronger and faster. An example configuration that may be used is:
+        "EECDH:EDH:!NULL:!SSLv2:!RC4:!aNULL:!3DES:!IDEA". The below configuration will only enable ciphers compatible with
+        perfect forward secrecy. Web Server: ssl_ciphers EECDH:EDH:!NULL:!SSLv2:!RC4:!aNULL:!3DES:!IDEA;
+         Proxy: proxy_ssl_ciphers EECDH:EDH:!NULL:!SSLv2:!RC4:!aNULL:!3DES:!IDEA;
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_4.1.14', 'cis_nginx_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.1.1":
+    title: '5.1.1 | Ensure allow and deny filters limit access to specific IP addresses - manual'
+    section: 'Access Control'
+    description: |
+        IPbased restrictions act as a defense in depth mechanism. They allow you to allowlist legitimate paths to your
+        applications and explicitly deny IP addresses you believe to be malicious.
+    remediation: |
+        Compile a list of network ranges or IP addresses you would want to access your web server or proxy. Then add these
+        ranges with the allow directive. The deny directive should be included with all IP addresses implicitly denied.
+        location / {
+            allow 10.1.1.1;
+            deny all;
+        }
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_5.1.1', 'cis_nginx_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.1.2":
+    title: '5.1.2 | Ensure only approved HTTP methods are allowed - manual'
+    section: 'Access Control'
+    description: |
+        HTTP methods also known as verbs allow different actions to be requested from the web server at a specified path. Only
+        the necessary methods should be enabled.
+    remediation: |
+        To remove unneeded methods and only allow required methods, add the following into a server or location block in your
+        nginx.conf.  The below snippet assumes only the methods GET, HEAD and POST are required for an application. The reason
+        for 444 as a response is because it contains no information and can help mitigate automated attacks.
+        if ($request_method !~ ^(GET|HEAD|POST)$) {
+           return 444;
+        }
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_5.1.2', 'cis_nginx_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2.1":
+    title: '5.2.1 | Ensure timeout values for reading the client header and body are set correctly'
+    section: 'Request Limits'
+    description: |
+        The clientheadertimeout and clientbodytimeout directives define the time the server will wait for the header or body to
+        be sent from the client. If the client does not send the entire header in this predefined timeframe, the server will
+        send back a 408 request timeout error.
+    remediation: |
+        Find the HTTP or server block of your nginx configuration and add the client_header_timeout and client_body_timeout
+        directives set to the configuration. The below example sets the timeouts to 10 seconds.
+        client_body_timeout   10;
+        client_header_timeout 10;
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.1', 'cis_nginx_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.2.2":
+    title: '5.2.2 | Ensure the maximum request body size is set correctly'
+    section: 'Request Limits'
+    description: |
+        The clientmaxbodysize directive sets the size of the request body that is allowed to read a client request. This defines
+        the number of bytes allowed in a request and is equivalent to the ContentLength request header field.
+    remediation: |
+        Find the HTTP or server block of your nginx configuration and add the client_max_body_size set to 100K in this block.
+        The appropriate value may be different based on your application's needs. client_max_body_size 100K;
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.2', 'cis_nginx_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.2.3":
+    title: '5.2.3 | Ensure the maximum buffer size for URIs is defined'
+    section: 'Request Limits'
+    description: |
+        The largeclientheaderbuffers directive defines the number and size of buffers used within the URI. A request cannot
+        exceed the size of this buffer when this directive is configured. The largeclientheaderbuffers directive should be set
+        to restrict buffer usage. The number of buffers should generally set to two and the length be set to 1K however, this
+        may not be a good fit for your application and may need to be set differently.
+    remediation: |
+        Open your nginx.conf file and locate your server or HTTP blocks. This may be added to the HTTP block for all
+        configurations or the server block for more specific configurations to meet your needs. Add the below line to implement
+        this recommendation: large_client_header_buffers 2 1k;
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2.3', 'cis_nginx_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.2.4":
+    title: '5.2.4 | Ensure the number of connections per IP address is limited - manual'
+    section: 'Request Limits'
+    description: |
+        The maximum number of simultaneous connections allowed from a single IP address to your server should be limited. It
+        should be set to a value that meets your organizational policies.
+    remediation: |
+        Implement the below directives under the HTTP and server blocks of your nginx configuration or any include files. The
+        below configuration creates a memory zone of 10 megabytes called limitperip. It will limit the number of connections per
+        IP address to 10 simultaneous connections. The number of simultaneous connections to allow may be different depending on
+        your organization's policies and use cases.
+        http {
+          limit_conn_zone $binary_remote_addr zone=limitperip:10m;
+          server {
+            limit_conn limitperip 10;
+          }
+        }
+                       Impact: Users of your system that are behind a corporate web proxy using network address translation or a
+        proxy service such as tor may have an increased chance of being blocked due to this configuration. This is because
+        multiple users in these scenarios come from the same IP address. You should always consider your user base when setting
+        a connection limit.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_5.2.4', 'cis_nginx_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2.5":
+    title: '5.2.5 | Ensure rate limits by IP address are set - manual'
+    section: 'Request Limits'
+    description: |
+        Rate limiting should be enabled to limit the number of requests an IP address may make to a server in a given period of
+        time. The configuration values should be set based on your applications needs and your organizational policy.
+    remediation: |
+        Implement the below directives under the HTTP and server blocks of your nginx configuration or any include files. The
+        below configuration creates a memory zone of 10 megabytes called "ratelimit" and sets the number of requests per second
+        that can be sent by any given IP address to 5. Further, this configuration sets a burst of 10 to ensure that requests
+        may come more frequently and sets no delay to ensure that the bursting may be all at once and not queued.
+        http {
+          limit_req_zone $binary_remote_addr zone=ratelimit:10m rate=5r/s;
+          server {
+            location / {
+              limit_req zone=ratelimit burst=10 nodelay;
+            }
+          }
+        }
+                       Impact: If you serve a high traffic API, this may prevent users from being able to call your website. You
+        may also limit users behind a corporate web proxy or a proxy service such as tor if they use your website heavily.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_5.2.5', 'cis_nginx_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:

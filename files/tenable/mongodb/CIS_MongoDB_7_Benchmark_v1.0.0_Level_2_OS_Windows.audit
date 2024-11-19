@@ -1,0 +1,501 @@
+#TRUSTED 7681af687f98a12af0ed5126ddc7cd2500dba68a47e9b2beef073492925b9a66ced28120a7a1edf86334bb0cd64d30cbaa062ea880e0d8432b6b908c8c254d831d5c8fac9f180e3016094cfd8a73565283642e8b6111881014a1ca7d662109ad42a52880ceebd349d00e8d246cd1caca3c101af78f27bc322958bec032ed225af80e48c7f302a58c7cb0910217ac3e6460729c91e53d8435a196d9ecaaaf504ad20f79dfb5485965975b4b1e325caac651354944d92319ea6098b6b5185aeb69ef4e6fba0deb314a033912457f3b97d35773040793318369536c5afb9d40dbc51e9c1edd3388474d2e4d556cc2a0b40c79dac2b0016b7acb1304cd2f7e096533e1b458a5137028e9900eba9ddcbcc083965376daade699850bc2723d34c8f055db9ca3ab2abd92e139e8a217cca3c0b71b53de5c05e7cc7da14dff030e849b0d43d778fafbaeb52d6f4b7f83de3a54b86a7dd24fa75dd3ed8da15815ca6748d7dc69287b3d3d4db98052c79b6c555173f984bf1b2cfcb0e5f08060819dacc41441350eb374b01f821eb851b0f3580d3439a30de06cbfae3d2ab51585e9f29bbfbb2d067ed135064852829fdf1b7bdec3e9bc8b7f43d84641c83ec7f0be675d57725b30b227ce971ffe350fea4f32f13f1b7dede3058bf726c203a7e06a0b7bf7f57637f44b0267b175f7ed406dba39bd66bec4ce62c30d9b7119e929bd1901fe
+#TRUST-RSA-SHA256 aa91aa88cb8b067f0a3c4840aef6b9a8e1c21b97c301f92e8b5c5ea80993019377cb51844f2f6d8cc79cdb98aff71618d3e28e34b53e7f13741cff8c785ea3f963a3424facac416656bf8ed98617d6ffee119884f88106d229d72495cb30f313ea6320a76d03603f5fe7bcc9d9b574dcb01341d94b342208f991e4238d4539b0e74633c272f487249b5095473ad85f88d9ee3f2c991e5991aa86e38f6c2c0999f8fd91c51fbefe588c9b68447a7e0867f4e4dd0a22c16b15822ebd832699836568060ed54a35e0e6b940884d779c8c9608322ae1a6cb4c77cf39b0fab820b1ef631ba84aa646e3d12cfc574df6c163f4e3d115f3214d81d1e512a49e56663d9a759e67f9e96581a715516ddff95026c419551b797670e970fba2caebc418d72adb463b06cff716d4b00d9a74df0b5480756ab94283332eae808896b75cb9cd450a80dc7011859bae1646abdcdc3fb50bbd2d1042b86f42e2e9f3b00617f7f00d6719b55b739bc7b0fabb80c100790dc5b89a7f9891201cdf95d3bf6c69b85dd72f20eb89c2e0c201d2f942813e80dfad452dcd3aacc1e810b817e8c6ee295c26c93bd2c7c7468a7c8e437c38cb3d9c6436473defe33013d17d51aa571944d5e66051423a52f56a897ed603c7155b34fd0f91cccc192f2608efae2672ec511963acaafaf7ac68dcda0be945382b71f2a580f7114dab643b8b24ab3e0c0b0e015c
+#
+# This script is Copyright (C) 2004-2024 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.1 $
+# $Date: 2024/06/17 $
+#
+# Description : This document implements the security configuration as recommended by the
+#               CIS MongoDB 7 Benchmark v1.0.0
+#
+#<ui_metadata>
+#<display_name>CIS MongoDB 7 L2 OS Windows v1.0.0</display_name>
+#<spec>
+#  <type>CIS</type>
+#  <name>MongoDB 7</name>
+#  <profile>L2 OS Windows</profile>
+#  <version>1.0.0</version>
+#  <link>https://workbench.cisecurity.org/benchmarks/15135</link>
+#</spec>
+#<labels>ms_mongodb_7,cis</labels>
+#<benchmark_refs>CCE,CSCv6,CSCv7,CSCv8,LEVEL</benchmark_refs>
+#<variables>
+#  <variable>
+#    <name>MONGOD_CONF_FULL_PATH</name>
+#    <default>C:\Program Files\MongoDB\Server\7.0\bin\mongod.cfg</default>
+#    <description>Full path to the mongodb conf file</description>
+#    <info>Full path to the mongodb conf file</info>
+#    <value_type>WIN_FILE_PATH</value_type>
+#  </variable>
+#  <variable>
+#    <name>MONGO_BINARY_PATH</name>
+#    <default>C:\Program Files\MongoDB\Server\7.0\bin\</default>
+#    <description>Path to the mongo binary. Do not include mongo.exe.</description>
+#    <info>Path to the mongo binary. Do not include mongo.exe.</info>
+#    <value_type>WIN_FILE_PATH</value_type>
+#  </variable>
+#</variables>
+#</ui_metadata>
+
+<check_type:"Windows" version:"2">
+<group_policy:"CIS MongoDB 7">
+
+<if>
+  <condition type:"AND">
+    <custom_item>
+      type            : AUDIT_POWERSHELL
+      description     : "Check for MongoDB 7"
+      value_type      : POLICY_TEXT
+      value_data      : "^7"
+      powershell_args : "Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*, HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Where-Object { $_.DisplayName -Clike 'Mongo*'} | Select-Object DisplayVersion"
+      check_type      : CHECK_REGEX
+    </custom_item>
+  </condition>
+
+  <then>
+    <report type:"PASSED">
+      description : "CIS_MongoDB_7_Benchmark_v1.0.0_Level_2_OS_Windows.audit from CIS MongoDB 7 Benchmark"
+      see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+    </report>
+
+    <if>
+      <condition type:"AND">
+        <custom_item>
+          type            : AUDIT_POWERSHELL
+          description     : "Check for isdbgrid / sharding"
+          value_type      : POLICY_TEXT
+          value_data      : '"msg"[\s]*:[\s]*"isdbgrid"'
+          powershell_args : "cd '@MONGO_BINARY_PATH@';./mongo.exe --eval 'db.hello()'"
+          check_type      : CHECK_REGEX
+        </custom_item>
+      </condition>
+
+      <then>
+        <if>
+          <condition auto:"FAILED" type:"AND">
+            <custom_item>
+              type        : FILE_CONTENT_CHECK
+              description : "PEMKeyFile"
+              value_type  : POLICY_TEXT
+              value_data  : "@MONGOD_CONF_FULL_PATH@"
+              regex       : "^[\s]*PEMKeyFile[\s]*:"
+              expect      : "^[\s]*PEMKeyFile[\s]*:[\s]*.+$"
+            </custom_item>
+
+            <custom_item>
+              type        : FILE_CONTENT_CHECK
+              description : "clusterFile"
+              value_type  : POLICY_TEXT
+              value_data  : "@MONGOD_CONF_FULL_PATH@"
+              regex       : "^[\s]*clusterFile[\s]*:"
+              expect      : "^[\s]*clusterFile[\s]*:[\s]*.+$"
+            </custom_item>
+
+            <custom_item>
+              type        : FILE_CONTENT_CHECK
+              description : "CAFile"
+              value_type  : POLICY_TEXT
+              value_data  : "@MONGOD_CONF_FULL_PATH@"
+              regex       : "^[\s]*CAFile[\s]*:"
+              expect      : "^[\s]*CAFile[\s]*:[\s]*.+$"
+            </custom_item>
+
+            <custom_item>
+              type        : FILE_CONTENT_CHECK
+              description : "clusterAuthMode"
+              value_type  : POLICY_TEXT
+              value_data  : "@MONGOD_CONF_FULL_PATH@"
+              regex       : "^[\s]*clusterAuthMode[\s]*:"
+              expect      : "^[\s]*clusterAuthMode[\s]*:[\s]*x509$"
+            </custom_item>
+
+            <custom_item>
+              type        : FILE_CONTENT_CHECK
+              description : "authenticationMechanisms"
+              value_type  : POLICY_TEXT
+              value_data  : "@MONGOD_CONF_FULL_PATH@"
+              regex       : "^[\s]*authenticationMechanisms[\s]*:"
+              expect      : "^[\s]*authenticationMechanisms[\s]*:[\s]*MONGODB-X509$"
+            </custom_item>
+          </condition>
+
+          <then>
+            <report type:"PASSED">
+              description : "2.3 Ensure authentication is enabled in the sharded cluster"
+              info        : "Authentication is enabled in a sharded cluster when the certificate or key files are created and configured for all components. This ensures that every client that accesses the cluster must provide credentials, to include MongoDB instances that access each other within the cluster.
+
+With keyfile authentication, each mongod or mongos instance in the sharded cluster uses the contents of the keyfile as the shared password for authenticating other members in the deployment. Only mongod or mongos instances with the correct keyfile can join the sharded cluster.
+
+For Production Environment: x.509 certificate authentication with secure TSL/SSL connection must be used for authentication.
+
+For Development Purpose: Key file can be used as an authentication mechanism between the shared cluster. Keyfiles are bare-minimum forms of security and are best suited for testing or development environments.
+
+Rationale:
+
+Enforcing a key or certificate on a sharded cluster prevents unauthorized access to the MongoDB database and provides traceability of database activities to a specific user or component. A MongoDB sharded cluster can enforce user authentication as well as internal authentication of its components to secure against unauthorized access."
+              solution    : "To authenticate to servers, clients can use x.509 certificates instead of usernames and passwords.
+MongoDB supports x.509 certificate authentication for use with a secure TLS/SSL connection. The x.509 client authentication allows clients to authenticate to servers with certificates rather than with a username and password.
+Change the configuration file /etc/mongod.conf on each host, adding the following rows:
+
+net:
+   port: 27017
+   tls:
+      mode: requireSSL
+      PEMKeyFile: /etc/mongodb/ssl/server1.pem
+      CAFile: /etc/mongodb/ssl/mongoCA.crt
+      clusterFile: /etc/mongodb/ssl/server1.pem
+   security:
+      authorization: enabled
+      clusterAuthMode: x509
+
+Restart the daemon
+
+sudo service mongodb restart
+
+
+
+
+To enable authentication in the sharded cluster, perform the following steps:(Only for Development Purpose)
+
+
+Generate A Key File
+
+On each component in the shared cluster, enable authentication by editing the configuration file /etc/mongod.conf. Set the keyFile option to the key file's path and then start the component with this command:
+
+keyFile = /srv/mongodb/keyfile
+
+When starting the component, set --keyFile option, which is an option for both mongos instances and mongod instances. Set the --keyFile to the key file's path.
+
+Default Value:
+
+Not configured"
+              reference   : "800-171|3.4.1,800-53|CM-8,800-53r5|CM-8,CN-L3|8.1.10.2(a),CN-L3|8.1.10.2(b),CSCv7|1.8,CSCv8|6.6,CSF|DE.CM-7,CSF|ID.AM-1,CSF|ID.AM-2,CSF|PR.DS-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-8,LEVEL|2A,NESA|T1.2.1,NESA|T1.2.2"
+              see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+              show_output : YES
+            </report>
+          </then>
+        </if>
+      </then>
+
+      <else>
+        <report type:"PASSED">
+          description : "2.3 Ensure authentication is enabled in the sharded cluster"
+          info        : "Authentication is enabled in a sharded cluster when the certificate or key files are created and configured for all components. This ensures that every client that accesses the cluster must provide credentials, to include MongoDB instances that access each other within the cluster.
+
+With keyfile authentication, each mongod or mongos instance in the sharded cluster uses the contents of the keyfile as the shared password for authenticating other members in the deployment. Only mongod or mongos instances with the correct keyfile can join the sharded cluster.
+
+For Production Environment: x.509 certificate authentication with secure TSL/SSL connection must be used for authentication.
+
+For Development Purpose: Key file can be used as an authentication mechanism between the shared cluster. Keyfiles are bare-minimum forms of security and are best suited for testing or development environments.
+
+Rationale:
+
+Enforcing a key or certificate on a sharded cluster prevents unauthorized access to the MongoDB database and provides traceability of database activities to a specific user or component. A MongoDB sharded cluster can enforce user authentication as well as internal authentication of its components to secure against unauthorized access."
+          solution    : "To authenticate to servers, clients can use x.509 certificates instead of usernames and passwords.
+MongoDB supports x.509 certificate authentication for use with a secure TLS/SSL connection. The x.509 client authentication allows clients to authenticate to servers with certificates rather than with a username and password.
+Change the configuration file /etc/mongod.conf on each host, adding the following rows:
+
+net:
+   port: 27017
+   tls:
+      mode: requireSSL
+      PEMKeyFile: /etc/mongodb/ssl/server1.pem
+      CAFile: /etc/mongodb/ssl/mongoCA.crt
+      clusterFile: /etc/mongodb/ssl/server1.pem
+   security:
+      authorization: enabled
+      clusterAuthMode: x509
+
+Restart the daemon
+
+sudo service mongodb restart
+
+
+
+
+To enable authentication in the sharded cluster, perform the following steps:(Only for Development Purpose)
+
+
+Generate A Key File
+
+On each component in the shared cluster, enable authentication by editing the configuration file /etc/mongod.conf. Set the keyFile option to the key file's path and then start the component with this command:
+
+keyFile = /srv/mongodb/keyfile
+
+When starting the component, set --keyFile option, which is an option for both mongos instances and mongod instances. Set the --keyFile to the key file's path.
+
+Default Value:
+
+Not configured"
+          reference   : "800-171|3.4.1,800-53|CM-8,800-53r5|CM-8,CN-L3|8.1.10.2(a),CN-L3|8.1.10.2(b),CSCv7|1.8,CSCv8|6.6,CSF|DE.CM-7,CSF|ID.AM-1,CSF|ID.AM-2,CSF|PR.DS-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-8,LEVEL|2A,NESA|T1.2.1,NESA|T1.2.2"
+          see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+        </report>
+      </else>
+    </if>
+
+    <custom_item>
+      type            : AUDIT_POWERSHELL
+      description     : "4.1 Ensure legacy TLS protocols are disabled"
+      info            : "Only modern TLS protocols should be enabled in MongoDB for all client connections and upstream connections. Removing legacy TLS and SSL protocols (SSL 3.0, TLS 1.0 and 1.1), and enabling emerging and stable TLS protocols (TLS 1.2, and TLS 1.3), ensures users are able to take advantage of strong security capabilities and protects them from insecure legacy protocols.
+
+Rationale:
+
+Why disable TLS 1.0: TLS 1.0 was deprecated from use when PCI DSS Compliance mandated that it not be used for any applications processing credit card numbers in June 2018.
+
+Why disable TLS 1.1: Because of the increased security associated with higher versions of TLS, TLS 1.0 should be disabled."
+      solution        : "Make changes to configuration file, to configure your mongod or mongos instance to disable legacy protocols, shut down the instance and update the configuration file with the following setting:
+
+net:
+  tls:
+    mode: requireTLS
+    certificateKeyFile: /etc/ssl/mongodb.pem
+    CAFile: /etc/ssl/caToValidateClientCertificates.pem
+    disabledProtocols: TLS1_0,TLS1_1
+
+Start mongod or mongos instance with the configuration file.
+
+mongod --config /etc/mongod.conf
+
+Default Value:
+
+TLS1_0, TLS1_1, TLS1_2
+
+Note: Starting in version 4.0.4 (and 3.6.9)TLS1_3 is added to the default value."
+      reference       : "800-171|3.4.1,800-171|3.4.2,800-171|3.4.6,800-171|3.4.7,800-171|3.13.1,800-171|3.13.2,800-53|CM-1,800-53|CM-2,800-53|CM-6,800-53|CM-7,800-53|CM-7(1),800-53|CM-9,800-53|SA-3,800-53|SA-8,800-53|SA-10,800-53r5|CM-1,800-53r5|CM-2,800-53r5|CM-6,800-53r5|CM-7,800-53r5|CM-7(1),800-53r5|CM-9,800-53r5|SA-3,800-53r5|SA-8,800-53r5|SA-10,CSCv7|18.11,CSCv8|4.1,CSF|DE.AE-1,CSF|ID.GV-1,CSF|ID.GV-3,CSF|PR.DS-7,CSF|PR.IP-1,CSF|PR.IP-2,CSF|PR.IP-3,CSF|PR.PT-3,GDPR|32.1.b,GDPR|32.4,HIPAA|164.306(a)(1),ITSG-33|CM-1,ITSG-33|CM-2,ITSG-33|CM-6,ITSG-33|CM-7,ITSG-33|CM-7(1),ITSG-33|CM-9,ITSG-33|SA-3,ITSG-33|SA-8,ITSG-33|SA-8a.,ITSG-33|SA-10,LEVEL|2A,NESA|M1.2.2,NESA|T1.2.1,NESA|T1.2.2,NESA|T3.2.5,NESA|T3.4.1,NESA|T4.5.3,NESA|T4.5.4,NESA|T7.2.1,NESA|T7.5.1,NESA|T7.5.3,NESA|T7.6.1,NESA|T7.6.2,NESA|T7.6.3,NESA|T7.6.5,NIAv2|GS8b,NIAv2|SS3,NIAv2|SS15a,NIAv2|SS16,NIAv2|VL2,NIAv2|VL7a,NIAv2|VL7b,PCI-DSSv3.2.1|2.2.2,QCSC-v1|3.2,QCSC-v1|4.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|7.2,SWIFT-CSCv1|2.3"
+      see_also        : "https://workbench.cisecurity.org/benchmarks/15135"
+      value_type      : POLICY_TEXT
+      value_data      : "^[\s]*>[\s]*disabledProtocols[\s]*:[\s]*(?=.*TLS1_0)(?=.*TLS1_1).*"
+      powershell_args : "get-content '@MONGOD_CONF_FULL_PATH@' | select-string -pattern 'net:' -context 0,10"
+      check_type      : CHECK_REGEX
+    </custom_item>
+
+    <custom_item>
+      type            : AUDIT_POWERSHELL
+      description     : "4.4 Ensure Federal Information Processing Standard (FIPS) is enabled"
+      info            : "The Federal Information Processing Standard (FIPS) is a computer security standard used to certify software modules and libraries that encrypt and decrypt data securely. You can configure MongoDB to run with a FIPS 140-2 certified library for OpenSSL.
+
+FIPS is a property of the encryption system and not the access control system. However, the environment requires FIPS compliant encryption and access control. Organizations must ensure that the access control system uses only FIPS-compliant encryption.
+
+Rationale:
+
+FIPS is an industry standard which dictates how data should be encrypted at rest and during transmission."
+      solution        : "Configuring FIPS mode, ensure that your certificate is FIPS compliant. Run mongod or mongos instance in FIPS mode.
+Make changes to configuration file, to configure your mongod or mongos instance to use FIPS mode, shut down the instance and update the configuration file with the following setting:
+
+net:
+   tls:
+      FIPSMode: true
+
+Start mongod or mongos instance with a configuration file.
+
+mongod --config /etc/mongod.conf
+
+Default Value:
+
+Not configured"
+      reference       : "800-171|3.13.8,800-171|3.13.16,800-53|SC-8,800-53|SC-28,800-53r5|SC-8,800-53r5|SC-28,CN-L3|8.1.2.2(a),CN-L3|8.1.2.2(b),CN-L3|8.1.4.7(a),CN-L3|8.1.4.7(b),CN-L3|8.1.4.8(a),CN-L3|8.1.4.8(b),CN-L3|8.2.4.5(c),CN-L3|8.2.4.5(d),CN-L3|8.5.2.2,CSCv7|14.4,CSCv7|14.8,CSF|PR.DS-1,CSF|PR.DS-2,CSF|PR.DS-5,GDPR|32.1.a,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(2)(iv),HIPAA|164.312(e)(1),HIPAA|164.312(e)(2)(i),HIPAA|164.312(e)(2)(ii),ITSG-33|SC-8,ITSG-33|SC-8a.,ITSG-33|SC-28,ITSG-33|SC-28a.,LEVEL|2A,NESA|T4.3.1,NESA|T4.3.2,NESA|T4.5.1,NESA|T4.5.2,NESA|T7.3.3,NESA|T7.4.1,NIAv2|IE8,NIAv2|IE9,NIAv2|IE12,NIAv2|NS29,NIAv2|SS24,PCI-DSSv3.2.1|2.3,PCI-DSSv3.2.1|3.4,PCI-DSSv3.2.1|4.1,PCI-DSSv4.0|2.2.7,PCI-DSSv4.0|3.3.2,PCI-DSSv4.0|3.5.1,PCI-DSSv4.0|4.2.1,QCSC-v1|5.2.2,QCSC-v1|6.2"
+      see_also        : "https://workbench.cisecurity.org/benchmarks/15135"
+      value_type      : POLICY_TEXT
+      value_data      : "^[\s]*>[\s]*FIPSMode[\s]*:[\s]*true"
+      powershell_args : "get-content '@MONGOD_CONF_FULL_PATH@' | select-string -pattern 'net:' -context 0,10"
+      check_type      : CHECK_REGEX
+    </custom_item>
+
+    <report type:"WARNING">
+      description : "4.5 Ensure Encryption of Data at Rest"
+      info        : "Encryption of data at rest must be enabled to ensure compliance with security and privacy standards including HIPAA, PCI-DSS, and FERPA.
+
+Encryption at rest, when used in conjunction with transport encryption and good security policies that protect relevant accounts, passwords, and encryption keys.
+
+Rationale:
+
+Unauthorized users, such as intruders who are attempting security attacks, cannot read the data from storage and back up media unless they have the master encryption key to decrypt it.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+      solution    : "It is recommended to enable the data at rest encryption to protect the data.
+Protecting Data at Rest Including following steps.
+
+Generating a master key.
+
+Generating keys for each database.
+
+Encrypting data with the database keys.
+
+Encrypting the database keys with the master key.
+
+Only the master key is external to the server and requires external management. To manage the master key, MongoDB's encrypted storage engine supports two key management options:
+
+Integration with a third-party key management appliance via the Key Management Interoperability Protocol (KMIP). Recommended
+
+Use of local key management via a keyfile.
+
+The encryption occurs transparently in the storage layer; i.e. all data files are fully encrypted from a filesystem perspective, and data only exists in an unencrypted state in memory and during transmission.
+To enable Encryption on Database follow below step mentioned in below Link
+https://docs.mongodb.com/manual/tutorial/configure-encryption/
+Rotation of Key is also important. This can be enabled by following mentioned steps in below link.
+https://docs.mongodb.com/manual/tutorial/rotate-encryption-key/"
+      reference   : "800-171|3.13.16,800-53|SC-28,800-53r5|SC-28,CN-L3|8.1.4.7(b),CN-L3|8.1.4.8(b),CSCv7|14.8,CSF|PR.DS-1,GDPR|32.1.a,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(2)(iv),HIPAA|164.312(e)(2)(ii),ITSG-33|SC-28,ITSG-33|SC-28a.,LEVEL|2M,PCI-DSSv3.2.1|3.4,PCI-DSSv4.0|3.3.2,PCI-DSSv4.0|3.5.1,QCSC-v1|5.2.2,QCSC-v1|6.2"
+      see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+    </report>
+
+    <custom_item>
+      type            : AUDIT_POWERSHELL
+      description     : "5.2 Ensure that audit filters are configured properly"
+      info            : "MongoDB Enterprise supports auditing of various operations. When enabled, the audit facility, by default, records all auditable operations as detailed in Audit Event Actions, Details, and Results. To specify which events to record, the audit feature includes the --auditFilter option. This check is only for Enterprise editions.
+
+Rationale:
+
+All operations carried out on the database are logged. This helps in backtracking and tracing any incident that occurs."
+      solution        : "Set the audit filters based on the organization's requirements.
+
+Default Value:
+
+Not configured"
+      reference       : "800-171|3.3.1,800-171|3.3.2,800-171|3.3.6,800-53|AU-2,800-53|AU-3,800-53|AU-3(1),800-53|AU-7,800-53|AU-12,800-53r5|AU-2,800-53r5|AU-3,800-53r5|AU-3(1),800-53r5|AU-7,800-53r5|AU-12,CN-L3|7.1.2.3(a),CN-L3|7.1.2.3(b),CN-L3|7.1.2.3(c),CN-L3|7.1.3.3(a),CN-L3|7.1.3.3(b),CN-L3|8.1.4.3(a),CN-L3|8.1.4.3(b),CSCv7|6.2,CSCv7|6.3,CSCv8|8.2,CSCv8|8.5,CSF|DE.CM-1,CSF|DE.CM-3,CSF|DE.CM-7,CSF|PR.PT-1,CSF|RS.AN-3,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ITSG-33|AU-2,ITSG-33|AU-3,ITSG-33|AU-3(1),ITSG-33|AU-7,ITSG-33|AU-12,LEVEL|2M,NESA|M1.2.2,NESA|M5.5.1,NESA|T3.6.2,NIAv2|AM7,NIAv2|AM11a,NIAv2|AM11b,NIAv2|AM11c,NIAv2|AM11d,NIAv2|AM11e,NIAv2|AM34a,NIAv2|AM34b,NIAv2|AM34c,NIAv2|AM34d,NIAv2|AM34e,NIAv2|AM34f,NIAv2|AM34g,NIAv2|SS30,NIAv2|VL8,PCI-DSSv3.2.1|10.1,PCI-DSSv3.2.1|10.3,PCI-DSSv3.2.1|10.3.1,PCI-DSSv3.2.1|10.3.2,PCI-DSSv3.2.1|10.3.3,PCI-DSSv3.2.1|10.3.4,PCI-DSSv3.2.1|10.3.5,PCI-DSSv3.2.1|10.3.6,PCI-DSSv4.0|10.2.2,QCSC-v1|3.2,QCSC-v1|6.2,QCSC-v1|8.2.1,QCSC-v1|10.2.1,QCSC-v1|11.2,QCSC-v1|13.2,SWIFT-CSCv1|6.4"
+      see_also        : "https://workbench.cisecurity.org/benchmarks/15135"
+      value_type      : POLICY_TEXT
+      value_data      : "^[\s]*>[\s]*filter[\s]*:[\s]*.+$"
+      powershell_args : "get-content '@MONGOD_CONF_FULL_PATH@' | select-string -pattern 'auditLog' -context 0,10"
+      check_type      : CHECK_REGEX
+    </custom_item>
+
+    <custom_item>
+      type            : AUDIT_POWERSHELL
+      description     : "5.3 Ensure that logging captures as much information as possible"
+      info            : "The SystemLog.quiet option stops logging of information such as:
+
+connection events
+
+authentication events
+
+replication sync activities
+
+evidence of some potentially impactful commands being run (eg: drop, dropIndexes, validate)
+
+This information should be logged whenever possible. This check is only for Enterprise editions.
+
+Rationale:
+
+The use of SystemLog.quiet makes troubleshooting problems and investigating possible security incidents much more difficult."
+      solution        : "Set
+
+'SystemLog:
+       quiet: false'
+
+to false in the /etc/mongod.conf file to disable it."
+      reference       : "800-171|3.3.1,800-171|3.3.2,800-171|3.3.6,800-53|AU-2,800-53|AU-3,800-53|AU-3(1),800-53|AU-7,800-53|AU-12,800-53r5|AU-2,800-53r5|AU-3,800-53r5|AU-3(1),800-53r5|AU-7,800-53r5|AU-12,CN-L3|7.1.2.3(a),CN-L3|7.1.2.3(b),CN-L3|7.1.2.3(c),CN-L3|7.1.3.3(a),CN-L3|7.1.3.3(b),CN-L3|8.1.4.3(a),CN-L3|8.1.4.3(b),CSCv7|6.2,CSCv7|6.3,CSCv8|8.2,CSCv8|8.5,CSF|DE.CM-1,CSF|DE.CM-3,CSF|DE.CM-7,CSF|PR.PT-1,CSF|RS.AN-3,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ITSG-33|AU-2,ITSG-33|AU-3,ITSG-33|AU-3(1),ITSG-33|AU-7,ITSG-33|AU-12,LEVEL|2A,NESA|M1.2.2,NESA|M5.5.1,NESA|T3.6.2,NIAv2|AM7,NIAv2|AM11a,NIAv2|AM11b,NIAv2|AM11c,NIAv2|AM11d,NIAv2|AM11e,NIAv2|AM34a,NIAv2|AM34b,NIAv2|AM34c,NIAv2|AM34d,NIAv2|AM34e,NIAv2|AM34f,NIAv2|AM34g,NIAv2|SS30,NIAv2|VL8,PCI-DSSv3.2.1|10.1,PCI-DSSv3.2.1|10.3,PCI-DSSv3.2.1|10.3.1,PCI-DSSv3.2.1|10.3.2,PCI-DSSv3.2.1|10.3.3,PCI-DSSv3.2.1|10.3.4,PCI-DSSv3.2.1|10.3.5,PCI-DSSv3.2.1|10.3.6,PCI-DSSv4.0|10.2.2,QCSC-v1|3.2,QCSC-v1|6.2,QCSC-v1|8.2.1,QCSC-v1|10.2.1,QCSC-v1|11.2,QCSC-v1|13.2,SWIFT-CSCv1|6.4"
+      see_also        : "https://workbench.cisecurity.org/benchmarks/15135"
+      value_type      : POLICY_TEXT
+      value_data      : "^[\s]*>[\s]*quiet[\s]*:[\s]*false"
+      powershell_args : "get-content '@MONGOD_CONF_FULL_PATH@' | select-string -pattern 'systemLog' -context 0,10"
+      check_type      : CHECK_REGEX
+    </custom_item>
+
+    <custom_item>
+      type            : AUDIT_POWERSHELL
+      description     : "5.4 Ensure that new entries are appended to the end of the log file"
+      info            : "By default, new log entries will overwrite old entries after a restart of the mongod or Mongols service. Enabling the systemLog.logAppend setting causes new entries to be appended to the end of the log file rather than overwriting the existing content of the log when the mongos or mongod instance restarts.
+
+Rationale:
+
+Allowing old entries to be overwritten by new entries instead of appending new entries to the end of the log may destroy old log data that is needed for a variety of purposes."
+      solution        : "Set
+
+'systemLog:
+    logAppend: true'
+
+to true in the /etc/mongod.conf file."
+      reference       : "800-53|AU-11,800-53r5|AU-11,CSCv7|6.4,CSCv8|8.10,CSF|PR.PT-1,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ITSG-33|AU-11,LEVEL|2A,NESA|M5.2.3,NESA|T3.6.2,NIAv2|SM7,PCI-DSSv3.2.1|10.7,PCI-DSSv4.0|10.5.1,QCSC-v1|8.2.1,QCSC-v1|13.2"
+      see_also        : "https://workbench.cisecurity.org/benchmarks/15135"
+      value_type      : POLICY_TEXT
+      value_data      : "^[\s]*>[\s]*logAppend[\s]*:[\s]*true"
+      powershell_args : "get-content '@MONGOD_CONF_FULL_PATH@' | select-string -pattern 'logAppend' -context 0,10"
+      check_type      : CHECK_REGEX
+    </custom_item>
+
+    <report type:"WARNING">
+      description : "6.2 Ensure that operating system resource limits are set for MongoDB"
+      info        : "Operating systems provide ways to limit and control the usage of system resources such as threads, files, and network connections on a per-process and per-user basis
+
+Rationale:
+
+These ulimits prevent a single user from consuming too many system resources.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+      solution    : "Every deployment may have unique requirements and settings. Recommended thresholds and settings are particularly important for MongoDB deployments:
+
+
+f (file size): unlimited
+
+
+t (cpu time): unlimited
+
+
+v (virtual memory): unlimited [1]
+
+
+n (open files): 64000
+
+
+m (memory size): unlimited [1] [2]
+
+
+u (processes/threads): 64000
+
+Restart the mongod and mongos instances after changing the ulimit settings to ensure that the changes take effect.
+
+Default Value:
+
+Not configured"
+      reference   : "800-53|SC-6,800-53r5|SC-6,CN-L3|7.1.3.7(c),CN-L3|7.1.3.7(d),GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-6,ITSG-33|SC-6a.,LEVEL|2M,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|6.2"
+      see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+    </report>
+
+    <custom_item>
+      type            : AUDIT_POWERSHELL
+      description     : "6.3 Ensure that server-side scripting is disabled if not needed"
+      info            : "MongoDB supports the execution of JavaScript code for certain server-side operations: mapReduce, group, $where, $accumulator, and $function aggregation operations that allow users to define custom aggregation expressions. If you do not use these operations, server-side scripting should be disabled.
+
+Rationale:
+
+If server-side scripting is not needed and is not disabled, this introduces unnecessary risk which may allow an attacker to take advantage of insecure coding.
+
+Impact:
+
+Disabling server-side scripting will block all server-side scripts from executing."
+      solution        : "If server-side scripting is not required, for mongod instance disable it by using the --noscripting option on the command line, or setting security.javascriptEnabled to false in the configuration file.
+Starting in MongoDB 4.4 this is also applicable to mongos.
+
+Default Value:
+
+Enabled"
+      reference       : "800-171|3.14.6,800-171|3.14.7,800-53|SI-4,800-53r5|SI-4,CN-L3|7.1.3.5(a),CN-L3|8.1.10.5(b),CN-L3|8.1.10.6(f),CSCv7|9.2,CSF|DE.AE-1,CSF|DE.AE-2,CSF|DE.AE-3,CSF|DE.AE-4,CSF|DE.CM-1,CSF|DE.CM-5,CSF|DE.CM-6,CSF|DE.CM-7,CSF|DE.DP-2,CSF|DE.DP-3,CSF|DE.DP-4,CSF|DE.DP-5,CSF|ID.RA-1,CSF|PR.DS-5,CSF|PR.IP-8,CSF|RS.AN-1,CSF|RS.CO-3,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ITSG-33|SI-4,LEVEL|2M,NESA|M1.2.2,QCSC-v1|3.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|5.2.3,QCSC-v1|6.2,QCSC-v1|8.2.1,QCSC-v1|10.2.1,QCSC-v1|11.2"
+      see_also        : "https://workbench.cisecurity.org/benchmarks/15135"
+      value_type      : POLICY_TEXT
+      value_data      : "^[\s]*>[\s]*javascriptEnabled[\s]*:[\s]*false"
+      powershell_args : "get-content '@MONGOD_CONF_FULL_PATH@' | select-string -pattern 'security' -context 0,10"
+      check_type      : CHECK_REGEX
+    </custom_item>
+  </then>
+
+  <else>
+    <report type:"WARNING">
+      description : "CIS_MongoDB_7_Benchmark_v1.0.0_Level_2_OS_Windows.audit from CIS MongoDB 7 Benchmark"
+      info        : "NOTE: Nessus has not identified that the chosen audit applies to the target device."
+      see_also    : "https://workbench.cisecurity.org/benchmarks/15135"
+    </report>
+  </else>
+</if>
+
+</group_policy>
+</check_type>

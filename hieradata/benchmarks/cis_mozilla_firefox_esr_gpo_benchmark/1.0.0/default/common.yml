@@ -1,0 +1,1614 @@
+---
+
+inspec_rules:
+  "1.1.1.1":
+    title: '1.1.1.1 | L1 Ensure Allow add-on installs from websites is set to Disabled'
+    section: 'Addons'
+    description: |
+        This policy setting configures the ability for websites to automatically install addons without an allow list.
+        The recommended state for this setting is                Disabled
+        .             Note
+         If this setting is enabled, an allow list will be needed for approved addons.
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Disabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Addons\Allow add-on installs
+        from websites
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: Users will not be able to download and install add-ons from websites unless an allow list is
+        created.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.1.1', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\InstallAddonsPermission'
+        - checks:
+            - rule: 'should have_property "Default"'
+            - name: 'Default'
+              rule: "should have_property_value('Default', :dword, '0')"
+
+  "1.1.2.1":
+    title: '1.1.2.1 | L1 Ensure NTLM is set to Disabled'
+    section: 'Authentication'
+    description: |
+        This policy setting controls the use of NT Lan Manager NTLM v1 protocol. This protocol is used for authentication to
+        resources.
+        The recommended state for this setting is                Disabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Disabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Authentication\NTLM
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: None - this is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.2.1', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\Authentication\NTLM'
+        - checks:
+            - rule: 'should_not have_property "1"'
+
+  "1.1.5.1":
+    title: '1.1.5.1 | L1 Ensure Active Logins is set to Disabled'
+    section: 'Clear data when browser is closed'
+    description: |
+        This policy setting allows for the user session to be cleared upon closing the browser.
+        The recommended state for this setting is                Disabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Disabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Clear data when browser is
+        closed\Active Logins
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: None - this is the default behavior. Note:
+         This setting will preserve browsing history that could contain a user's personal browsing history. Please make sure
+        that this setting is in compliance with organizational policies.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.5.1', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\SanitizeOnShutdown'
+        - checks:
+            - rule: 'should have_property "Sessions"'
+            - name: 'Sessions'
+              rule: "should have_property_value('Sessions', :dword, '0')"
+
+  "1.1.5.2":
+    title: '1.1.5.2 | L1 Ensure Browsing History is set to Disabled'
+    section: 'Clear data when browser is closed'
+    description: |
+        This policy setting allows for the deletion of user data upon closing the browser.
+        The recommended state for this setting is                Disabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Disabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Clear data when browser is
+        closed\Browsing History
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: None - this is the default behavior. Note:
+         This setting will preserve browsing history that could contain a user's personal browsing history. Please make sure
+        that this setting is in compliance with organizational policies.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.5.2', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\SanitizeOnShutdown'
+        - checks:
+            - rule: 'should have_property "History"'
+            - name: 'History'
+              rule: "should have_property_value('History', :dword, '0')"
+
+  "1.1.5.3":
+    title: '1.1.5.3 | L1 Ensure Download History is set to Disabled'
+    section: 'Clear data when browser is closed'
+    description: |
+        This policy setting allows for the deletion of user data upon closing the browser.
+        The recommended state for this setting is                Disabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Disabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Clear data when browser is
+        closed\Download History
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: None - this is the default behavior. Note:
+         This setting will preserve browsing history that could contain a user's personal browsing history. Please make sure
+        that this setting is in compliance with organizational policies.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.5.3', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\SanitizeOnShutdown'
+        - checks:
+            - rule: 'should have_property "Downloads"'
+            - name: 'Downloads'
+              rule: "should have_property_value('Downloads', :dword, '0')"
+
+  "1.1.5.4":
+    title: '1.1.5.4 | L1 Ensure Form  Search History is set to Disabled'
+    section: 'Clear data when browser is closed'
+    description: |
+        This policy setting allows for the deletion of user data upon closing the browser.
+        The recommended state for this setting is                Disabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Disabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Clear data when browser is
+        closed\Form & Search History
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: None - this is the default behavior. Note:
+         This setting will preserve browsing history that could contain a user's personal browsing history. Please make sure
+        that this setting is in compliance with organizational policies.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.5.4', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\SanitizeOnShutdown'
+        - checks:
+            - rule: 'should have_property "FormData"'
+            - name: 'FormData'
+              rule: "should have_property_value('FormData', :dword, '0')"
+
+  "1.1.5.5":
+    title: '1.1.5.5 | L1 Ensure Locked is set to Enabled'
+    section: 'Clear data when browser is closed'
+    description: |
+        This policy setting allows for the deletion of user data upon closing the browser.
+        The recommended state for this setting is                Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Enabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Clear data when browser is
+        closed\Locked
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: None - this is the default behavior. Note:
+         This setting will preserve browsing history that could contain a user's personal browsing history. Please make sure
+        that this setting is in compliance with organizational policies.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.5.5', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\SanitizeOnShutdown'
+        - checks:
+            - rule: 'should have_property "Locked"'
+            - name: 'Locked'
+              rule: "should have_property_value('Locked', :dword, '1')"
+
+  "1.1.6.1":
+    title: '1.1.6.1 | L1 Ensure Cookie Behavior is set to Enabled Reject cookies for known trackers and partition third-party cookies'
+    section: 'Cookies'
+    description: |
+        This policy setting configures the ability for thirdparty cookies to be downloaded to the system. Third party cookies
+        are cookies sent by a domain that differs from the domain in the browsers address bar.
+        The recommended state for this setting is                Enabled Reject cookies for known trackers and partition
+        thirdparty cookies
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Enabled: Reject
+        cookies for known trackers and partition third-party cookies
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Cookies\Cookie Behavior
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: Blocking third-party cookies may adversely affect the functionality of some sites.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.6.1', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\Cookies'
+        - checks:
+            - rule: 'should have_property "Behavior"'
+            - name: 'Behavior'
+              rule: "should have_property_value('Behavior', :string, 'reject-tracker-and-partition-foreign')"
+
+  "1.1.6.2":
+    title: '1.1.6.2 | L1 Ensure Cookie Behavior in private browsing is set to Enabled Reject cookies for known trackers and partition third-party cookies'
+    section: 'Cookies'
+    description: |
+        This policy setting configures the ability for thirdparty cookies to be downloaded to the system. Third party cookies
+        are cookies sent by a domain that differs from the domain in the browsers address bar.
+        The recommended state for this setting is                Enabled Reject cookies for known trackers and partition
+        thirdparty cookies
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Enabled: Reject
+        cookies for known trackers and partition third-party cookies
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Cookies\Cookie Behavior in
+        private browsing
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: Blocking third-party cookies may adversely affect the functionality of some sites.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.6.2', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\Cookies'
+        - checks:
+            - rule: 'should have_property "BehaviorPrivateBrowsing"'
+            - name: 'BehaviorPrivateBrowsing'
+              rule: "should have_property_value('BehaviorPrivateBrowsing', :string, 'reject-tracker-and-partition-foreign')"
+
+  "1.1.7.1":
+    title: '1.1.7.1 | L1 Ensure TLS RSA WITH 3DES EDE CBC SHA  is set to Enabled'
+    section: 'Disabled Ciphers'
+    description: |
+        This policy settings controls the use of the TLSRSAWITH3DESEDECBCSHA cipher suite. Cipher suites are a group of
+        algorithms that help secure network connections.
+        The recommended state for this setting is                Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Enabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Disabled
+        Ciphers\TLS_RSA_WITH_3DES_EDE_CBC_SHA
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: Some legacy software and hardware might be affected by disabling this cipher suite.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.7.1', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\DisabledCiphers'
+        - checks:
+            - rule: 'should have_property "TLS_RSA_WITH_3DES_EDE_CBC_SHA"'
+            - name: 'TLS_RSA_WITH_3DES_EDE_CBC_SHA'
+              rule: "should have_property_value('TLS_RSA_WITH_3DES_EDE_CBC_SHA', :dword, '1')"
+
+  "1.1.9.1":
+    title: '1.1.9.1 | L1 Ensure Lock Encrypted Media Extensions is set to Enabled'
+    section: 'Encrypted Media Extensions'
+    description: |
+        This policy setting configures whether encrypted media extensions EME are downloaded automatically without user consent.
+        EME is a JavaScript API for playing DRMed video content in HTML.
+        The recommended state for this setting is                Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Disabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Encrypted Media
+        Extensions\Lock Encrypted Media Extensions
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: Users will have to consent to downloading EMEs.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.9.1', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\EncryptedMediaExtensions'
+        - checks:
+            - rule: 'should have_property "Locked"'
+            - name: 'Locked'
+              rule: "should have_property_value('Locked', :dword, '1')"
+
+  "1.1.10.1":
+    title: '1.1.10.1 | L1 Ensure Extension Update is set to Enabled'
+    section: 'Extensions'
+    description: |
+        This policy setting configures Firefox to automatically download and install extension updates as they are made
+        available.
+        The recommended state for this setting is                Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Enabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Extensions\Extension Update
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: None - this is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.10.1', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox'
+        - checks:
+            - rule: 'should have_property "ExtensionUpdate"'
+            - name: 'ExtensionUpdate'
+              rule: "should have_property_value('ExtensionUpdate', :dword, '1')"
+
+  "1.1.12.1":
+    title: '1.1.12.1 | L1 Ensure Activate Flash on websites is set to Disabled'
+    section: 'Flash'
+    description: |
+        This policy setting configures the use of Flash on websites.
+        The recommended state for this setting is                Disabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Disabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Flash\Activate Flash on
+        websites
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: Adobe Flash will not be available, and some websites might not function properly.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.12.1', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\FlashPlugin'
+        - checks:
+            - rule: 'should have_property "Default"'
+            - name: 'Default'
+              rule: "should have_property_value('Default', :dword, '0')"
+
+  "1.1.15.3.1":
+    title: '1.1.15.3.1 | L1 Ensure Block new requests asking to access location is set to Enabled'
+    section: 'Location'
+    description: |
+        This policy setting determines whether Firefox will provide geographic location information to websites.
+        The recommended state for this setting is                  Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                      Enabled
+        :                   Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Permissions\Location\Block
+        new requests asking to access location
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                      link
+        .                   Impact: Geo-locations services will be unavailable. Sites that use geo-location (Google Maps tec.)
+        will not be able to attain information to pinpoint location.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.15.3.1', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\Permissions\Location'
+        - checks:
+            - rule: 'should have_property "BlockNewRequests"'
+            - name: 'BlockNewRequests'
+              rule: "should have_property_value('BlockNewRequests', :dword, '1')"
+
+  "1.1.15.3.2":
+    title: '1.1.15.3.2 | L1 Ensure Do not allow preferences to be changed is set to Enabled'
+    section: 'Location'
+    description: |
+        This policy setting determines whether Firefox will provide geographic location information to websites.
+        The recommended state for this setting is                  Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                      Enabled
+        :                   Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Permissions\Location\Do not
+        allow preferences to be changed
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                      link
+        .                   Impact: Geo-locations services will be unavailable. Sites that use geo-location (Google Maps tec.)
+        will not be able to attain information to pinpoint location.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.15.3.2', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\Permissions\Location'
+        - checks:
+            - rule: 'should have_property "Locked"'
+            - name: 'Locked'
+              rule: "should have_property_value('Locked', :dword, '1')"
+
+  "1.1.17.1":
+    title: '1.1.17.1 | L1 Ensure Block pop-ups from websites is set to Enabled'
+    section: 'Popups'
+    description: |
+        This policy setting configures the Firefox popup blocker.
+        The recommended state for this setting is                Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Enabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Popups\Block pop-ups from
+        websites
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: Legitimate pop-ups could be blocked.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.17.1', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\PopupBlocking'
+        - checks:
+            - rule: 'should have_property "Default"'
+            - name: 'Default'
+              rule: "should have_property_value('Default', :dword, '1')"
+
+  "1.1.17.2":
+    title: '1.1.17.2 | L1 Ensure Do not allow preferences to be changed is set to Enabled'
+    section: 'Popups'
+    description: |
+        This policy setting configures if the Firefox popup blocker settings can be changed by the user.
+        The recommended state for this setting is                Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Enabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Popups\Do not allow
+        preferences to be changed
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: None - this is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.17.2', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\PopupBlocking'
+        - checks:
+            - rule: 'should have_property "Locked"'
+            - name: 'Locked'
+              rule: "should have_property_value('Locked', :dword, '1')"
+
+  "1.1.18.1":
+    title: '1.1.18.1 | L1 Ensure browser.safebrowsing.malware.enabled is set to Enabled'
+    section: 'Preferences (Deprecated)'
+    description: |
+        This policy setting configures the use of alerts to users if they are visiting a known malicious website.
+        The recommended state for this setting is                Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Enabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Preferences
+        (Deprecated)\browser.safebrowsing.malware.enabled
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: None - this is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.18.1', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\Preferences'
+        - checks:
+            - rule: 'should have_property "browser.safebrowsing.malware.enabled"'
+            - name: 'browser.safebrowsing.malware.enabled'
+              rule: "should have_property_value('browser.safebrowsing.malware.enabled', :dword, '1')"
+
+  "1.1.18.2":
+    title: '1.1.18.2 | L1 Ensure browser.safebrowsing.phishing.enabled is set to Enabled'
+    section: 'Preferences (Deprecated)'
+    description: |
+        This policy setting configures the use of alerts to users if they are visiting a known malicious phishing website.
+        The recommended state for this setting is                Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Enabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Preferences
+        (Deprecated)\browser.safebrowsing.phishing
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: None - this is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.18.2', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\Preferences'
+        - checks:
+            - rule: 'should have_property "browser.safebrowsing.phishing.enabled"'
+            - name: 'browser.safebrowsing.phishing.enabled'
+              rule: "should have_property_value('browser.safebrowsing.phishing.enabled', :dword, '1')"
+
+  "1.1.18.3":
+    title: '1.1.18.3 | L1 Ensure browser.search.update is set to Enabled'
+    section: 'Preferences (Deprecated)'
+    description: |
+        This policy setting configures whether Firefox will update installed search providers. Search providers allow the user
+        to search directly from the Search bar which is adjacent to the URL bar.
+        The recommended state for this setting is                Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Enabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Preferences
+        (Deprecated)\browser.search.update
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: None - this is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.18.3', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\Preferences'
+        - checks:
+            - rule: 'should have_property "browser.search.update"'
+            - name: 'browser.search.update'
+              rule: "should have_property_value('browser.search.update', :dword, '1')"
+
+  "1.1.18.4":
+    title: '1.1.18.4 | L1 Ensure dom.allow scripts to close windows is set to Disabled'
+    section: 'Preferences (Deprecated)'
+    description: |
+        This policy setting allows the configuration of how Firefox handles scripts from closing browser windows.
+        The recommended state for this setting is                Disabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Disabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Preferences
+        (Deprecated)\dom.allow_scripts_to_close_windows
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: None - this is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.18.4', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\Preferences'
+        - checks:
+            - rule: 'should have_property "dom.allow_scripts_to_close_windows"'
+            - name: 'dom.allow_scripts_to_close_windows'
+              rule: "should have_property_value('dom.allow_scripts_to_close_windows', :dword, '0')"
+
+  "1.1.18.5":
+    title: '1.1.18.5 | L1 Ensure dom.disable window flip is set to Enabled'
+    section: 'Preferences (Deprecated)'
+    description: |
+        This setting allows the configuration of how Firefox handles scripts from raising or lowering browser windows.
+        The recommended state for this setting is                Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Enabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Preferences
+        (Deprecated)\dom.disable_window_flip
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: Scripts will not be able to raise or lower browser windows.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.18.5', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\Preferences'
+        - checks:
+            - rule: 'should have_property "dom.disable_window_flip"'
+            - name: 'dom.disable_window_flip'
+              rule: "should have_property_value('dom.disable_window_flip', :dword, '1')"
+
+  "1.1.18.6":
+    title: '1.1.18.6 | L1 Ensure dom.disable window move resize is set to Enabled'
+    section: 'Preferences (Deprecated)'
+    description: |
+        This setting allows the configuration of how Firefox handles scripts from moving or resizing browser windows.
+        The recommended state for this setting is                Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Enabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Preferences
+        (Deprecated)\dom.disable_window_move_resize
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: Scripts will not be able to move or resize browser windows.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.18.6', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\Preferences'
+        - checks:
+            - rule: 'should have_property "dom.disable_window_move_resize"'
+            - name: 'dom.disable_window_move_resize'
+              rule: "should have_property_value('dom.disable_window_move_resize', :dword, '1')"
+
+  "1.1.18.7":
+    title: '1.1.18.7 | L1 Ensure extensions.blocklist.enabled is set to Enabled'
+    section: 'Preferences (Deprecated)'
+    description: |
+        This feature enables Mozilla Firefox to retrieve a list of blocked applications from the server.
+        The recommended state for this setting is                Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Enabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Preferences
+        (Deprecated)\extensions.blocklist.enabled
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: None - this is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.18.7', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\Preferences'
+        - checks:
+            - rule: 'should have_property "extensions.blocklist.enabled"'
+            - name: 'extensions.blocklist.enabled'
+              rule: "should have_property_value('extensions.blocklist.enabled', :dword, '1')"
+
+  "1.1.18.8":
+    title: '1.1.18.8 | L1 Ensure media.peerconnection.enabled is set to Disabled'
+    section: 'Preferences (Deprecated)'
+    description: |
+        This policy setting determines whether Web Real Time Communications WebRTC is allowed. WebRTC is used for peertopeer
+        communication such as file sharing or video calls.
+        The recommended state for this setting is                Disabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Disabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Preferences
+        (Deprecated)\media.peerconnection.enabled
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: WebRTC will not be accessible to users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.18.8', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\Preferences'
+        - checks:
+            - rule: 'should have_property "media.peerconnection.enabled"'
+            - name: 'media.peerconnection.enabled'
+              rule: "should have_property_value('media.peerconnection.enabled', :dword, '0')"
+
+  "1.1.18.9":
+    title: '1.1.18.9 | L2 Ensure network.IDN show punycode is set to Enabled'
+    section: 'Preferences (Deprecated)'
+    description: |
+        This setting determines whether Internationalized Domain Names IDNs displayed in the browser are displayed as Punycode
+        or as Unicode.
+        The recommended state for this setting is                Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Enabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Preferences
+        (Deprecated)\network.IDN_show_punycode
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: IDNs will be displayed in Punycode.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_1.1.18.9', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\Preferences'
+        - checks:
+            - rule: 'should have_property "network.IDN_show_punycode"'
+            - name: 'network.IDN_show_punycode'
+              rule: "should have_property_value('network.IDN_show_punycode', :dword, '1')"
+
+  "1.1.18.10":
+    title: '1.1.18.10 | L1 Ensure security.mixed content.block active content is set to Enabled'
+    section: 'Preferences (Deprecated)'
+    description: |
+        This policy setting configures the ability to view HTTP content such as JavaScript, CSS, objects, and xhr requests.
+        The recommended state for this setting is                Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Enabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Preferences
+        (Deprecated)\security.mixed_content.block_active_content
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: None - this is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.18.10', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\Preferences'
+        - checks:
+            - rule: 'should have_property "security.mixed_content.block_active_content"'
+            - name: 'security.mixed_content.block_active_content'
+              rule: "should have_property_value('security.mixed_content.block_active_content', :dword, '1')"
+
+  "1.1.19.1":
+    title: '1.1.19.1 | L1 Ensure Connection Type is set to Enabled No Proxy'
+    section: 'Proxy Settings'
+    description: |
+        Firefox can be configured to use one or more proxy servers. When a proxy server is configured for a given protocol HTTP,
+        FTP, Gopher, etc, Firefox will send applicable requests to that proxy server for fulfillment.
+        The recommended state for this setting is                Enabled No Proxy
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Enabled: No Proxy
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Proxy Settings\Connection
+        Type
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: None - this is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.19.1', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\Proxy'
+        - checks:
+            - rule: 'should have_property "Mode"'
+            - name: 'Mode'
+              rule: "should have_property_value('Mode', :string, 'none')"
+
+  "1.1.19.2":
+    title: '1.1.19.2 | L1 Ensure Do not allow proxy settings to be changed is set to Enabled'
+    section: 'Proxy Settings'
+    description: |
+        This policy setting configures whether users can change proxy settings.
+        The recommended state for this setting is                Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Enabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Proxy Settings\Do not allow
+        proxy settings to be changed
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: None - this is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.19.2', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\EnableTrackingProtection'
+        - checks:
+            - rule: 'should have_property "Locked"'
+            - name: 'Locked'
+              rule: "should have_property_value('Locked', :dword, '1')"
+
+  "1.1.20.1":
+    title: '1.1.20.1 | L2 Ensure Search Suggestions is set to Disabled'
+    section: 'Search'
+    description: |
+        This policy setting determines whether web search suggestions are used in Firefox.
+        The recommended state for this setting is                Disabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Disabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Search\Search Suggestions
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: Users will not get customized web suggestions for search results; they will still receive
+        local suggestions.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_1.1.20.1', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox'
+        - checks:
+            - rule: 'should have_property "SearchSuggestEnabled"'
+            - name: 'SearchSuggestEnabled'
+              rule: "should have_property_value('SearchSuggestEnabled', :dword, '0')"
+
+  "1.1.22.1":
+    title: '1.1.22.1 | L1 Ensure Cryptomining is set to Enabled'
+    section: 'Tracking Protection'
+    description: |
+        This policy setting configures Firefoxs Cryptomining Protection. Cryptomining Protection will automatically block known
+        crypto mining domains that distribute crypto mining scripts.
+        The recommended state for this setting is                Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Enabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Tracking
+        Protection\Cryptomining
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: Legitimate scripts or content may not load properly.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.22.1', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\EnableTrackingProtection'
+        - checks:
+            - rule: 'should have_property "Cryptomining"'
+            - name: 'Cryptomining'
+              rule: "should have_property_value('Cryptomining', :dword, '1')"
+
+  "1.1.22.2":
+    title: '1.1.22.2 | L1 Ensure Do not allow tracking protection preferences to be changed is set to Enabled'
+    section: 'Tracking Protection'
+    description: |
+        This policy setting determines if tracking protection preferences can be changed by the user.
+        The recommended state for this setting is                Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Enabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Tracking Protection\Do not
+        allow tracking protection preferences to be changed
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: Tracking preferences cannot be changed by the user.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.22.2', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\EnableTrackingProtection'
+        - checks:
+            - rule: 'should have_property "Locked"'
+            - name: 'Locked'
+              rule: "should have_property_value('Locked', :dword, '1')"
+
+  "1.1.22.3":
+    title: '1.1.22.3 | L1 Ensure Email Tracking is set to Enabled'
+    section: 'Tracking Protection'
+    description: |
+        This policy setting configures Firefoxs Enhanced Tracking Protection. Enhanced Tracking Protection will automatically
+        block known thirdparty tracking cookies.
+        The recommended state for this setting is                Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Enabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Tracking Protection\Email
+        Tracking
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: Disabling third-party cookies could cause some websites to not function as expected.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.22.3', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\EnableTrackingProtection'
+        - checks:
+            - rule: 'should have_property "EmailTracking"'
+            - name: 'EmailTracking'
+              rule: "should have_property_value('EmailTracking', :dword, '1')"
+
+  "1.1.22.4":
+    title: '1.1.22.4 | L1 Ensure Enabled is set to Enabled'
+    section: 'Tracking Protection'
+    description: |
+        This policy setting configures what is allowed to be tracked by websites from the browser.
+        The recommended state for this setting is                Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Enabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Tracking Protection\Enabled
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: None - this is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.22.4', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\EnableTrackingProtection'
+        - checks:
+            - rule: 'should have_property "Value"'
+            - name: 'Value'
+              rule: "should have_property_value('Value', :dword, '1')"
+
+  "1.1.22.5":
+    title: '1.1.22.5 | L1 Ensure Fingerprinting is set to Enabled'
+    section: 'Tracking Protection'
+    description: |
+        This policy setting configures Firefoxs Enhanced Tracking Protection. Enhanced Tracking Protection will automatically
+        block known thirdparty tracking cookies.
+        The recommended state for this setting is                Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Enabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Tracking
+        Protection\Fingerprinting
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: Disabling third-party cookies could cause some websites to not function as expected.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.22.5', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\EnableTrackingProtection'
+        - checks:
+            - rule: 'should have_property "Fingerprinting"'
+            - name: 'Fingerprinting'
+              rule: "should have_property_value('Fingerprinting', :dword, '1')"
+
+  "1.1.23.1":
+    title: '1.1.23.1 | L1 Ensure Extension Recommendations is set to Disabled'
+    section: 'User Messaging'
+    description: |
+        This policy setting configures if Firefox can send recommendations on extensions based on user data as they navigate the
+        web.
+        The recommended state for this setting is                Disabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                    Disabled
+        :                 Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\UserMessaging\Extension
+        Recommendations
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                    link
+        .                 Impact: Recommendations on extensions will not be extended to users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.23.1', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox\UserMessaging'
+        - checks:
+            - rule: 'should have_property "ExtensionRecommendations"'
+            - name: 'ExtensionRecommendations'
+              rule: "should have_property_value('ExtensionRecommendations', :dword, '0')"
+
+  "1.1.24":
+    title: '1.1.24 | L1 Ensure Application Autoupdate is set to Enabled'
+    section: 'Firefox'
+    description: |
+        This policy setting configures whether Firefox automatically downloads and installs updates, as they are made available.
+        The recommended state for this setting is              Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                  Enabled
+        :               Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Application Autoupdate
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                  link
+        .               Impact: None - this is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.24', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox'
+        - checks:
+            - rule: 'should have_property "AppAutoUpdate"'
+            - name: 'AppAutoUpdate'
+              rule: "should have_property_value('AppAutoUpdate', :dword, '1')"
+
+  "1.1.25":
+    title: '1.1.25 | L1 Ensure Background updater is set to Enabled'
+    section: 'Firefox'
+    description: |
+        This policy setting configures whether Firefox automatically downloads and installs the updates in the background, even
+        when the application is not running.
+        The recommended state for this setting is              Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                  Enabled
+        :               Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Background updater
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                  link
+        .               Impact: None - this is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.25', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox'
+        - checks:
+            - rule: 'should have_property "BackgroundAppUpdate"'
+            - name: 'BackgroundAppUpdate'
+              rule: "should have_property_value('BackgroundAppUpdate', :dword, '1')"
+
+  "1.1.26":
+    title: '1.1.26 | L1 Ensure Disable Developer Tools is set to Enabled'
+    section: 'Firefox'
+    description: |
+        This setting configures whether development tools are available to the user. Firefox Developer Tools is a set of web
+        developer tools built into Firefox that can be used to examine, edit, and debug HTML, CSS, and JavaScript.
+        The recommended state for this setting is              Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                  Enabled
+        :               Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Disable Developer Tools
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                  link
+        .               Impact: Users with creative roles that require development tools will need additional permissions
+        granted based on their role.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.26', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox'
+        - checks:
+            - rule: 'should have_property "DisableDeveloperTools"'
+            - name: 'DisableDeveloperTools'
+              rule: "should have_property_value('DisableDeveloperTools', :dword, '1')"
+
+  "1.1.27":
+    title: '1.1.27 | L1 Ensure Disable Feedback Commands is set to Enabled'
+    section: 'Firefox'
+    description: |
+        This policy setting configures accessibility to the Submit Feedback and Report Deceptive Site menu items in the help
+        menu.
+        The recommended state for this setting is              Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                  Enabled
+        :               Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Disable Feedback Commands
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                  link
+        .               Impact: The Submit Feedback and Report Deceptive Site menu items will not be available from the help
+        menu.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.27', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox'
+        - checks:
+            - rule: 'should have_property "DisableFeedbackCommands"'
+            - name: 'DisableFeedbackCommands'
+              rule: "should have_property_value('DisableFeedbackCommands', :dword, '1')"
+
+  "1.1.28":
+    title: '1.1.28 | L1 Ensure Disable Firefox Accounts is set to Enabled'
+    section: 'Firefox'
+    description: |
+        This policy setting controls whether a user can sign into Firefox with an account to use services.
+        The recommended state for this setting is              Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                  Enabled
+        :               Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Disable Firefox Accounts
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                  link
+        .               Impact: Users will not be able to sign into the Firefox browser.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.28', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox'
+        - checks:
+            - rule: 'should have_property "DisableFirefoxAccounts"'
+            - name: 'DisableFirefoxAccounts'
+              rule: "should have_property_value('DisableFirefoxAccounts', :dword, '1')"
+
+  "1.1.29":
+    title: '1.1.29 | L1 Ensure Disable Firefox Studies is set to Enabled'
+    section: 'Firefox'
+    description: |
+        Shield Studies are controlled tests that allow proposed changes to be compared to the current default version of Firefox
+        for representative populations before releasing and pushing those changes to everyone else.
+        The recommended state for this setting is              Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                  Enabled
+        :               Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Disable Firefox Studies
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                  link
+        .               Impact: Data will not be shared with Firefox.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.29', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox'
+        - checks:
+            - rule: 'should have_property "DisableFirefoxStudies"'
+            - name: 'DisableFirefoxStudies'
+              rule: "should have_property_value('DisableFirefoxStudies', :dword, '1')"
+
+  "1.1.30":
+    title: '1.1.30 | L1 Ensure Disable Forget Button is set to Enabled'
+    section: 'Firefox'
+    description: |
+        This policy setting determines whether the Forget button is available. This feature is also known as eCleaner and allows
+        a user to quickly delete browser data from a selected time frame without affecting the rest of the data.
+        The recommended state for this setting is              Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to `Enabled: Computer
+        Configuration\Policies\Administrative Templates\Mozilla\Firefox\Disable Forget Button
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                  link
+        .               Impact: The Forget button will not be available to users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.30', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox'
+        - checks:
+            - rule: 'should have_property "DisableForgetButton"'
+            - name: 'DisableForgetButton'
+              rule: "should have_property_value('DisableForgetButton', :dword, '1')"
+
+  "1.1.31":
+    title: '1.1.31 | L2 Ensure Disable Form History is set to Enabled'
+    section: 'Firefox'
+    description: |
+        Form Fill Assistance allows Firefox to save data that has been entered into forms by users so that future operations are
+        performed faster.
+        The recommended state for this setting is              Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                  Disabled
+        :               Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Disable Form History
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                  link
+        .               Impact: Prefilled text fields will not be enabled.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_1.1.31', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox'
+        - checks:
+            - rule: 'should have_property "DisableFormHistory"'
+            - name: 'DisableFormHistory'
+              rule: "should have_property_value('DisableFormHistory', :dword, '1')"
+
+  "1.1.32":
+    title: '1.1.32 | L1 Ensure Disable Pocket is set to Enabled'
+    section: 'Firefox'
+    description: |
+        Previously known as Read It Later, Pocket is a social bookmark service that allows users to save a variety of content to
+        one place and access it later from any device. This content includes web pages, blogs, videos, and news sources.
+        The recommended state for this setting is              Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                  Enabled
+        :               Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Disable Pocket
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                  link
+        .               Impact: Data such as web pages, blogs, videos, and news sources will not be shared via Pocket.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.32', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox'
+        - checks:
+            - rule: 'should have_property "DisablePocket"'
+            - name: 'DisablePocket'
+              rule: "should have_property_value('DisablePocket', :dword, '1')"
+
+  "1.1.33":
+    title: '1.1.33 | L1 Ensure Disable Private Browsing is set to Enabled'
+    section: 'Firefox'
+    description: |
+        This policy setting determines whether private browsing is allowed.
+        The recommended state for this setting is              Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                  Enabled
+        :               Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Disable Private Browsing
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                  link
+        .               Impact: Users will not be able to initiate the private browsing feature in Firefox.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.33', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox'
+        - checks:
+            - rule: 'should have_property "DisablePrivateBrowsing"'
+            - name: 'DisablePrivateBrowsing'
+              rule: "should have_property_value('DisablePrivateBrowsing', :dword, '1')"
+
+  "1.1.34":
+    title: '1.1.34 | L1 Ensure Disable System Addon Updates is set to Disabled'
+    section: 'Firefox'
+    description: |
+        This policy setting configures the ability for Firefox to automatically download and install updates for Addons.
+        The recommended state for this setting is              Disabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                  Disabled
+        :               Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Disable System Addon Updates
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                  link
+        .               Impact: None - this is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.34', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox'
+        - checks:
+            - rule: 'should have_property "DisableSystemAddonUpdate"'
+            - name: 'DisableSystemAddonUpdate'
+              rule: "should have_property_value('DisableSystemAddonUpdate', :dword, '0')"
+
+  "1.1.35":
+    title: '1.1.35 | L1 Ensure Disable Telemetry is set to Enabled'
+    section: 'Firefox'
+    description: |
+        Firefox by default sends information about Firefox to Mozilla servers. This data can include, but is not limited to  IP
+        address, system specifications, browsing history, bookmarks, and open tabs.
+        The recommended state for this setting is              Enabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                  Enabled
+        :               Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Disable Telemetry
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                  link
+        .               Impact: The browser will not send system information back to Firefox.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.35', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox'
+        - checks:
+            - rule: 'should have_property "DisableTelemetry"'
+            - name: 'DisableTelemetry'
+              rule: "should have_property_value('DisableTelemetry', :dword, '1')"
+
+  "1.1.36":
+    title: '1.1.36 | L1 Ensure Disable Update is set to Disabled'
+    section: 'Firefox'
+    description: |
+        This policy setting configures if the Firefox browser can receive updates.
+        The recommended state for this setting is              Disabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                  Disabled
+        :               Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Disable Update
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                  link
+        .               Impact: None - this is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.36', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox'
+        - checks:
+            - rule: 'should have_property "DisableAppUpdate"'
+            - name: 'DisableAppUpdate'
+              rule: "should have_property_value('DisableAppUpdate', :dword, '0')"
+
+  "1.1.37":
+    title: '1.1.37 | L1 Ensure Maximum SSL version enabled is set to Enabled TLS 1.3'
+    section: 'Firefox'
+    description: |
+        This setting sets the maximum required protocol version for the Transport Layer Security TLS.
+        The recommended state for this setting is              EnabledTLS 1.3
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                  Enabled:TLS 1.3
+        :               Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Maximum SSL version enabled
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                  link
+        .
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.37', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox'
+        - checks:
+            - rule: 'should have_property "SSLVersionMax"'
+            - name: 'SSLVersionMax'
+              rule: "should have_property_value('SSLVersionMax', :string, 'tls1.3')"
+
+  "1.1.38":
+    title: '1.1.38 | L1 Ensure Minimum SSL version enabled is set to Enabled TLS 1.2'
+    section: 'Firefox'
+    description: |
+        This setting sets the minimum protocol version that may be used when negotiating TLS/SSL sessions.
+        The recommended state for this setting is              EnabledTLS 1.2
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                  Enabled:TLS 1.2
+        :               Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Minimum SSL version enabled
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                  link
+        .               Impact: Communications that require an older version of TLS/SSL will be blocked.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.38', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox'
+        - checks:
+            - rule: 'should have_property "SSLVersionMin"'
+            - name: 'SSLVersionMin'
+              rule: "should have_property_value('SSLVersionMin', :string, 'tls1.2')"
+
+  "1.1.39":
+    title: '1.1.39 | L1 Ensure Network Prediction is set to Disabled'
+    section: 'Firefox'
+    description: |
+        This setting determines if Firefox is allowed to make URL requests without user consent.
+        The recommended state for this setting is              Disabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                  Disabled
+        :               Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Network Prediction
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                  link
+        .               Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.39', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox'
+        - checks:
+            - rule: 'should have_property "NetworkPrediction"'
+            - name: 'NetworkPrediction'
+              rule: "should have_property_value('NetworkPrediction', :dword, '0')"
+
+  "1.1.40":
+    title: '1.1.40 | L2 Ensure New Tab Page is set to Disabled'
+    section: 'Firefox'
+    description: |
+        The New Tab page shows a list of builtin top sites, as well as the top sites the user has visited by default.
+        The recommended state for this setting is              Disabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                  Disabled
+        :               Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\New Tab Page
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                  link
+        .               Impact: Top site and user history will not be available on a new tab.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_1.1.40', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox'
+        - checks:
+            - rule: 'should have_property "NewTabPage"'
+            - name: 'NewTabPage'
+              rule: "should have_property_value('NewTabPage', :dword, '0')"
+
+  "1.1.41":
+    title: '1.1.41 | L1 Ensure Offer to save logins is set to Disabled'
+    section: 'Firefox'
+    description: |
+        Firefox allows for credentials to be stored in its credential store for certain websites.
+        The recommended state for this setting is              Disabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                  Disabled
+        :               Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Offer to save logins
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                  link
+        .               Impact: Credentials will not be stored on websites.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.41', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox'
+        - checks:
+            - rule: 'should have_property "OfferToSaveLogins"'
+            - name: 'OfferToSaveLogins'
+              rule: "should have_property_value('OfferToSaveLogins', :dword, '0')"
+
+  "1.1.42":
+    title: '1.1.42 | L1 Ensure Password Manager is set to Disabled'
+    section: 'Firefox'
+    description: |
+        This policy setting enables or disables the ability for users to save their passwords in Mozilla Firefox.
+        The recommended state for this setting is              Disabled
+        .
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                  Disabled
+        :               Computer Configuration\Policies\Administrative Templates\Mozilla\Firefox\Password Manager
+         Note:
+          This Group Policy path does not exist by default. An additional Group Policy template (
+        firefox.admx/adml
+        ) is required - it is available to download at this                  link
+        .               Impact: Users will be unable to utilize the Firefox built-in password manager.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.42', 'cis_mozilla_firefox_esr_gpo_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox'
+        - checks:
+            - rule: 'should have_property "PasswordManagerEnabled"'
+            - name: 'PasswordManagerEnabled'
+              rule: "should have_property_value('PasswordManagerEnabled', :dword, '0')"

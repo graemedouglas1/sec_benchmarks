@@ -1,0 +1,565 @@
+---
+
+inspec_rules:
+  "1.1":
+    title: '1.1 | Ensure the appropriate MongoDB software versionpatches are installed - manual'
+    section: 'Installation and Patching'
+    description: |
+        The MongoDB installation version, along with the patch level, should be the most recent that is compatible with the
+        organizations operational needs.
+    remediation: |
+        Upgrade to the latest version of the MongoDB software: Backup the data set. Download the binaries for the latest MongoDB
+        revision from the MongoDB Download Page and store the binaries in a temporary location. The binaries download as
+        compressed files that extract to the directory structure used by the MongoDB installation. Shutdown the MongoDB
+        instance. Replace the existing MongoDB binaries with the downloaded binaries. Restart the MongoDB instance.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.1', 'cis_mongodb_3.6_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.1":
+    title: '2.1 | Ensure Authentication is configured'
+    section: 'Authentication'
+    description: |
+        This setting ensures that all clients, users, servers are required to authenticate before being granted access to the
+        MongoDB database. Authentication is the process of verifying the identity of a client. When access control, i.e.
+        authorization, is enabled, MongoDB requires all clients to authenticate themselves in order to determine their access.
+        To authenticate as a user, you must provide a username, password, and the authentication database associated with that
+        user.
+    remediation: |
+        The authentication mechanism should be implemented before anyone accesses the MongoDB Server. To enable the
+        authentication mechanism:
+        Start the MongoDB instance without authentication.
+                         mongod --port 27017 --dbpath /data/db1
+
+
+        Or
+                         mongod.exe --port 27017 --dbpath db1
+
+
+        Create the system user administrator, ensuring that its password meets organizationally-defined password complexity
+        requirements.
+                         use admin
+        db.createUser(
+          {
+            user: "siteUserAdmin",
+            pwd: "password",
+            roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
+          }
+        )
+
+
+        Open                  mongod.conf
+         and change for authorization value to enabled:
+                         security:
+            authorization: "enabled"
+
+
+        Restart the MongoDB instance
+                         service mongodb restart
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.1', 'cis_mongodb_3.6_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.2":
+    title: '2.2 | Ensure that MongoDB does not bypass authentication via the localhost exception'
+    section: 'Authentication'
+    description: |
+        MongoDB should not be set to bypass authentication via the localhost exception. The localhost exception allows the user
+        to enable authorization before creating the first user in the system. When active, the localhost exception allows all
+        connections from the localhost interface to have full access to that instance. The exception applies only when there are
+        no users created in the MongoDB instance. Note
+
+        This recommendation only applies when there are no users created in the MongoDB instance.
+    remediation: |
+        To disable local authentication on the MongoDB database. Type OS Console Command mongod --setParameter
+        enableLocalhostAuthBypass=0
+         or
+        To manually configure use the                setParameter
+         option in the mongo configuration file to set it to                false
+        .
+        setParameter:
+          enableLocalhostAuthBypass: false
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2', 'cis_mongodb_3.6_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.3":
+    title: '2.3 | Ensure authentication is enabled in the sharded cluster - manual'
+    section: 'Authentication'
+    description: |
+        Authentication is enabled in a sharded cluster when the certificate or key files are created and configured for all
+        components. This ensures that every client that accesses the cluster must provide credentials, to include MongoDB
+        instances that access each other within the cluster. With keyfile authentication, each mongod or mongos instance in the
+        sharded cluster uses the contents of the keyfile as the shared password for authenticating other members in the
+        deployment. Only mongod or mongos instances with the correct keyfile can join the sharded cluster. For Production
+        Environment
+         x.509 certificate authentication with secure TSL/SSL connection must be used for authentication.         For
+        Development Purpose
+         Key file can be used as an authentication mechanism between the shared cluster. Keyfiles are bareminimum forms of
+        security and are best suited for testing or development environments.
+    remediation: |
+        To authenticate to servers, clients can use x.509 certificates instead of usernames and passwords.
+        MongoDB supports x.509 certificate authentication for use with a secure TLS/SSL connection. The x.509 client
+        authentication allows clients to authenticate to servers with certificates rather than with a username and password.
+        Change the configuration file                /etc/mongod.conf
+         on each host, adding the following rows:
+        net:
+           port: 27017
+           ssl:
+              mode: requireSSL
+              PEMKeyFile: /etc/mongodb/ssl/server1.pem
+              CAFile: /etc/mongodb/ssl/mongoCA.crt
+              clusterFile: /etc/mongodb/ssl/server1.pem
+           security:
+              authorization: enabled
+              clusterAuthMode: x509
+                     Restart the daemon sudo service mongodb restart
+
+        To enable authentication in the sharded cluster, perform the following steps:(               Only for Development
+        Purpose
+        )             Generate A Key File
+        On each component in the shared cluster, enable authentication by editing the configuration file
+        /etc/mongod.conf
+        . Set the                  keyFile
+         option to the key file’s path and then start the component with this command:
+                         keyFile = /srv/mongodb/keyfile
+
+
+        When starting the component, set                  --keyFile
+         option, which is an option for both                  mongos
+         instances and                  mongod
+         instances. Set the                  --keyFile
+         to the key file’s path.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_2.3', 'cis_mongodb_3.6_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.1":
+    title: '3.1 | Ensure that Role-based access control RBAC is enabled and configured - manual'
+    section: 'Access Control'
+    description: |
+        Rolebased access control RBAC is a method of regulating access to resources based on the roles of individual users
+        within an enterprise. A user is granted one or more roles that determine the users access to database resources and
+        operations. Outside of role assignments, the user has no access to the system. MongoDB can use RBAC to govern access to
+        MongoDB systems. MongoDB does not enable authorization by default.
+    remediation: |
+        Establish roles for MongoDB. Assign the appropriate privileges to each role. Assign the appropriate users to each role.
+        Remove any individual privileges assigned to users that are now addressed by the roles. See the reference below for more
+        information.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_3.1', 'cis_mongodb_3.6_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.2":
+    title: '3.2 | Ensure that MongoDB only listens for network connections on authorized interfaces'
+    section: 'Access Control'
+    description: |
+        Ensuring that MongoDB runs in a trusted network environment involves limiting the network interfaces on which MongoDB
+        instances listen for incoming connections. Any untrusted network connections should be dropped by MongoDB. Firewalls
+        allow administrators to filter and control access to a system by providing granular control over network communications.
+        For administrators of MongoDB, the following capabilities are important Limiting incoming traffic on a specific port to
+        specific systems Limiting incoming traffic from untrusted hosts.
+        On Linux systems, the            iptables
+         interface provides access to the underlying            netfilter
+         firewall.  On Windows systems,            netsh
+         command line interface provides access to the underlying Windows Firewall.
+    remediation: |
+        Configure the MongoDB configuration file to limit its exposure to only the network interfaces on which MongoDB instances
+        should listen for incoming connections.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.2', 'cis_mongodb_3.6_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.3":
+    title: '3.3 | Ensure that MongoDB is run using a Least Privileges dedicated service account - manual'
+    section: 'Access Control'
+    description: |
+        The MongoDB service should not be run using a privileged account such as root because this unnecessarily exposes the
+        operating system to high risk. This setting ensures that the monogd service runs as a leastprivileged user.
+    remediation: |
+        Create a user which is only used for running Mongodb and directly related processes. This user must not have
+        administrative rights to the system. Steps to create user
+                         useradd -m -d /home/mongodb -s /bin/bash -g mongodb -u 1234 mongodb
+
+
+        Set the Database data files, the keyfile, and the SSL private key files to only be readable by the mongod/mongos user
+        and then set ownership to mongodb user only
+                         sudo chown -R mongodb:mongodb /data/db
+
+                       Set the log files to only be writable by the mongod/mongos user and readable only by root.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_3.3', 'cis_mongodb_3.6_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.4":
+    title: '3.4 | Ensure that each role for each MongoDB database is needed and grants only the necessary privileges - manual'
+    section: 'Access Control'
+    description: |
+        Reviewing all roles periodically and eliminating unneeded roles as well as unneeded privileges from necessary roles
+        helps minimize the privileges for each user.
+    remediation: |
+        Revoke specified privileges from the user-defined role on the database where the command is run. The
+        revokePrivilegesFromRole
+         command has the following syntax:
+        {
+        revokePrivilegesFromRole: "<role>",
+        privileges:
+           [
+           { resource: { <resource> }, actions: [ "<action>", ... ] },
+           ...
+           ],
+        }
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_3.4', 'cis_mongodb_3.6_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.5":
+    title: '3.5 | Review User-Defined Roles - manual'
+    section: 'Access Control'
+    description: |
+        Reviewing all roles periodically and removing all users from those roles who do not require them helps minimize the
+        privileges for each user. Important Roles which should be reviewed periodically. createRole
+         Creates a role and specifies its privileges.           dropRole
+         Deletes the userdefined role.           grantPrivilegesToRole
+         Assigns privileges to a userdefined role.           grantRolesToRole
+         Specifies roles from which a userdefined role inherits privileges.           updateRole
+         Updates a userdefined role.
+    remediation: |
+        To remove a user from one or more roles on the current database, use the following command:
+        >use dbName
+        >db.revokeRolesFromUser("<username>",[<roles>])
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_3.5', 'cis_mongodb_3.6_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.6":
+    title: '3.6 | Review SuperuserAdmin Roles - manual'
+    section: 'Access Control'
+    description: |
+        Roles provide several advantages that make it easier to manage privileges in a database system. Security administrators
+        can control access to their databases in a way that mirrors the structure of their organizations they can create roles
+        in the database that map directly to the job functions in their organizations. The assignment of privileges is
+        simplified. Instead of granting the same set of privileges to each individual user in a particular job function, the
+        administrator can grant this set of privileges to a role representing that job function and then grant that role to each
+        user in that job function. The following roles provide the ability to assign any user any privilege on any database,
+        which means that users with one of these roles can assign themselves any privilege on any database dbOwner
+         role, when scoped to the admin database           userAdmin
+         role, when scoped to the admin database           userAdminAnyDatabase
+         role
+    remediation: |
+        To remove a user from one or more roles on the current database.
+        use <dbName>
+        db.revokeRolesFromUser( "<usernamem>", [ <roles> ])
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_3.6', 'cis_mongodb_3.6_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.1":
+    title: '4.1 | Ensure Encryption of Data in Transit  TLSSSL Transport Encryption'
+    section: 'Data Encryption'
+    description: |
+        Use TLS or SSL to protect all incoming and outgoing connections. This should include using TLS or SSL to encrypt
+        communication between the mongod and mongos components of a MongoDB client as well as between all applications and
+        MongoDB. MongoDB supports TLS/SSL Transport Layer Security/Secure Sockets Layer to encrypt all of MongoDBs network
+        traffic. TLS/SSL ensures that MongoDB network traffic is only readable by the intended client.
+    remediation: |
+        Configure MongoDB servers to require the use of SSL or TLS to encrypt all MongoDB network communications. To implement
+        SSL or TLS to encrypt all MongoDB network communication, perform the following steps: For mongod (“Primary daemon
+        process for the MongoDB system”)
+        In the configuration file                /etc/mongod.conf
+        , set the                PEMKeyFile
+         option to the certificate file’s path and then start the component with this command:
+        ssl:
+           mode: requireSSL
+           PEMKeyFile: /etc/ssl/mongodb.pem
+           CAFile: /etc/ssl/ca.pem
+                     And restart monogdb instance with mongod --config /etc/mongod.conf
+         Or mongod --sslMode requireSSL --sslPEMKeyFile /etc/ssl/mongodb.pem --sslCAFile /etc/ssl/ca.pem
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.1', 'cis_mongodb_3.6_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.2":
+    title: '4.2 | Ensure Federal Information Processing Standard FIPS is enabled'
+    section: 'Data Encryption'
+    description: |
+        The Federal Information Processing Standard FIPS is a computer security standard used to certify software modules and
+        libraries that encrypt and decrypt data securely. You can configure MongoDB to run with a FIPS 1402 certified library
+        for OpenSSL. FIPS is a property of the encryption system and not the access control system. However, the environment
+        requires FIPS compliant encryption and access control. Organizations must ensure that the access control system uses
+        only FIPScompliant encryption.
+    remediation: |
+        Configuring FIPS mode, ensure that your certificate is FIPS compliant. Run mongod or mongos instance in FIPS mode. Make
+        changes to configuration file, to configure your mongod or mongos instance to use FIPS mode, shut down the instance and
+        update the configuration file with the following setting:
+        net:
+           ssl:
+              FIPSMode: true
+                     Start mongod or mongos instance with a configuration file. mongod --config /etc/mongod.conf
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_4.2', 'cis_mongodb_3.6_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.3":
+    title: '4.3 | Ensure Encryption of Data at Rest - manual'
+    section: 'Data Encryption'
+    description: |
+        Encryption of data at rest must be enabled to ensure compliance with security and privacy standards including HIPAA,
+        PCIDSS, and FERPA. Encryption at rest, when used in conjunction with transport encryption and good security policies
+        that protect relevant accounts, passwords, and encryption keys.
+    remediation: |
+        It is recommended to enable the data at rest encryption to protect the data.
+        Protecting Data at Rest Including following steps. Generating a master key. Generating keys for each database.
+        Encrypting data with the database keys. Encrypting the database keys with the master key. Only the master key is
+        external to the server and requires external management. To manage the master key, MongoDB’s encrypted storage engine
+        supports two key management options: Integration with a third-party key management appliance via the Key Management
+        Interoperability Protocol (KMIP). Recommended Use of local key management via a keyfile. The encryption occurs
+        transparently in the storage layer; i.e. all data files are fully encrypted from a filesystem perspective, and data only
+        exists in an unencrypted state in memory and during transmission. To enable Encryption on Database follow below step
+        mentioned in below Link https://docs.mongodb.com/v3.6/tutorial/configure-encryption/ Rotation of Key is also important.
+        This can be enabled by following mentioned steps in below link. https://docs.mongodb.com/v3.6/tutorial/rotate-
+        encryption-key/
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_4.3', 'cis_mongodb_3.6_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.1":
+    title: '5.1 | Ensure that system activity is audited'
+    section: 'Auditing'
+    description: |
+        Track access and changes to database configurations and data. MongoDB Enterprise includes a system auditing facility
+        that can record system events e.g. user operations, connection events on a MongoDB instance. These audit records permit
+        forensic analysis and allow administrators to verify proper controls.
+    remediation: |
+        Set the value of                auditLog.destination
+         to the appropriate value from the following options:             Syslog To enable auditing and print audit events to
+        syslog mongod --dbpath data/db --auditDestination syslog
+         Console
+        To enable auditing and print audit events to standard output (i.e.,                stdout
+        )             mongod --dbpath data/db --auditDestination console
+         Json File To enable auditing and print audit events to a file in JSON format. Printing audit events to file in JSON
+        format degrades server performance more than printing to a file in BSON format. mongod --dbpath data/db
+        --auditDestination file --auditFormat JSON --auditPath data/db/auditLog.json
+         Bson File To enable auditing and print audit events to a file in BSON binary format mongod --dbpath data/db
+        --auditDestination file --auditFormat BSON --auditPath data/db/auditLog.bson
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.1', 'cis_mongodb_3.6_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.2":
+    title: '5.2 | Ensure that audit filters are configured properly'
+    section: 'Auditing'
+    description: |
+        MongoDB Enterprise supports auditing of various operations. When enabled, the audit facility, by default, records all
+        auditable operations as detailed in Audit Event Actions, Details, and Results. To specify which events to record, the
+        audit feature includes the            auditFilter
+         option. This check is only for Enterprise editions.
+    remediation: |
+        Set the audit filters based on the organization’s requirements.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2', 'cis_mongodb_3.6_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.3":
+    title: '5.3 | Ensure that logging captures as much information as possible'
+    section: 'Auditing'
+    description: |
+        The            SystemLog.quiet
+         option stops logging of information such as         connection events authentication events replication sync activities
+        evidence of some potentially impactful commands being run eg              drop
+        ,              dropIndexes
+        ,              validate
+                   This information should be logged whenever possible. This check is only for Enterprise editions.
+    remediation: |
+        Set                SystemLog.quiet
+         to                false
+         in the                /etc/mongod.conf
+         file to disable it.
+        systemLog:
+           quiet: false
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.3', 'cis_mongodb_3.6_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.4":
+    title: '5.4 | Ensure that new entries are appended to the end of the log file'
+    section: 'Auditing'
+    description: |
+        By default, new log entries will overwrite old entries after a restart of the mongod or mongos service. Enabling the
+        systemLog.logAppend
+         setting causes new entries to be appended to the end of the log file rather than overwriting the existing content of
+        the log when the mongod or mongos instance restarts.
+    remediation: |
+        Set                systemLog.logAppend
+         to                true
+         in the                /etc/mongod.conf
+         file.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.4', 'cis_mongodb_3.6_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.1":
+    title: '6.1 | Ensure that MongoDB uses a non-default port'
+    section: 'Operating System Hardening'
+    description: |
+        Changing the default port used by MongoDB makes it harder for attackers to find the database and target it.
+    remediation: |
+        Change the port for MongoDB server to a number other than                27017
+        .             Impact: Hackers frequently scan IP addresses for commonly used ports, so it's not uncommon to use a
+        different port to "fly under the radar". This is just to avoid detection, other than that there is no added safety by
+        using a different port.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.1', 'cis_mongodb_3.6_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.2":
+    title: '6.2 | Ensure that operating system resource limits are set for MongoDB - manual'
+    section: 'Operating System Hardening'
+    description: |
+        Operating systems provide ways to limit and control the usage of system resources such as threads, files, and network
+        connections on a perprocess and peruser basis
+    remediation: |
+        Every deployment may have unique requirements and settings. Recommended thresholds and settings are particularly
+        important for MongoDB deployments: f
+         (file size): unlimited               t
+         (cpu time): unlimited               v
+         (virtual memory): unlimited [1]               n
+         (open files): 64000               m
+         (memory size): unlimited [1] [2]               u
+         (processes/threads): 64000
+        Restart the mongod and mongos instances after changing the                ulimit
+         settings to ensure that the changes take effect.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_6.2', 'cis_mongodb_3.6_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.3":
+    title: '6.3 | Ensure that server-side scripting is disabled if not needed'
+    section: 'Operating System Hardening'
+    description: |
+        MongoDB supports the execution of JavaScript code for certain serverside operations            mapReduce
+        ,            group
+        , and            where
+        . If you do not use these operations, serverside scripting should be disabled.
+    remediation: |
+        If server-side scripting is not required, disable it by using the                --noscripting
+         option on the command line.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_6.3', 'cis_mongodb_3.6_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "7.1":
+    title: '7.1 | Ensure authentication file permissions are set correctly - manual'
+    section: 'File Permissions'
+    description: |
+        In the Shared Cluster, the certificate or keyfile is utilized for authentications. Implementing proper file permissions
+        on the certificate or keyfile will prevent unauthorized access to it.
+    remediation: |
+        Set the                keyFile
+         ownership to mongodb user and remove other permissions by executing these commands:
+        chmod 600 /keyfile
+        sudo chown mongodb:mongodb /keyfile
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_7.1', 'cis_mongodb_3.6_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "7.2":
+    title: '7.2 | Ensure that database file permissions are set correctly - manual'
+    section: 'File Permissions'
+    description: |
+        MongoDB database files need to be protected using file permissions.
+    remediation: |
+        Set ownership of the database file to mongodb user and remove other permissions using the following commands:
+        chmod 770 /var/lib/mongodb
+        sudo chown mongodb:mongodb /var/lib/mongodb
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_7.2', 'cis_mongodb_3.6_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:

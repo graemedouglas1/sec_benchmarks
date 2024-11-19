@@ -1,0 +1,311 @@
+#TRUSTED 6a3cfb881353830ceced54839e38840e72f95d16a74782d1491e508d28c21c9c1eebe129a3f1ee3cf6e986806edd8ac47b2c8660e5dd3d1d053c60546c1477798dd0708f2ea38de4214a4abc53ef5d50925d02e912a9786d055ab0b4d90bb277fde00ec36fe834e2db0757bd1069767a671d82dd112f2bcee40d775884727058fb5c09f70d7fc0f59b326d8b7c8ceb06824c57b001b28bcb80332e810396e963caff018aeb0954f65aa2d1a6a77f14b7a8ef937de2421a4fb072b8ff3e2e226616e84ad45ffe479c4eaf29b1d318e36f7eec82215a8494278aa190854e1e4d558e889fd16ac5d7a77a95e8b0c03041e3b8e89acede892d00db15b8715b36de7b58e9b38eda167a54cf010f9b6992299adde807db7705a4b61808098c41c7d65392cafda77290d0c7878c731da3cc489c0600c5cd849554186c0f2cdbce8af6e7699728079a906364cb763ed5b9efed5909f73527ed83a8c8f7cef373184cca4b89e6ad6e19c66638081801a67668e1e7e2363f0df73d97b617cd6c8c5cda4ec0d31e37f796a396e1a1693b7550151a265351c5492582f5b3fd34113b6610debb3dac96f2746cce654a50ffa22cff9d0aa86eb19d5c621598e72b5d7258b75cda70d9af5fc154f56057d771b0a4fea1faa494fa34955f4da6840befcc5f94f3e92932e4f2bcd861ff000603f54c670d3a28e69b2a482f6fd765cea930e87f26db
+#TRUST-RSA-SHA256 5f6ade98d6d05d2db34ed2b02f235fba17c8653b7f754dd538cab06b76ad6b0e5fc88d81a49c172c4e6f8053992c13f5e46f400fdf757ce875583aa17d95c0b140e90b690c00f78ffe445f6fa4c366220325d312f7f7fa4639e5f2e77110742bf9b4e4fb91d43bde4dbf0970428497b8156f05578f2777e3e6f7255b01905ab3d5a0df531f3776c492c78f9f9a279eee05556b90b66e5c23a4fa9b6aa08982918b6a2f74259f78d8566c9ffe6bbe7b0b7435319b1222b34a2cad963b466369cf4a0284193c83b8e165baec2a9ced3224ee1010ebf10924960f309ab68bda2fe15fad06575803bad9f0eef3fe5c747cdc2cdb191080a47d50d876f477d8ddeb4a96ce7adae2f9f94af2366e6f260e474043942d81b6015e32927c5d0673d1350e643e7db011e0b8aabf91b1e18f77083aafe496f5bed0d62d4d5f9a60e16a9c08adfaa4e8a387cb1e2f9b487ca75d205111945f9b68fb956da314354d849fdd2c7c5bb03b8705f5cfe57ba61c66ff5333965299988448380e78cd53cbb8c6a4494f263eba3e2cf8d4a3e08e5313734300c46191f4c7ae1bf718eef7a48ca897c4c3cde8de15feef847deab98aa5c5d0d84aa32a1c474989f547606303032aa4bb3475fe4739d527a0f9610f34ac0abaec57c925b6787bad7be58d7408162c45383e568b2b66c5936d843fe6b6eea9ff3fdd757a41a1f145e9888dd3897df81f88
+#
+# This script is Copyright (C) 2004-2023 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.9 $
+# $Date: 2023/03/07 $
+#
+# This .audit file looks for source code.
+#
+# The first rule parses .NET config files looking for database
+# credentials stored in plain text
+#
+# The second rule is a stub rule that could be extended to include
+# more banned functions from the list at
+# http://msdn2.microsoft.com/en-us/library/bb288454.aspx
+#
+# This file should be customized for your local environment
+# with keywords that identify your source code.
+#
+#<ui_metadata>
+#<display_name>TNS File Analysis - Source Code Errors</display_name>
+#<spec>
+#  <type>TNS</type>
+#  <name>File Analysis - Source Code Errors</name>
+#  <version>1.0.0</version>
+#</spec>
+#<labels>filecontent,content,source,code,errors,update_20230227</labels>
+#</ui_metadata>
+
+<check_type:"FileContent">
+
+#
+# C and .NET checks
+#
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Determine if a .NET config file is storing database account information in plaintext."
+  file_extension : "config"
+  regex          : "(([iI][dD]=.*;[pP][aA][sS]{2}[wW][oO][rR][dD]=.*))"
+  expect         : "Data Source="
+  max_size       : "1M"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Determine if a .NET config file has set the Trust level to Full."
+  file_extension : "config"
+# # <trust level="Full"/>
+  regex          : '((<[tT]rust [lL]evel=\"Full\".*/>))'
+  expect         : "Full"
+  max_size       : "1M"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Determine if a C/C++ source code file is using a Microsoft SDL banned function - cpy"
+  file_extension : "c" | "cpp" | "cs"
+  regex          : "((strcpy|wcscpy|_tcscpy|_mbscpy|StrCpy|StrCpyA|StrCpyW))"
+  expect         : "strcpy" | "wcscpy" | "_tcscpy" | "_mbscpy" | "StrCpy" | "StrCpyA" | "StrCpyW"
+  max_size       : "1M"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Determine if a C/C++ source code file is using a Microsoft SDL banned function - cpy and cat"
+  file_extension : "c" | "cpp" | "cs"
+  regex          : "((_tccpy|_mbccpy|strcat|wcscat|_tcscat|_mbscat|StrCat|StrCatA|StrCatW))"
+  expect         : "_tccpy" | "_mbccpy" | "strcat" | "wcscat" | "_tcscat" | "_mbscat" | "StrCat"
+  max_size       : "1M"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Determine if a C/C++ source code file is using a Microsoft SDL banned function - cat"
+  file_extension : "c" | "cpp" | "cs"
+  regex          : "((lstrcat|lstrcatA|lstrcatW|StrCatBuffW|StrCatBuff|StrCatBuffA|StrCatChainW|strcatA|strcatW|_tccat|_mbccat))"
+  expect         : "strcat" | "StrCat" | "_tccat" | "_mbccat"
+  max_size       : "1M"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Determine if a C/C++ source code file is using a Microsoft SDL banned function - printf"
+  file_extension : "c" | "cpp" | "cs"
+  regex          : "((wnsprintf|wnsprintfA|wnsprintfW|sprintfW|sprintfA|wsprintf|wsprintfW|wsprintfA|sprintf|swprintf|_stprintf|_snwprintf|_snprintf|_sntprintf|nsprintf))"
+  expect         : "sprintf" | "_stprintf" | "_snwprintf" | "_snprintf" | "_sntprintf"
+  max_size       : "1M"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Determine if a C/C++ source code file is using a Microsoft SDL banned function - sprintf"
+  file_extension : "c" | "cpp" | "cs"
+  regex          : "((wvsprintf|wvsprintfA|wvsprintfW|vsprintf|_vstprintf|vswprintf|_vsnprintf|_vsnwprintf|_vsntprintf|wvnsprintf|wvnsprintfA|wvnsprintfW))"
+  expect         : "sprintf"
+  max_size       : "1M"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Determine if a C/C++ source code file is using a Microsoft SDL banned function - vnsprintf"
+  file_extension : "c" | "cpp" | "cs"
+  regex          : "((_vsnprintf|_vsnwprintf|_vsntprintf|wvnsprintf|wvnsprintfA|wvnsprintfW))"
+  expect         : "sprintf"
+  max_size       : "1M"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Determine if a C/C++ source code file is using a Microsoft SDL banned function - ncpy"
+  file_extension : "c" | "cpp" | "cs"
+  regex          : "((strncpy|wcsncpy|_tcsncpy|_mbsncpy|_mbsnbcpy|StrCpyN|StrNCpy|strcpynA|StrNCpyA|StrNCpyW|lstrcpyn|lstrcpynA|lstrcpynW|_fstrncpy))"
+  expect         : "strncpy" | "wcsncpy" | "sncpy" | "StrCpy" | "lstrcpyn" | "StrNCpy"
+  max_size       : "1M"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Determine if a C/C++ source code file is using a Microsoft SDL banned function - ncat"
+  file_extension : "c" | "cpp" | "cs"
+  regex          : "((strncat|wcsncat|_tcsncat|_mbsncat|_mbsnbcat|StrCatN|StrNCat|StrNCatA|StrNCatW|lstrncat|lstrcatnA|lstrcatnW|lstrcatn|_fstrncat))"
+  expect         : "strncat" | "sncat" | "snbcat" | "StrCatN" | "StrNCat" | "strcat"
+  max_size       : "1M"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Determine if a C/C++ source code file is using a Microsoft SDL banned function - tok and makepath"
+  file_extension : "c" | "cpp" | "cs"
+  regex          : "((strtok|_tcstok|wcstok|_mbstok|Makepath|_tmakepath|_makepath|_wmakepath|_splitpath|_tsplitpath|_wsplitpath|scanf|wscanf|_tscanf|sscanf|swscanf|_stscanf))"
+  expect         : "strto" | "cstok" | "bstok" | "Makepath" | "makepath" | "splitpath" | "scanf"
+  max_size       : "1M"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Determine if a C/C++ source code file is using a Microsoft SDL banned function - ito"
+  file_extension : "c" | "cpp" | "cs"
+  regex          : "((snscanf|snwscanf|_sntscanf|_itoa|_itow|_i64toa|_i64tow|_ui64toa|_ui64tot|_ui64tow|_ultoa|_ultot|_ultow))"
+  expect         : "scanf" | "_ito" | "_i64to" | "_ui64to" | "_ulto"
+  max_size       : "1M"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Determine if a C/C++ source code file is using a Microsoft SDL banned function gets"
+  file_extension : "c" | "cpp" | "cs"
+  regex          : "((gets|_getts|_gettws|IsBadWritePtr|IsBadHugeWritePtr|IsBadReadPtr|IsBadHugeReadPtr|IsBadCodePtr|IsBadStringPtr))"
+  expect         : "gets" | "_gettws" | "IsBad"
+  max_size       : "1M"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Determine if a C/C++ source code file is using a Microsoft SDL banned function - charto and oemto"
+  file_extension : "c" | "cpp" | "cs"
+  regex          : "((CharToOem|CharToOemA|CharToOemW|OemToChar|OemToCharA|OemToCharW|CharToOemBuffA|CharToOemBuffW|alloca|_alloca))"
+  expect         : "CharTo" | "OemTo" | "alloca"
+  max_size       : "1M"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Determine if a C/C++ source code file is using a Microsoft SDL banned function - len"
+  file_extension : "c" | "cpp" | "cs"
+  regex          : "((strlen|wcslen|_mbslen|_mbstrlen|StrLen|lstrlen))"
+  expect         : "len" | "Len"
+  max_size       : "1M"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Potential strcpy buffer overflow in C/C++ code."
+  file_extension : "c" | "cpp"
+  regex          : "((strcpy\(.*,argv\[.*\]\)))"
+  expect         : "include"
+  max_size       : "1M"
+  reference      : "800-53|SI-16,800-53r5|SI-16,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SI-16"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Potential strpy buffer overflow in C/C++ code."
+  file_extension : "c" | "cpp"
+  regex          : "((strcpy\((buffer|buf),str\)))"
+  expect         : "include"
+  max_size       : "1M"
+  reference      : "800-53|SI-16,800-53r5|SI-16,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SI-16"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Potential SQL injection in Microsoft C* code."
+  file_extension : "c" | "cpp" | "cs" | "asp" | "aspx"
+  regex          : "(([sS][eE][lL][eE][cC][tT].*[fF][rR][oO][mM].*Request\.([fF]orm|[cC]ookies)[ ]+\[))"
+  expect         : "Request"
+  max_size       : "1M"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Potential injection vulnerability via unsanitized user supplied data - direct write of request"
+  file_extension : "cs" | "asp" | "aspx"
+  regex          : "((Response.Write[ ]*\(Request\.))"
+  expect         : "Response.Write"
+  max_size       : "1M"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Potential injection vulnerability via unsanitized user supplied data - direct link of request"
+  file_extension : "asp" | "aspx"
+# <a href=<%=request.servervariables("http_referer")%>
+  regex          : "(([aA] [hH][rR][eE][fF][ ]*=[ ]*<%=[ ]*[rR]equest\.[^%]*%>))"
+  expect         : "equest."
+  max_size       : "1M"
+</item>
+
+#
+# PHP Coding Errors
+#
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Potential command injection via user request in PHP code."
+  file_extension : "php"
+  regex          : "(((system|popen|shell_exec|exec|eval)[ ]*\(\$_(GET|POST|COOKIE|REQUEST|SESSION).*\)))"
+  expect         : "<?php"
+  max_size       : "1M"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Potential SQL Injection via mySQL user request in PHP code."
+  file_extension : "php"
+  regex          : "((mysql_query\(.*\$_(GET|POST|COOKIE|SESSION|REQUEST)))"
+  expect         : "<?php"
+  max_size       : "1M"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Potential SQL injection via SQL query in PHP code."
+  file_extension : "php"
+  regex          : "((WHERE .=\$_(GET|POST|SESSION|COOKIE|REQUEST)))"
+  expect         : "<?php"
+  max_size       : "1M"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Potential XSS vulnerability via unsanitized user supplied data in PHP code."
+  file_extension : "php"
+  regex          : "(((echo|print).*\$_(GET|POST|COOKIE|SESSION|REQUEST)))"
+  expect         : "<?php"
+  max_size       : "1M"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Potential injection via user-supplied HTTP headers in PHP code."
+  file_extension : "php"
+# <?php echo $_SERVER["HTTP_USER_AGENT"];?>
+  regex          : '(((echo|print).*\$_SERVER[ ]*\[\"HTTP_(USER_AGENT|REFERER)))'
+  expect         : "<?php"
+  max_size       : "1M"
+</item>
+
+#
+# Java Coding Errors
+#
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Potential SQL injection via SQL query in Java code - SQL"
+  file_extension : "java"
+  regex          : '(([sS][eE][lL][eE][cC][tT].*[fF][rR][oO][mM].*request\.getParameter[ ]*\(\"))'
+  expect         : "request.getParameter"
+  max_size       : "1M"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Potential SQL injection via SQL query in Java code - execute"
+  file_extension : "java"
+  regex          : '((executeQuery[ ]*\(.*request\.getParameter[ ]*\(\"))'
+  expect         : "request.getParameter"
+  max_size       : "1M"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Potential XSS vulnerability via unsanitized user data in Java code."
+  file_extension : "java"
+  regex          : '((out\.println[ ]*\(.*request\.getParameter[ ]*\(\"))'
+  expect         : "out.println"
+  max_size       : "1M"
+</item>
+
+</check_type>

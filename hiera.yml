@@ -1,0 +1,35 @@
+---
+
+defaults:
+  datadir: hieradata
+
+hierarchy:  
+
+# --------------------
+# INSPEC DATA
+# --------------------
+
+  - scope: hosts
+    paths:
+
+      - name: "Common Data"
+        paths:
+          - "common.yml"
+
+      - name: "Benchmark Data"
+        paths:
+          {% if inspec_benchmarks is defined %}
+          {% set pattern = "^(.*)_v(\\d+\\.?\\d*\\.?\\d*)" %}
+          {% for benchmark in inspec_benchmarks %}
+          {% if benchmark | regex_search(pattern) %}
+          {% set matches = benchmark | regex_findall(pattern) %}
+          {% set benchmark_title = matches[0][0] %}
+          {% set benchmark_version = matches[0][1] %}
+          {% if 'cis' in benchmark_title %}
+          - "benchmarks/{{ benchmark_title|lower }}/{{ benchmark_version }}/{{ osType|lower }}/common.yml"
+          {% else %}
+          - "components/{{ ansible_os_family|lower }}/{{ benchmark_title|lower }}/{{ benchmark_version }}/common.yml"
+          {% endif %}
+          {% endif %}
+          {% endfor %}
+          {% endif %}

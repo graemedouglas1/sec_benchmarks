@@ -1,0 +1,486 @@
+#TRUSTED 4b83f64d5552b83bf41b92c16d80b8a595ded9408ffccadbb8487cb6426852fd17f97b1f33aefee818a955331810b4bd26bffeb48791b8e81c0ab56e8c4bbaffb0a1d4e3e1b118c5f64efb8680f6fc84ed7066c77b191753f9f2a212ab9244f5ec58c5cb9480e6b435c41f7fedfba5428106c25768bf39d710dd9f44b586630e8bc231af4997cbacb2a0350f99044ce819b2de92bdec616916c7c34ff8802ee336277444beefb373196d5fcb8f70744bbb741f9de3d1c60e61df36ea00597c002ffed450b99d78396806b85f4c41e22368576575fdfe53b710eacf84e4ff9252e7df4a12ecffdf363bbd1c6bc44a12ba208fc89fd919082c3c2847877a82bffb070e86cf1b18b64d1ff204cfb7ac05223cf62c419ac774cbf81a21b627d45140eb2ed9073bc200a22b00405d9c4a4f058ad10cbdcd5cd6f2ec97086fa471d071e7c1307ad8a6fcca806ff07f5195d2c7d3af15c85270d8af33050ace7e03c27bce3fa4448a57f9f0c37dec2162e3c2b8a11ab6e20f4c3411a14cb9199d171fd1fb6dd9fd05992dcc9ee9ed39e7d59402070cf46583a9ff47e881b6c405b2b326abf1356aae13dcf116553401f03ca50dbcb019f53a682b570e6d92061892638f5658402c04488cfe82646933f452bf45439bd191ff291879bd962d59e3a7c2d651addabccd2a63a4baa82efd1b81e25040230f560d338aeb857b39e04b3ba94a
+#TRUST-RSA-SHA256 349f62fa85fd774ae761ad4c7874c20212efe17ddb26b4bc2da3483f30fd71c08709017bce69986aa084eb65bf154d38b15ca0d56328796a7b6cf1b746096fc094a6a260d4e6c33d9e3e31a74b76acf0c8ace5365672a7bbd81fb0d1e88fdbc8994d442a4328afcb85796f2bd95373daee883331274004dd41798ebb08b07cc7a1181d09e92fab4b86e6ae1b1787caff004fc8854ddd0f8eb131e8199a0d17e2601794837b48ac6f247221953048cb4f8a08f408532bc2b10764f3f0c0b4b5c12a5a353ae0ce42c7d0e776b396c5288fcce4e81ec6a9f1922c3b5d3db8355c697c0aa1860699050ec6295c35de502e9ebd6e2a6376f15ae764096f30d7047939398ee8e2a9ff32d12bd374d4ccd339ffdba1ff19580b8def8ea22fb5554edef18af1d43fc04bb6981dad33a484987ebb9222324a54e260d98f3912188089097ab7580d47c3837a236b0c5747d3b0f5680e74823d7655a556fe66f7955b11fd8002c8ac791cbbb91a954787e9ea6652b876abc1fb70c2d264d2a71ad3d29e0c7e1be30b9fc3c58414beccf72ed4d7defa3708798bca81d18155474e9091ec236bcca356ab39dc5f56d348fc943f70971dfacb3f4941f439d941bad6698b49c022ad45fa790f1f590d92b81affae9f55bbebe9f4542e34bd3b0887b6b52376c994c23c20ec773d0bdc88196cd202dcbb621cf0680cfc0a4abaa14ab09c21f925d1
+#
+# This script is Copyright (C) 2004-2024 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.0 $
+# $Date: 2024/10/30 $
+#
+# Description : This document implements the security configuration as recommended by the
+#               CIS Microsoft Office Enterprise Benchmark v1.2.0
+#
+#<ui_metadata>
+#<display_name>CIS Microsoft Office Enterprise v1.2.0 L2</display_name>
+#<spec>
+#  <type>CIS</type>
+#  <name>Microsoft Office Enterprise</name>
+#  <profile>L2</profile>
+#  <version>1.2.0</version>
+#  <link>https://workbench.cisecurity.org/benchmarks/12129</link>
+#</spec>
+#<labels>cis,office_365_apps</labels>
+#<benchmark_refs>CCE,CSCv6,CSCv7,CSCv8,LEVEL</benchmark_refs>
+#<variables>
+#  <variable>
+#    <name>OFFICE_VERSION</name>
+#    <default>Microsoft 365 Apps for enterprise.*</default>
+#    <description>Version of Microsoft Office</description>
+#    <info>This regex should match what is listed under Settings &gt; Apps and Features</info>
+#    <value_type>STRING</value_type>
+#  </variable>
+#</variables>
+#</ui_metadata>
+
+<check_type:"Windows" version:"2">
+<group_policy:"Microsoft Office Enterprise">
+
+<if>
+  <condition type:"OR">
+    <custom_item>
+      type            : AUDIT_POWERSHELL
+      description     : "Check for Office"
+      value_type      : POLICY_TEXT
+      value_data      : "@OFFICE_VERSION@"
+      powershell_args : "$(Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName) + $(Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName)"
+      check_type      : CHECK_REGEX
+    </custom_item>
+  </condition>
+
+  <then>
+    <report type:"PASSED">
+      description : "CIS_Microsoft_Office_Enterprise_v1.2.0_L2.audit from CIS Microsoft Office Enterprise Benchmark v1.2.0"
+      see_also    : "https://workbench.cisecurity.org/benchmarks/12129"
+    </report>
+
+    <custom_item>
+      type                 : REGISTRY_SETTING
+      description          : "2.1.1.3.2.1.2 Ensure 'Disable all trusted locations' is set to 'Enabled'"
+      info                 : "This policy setting allows administrators to disable all trusted locations in the specified applications.
+
+The recommended state for this setting is: Enabled.
+
+Rationale:
+
+Trusted locations specified in the Trust Center are used to define file locations that are assumed to be safe. Content, code, and add-ins are allowed to load from trusted locations with a minimal amount of security, without prompting the users for permission. If a dangerous file is opened from a trusted location, it will not be subject to standard security measures and could harm the user's computers or data.
+
+Impact:
+
+All trusted locations (those specified in the Trust Center) in the specified applications are ignored, including any trusted locations established by Office 2016 during setup, deployed to users using Group Policy, or added by users themselves. Users will be prompted again when opening files from trusted locations."
+      solution             : "To establish the recommended configuration via GP, set the following UI path to Enabled.
+
+User Configuration\Administrative Templates\Microsoft Access 2016\Application Settings\Security\Trust Center\Trusted Locations\Disable all trusted locations
+
+Default Value:
+
+Disabled. (All trusted locations (those specified in the Trust Center) in the specified applications are assumed to be safe.)"
+      reference            : "800-171|3.4.2,800-53|CM-6b.,800-53r5|CM-6b.,CN-L3|8.1.10.6(d),CSF|PR.IP-1,CSF2.0|DE.CM-09,CSF2.0|PR.PS-01,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6b.,LEVEL|2A,NESA|T3.2.1,SWIFT-CSCv1|2.3"
+      see_also             : "https://workbench.cisecurity.org/benchmarks/12129"
+      value_type           : POLICY_DWORD
+      value_data           : 1
+      reg_key              : "HKU\Software\Policies\Microsoft\Office\16.0\Access\Security\Trusted Locations"
+      reg_item             : "alllocationsdisabled"
+      reg_ignore_hku_users : "S-1-5-18,S-1-5-19,S-1-5-20"
+      reg_option           : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type                 : REGISTRY_SETTING
+      description          : "2.2.4.7.2.4.2 Ensure 'Disable all trusted locations' is set to 'Enabled'"
+      info                 : "This policy setting allows administrators to disable all trusted locations in the specified applications.
+
+The recommended state for this setting is: Enabled.
+
+Rationale:
+
+Trusted locations specified in the Trust Center are used to define file locations that are assumed to be safe. Content, code, and add-ins are allowed to load from trusted locations with a minimal amount of security, without prompting the users for permission. If a dangerous file is opened from a trusted location, it will not be subject to standard security measures and could harm the user's computers or data.
+
+Impact:
+
+All trusted locations (those specified in the Trust Center) in the specified applications are ignored, including any trusted locations established by Office 2016 during setup, deployed to users using Group Policy, or added by users themselves. Users will be prompted again when opening files from trusted locations."
+      solution             : "To establish the recommended configuration via GP, set the following UI path to Enabled.
+
+User Configuration\Administrative Templates\Microsoft Excel 2016\Excel Options\Security\Trust Center\Trusted Locations\Disable all trusted locations
+
+Default Value:
+
+Disabled. (All trusted locations (those specified in the Trust Center) in the specified applications are assumed to be safe.)"
+      reference            : "800-171|3.4.2,800-53|CM-6b.,800-53r5|CM-6b.,CN-L3|8.1.10.6(d),CSF|PR.IP-1,CSF2.0|DE.CM-09,CSF2.0|PR.PS-01,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6b.,LEVEL|2A,NESA|T3.2.1,SWIFT-CSCv1|2.3"
+      see_also             : "https://workbench.cisecurity.org/benchmarks/12129"
+      value_type           : POLICY_DWORD
+      value_data           : 1
+      reg_key              : "HKU\Software\Policies\Microsoft\Office\16.0\Excel\Security\Trusted Locations"
+      reg_item             : "alllocationsdisabled"
+      reg_ignore_hku_users : "S-1-5-18,S-1-5-19,S-1-5-20"
+      reg_option           : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type                 : REGISTRY_SETTING
+      description          : "2.3.24.2 Ensure 'Remove Office Presentation Service from the list of online presentation services in PowerPoint and Word' is set to 'Enabled'"
+      info                 : "This policy setting controls removal of Office Presentation Service from the list of online presentation services in PowerPoint and Word. This list appears when a user selects Present Online from the Share tab in Backstage view and in the ribbon in PowerPoint.
+
+The recommended state for this setting is: Enabled.
+
+Rationale:
+
+Allowing users to utilize Office Presentation Service for PowerPoint and Word could allow for sensitive information to be sent to unauthorized parties in an unintended manner. Any information in a Word Document, or PowerPoint document could simply be sent through this service to network connected viewers. Intended or Unintended data leakage can be prevented by turning off unused services.
+
+Impact:
+
+Users that utilize Office Presentation Service for PowerPoint and Word will need to share their presentation another way."
+      solution             : "To establish the recommended configuration via GP, set the following UI path to Enabled:
+
+User Configuration\Administrative Templates\Microsoft Office 2016\Present Online\Remove Office Presentation Service from the list of online presentation services in PowerPoint and Word
+
+Default Value:
+
+Not Configured (users can select Office Presentation Service to present their PowerPoint or Word file to other users online)."
+      reference            : "800-171|3.4.9,800-171|3.13.13,800-53|CM-10,800-53|CM-11,800-53|SC-18,800-53r5|CM-10,800-53r5|CM-11,800-53r5|SC-18,CSCv8|9.4,CSF|DE.CM-3,CSF|DE.CM-5,CSF2.0|DE.CM-03,CSF2.0|DE.CM-09,CSF2.0|PR.PS-01,CSF2.0|PR.PS-02,GDPR|32.1.b,HIPAA|164.306(a)(1),ISO/IEC-27001|A.12.6.2,ITSG-33|SC-18,LEVEL|2A,NIAv2|SU3,QCSC-v1|3.2,QCSC-v1|8.2.1,SWIFT-CSCv1|5.1"
+      see_also             : "https://workbench.cisecurity.org/benchmarks/12129"
+      value_type           : POLICY_DWORD
+      value_data           : 1
+      reg_key              : "HKU\Software\Policies\Microsoft\Office\16.0\Common\Broadcast"
+      reg_item             : "disabledefaultservice"
+      reg_ignore_hku_users : "S-1-5-18,S-1-5-19,S-1-5-20"
+      reg_option           : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type                 : REGISTRY_SETTING
+      description          : "2.3.36.1.1 Ensure 'Conversion Service Options' is set to 'Enabled: Do not allow to use Microsoft Conversion Service'"
+      info                 : "This policy setting controls users' access to the online features of Office 2016.
+
+The recommended state for this setting is: Enabled: Do not allow to use Microsoft Conversion Service
+
+Rationale:
+
+In a high security environment data should never be sent to 3rd parties as there could be an accidental spillage of sensitive information. Online Content, online tips and other internet connected services baked into applications (whether innocent from the software vendor's perspective or not) can allow for a covert channel to exist where information can travel through.
+
+Impact:
+
+Conversion services will be unavailable."
+      solution             : "To establish the recommended configuration via GP, set the following UI path to Enabled: Do not allow to use Microsoft Conversion Service:
+
+User Configuration\Administrative Templates\Microsoft Office 2016\Tools | Options | General | Service Options...\Online Content\Conversion Service\Conversion Service Options
+
+Default Value:
+
+Disabled. (The conversion service is accessible.)"
+      reference            : "800-171|3.4.2,800-53|CM-6b.,800-53r5|CM-6b.,CN-L3|8.1.10.6(d),CSF|PR.IP-1,CSF2.0|DE.CM-09,CSF2.0|PR.PS-01,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6b.,LEVEL|2A,NESA|T3.2.1,SWIFT-CSCv1|2.3"
+      see_also             : "https://workbench.cisecurity.org/benchmarks/12129"
+      value_type           : POLICY_DWORD
+      value_data           : 0
+      reg_key              : "HKU\Software\Policies\Microsoft\Office\16.0\Common\Internet"
+      reg_item             : "useconversionservices"
+      reg_ignore_hku_users : "S-1-5-18,S-1-5-19,S-1-5-20"
+      reg_option           : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type                 : REGISTRY_SETTING
+      description          : "2.3.36.2.1 Ensure 'Online Content Options' is set to 'Enabled: Do not allow Office to connect to the Internet'"
+      info                 : "This policy setting controls users' access to the online features of Office.
+
+Policy setting option for user access to online content and services:
+
+Do not allow Office to connect to the Internet - Office applications do not connect to the Internet to access online services, or to download the latest online content from Office.com. Connected features of Office 2016 are disabled.
+
+NOTE: This does not apply to Office 365 Apps for Enterprise, but does apply to Office 2016 and 2019. Office 365 has a separate set of group policies for these controls.
+
+The recommended state for this setting is: Enabled: Do not allow Office to connect to the Internet
+
+Rationale:
+
+In a high security environment data should never be sent to 3rd parties as there could be an accidental spillage of sensitive information. Online Content, online tips and other internet connected services baked into applications (whether innocent from the software vendor's perspective or not) can allow for a covert channel to exist where information can travel through.
+
+Impact:
+
+Configuring this setting to 'Do not allow Office to connect to the internet' will cause disruptions for users who are accustomed to receiving content from Microsoft Office.com within Office applications. These users will still have to access Microsoft Office.com using their Web browsers to obtain this content, if permitted."
+      solution             : "To establish the recommended configuration via GP, set the following UI path to Enabled: Do not allow Office to connect to the Internet:
+
+User Configuration\Administrative Templates\Microsoft Office 2016\Tools | Options | General | Service Options...\Online Content\Online Content Options
+
+Default Value:
+
+Not Configured. (Office applications will be permitted to connect online.)"
+      reference            : "800-171|3.4.2,800-53|CM-6b.,800-53r5|CM-6b.,CN-L3|8.1.10.6(d),CSF|PR.IP-1,CSF2.0|DE.CM-09,CSF2.0|PR.PS-01,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6b.,LEVEL|2A,NESA|T3.2.1,SWIFT-CSCv1|2.3"
+      see_also             : "https://workbench.cisecurity.org/benchmarks/12129"
+      value_type           : POLICY_DWORD
+      value_data           : 0
+      reg_key              : "HKU\Software\Policies\Microsoft\Office\16.0\Common\Internet"
+      reg_item             : "useonlinecontent"
+      reg_ignore_hku_users : "S-1-5-18,S-1-5-19,S-1-5-20"
+      reg_option           : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type                 : REGISTRY_SETTING
+      description          : "2.3.38.1.1 Ensure 'Improve Proofing Tools' is set to 'Disabled'"
+      info                 : "This policy setting controls whether the Help Improve Proofing Tools feature sends usage data to Microsoft. The Help Improve Proofing Tools feature collects data about use of the Proofing Tools, such as additions to the custom dictionary, and sends it to Microsoft. After about six months, the feature stops sending data to Microsoft and deletes the data collection file from the user's computer.
+
+The recommended state for this setting is: Disabled.
+
+Rationale:
+
+Although this feature does not intentionally collect personal information, some of the content that is sent could include items that were marked as spelling or grammar errors, such as proper names and account numbers. However, any numbers such as account numbers, street addresses, and phone numbers are converted to zeroes when the data is collected. Microsoft uses this information solely to improve the effectiveness of the Office Proofing Tools, not to identify users.
+
+Impact:
+
+The Customer Experience Improvement Program sends proofing tool data to Microsoft silently and without affecting application usage, so disabling the collection and transmission of proofing tool data is unlikely to cause usability issues for most users."
+      solution             : "To establish the recommended configuration via GP, set the following UI path to Disabled:
+
+User Configuration\Administrative Templates\Microsoft Office 2016\Tools | Options | Spelling\Proofing Data Collection\Improve Proofing Tools
+
+Default Value:
+
+Enabled."
+      reference            : "800-171|3.4.2,800-171|3.4.6,800-171|3.4.7,800-53|CM-6,800-53|CM-7,800-53r5|CM-6,800-53r5|CM-7,CSCv8|4.8,CSF|PR.IP-1,CSF|PR.PT-3,CSF2.0|DE.CM-09,CSF2.0|PR.PS-01,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6,ITSG-33|CM-7,LEVEL|2A,NIAv2|SS15a,PCI-DSSv3.2.1|2.2.2,SWIFT-CSCv1|2.3"
+      see_also             : "https://workbench.cisecurity.org/benchmarks/12129"
+      value_type           : POLICY_DWORD
+      value_data           : 0
+      reg_key              : "HKU\Software\Policies\Microsoft\Office\16.0\Common\Ptwatson"
+      reg_item             : "ptwoptin"
+      reg_ignore_hku_users : "S-1-5-18,S-1-5-19,S-1-5-20"
+      reg_option           : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type                 : REGISTRY_SETTING
+      description          : "2.5.10.8.3.1 Ensure 'Read e-mail as plain text' is set to 'Enabled'"
+      info                 : "This policy setting determines whether Outlook renders all e-mail messages in plain text format for reading. Outlook can display e-mail messages and other items in three formats: plain text, Rich Text Format (RTF), and HTML. If this policy is enabled, the 'Read all standard mail in plain text' check box option is selected in the 'E-mail Security' section of the Trust Center and users cannot change it.
+
+The recommended state for this setting is: Enabled.
+
+Rationale:
+
+This option only changes the way e-mail messages are displayed; the original message is not converted to plain text format.
+
+Impact:
+
+Enabling this setting forces Outlook to display all messages in plain text, which could cause disruptions for users who receive messages in HTML or RTF formats. Inline graphics in the messages will not display, and the text of formatted messages might become distorted or illegible."
+      solution             : "To establish the recommended configuration via GP, set the following UI path to Enabled:
+
+User Configuration\Administrative Templates\Microsoft Outlook 2016\Outlook Options\Preferences\E-mail Options\Read e-mail as plain text
+
+Default Value:
+
+Disabled. (Outlook displays e-mail messages in the format received.)"
+      reference            : "800-171|3.4.2,800-53|CM-6b.,800-53r5|CM-6b.,CN-L3|8.1.10.6(d),CSF|PR.IP-1,CSF2.0|DE.CM-09,CSF2.0|PR.PS-01,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6b.,LEVEL|2A,NESA|T3.2.1,SWIFT-CSCv1|2.3"
+      see_also             : "https://workbench.cisecurity.org/benchmarks/12129"
+      value_type           : POLICY_DWORD
+      value_data           : 1
+      reg_key              : "HKU\Software\Policies\Microsoft\Office\16.0\Outlook\Options\Mail"
+      reg_item             : "readasplain"
+      reg_ignore_hku_users : "S-1-5-18,S-1-5-19,S-1-5-20"
+      reg_option           : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type                 : REGISTRY_SETTING
+      description          : "2.5.10.8.3.2 Ensure 'Read signed e-mail as plain text' is set to 'Enabled'"
+      info                 : "This policy setting determines whether Outlook renders all digitally signed e-mail in plain text format for reading. Outlook can display e-mail messages and other items in three formats: plain text, Rich Text Format (RTF), and HTML. If you enable this policy setting, the 'Read all standard mail in plain text' check box option is selected in the 'E-mail Security' section of the Trust Center and users cannot change it.
+
+The recommended state for this setting is: Enabled.
+
+Rationale:
+
+This option only changes the way e-mail messages are displayed; the original message is not converted to plain text format.
+
+Impact:
+
+Enabling this setting forces Outlook to display signed messages in plain text, which could cause disruptions for users who receive signed messages in HTML or RTF formats. Inline graphics in the messages will not display, and the text of formatted messages might become distorted or illegible."
+      solution             : "To establish the recommended configuration via GP, set the following UI path to Enabled:
+
+User Configuration\Administrative Templates\Microsoft Outlook 2016\Outlook Options\Preferences\E-mail Options\Read signed e-mail as plain text
+
+Default Value:
+
+Disabled. (Outlook displays digitally signed e-mail messages in the format they were received in.)"
+      reference            : "800-171|3.4.2,800-53|CM-6b.,800-53r5|CM-6b.,CN-L3|8.1.10.6(d),CSF|PR.IP-1,CSF2.0|DE.CM-09,CSF2.0|PR.PS-01,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6b.,LEVEL|2A,NESA|T3.2.1,SWIFT-CSCv1|2.3"
+      see_also             : "https://workbench.cisecurity.org/benchmarks/12129"
+      value_type           : POLICY_DWORD
+      value_data           : 1
+      reg_key              : "HKU\Software\Policies\Microsoft\Office\16.0\Outlook\Options\Mail"
+      reg_item             : "readsignedasplain"
+      reg_ignore_hku_users : "S-1-5-18,S-1-5-19,S-1-5-20"
+      reg_option           : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type                 : REGISTRY_SETTING
+      description          : "2.5.10.11 Ensure 'Internet and network paths into hyperlinks' is set to 'Disabled'"
+      info                 : "This policy setting specifies whether Outlook automatically turns text that represents Internet and network paths into hyperlinks. This option can also be configured by selecting the 'Internet and network paths with hyperlinks' check box that is available on the Outlook.
+
+The recommended state for this setting is: Disabled.
+
+Rationale:
+
+Users may receive emails from attackers that contain Internet or network paths to malicious content. Users may unintentionally click on hyperlinks if they are presented to the users automatically.
+
+Impact:
+
+Users will not be able to click on hyperlinks for Internet and network paths. Instead they will need to manually copy and paste the URL or path."
+      solution             : "To establish the recommended configuration via GP, set the following UI path to Disabled:
+
+User Configuration\Administrative Templates\Microsoft Outlook 2016\Outlook Options\Internet and Network Paths into Hyperlinks
+
+Default Value:
+
+Enabled. (Applicable text is automatically turned into hyperlinks.)"
+      reference            : "800-171|3.4.2,800-53|CM-6b.,800-53r5|CM-6b.,CN-L3|8.1.10.6(d),CSF|PR.IP-1,CSF2.0|DE.CM-09,CSF2.0|PR.PS-01,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6b.,LEVEL|2A,NESA|T3.2.1,SWIFT-CSCv1|2.3"
+      see_also             : "https://workbench.cisecurity.org/benchmarks/12129"
+      value_type           : POLICY_DWORD
+      value_data           : 0
+      reg_key              : "HKU\Software\Policies\Microsoft\Office\16.0\Outlook\Options\Autoformat"
+      reg_item             : "pgrfafo_25_1"
+      reg_ignore_hku_users : "S-1-5-18,S-1-5-19,S-1-5-20"
+      reg_option           : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type                 : REGISTRY_SETTING
+      description          : "2.6.5.2 Ensure 'Disable Slide Update' is set to 'Enabled'"
+      info                 : "This policy setting controls whether users can link slides in a presentation with their counterparts in a PowerPoint Slide Library.
+
+PowerPoint users can share and reuse slide content by storing individual slide files in a centrally located Slide Library on a server running Office SharePoint Server. Using the Slide Update feature, users can associate a slide in a presentation on a user's computer with the original slide that resides in the Slide Library on the server.
+
+The recommended state for this setting is: Enabled.
+
+Rationale:
+
+Updating a slide in a presentation from an external source like a Slide Library can cause important information to be exposed or lost. An attacker could modify the data in the slide library, affecting the integrity of all slide presentations that depend upon that library.
+
+Impact:
+
+Enabling this setting prevents PowerPoint from checking Slide Libraries for slide updates."
+      solution             : "To establish the recommended configuration via GP, set the following UI path to Enabled:
+
+User Configuration\Administrative Templates\Microsoft PowerPoint 2016\Miscellaneous\Disable Slide Update
+
+Default Value:
+
+Disabled. (Slide updates are allowed.)"
+      reference            : "800-171|3.4.2,800-171|3.4.6,800-171|3.4.7,800-53|CM-6,800-53|CM-7,800-53r5|CM-6,800-53r5|CM-7,CSCv8|4.8,CSF|PR.IP-1,CSF|PR.PT-3,CSF2.0|DE.CM-09,CSF2.0|PR.PS-01,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6,ITSG-33|CM-7,LEVEL|2A,NIAv2|SS15a,PCI-DSSv3.2.1|2.2.2,SWIFT-CSCv1|2.3"
+      see_also             : "https://workbench.cisecurity.org/benchmarks/12129"
+      value_type           : POLICY_DWORD
+      value_data           : 1
+      reg_key              : "HKU\Software\Policies\Microsoft\Office\16.0\Powerpoint\Slide Libraries"
+      reg_item             : "disableslideupdate"
+      reg_ignore_hku_users : "S-1-5-18,S-1-5-19,S-1-5-20"
+      reg_option           : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type                 : REGISTRY_SETTING
+      description          : "2.6.6.6.2.3.2 Ensure 'Disable all trusted locations' is set to 'Enabled'"
+      info                 : "This policy setting allows administrators to disable all trusted locations in the specified applications.
+
+The recommended state for this setting is: Enabled.
+
+Rationale:
+
+Trusted locations specified in the Trust Center are used to define file locations that are assumed to be safe. Content, code, and add-ins are allowed to load from trusted locations with a minimal amount of security, without prompting the users for permission. If a dangerous file is opened from a trusted location, it will not be subject to standard security measures and could harm the user's computers or data.
+
+Impact:
+
+All trusted locations (those specified in the Trust Center) in the specified applications are ignored, including any trusted locations established by Office 2016 during setup, deployed to users using Group Policy, or added by users themselves. Users will be prompted again when opening files from trusted locations."
+      solution             : "To establish the recommended configuration via GP, set the following UI path to Enabled.
+
+User Configuration\Administrative Templates\Microsoft PowerPoint 2016\PowerPoint Options\Security\Trust Center\Trusted Locations\Disable all trusted locations
+
+Default Value:
+
+Disabled. (All trusted locations (those specified in the Trust Center) in the specified applications are assumed to be safe.)"
+      reference            : "800-171|3.4.2,800-53|CM-6b.,800-53r5|CM-6b.,CN-L3|8.1.10.6(d),CSF|PR.IP-1,CSF2.0|DE.CM-09,CSF2.0|PR.PS-01,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6b.,LEVEL|2A,NESA|T3.2.1,SWIFT-CSCv1|2.3"
+      see_also             : "https://workbench.cisecurity.org/benchmarks/12129"
+      value_type           : POLICY_DWORD
+      value_data           : 1
+      reg_key              : "HKU\Software\Policies\Microsoft\Office\16.0\Powerpoint\Security\Trusted Locations"
+      reg_item             : "alllocationsdisabled"
+      reg_ignore_hku_users : "S-1-5-18,S-1-5-19,S-1-5-20"
+      reg_option           : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type                 : REGISTRY_SETTING
+      description          : "2.11.6.2 Ensure 'Use online translation dictionaries' is set to 'Disabled'"
+      info                 : "This policy setting determines if online dictionaries are used for the translation of text through the Research pane.
+
+The recommended state for this setting is: Disabled.
+
+Rationale:
+
+Data should not be shared with third party vendors in an enterprise managed environment. Enabling this service could potentially allow sensitive information to be sent to a third party for translation.
+
+Impact:
+
+Users will not be able to translate text through the Research pane by using the online dictionaries."
+      solution             : "To establish the recommended configuration via GP, set the following UI path to Disabled.
+
+User Configuration\Administrative Templates\Microsoft Word 2016\Miscellaneous\Use online translation dictionaries
+
+Default Value:
+
+Enabled. (The online dictionaries can be used to translate text through the Research pane.)"
+      reference            : "800-171|3.4.2,800-171|3.4.6,800-171|3.4.7,800-53|CM-6,800-53|CM-7,800-53r5|CM-6,800-53r5|CM-7,CSCv8|4.8,CSF|PR.IP-1,CSF|PR.PT-3,CSF2.0|DE.CM-09,CSF2.0|PR.PS-01,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6,ITSG-33|CM-7,LEVEL|2A,NIAv2|SS15a,PCI-DSSv3.2.1|2.2.2,SWIFT-CSCv1|2.3"
+      see_also             : "https://workbench.cisecurity.org/benchmarks/12129"
+      value_type           : POLICY_DWORD
+      value_data           : 0
+      reg_key              : "HKU\Software\Policies\Microsoft\Office\16.0\Common\Research\Translation"
+      reg_item             : "useonline"
+      reg_ignore_hku_users : "S-1-5-18,S-1-5-19,S-1-5-20"
+      reg_option           : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type                 : REGISTRY_SETTING
+      description          : "2.11.8.7.2.3.2 Ensure 'Disable all trusted locations' is set to 'Enabled'"
+      info                 : "This policy setting allows administrators to disable all trusted locations in the specified applications.
+
+The recommended state for this setting is: Enabled.
+
+Rationale:
+
+Trusted locations specified in the Trust Center are used to define file locations that are assumed to be safe. Content, code, and add-ins are allowed to load from trusted locations with a minimal amount of security, without prompting the users for permission. If a dangerous file is opened from a trusted location, it will not be subject to standard security measures and could harm the user's computers or data.
+
+Impact:
+
+All trusted locations (those specified in the Trust Center) in the specified applications are ignored, including any trusted locations established by Office 2016 during setup, deployed to users using Group Policy, or added by users themselves. Users will be prompted again when opening files from trusted locations."
+      solution             : "To establish the recommended configuration via GP, set the following UI path to Enabled.
+
+User Configuration\Administrative Templates\Microsoft Word 2016\Word Options\Security\Trust Center\Trusted Locations\Disable All Trusted Locations
+
+Default Value:
+
+Disabled. (All trusted locations (those specified in the Trust Center) in the specified applications are assumed to be safe.)"
+      reference            : "800-171|3.4.2,800-53|CM-6b.,800-53r5|CM-6b.,CN-L3|8.1.10.6(d),CSF|PR.IP-1,CSF2.0|DE.CM-09,CSF2.0|PR.PS-01,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6b.,LEVEL|2A,NESA|T3.2.1,SWIFT-CSCv1|2.3"
+      see_also             : "https://workbench.cisecurity.org/benchmarks/12129"
+      value_type           : POLICY_DWORD
+      value_data           : 1
+      reg_key              : "HKU\Software\Policies\Microsoft\Office\16.0\Word\Security\Trusted Locations"
+      reg_item             : "alllocationsdisabled"
+      reg_ignore_hku_users : "S-1-5-18,S-1-5-19,S-1-5-20"
+      reg_option           : CAN_NOT_BE_NULL
+    </custom_item>
+  </then>
+
+  <else>
+    <report type:"WARNING">
+      description : "CIS_Microsoft_Office_Enterprise_v1.2.0_L2.audit from CIS Microsoft Office Enterprise Benchmark v1.2.0"
+      info        : "NOTE: Nessus has not identified that the chosen audit applies to the target device."
+      see_also    : "https://workbench.cisecurity.org/benchmarks/12129"
+    </report>
+  </else>
+</if>
+
+</group_policy>
+</check_type>

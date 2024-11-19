@@ -1,0 +1,1239 @@
+---
+
+inspec_rules:
+  "1.1":
+    title: '1.1 | Secure the KDC daemon krb5kdc - manual'
+    section: 'Kerberos Runtime'
+    description: |
+        The KDC daemon is implemented as an executable service,  krb5kdc  . Ensure access to the KDC daemon executable reflects
+        least privilege.
+    remediation: |
+        Set the ownership on  /usr/sbin/krb5kdc  to  root:root.
+                        Revoke write permission from  group  and  other  on  /usr/sbin/krb5kdc.
+                       chmod og-w /usr/sbin/krb5kdc chown root:root /usr/sbin/krb5kdc
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_1.1', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2":
+    title: '1.2 | Secure the Kerberos administration server daemon kadmind - manual'
+    section: 'Kerberos Runtime'
+    description: |
+        The Kerberos administration server is implemented as an executable service,  kadmind  . Ensure access to the Kerberos
+        administration server reflects least privilege.
+    remediation: |
+        Set the ownership on  /usr/sbin/kadmind  to  root:root.
+                        Revoke write permission from  group  and  other  on  /usr/sbin/kadmind.
+                       chmod og-w /usr/sbin/kadmind chown root:root /usr/sbin/kadmind
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_1.2', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.3":
+    title: '1.3 | Secure the Kerberos database administration utility kadmin.local - manual'
+    section: 'Kerberos Runtime'
+    description: |
+        The Kerberos database administration utility is implemented as an executable command line tool,  kadmin.local  . Ensure
+        access to the Kerberos administration server reflects least privilege.
+    remediation: |
+        Set the ownership on  /usr/sbin/kadmin.local  to  root:root.
+                        Revoke write permission from  group  and  other  on  /usr/sbin/kadmin.local.
+                       chmod og-w /usr/sbin/kadmin.local chown root:root /usr/sbin/kadmin.local
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_1.3', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.4":
+    title: '1.4 | Secure the Kerberos LDAP configuration utility kdb5 ldap util - manual'
+    section: 'Kerberos Runtime'
+    description: |
+        The Kerberos LDAP configuration utility is implemented as an executable command line tool,  kdb5ldaputil  . Ensure
+        access to the Kerberos LDAP configuration utility reflects least privilege.
+    remediation: |
+        Set the ownership on  /usr/sbin/kdb5_ldap_util  to  root:root.
+                        Revoke write permission from  group  and  other  on  /usr/sbin/kdb5_ldap_util.
+                       chmod og-w /usr/sbin/kdb5_ldap_util chown root:root /usr/sbin/kdb5_ldap_util
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_1.4', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.5":
+    title: '1.5 | Secure the Kerberos configuration utility kdb5 util - manual'
+    section: 'Kerberos Runtime'
+    description: |
+        The Kerberos configuration utility is implemented as an executable command line tool,  kdb5util  . Ensure access to the
+        Kerberos configuration utility reflects least privilege.
+    remediation: |
+        Set the ownership on  /usr/sbin/kdb5_util  to  root:root  .
+                        Revoke write permission from  group  and  other  on  /usr/sbin/kdb5_util.
+                       chmod og-w /usr/sbin/kdb5_util chown root:root /usr/sbin/kdb5_util
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_1.5', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.6":
+    title: '1.6 | Secure the Kerberos propagation utility kprop - manual'
+    section: 'Kerberos Runtime'
+    description: |
+        The Kerberos database propagation utility is implemented as an executable command line tool,  kprop  . Ensure access to
+        the Kerberos database propagation utility reflects least privilege.
+    remediation: |
+        Set the ownership on  /usr/sbin/kprop  to  root:root  .
+                        Revoke write permission from  group  and  other  on  /usr/sbin/kprop.
+                       chmod og-w /usr/sbin/kprop chown root:root /usr/sbin/kprop
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_1.6', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.7":
+    title: '1.7 | Secure the Kerberos slave KDC update daemon kpropd - manual'
+    section: 'Kerberos Runtime'
+    description: |
+        The Kerberos slave KDC update daemon is implemented as an executable service,  kpropd  . Ensure access to the Kerberos
+        slave KDC update daemon reflects least privilege.
+    remediation: |
+        Set the ownership on  /usr/sbin/kpropd  to  root:root  .
+                        Revoke write permission from  group  and  other  on  /usr/sbin/kpropd.
+                       chmod og-w /usr/sbin/kpropd chown root:root /usr/sbin/kpropd
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_1.7', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.8":
+    title: '1.8 | Secure the Kerberos propagation log utility kproplog - manual'
+    section: 'Kerberos Runtime'
+    description: |
+        The Kerberos propagation log utility is implemented as an executable command line tool,  kproplog  , and is used to
+        display the contents of the Kerberos principal update log. Ensure access to the Kerberos propagation log utility
+        reflects least privilege.
+    remediation: |
+        Set the ownership on  /usr/sbin/kproplog  to  root:root  .
+                        Revoke write permission from  group  and  other  on  /usr/sbin/kproplog.
+                       chmod og-w /usr/sbin/kproplog chown root:root /usr/sbin/kproplog
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_1.8', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.9":
+    title: '1.9 | Secure the Kerberos problem report utility krb5-send-pr - manual'
+    section: 'Kerberos Runtime'
+    description: |
+        The Kerberos problem report utility is implemented as an executable command line tool,  krb5sendpr  , and is used to
+        submit problem reports to a central support site. Ensure access to the Kerberos problem report utility reflects least
+        privilege.
+    remediation: |
+        Set the ownership on  /usr/sbin/krb5-send-pr  to  root:root  .
+                        Revoke write permission from  group  and  other  on  /usr/sbin/krb5-send-pr.
+                       chmod og-w /usr/sbin/krb5-send-pr chown root:root /usr/sbin/krb5-send-pr
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_1.9', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.10":
+    title: '1.10 | Secure the Kerberos host key table manipulation utility k5srvutil - manual'
+    section: 'Kerberos Runtime'
+    description: |
+        The Kerberos host key table manipulation utility is implemented as an executable command line tool,  krb5sendpr  , and
+        is used to list, change, or remove keys in a given keytab. Ensure access to the Kerberos host key table manipulation
+        utility reflects least privilege.
+    remediation: |
+        Set the ownership on  /usr/bin/k5srvutil  to  root:root  .
+                        Revoke write permission from  group  and  other  on  /usr/bin/k5srvutil.
+                       chmod og-w /usr/bin/k5srvutil chown root:root /usr/bin/k5srvutil
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_1.10', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.11":
+    title: '1.11 | Secure the Kerberos database administration utility kadmin - manual'
+    section: 'Kerberos Runtime'
+    description: |
+        The Kerberos database administration utility is implemented as an executable command line tool,  kadmin  . Ensure access
+        to the Kerberos database administration utility reflects least privilege.
+    remediation: |
+        Set the ownership on  /usr/bin/
+                         kadmin  to  root:root  .
+                        Revoke write permission from  group  and  other  on  /usr/bin/kadmin.
+                       chmod og-w /usr/bin/kadmin chown root:root /usr/bin/kadmin
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_1.11', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.12":
+    title: '1.12 | Secure the kdestroy utility - manual'
+    section: 'Kerberos Runtime'
+    description: |
+        The  kdestroy  utility is used to destroy a given users active Kerberos authorization tickets as they exist in the
+        credential cache. Ensure access to the  kdestroy  utility reflects least privilege.
+    remediation: |
+        Set the ownership on  /usr/bin/
+                         kdestroy  to  root:root  .
+                        Revoke write permission from  group  and  other  on  /usr/bin/kdestroy.
+                       chmod og-w /usr/bin/kdestroy chown root:root /usr/bin/kdestroy
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_1.12', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.13":
+    title: '1.13 | Secure the kinit utility - manual'
+    section: 'Kerberos Runtime'
+    description: |
+        The  kinit  utility is used to create and cache Kerberos ticketgranting tickets. Ensure access to the  kinit  utility
+        reflects least privilege.
+    remediation: |
+        Set the ownership on  /usr/bin/
+                         kinit  to  root:root  .
+                        Revoke write permission from  group  and  other  on  /usr/bin/kinit.
+                       chmod og-w /usr/bin/kinit chown root:root /usr/bin/kinit
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_1.13', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.14":
+    title: '1.14 | Secure the klist utility - manual'
+    section: 'Kerberos Runtime'
+    description: |
+        The  klist
+                    utility is used to list cached Kerberos tickets. Ensure access to the  klist  utility reflects least
+        privilege.
+    remediation: |
+        Set the ownership on  /usr/bin/
+                         klist  to  root:root  .
+                        Revoke write permission from  group  and  other  on  /usr/bin/klist.
+                       chmod og-w /usr/bin/klist chown root:root /usr/bin/klist
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_1.14', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.15":
+    title: '1.15 | Secure the kpasswd utility - manual'
+    section: 'Kerberos Runtime'
+    description: |
+        The  kpasswd  utility is used to change a given users Kerberos password. Ensure access to the  kpasswd  utility reflects
+        least privilege.
+    remediation: |
+        Set the ownership on  /usr/bin/
+                         kpasswd  to  root:root  .
+                        Revoke write permission from  group  and  other  on  /usr/bin/kpasswd.
+                       chmod og-w /usr/bin/kpasswd chown root:root /usr/bin/kpasswd
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_1.15', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.16":
+    title: '1.16 | Secure the krb5-config utility - manual'
+    section: 'Kerberos Runtime'
+    description: |
+        The  krb5config  utility is used for linking against MIT Kerberos libraries. Ensure access to the  krb5config  utility
+        reflects least privilege.
+    remediation: |
+        Set the ownership on  /usr/bin/
+                         krb5-config  to  root:root  .
+                        Revoke write permission from  group  and  other  on  /usr/bin/krb5-config.
+                       chmod og-w /usr/bin/krb5-config chown root:root /usr/bin/krb5-config
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_1.16', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.17":
+    title: '1.17 | Secure the ksu utility - manual'
+    section: 'Kerberos Runtime'
+    description: |
+        The  ksu  utility is a kerberized implementation of the su command and can be used to switch user IDs. Ensure access to
+        the  ksu  utility reflects least privilege.
+    remediation: |
+        Set the ownership on  /usr/bin/
+                         ksu  to  root:root  .
+                        Revoke write permission from  group  and  other  on  /usr/bin/ksu.
+                       chmod og-w /usr/bin/ksu chown root:root /usr/bin/ksu
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_1.17', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.18":
+    title: '1.18 | Secure the kswitch utility - manual'
+    section: 'Kerberos Runtime'
+    description: |
+        The  kswitch  utility is used to set the given credential cache to the primary credential cache. Ensure access to the
+        kswitch  utility reflects least privilege.
+    remediation: |
+        Set the ownership on  /usr/bin/
+                         kswitch  to  root:root  .
+                        Revoke write permission from  group  and  other  on   /usr/bin/  kswitch  .
+                       chmod og-w /usr/bin/kswitch chown root:root /usr/bin/kswitch
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_1.18', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.19":
+    title: '1.19 | Secure the ktutil utility - manual'
+    section: 'Kerberos Runtime'
+    description: |
+        The  ktutil  utility is used perform maintenance tasks on a given keytab. Ensure access to the  ktutil  utility reflects
+        least privilege.
+    remediation: |
+        Set the ownership on  /usr/bin/
+                         ktutil  to  root:root  .
+                        Revoke write permission from  group  and  other  on  /usr/bin/ktutil.
+                       chmod og-w /usr/bin/ktutil chown root:root /usr/bin/ktutil
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_1.19', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.1.1":
+    title: '2.1.1 | Ensure restrict anonymous to tgt is set to true - manual'
+    section: '[kdcdefaults]'
+    description: |
+        This option allows anonymous PKINIT to be enabled for use as FAST armor tickets without allowing anonymous
+        authentication to services. If set to true, the KDC will reject ticket requests from anonymous principals to service
+        principals other than the realmx2019s ticketgranting service.
+    remediation: |
+        Open  /var/kerberos/krb5kdc/kdc.conf
+                          Locate the  [kdcdefaults]  section   Locate the  restrict_anonymous_to_tgt
+                            directive   Set the  restrict_anonymous_to_tgt
+                            directive to  true.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_2.1.1', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.2.1":
+    title: '2.2.1 | Secure the Kerberos database access control file  acl file - manual'
+    section: '[realms]'
+    description: |
+        The  aclfile  directive specifies the location of the ACL file that  kadmin  uses to determine a given principals
+        permissions on the Kerberos database. Ensure that the  acl
+                     file  is owned by  rootroot  and is not accessible by any principal other than  root  .
+    remediation: |
+        Open  /var/kerberos/krb5kdc/kdc.conf  Locate the  [realms]  section   For each defined realm, locate the  acl_file
+        directive   Locate the file referenced by the  acl_file  directive. If the  acl_file  directive is not present, it is
+        implicitly set to  <LOCALSTATEDIR> /krb5kdc/kadmn5.acl , such as  /var/kerberos/krb5kdc/kadm5.acl.
+                          Run the following command:
+                           chmod 600   <path_to_acl_file> chown root:root  <path_to_acl_file>
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_2.2.1', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.2.2":
+    title: '2.2.2 | Secure the kadmin keytab  admin keytab - manual'
+    section: '[realms]'
+    description: |
+        The  adminkeytab  directive specifies the location of the keytab file that  kadmin  uses to authenticate to the
+        database. Ensure that the  adminkeytab  is owned by  rootroot  and is not accessible by any principal other than  root
+        .
+    remediation: |
+        Open  /var/kerberos/krb5kdc/kdc.conf
+                          Locate the  [realms]  section   For each defined realm, locate the  admin_keytab  directive   Locate
+        the file referenced by the  admin_keytab  directive. If the directive is not present, the implicit path is
+        /usr/local/var/krb5kdc/kadm5.keytab  .  Run the following command: chmod 600   <admin_keytab> chown  root:root
+        <admin_keytab>
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_2.2.2', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.2.3":
+    title: '2.2.3 | Secure the KDC database file database name - manual'
+    section: '[realms]'
+    description: |
+        The  databasename  directive specifies the location of the Berkeley DB file that the KDC uses as a database backend.
+        Ensure that the  databasename  is owned by  rootroot  and is not accessible by any principal other than  root  .
+    remediation: |
+        Open  /var/kerberos/krb5kdc/kdc.conf
+                          Locate the  [realms]  section   Locate the  database_name  directive   Locate the file referenced by
+        the  database_name  directive. If the  database_name  directive is not present, it is implicitly set to  <LOCALSTATEDIR>
+        /krb5kdc/principal,   such as  /var/kerberos/krb5kdc/principal.
+                          Run the following command:
+                           chmod og-rwx  <database_name> chown root:root  <database_name>
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_2.2.3', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.2.4":
+    title: '2.2.4 | Ensure that pwservice is not in the default principal flags - manual'
+    section: '[realms]'
+    description: |
+        The  pwservice  flag a principal as a password change service, which grants it permission to change passwords without
+        going through normal password authentication.
+    remediation: |
+        Open  /var/kerberos/krb5kdc/kdc.conf
+                          Locate the  [realms]  section   For each defined realm, locate the  default_principal_flags  directive
+        Adjust the list so that that  default_principal_flags  contains  -pwservice
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_2.2.4', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.2.5":
+    title: '2.2.5 | Secure the dictionary file dict file - manual'
+    section: '[realms]'
+    description: |
+        The  dictfile  directive specifies the location of the file that contains values that are not allowed as passwords.
+        Ensure that the  dict
+                     file  is owned by  rootroot  and is writable by any principal other than  root  .
+    remediation: |
+        Open  /var/kerberos/krb5kdc/kdc.conf
+                          Locate the  [realms]  section   For each defined realm, locate the  dict_file  directive   Locate the
+        file referenced by the  dict_file  directive.  Run the following command: chmod og-w   <path_to_dict_file> chown
+        root:root  <path_to_dict_file>
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_2.2.5', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.2.6":
+    title: '2.2.6 | Secure KDC key stash file key stash file - manual'
+    section: '[realms]'
+    description: |
+        The  keystashfile  directive specifies the file containing the   master key as stored with  kdb5stash
+                      . Ensure access to the file referenced by the  keystashfile
+                      directive reflects least privilege.
+    remediation: |
+        Open  /var/kerberos/krb5kdc/kdc.conf.
+                          Locate the  [realms]  section.   Locate the file referenced by the  key_stash_file  directive.  If the
+                           key_stash_file
+                           directive is not present, it is implicitly set to
+                           <LOCALSTATEDIR>  /krb5kdc/.k5.<REALM>,
+                           such as
+                           /var/kerberos/krb5kdc/.k5.example.com.
+                          Set the owner of the referenced file to  root:root .
+                           chown root:root  <key_stash_file>
+                          Set the permissions on the referenced file to prevent access by  group  or  other .
+                           chmod og-rwx  <key_stash_file>
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_2.2.6', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.2.7":
+    title: '2.2.7 | Ensure the master key name is set to KM - manual'
+    section: '[realms]'
+    description: |
+        This string specifies the name of the principal associated with the master key. The default value is K/M.
+    remediation: |
+        Open  /var/kerberos/krb5kdc/kdc.conf
+                          Locate the  [realms]  section   For each defined realm, locate the  master_key_name  directive   Set
+        the  master_key_nam
+                           e  to  K/M
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_2.2.7', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.2.8":
+    title: '2.2.8 | Ensure master key type is using a strong encryption algorithm - manual'
+    section: '[realms]'
+    description: |
+        This directive controls the master keys key type. It is recommended to only use an algorithm from the following list
+        aes256ctshmacsha196 aes128ctshmacsha196 des3cbcsha1 arcfourhmacmd5
+    remediation: |
+        Open  /var/kerberos/krb5kdc/kdc.conf
+                          Locate the  [realms]  section   For each defined realm, locate the  master_key_type  directive   Set
+        the value to one of the following:  aes256-cts-hmac-sha1-96  ,  aes128-cts-hmac-sha1-96  ,  des3-cbc-sha1  ,  arcfour-
+        hmac-md5
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_2.2.8', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.2.9":
+    title: '2.2.9 | Ensure max life is 24 hours or less - manual'
+    section: '[realms]'
+    description: |
+        This directive uses a timedelta to specify the maximum time period that a ticket may be valid for in this realm.
+    remediation: |
+        Open  /var/kerberos/krb5kdc/kdc.conf
+                          Locate the  [realms]  section   For each defined realm, locate the  max_life  directive   Change the
+        time to  24h 0m 0s  or lower
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_2.2.9', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.2.10":
+    title: '2.2.10 | Ensure max renewable life is less than 14 days - manual'
+    section: '[realms]'
+    description: |
+        This directive controls the maximum time period that a ticket may be renewed.
+    remediation: |
+        Open  /var/kerberos/krb5kdc/kdc.conf
+                          Locate the  [realms]  section   For each defined realm, locate the  max_renewable_life  directive
+        Set  max_renewable_life  to less than  14
+                           d
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_2.2.10', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.2.11":
+    title: '2.2.11 | Ensure only strong encryption types are supported supported enctypes - manual'
+    section: '[realms]'
+    description: |
+        The  supportedenctypes  directive specifies the default key/salt combinations for this realm. Any principals created
+        through  kadmin  will have keys of these types. Ensure the  supportedenctypes  directive includes only strong key/salt
+        combinations.
+    remediation: |
+        Open  /var/kerberos/krb5kdc/kdc.conf
+                          Locate the  [realms]  section   For each defined realm, locate the  supported_enctypes  directive.
+        Set the  supported_enctypes  directive to the following value:
+                           aes256-cts-hmac-sha1-96:normal aes128-cts-hmac-sha1-96:normal \  des3-cbc-sha1:normal arcfour-hmac-
+        md5:normal
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_2.2.11', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.2.12":
+    title: '2.2.12 | Ensure reject bad transit is set to true - manual'
+    section: '[realms]'
+    description: |
+        This boolean specifies whether or not the list of transited realms for crossrealm tickets should be checked against the
+        transit path computed from the realm names and the  capaths  section of its  krb5.conf  . If this value is set to false,
+        such tickets will be issued anyways, and it will be left up to the application server to validate the realm transit
+        path.
+    remediation: |
+        Open  /var/kerberos/krb5kdc/kdc.conf
+                          Locate the  [realms]  section   For each defined realm, locate the  reject_bad_transit  directive
+        Set  reject_bad_transit  is to  true
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_2.2.12', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.3.1":
+    title: '2.3.1 | Secure the Kerberos database file database name - manual'
+    section: '[dbdefaults]'
+    description: |
+        The  databasename  directive specifies the location of the Kerberos database on the file system. This directive is
+        significant only when a Berkeley DB database type is configured. Ensure that access to the Kerberos database reflects
+        least privilege.
+    remediation: |
+        Open  /var/kerberos/krb5kdc/kdc.conf
+                          Locate the  [dbdefaults]  section   Locate the  database_name  directive   Locate the file referenced
+        by the  database_name  directive.   Run the following command:
+                           chmod og-rwx  <database_name> chown root:root  <database_name>
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_2.3.1', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.3.2":
+    title: '2.3.2 | Ensure Last successful authentication field is updated disable last success - manual'
+    section: '[dbdefaults]'
+    description: |
+        The  disablelastsuccess  directive determines if the KDC will suppress updates to the Last successful authentication
+        field of principal entries requiring preauthentication. Ensure that Last success authentication events are not
+        suppressed.
+    remediation: |
+        Open  /var/kerberos/krb5kdc/kdc.conf
+                          Locate the  [dbdefaults]  section   Locate the  disable_last_success  directive.   Set the
+        disable_last_success  directive to  false.
+                         Impact:  Setting this directive to  false  results in network traffic for each login, which can result
+        in a denial of service under heavy usage. If you opt to set this directive to  true  , account lockouts are not possible
+        as there is no success/failure logging. This will conflict with Recommendation 2.3.3.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_2.3.2', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.3.3":
+    title: '2.3.3 | Ensure account lockouts are not disabled  disable lockout - manual'
+    section: '[dbdefaults]'
+    description: |
+        The  disablelockout  directive determines if the KDC will suppress updates to the Last failed authentication and Failed
+        password attempts field of principal entries requiring preauthentication. Ensure that these events are not suppressed.
+    remediation: |
+        Open  /var/kerberos/krb5kdc/kdc.conf
+                          Locate the  [dbdefaults]  section   Locate the  disable_lockout  directive.   Set the  disable_lockout
+        directive to  false.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_2.3.3', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.3.4":
+    title: '2.3.4 | Secure the LDAP server password file ldap service password file - manual'
+    section: '[dbdefaults]'
+    description: |
+        The  ldapservicepasswordfile  directive specifies the file containing the stashed passwords for the  ldapkadminddn  and
+        ldapkdcdn  objects. This directive is only significant if the LDAP database type is configured. Ensure access to the
+        file referenced by the  ldapservicepasswordfile
+                      directive reflects least privilege.
+    remediation: |
+        Open  /var/kerberos/krb5kdc/kdc.conf.
+                          Locate the  [dbdefaults]  section.   Locate the  ldap_service_password_file  directive.   Locate the
+        file referenced by the  ldap_service_password_file  directive.   Set the owner of the referenced file to  root:root  .
+        chown root:root  <ldap_service_password_file>
+
+
+                          Set the permissions on the referenced file to prevent access by  group  or  other  .   chmod og-rwx
+        <ldap_service_password_file>
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_2.3.4', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.3.5":
+    title: '2.3.5 | Ensure kadmin and KDC run as different LDAP users - manual'
+    section: '[dbdefaults]'
+    description: |
+        When using LDAP as a Kerberos backend, the two server components, kadmind and kdc, each have an LDAP user DN configured
+        with  ldapkadminddn  and  ldapkdcdn  .
+    remediation: |
+        Open kdc.conf Find the lines ldap_kadmind_dn  and  ldap_kdc_dn
+                         Set each directive to a unique LDAP DN
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_2.3.5', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.4.1":
+    title: '2.4.1 | Secure the default location default - manual'
+    section: '[logging]'
+    description: |
+        The  default  logging entry determines where logs are sent in the absence of an explicit entry for a given role, such as
+        kdc  and  adminserver  . The  default  logging entry may be prefixed by  FILE  ,  FILE  ,  STDERR  ,  CONSOLE  ,  DEVICE
+        , or  SYSLOG  . For all  default  entries prefixed with  FILE  or  FILE,  ensure access to the specified location
+        reflects least privilege.  Note  One or more  default  directives may exist.
+    remediation: |
+        Open  /var/kerberos/krb5kdc/kdc.conf
+                          Locate the  [logging]  section   Locate all  default  directives   For each  default  directive
+        prefixed with  FILE:  or  FILE=  , locate the referenced file on the file system.   Set the owner of the referenced file
+        to root:root.
+                           chown root:root  <location_referenced_by_default_directive>
+                          Set the permissions on the referenced file to prevent access by  group  or  other .
+                           chmod og-rwx  <location_referenced_by_default_directive>
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_2.4.1', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.4.2":
+    title: '2.4.2 | Secure the kdc log location kdc - manual'
+    section: '[logging]'
+    description: |
+        The  kdc  logging entry determines where the KDC logs are sent. The  kdc  logging entry may be prefixed by  FILE  ,
+        FILE  ,  STDERR  ,  CONSOLE  ,  DEVICE  , or  SYSLOG  . For all  kdc  entries prefixed with  FILE  or  FILE,  ensure
+        access to the specified location reflects least privilege.  Note  One or more  kdc  directive may exist.
+    remediation: |
+        Open  /var/kerberos/krb5kdc/kdc.conf
+                          Locate the  [logging]  section   Locate all  kdc  directives   For each  kdc  directive prefixed with
+        FILE:  or  FILE=  , locate the referenced file on the file system.   Set the owner of the referenced file to root:root.
+                           chown root:root  <location_referenced_by_kdc_directive>
+                          Set the permissions on the referenced file to prevent access by  group  or  other .
+                           chmod og-rwx  <location_referenced_by_kdc_directive>
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_2.4.2', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.4.3":
+    title: '2.4.3 | Secure the administrative server log location admin server - manual'
+    section: '[logging]'
+    description: |
+        The  adminserver  logging entry determines where the administrative server logs are sent. The  adminserver  logging
+        entry may be prefixed by  FILE  ,  FILE  ,  STDERR  ,  CONSOLE  ,  DEVICE  , or  SYSLOG  . For all  adminserver  entries
+        prefixed with  FILE  or  FILE,  ensure access to the specified location reflects least privilege.  Note  One or more
+        adminserver  directive may exist.
+    remediation: |
+        Open  /var/kerberos/krb5kdc/kdc.conf
+                          Locate the  [logging]  section   Locate all  admin_server  directives   For each  admin_server
+        directive prefixed with  FILE:  or  FILE=  , locate the referenced file on the file system.   Set the owner of the
+        referenced file to root:root.
+                           chown root:root  <location_referenced_by_admin_server_directive>
+                          Set the permissions on the referenced file to prevent access by  group  or  other .
+                           chmod og-rwx  <location_referenced_by_admin_server_directive>
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_2.4.3', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.4.4":
+    title: '2.4.4 | Ensure a persistent log sink is configured for default log location - manual'
+    section: '[logging]'
+    description: |
+        The  default  logging entry determines where logs are sent in the absence of an explicit entry for a given role, such as
+        kdc  and  adminserver  . The  default  logging entry may be prefixed by  FILE  ,  FILE  ,  STDERR  ,  CONSOLE  ,  DEVICE
+        , or  SYSLOG  . Ensure at least one  default  entry is prefixed by  FILE  ,  FILE  ,  DEVICE  , or  SYSLOG  .
+    remediation: |
+        Open  /var/kerberos/krb5kdc/kdc.conf
+                          Locate the  [logging]  section   Add a  default  entry that leverages the  FILE:  ,  FILE=  ,  SYSLOG
+        , or  DEVICE  prefix.
+                           default = SYSLOG:INFO:DAEMON
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_2.4.4', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.4.5":
+    title: '2.4.5 | Ensure a persistent log sink is configured for kdc logging - manual'
+    section: '[logging]'
+    description: |
+        The kdc logging entry determines where the KDC logs are sent.  The  kdc  directives value may be prefixed by  FILE  ,
+        FILE  ,  STDERR  ,  CONSOLE  ,  DEVICE  , or  SYSLOG  . Ensure at least one  kdc  directive has a value that is prefixed
+        by  FILE  ,  FILE  ,  DEVICE  , or  SYSLOG  .
+    remediation: |
+        Open  /etc/krb5.conf
+                          Locate the  [logging]  section   Add a  kdc  entry that leverages the  FILE:  ,  FILE=  ,  SYSLOG  ,
+        or  DEVICE  prefix.
+                           kdc = SYSLOG:INFO:DAEMON
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_2.4.5', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.4.6":
+    title: '2.4.6 | Ensure a persistent log sink is configured for administrative server logging - manual'
+    section: '[logging]'
+    description: |
+        The adminserver logging entry determines where the administrative server logs are sent.  The  adminserver  logging entry
+        may be prefixed by  FILE  ,  FILE  ,  STDERR  ,  CONSOLE  ,  DEVICE  , or  SYSLOG  . Ensure at least one  kdc  entry is
+        prefixed by  FILE  ,  FILE  ,  DEVICE  , or  SYSLOG  .
+    remediation: |
+        Open  /var/kerberos/krb5kdc/kdc.conf
+                          Locate the  [logging]  section   Add a  admin_server  entry that leverages the  FILE:  ,  FILE=  ,
+        SYSLOG  , or  DEVICE  prefix.
+                           admin_server = FILE:/var/log/kadmin.log
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_2.4.6', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.5":
+    title: '2.5 | Secure the KDC configuration file kdc.conf - manual'
+    section: 'KDC Configuration (kdc.conf)'
+    description: |
+        The KDC configuration file contains directives that dictate how the Kerberos Authentication Service and Key Distribution
+        Center AS/KDC operate. Ensure access to the KDC configuration file reflects least privilege.
+    remediation: |
+        Set the ownership on  /var/kerberos/krb5kdc/kdc.conf  to  root:root  .
+                        Revoke read, write, and execute permission from  group  and  other  on  /var/kerberos/krb5kdc/kdc.conf.
+                         chmod og-rwx /var/kerberos/krb5kdc/kdc.conf chown root:root /var/kerberos/krb5kdc/kdc.conf
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_2.5', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.1.1":
+    title: '3.1.1 | Secure the default keytab default keytab name - manual'
+    section: '[libdefaults]'
+    description: |
+        A keytab is a file that contains Kerberos principles and encrypted keys. The default keytab is typically used to
+        identify the local kerberos service to the KDC.
+    remediation: |
+        Open  /etc/krb5.conf
+                          Locate the  [libdefaults]  section   Locate the  default_keytab_name  directive   Locate the file
+        referenced by the  default_keytab_name  directive. If the directive is not present, the implicit path is
+        /etc/krb5.keytab.  Run the following command: chmod 600   <default_keytab_name> chown  root:root <default_keytab_nane>
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_3.1.1', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.1.2":
+    title: '3.1.2 | Ensure AES256 is the preferred encryption type for TGS default tgs enctypes - manual'
+    section: '[libdefaults]'
+    description: |
+        The  defaulttgsenctypes  directive specifies the list of session key encryption types supported by the Kerberos library.
+        Ensure this directive is configured to prefer AES256.
+    remediation: |
+        Open  /etc/krb5.conf
+                          Locate the  [libdefaults]  section   Locate the  default_tgs_enctypes  directive   Insert the
+        following value at the beginning of the list pointed to by the  default_tgs_enctypes  directive:
+                           aes-256-cts
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_3.1.2', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.1.3":
+    title: '3.1.3 | Ensure single DES-based encryption types are disallowed for TGS default tgs enctypes - manual'
+    section: '[libdefaults]'
+    description: |
+        The  defaulttgsenctypes  directive specifies the list of session key encryption types supported by the Kerberos library.
+        Ensure this directive disallows Single DESbased encryption types.
+    remediation: |
+        Open  /etc/krb5.conf
+                          Locate the  [libdefaults]  section   Locate the  default_tgs_enctypes  directive   Remove all entries
+        from the list pointed to by the  default_tgs_enctypes  directive that start with "  des-  "
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_3.1.3', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.1.4":
+    title: '3.1.4 | Ensure AES256 is the preferred encryption type for TKT default tkt enctypes - manual'
+    section: '[libdefaults]'
+    description: |
+        The  defaulttktenctypes  directive specifies the list of session key encryption types requested by the client. Ensure
+        this directive is configured to prefer AES256.
+    remediation: |
+        Open  /etc/krb5.conf
+                          Locate the  [libdefaults]  section   Locate the  default_tkt_enctypes  directive   Insert the
+        following value at the beginning of the list pointed to by the  default_tkt_enctypes  directive:
+                           aes-256-cts
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_3.1.4', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.1.5":
+    title: '3.1.5 | Ensure single DES-based encryption types are disallowed for TKT default tkt enctypes - manual'
+    section: '[libdefaults]'
+    description: |
+        The  defaulttktenctypes  directive specifies the list of session key encryption types supported by the Kerberos library.
+        Ensure this directive disallows single DESbased encryption types.
+    remediation: |
+        Open  /etc/krb5.conf
+                          Locate the  [libdefaults]  section   Locate the  default_tkt_enctypes  directive   Remove all entries
+        from the list pointed to by the  default_tkt_enctypes  directive that start with "  des-  "
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_3.1.5', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.1.6":
+    title: '3.1.6 | Ensure single DES-based encryption types are not permitted permitted enctypes - manual'
+    section: '[libdefaults]'
+    description: |
+        The  permittedenctypes  directive specifies the list of permitted encryption types. Ensure this directive disallows
+        Single DESbased encryption types.
+    remediation: |
+        Open  /etc/krb5.conf
+                          Locate the  [libdefaults]  section   Locate the  permitted_enctypes  directive   Remove all entries
+        from the list pointed to by the  permitted_enctypes  directive that start with "  des-  "
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_3.1.6', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.1.7":
+    title: '3.1.7 | Disallow weak encryption types allow weak crypto - manual'
+    section: '[libdefaults]'
+    description: |
+        The  allowweakcrypto  directive determines if weak encryption types are permitted. Ensure this directive is configured
+        to disallow weak encryption types.
+    remediation: |
+        Open  /etc/krb5.conf
+                          Locate the  [libdefaults]  section   Locate the  allow_weak_crypto  directive and set it to  false  .
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_3.1.7', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.1.8":
+    title: '3.1.8 | Ensure clockskew tolerance is minimized clockskew - manual'
+    section: '[libdefaults]'
+    description: |
+        The  clockskew  directive determines the maximum allowable amount of clockskew in seconds that the library will tolerate
+        before assuming that a Kerberos message is invalid. Ensure this directive is set to less than or equal to five minutes.
+    remediation: |
+        Open  /etc/krb5.conf
+                          Locate the  [libdefaults]  section   Locate the  clockskew  directive and set it to less than or equal
+        to  300  .
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_3.1.8', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.1.9":
+    title: '3.1.9 | Ensure ignore acceptor hostname is not set to true   - manual'
+    section: '[libdefaults]'
+    description: |
+        When accepting GSSAPI or krb5 security contexts for hostbased service principals, ignore any hostname passed by the
+        calling application and allow any service principal present in the keytab that matches the service name and realm name
+        if given. This option can improve the administrative flexibility of server applications on multihomed hosts, but can
+        compromise the security of virtual hosting environments.
+    remediation: |
+        Open  /etc/krb5.conf
+                          Locate the  [libdefaults]  section   Locate the  ignore_acceptor_hostname  directive and set it to
+        false  .
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_3.1.9', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.2.1":
+    title: '3.2.1 | Prevent blank password creation pwqualempty - manual'
+    section: '[plugins]'
+    description: |
+        The password quality interface   pwqual   has a builtin module, named  empty  , that will reject attempts to set a blank
+        password. Ensure the  empty  module is enabled.
+    remediation: |
+        Open  /etc/krb5.conf.
+                          Locate the  [plugins]  section.   Locate the  pwqual
+                           interface  subsection.   Locate the  disable  directive.   Remove  empty  from the  disable
+        directive line.   If the  enable_only  directive is present, add  empty  to the  enable_only  directive line.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_3.2.1', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.2.2":
+    title: '3.2.2 | Prevent dictionary word password creation pwqualdict - manual'
+    section: '[plugins]'
+    description: |
+        The password quality interface   pwqual   has a builtin module, named  dict  , which will reject attempts to set a
+        password that is present in the realms dictionary file. Ensure the  dict  module is enabled.
+    remediation: |
+        Open  /etc/krb5.conf.
+                          Locate the  [plugins]  section.   Locate the  pwqual
+                           interface  subsection.   Locate the  disable  directive.   Remove  dict  from the  disable  directive
+        line.   If the  enable_only  directive is present, add  dict  to the  enable_only  directive line.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_3.2.2', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.2.3":
+    title: '3.2.3 | Prevent creation of passwords derived from the principals name pwqualprinc - manual'
+    section: '[plugins]'
+    description: |
+        The password quality interface   pwqual   has a builtin module, named  princ  , which will reject attempts to set a
+        password that is derived from the principals name. Ensure the  princ  module is enabled.
+    remediation: |
+        Open  /etc/krb5.conf.
+                          Locate the  [plugins]  section.   Locate the  pwqual
+                           interface  subsection.   Locate the  disable  directive.   Remove  princ  from the  disable
+        directive line.   If the  enable_only  directive is present, add  princ  to the  enable_only  directive line.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_3.2.3', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.3":
+    title: '3.3 | Secure the Kerberos configuration file krb5.conf - manual'
+    section: 'Kerberos Configuration (krb5.conf)'
+    description: |
+        The Kerberos configuration file contains information needed by the Kerberos library, including descriptions of realms
+        and the location of the KDC for those realms. Ensure access to the Kerberos configuration file reflects least privilege.
+    remediation: |
+        Set the ownership on  /etc/krb5.conf  to  root:root  .
+                        Revoke write permission from  group  and  other  on  /etc/krb5.conf.
+                         chown root:root /etc/krb5.conf chmod og-w /etc/krb5.conf
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_3.3', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.1":
+    title: '4.1 | Ensure kiprop principles are only allowed propagation permission - manual'
+    section: 'Kerberos Database Access Control List (kadm5.acl)'
+    description: |
+        Principles named  kiprop/  are used for Kerberos propagation.  Note   The ordering of permissions is important
+        permissions are determined by the first matching entry/glob. Please review the documentation for  kadm5.acl  for more
+        details.
+    remediation: |
+        Open the  kadm5.acl  file   Search for lines beginning with  kiprop  Set the second column to the character  p
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_4.1', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.2":
+    title: '4.2 | Ensure kadminchangepw principle does not have multiple key versions - manual'
+    section: 'Kerberos Database Access Control List (kadm5.acl)'
+    description: |
+        The  kadmin/changepw  principle is a special principle used by the KDC to change user passwords.
+    remediation: |
+        Log into the KDC and run the following command: kadmin.local -q "purgekeys kadmin/changepw"
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_4.2', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.3":
+    title: '4.3 | Ensure krbtgtREALM principle does not allow duplicate session keys - manual'
+    section: 'Kerberos Database Access Control List (kadm5.acl)'
+    description: |
+        The  krbtgt
+                   /REALM  principle is the TicketGranting Ticket and is essential to Kerberos protocol operations.
+    remediation: |
+        Log into the KDC and run the following command: kadmin.local -q "modify_principal -allow_dup_skey krbtgt/<REALM>"
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_4.3', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.4":
+    title: '4.4 | Ensure krbtgtREALM principle does not have multiple key versions - manual'
+    section: 'Kerberos Database Access Control List (kadm5.acl)'
+    description: |
+        The  krbtgt/REALM  principle is the TicketGranting Ticket and is essential to Kerberos protocol operations.
+    remediation: |
+        Log into the KDC and run the following command: kadmin.local -q "purgekeys krbtgt/<REALM>"
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_4.4', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.5":
+    title: '4.5 | Secure the Kerberos Access Control List kadm5.acl - manual'
+    section: 'Kerberos Database Access Control List (kadm5.acl)'
+    description: |
+        The Kerberos  kadmind  daemon uses  kadm5.acl  to manage access rights to the Kerberos database. Ensure access to
+        kadm5.acl  reflects least privilege.
+    remediation: |
+        Set the ownership on  /var/kerberos/krb5kdc/kadm5.acl  to  root:root .   Revoke write permission from  group  and  other
+        on  /var/kerberos/krb5kdc/kadm5.acl.
+                         chown root:root /var/kerberos/krb5kdc/kadm5.acl chmod og-w /var/kerberos/krb5kdc/kadm5.acl
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_4.5', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.1":
+    title: '5.1 | Restrict KDC write access to all attributes other than counters and timers - manual'
+    section: 'LDAP Object Security'
+    description: |
+        The  ldapkdcdn  is the LDAP object used by the KDC daemon to access the LDAP database.
+    remediation: |
+        Grant the  ldap_kdc_dn  write permissions on the following LDAP attributes:  "Last successful authentication" principal
+        field "Last failed authentication" principal field "Failed password attempts"
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_5.1', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2":
+    title: '5.2 | Ensure only KDC and kadmin can read attributes - manual'
+    section: 'LDAP Object Security'
+    description: |
+        The LDAP users configured in  ldapkadminddn  and  ldapkdcdn  are used by the Keberos server to read and write Kerberos
+        attributes in the LDAP database.
+    remediation: |
+        Configure the access controls so that the  ldap_kadmind_dn  and  ldap_kdc_dn  users have only the necessary read access.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_5.2', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.3":
+    title: '5.3 | Ensure only kadmind ldap kadmind dn can write to all attributes - manual'
+    section: 'LDAP Object Security'
+    description: |
+        The LDAP user configured in  ldapkadminddn  is used by the  kadmind  server to read and write Kerberos attributes in the
+        LDAP database.
+    remediation: |
+        Configure the access controls so that the  ldap_kadmind_dn  user only has the necessary write access. The
+        ldap_kadmind_dn  should only have write access to the Kerberos attributes and objects in the LDAP database.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_mit_kerberos_1.10_benchmark', 'rule_5.3', 'cis_mit_kerberos_1.10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:

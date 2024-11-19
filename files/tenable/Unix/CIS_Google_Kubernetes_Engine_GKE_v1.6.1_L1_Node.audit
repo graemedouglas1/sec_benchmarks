@@ -1,0 +1,1653 @@
+#TRUSTED 3c0e492b4b07480d35f75e9fbfa854c5c4c2ae961e4e059918fcc9cc2fa83e0b6b8cbc08dd133482473a63ef1d4d4ea4c82e900ef7f6af47a1af82d6f8b410775d66e86052b55bbbc3fbdbaa8af0e95a347753a4344cba0ea57525f58a69706d67fd7b2849f1979220f2d7daadb4a61935db2ca93c28df07bf2d0a06f8603c6409e25ad9940c4a7842e2352131e9e0cfedd2852f8fad7dcba4e711e5097fb7428747ed8155c131b3d4bff73d548178d75f98787c9f35cf94bc19f0e0e47c201aa9b0f707b87aac5ca30312463e9930c246d7b7d6edb387be73e4c14d6b322c15b954a2e7649b6d5816ab49ad73c199155addcea39e4e820788627c60dd02b5978509dd3976d1c19935300a1e806d692d7a41e675c0496af00fb7f3e511fd34226fa98f879a45e3d046e1fdbed5c5c293077b1d1500857990919620d9b56a693bbed6348c6d1e02738d91f9c65caa3744ba069671dc3dadf7804993ea20635d9870fdbf43a64a2079946e46747f303007fd55ffa86df840d85f54bed0dc7018a0004ed467ee93a8f04a46c472830263e8d91c8b10f5ad6f45a9fea4846791a610fbe85906b7293cccb134b6461d7a0ecbdb918d81f1e9e98939da4e23a6e490e956cefbd9fdbe92e8530739084f9c80a624a6ffcce326651163c0c76decbd9f3231cc0f9044fe76636e858c9d318fd9a5b450c8983418c3d3f2811668c2e3c42b
+#TRUST-RSA-SHA256 12854246fa392a0e30846c3914cc379c33205ea65c6039e860e6ea47d2ff0533c278111b136320798c1bf4a0bd64859113ad7e688d169d6d42f4d91601b2f751a563ed7c6dd27397f602fa7259c8f4077f8cb13c846576e7771f6c990ad74f820b761e14f1a29da25193f9b0e67a2e3f90d8c67b2bf803e3fa67f266c410c0f81482e443e330521c54207f29ee4ac5ddfc84dffd5009d76c2373a8c52f74bc71d61bb1a0dec00d807bffaede340a625eb42a18147df49884aa997fb1f18535f8f7706acb54d7af633776a634ff54300e30140448cc480a8b7fb392feb25869fb04fd0a5dd5801a19e45216d82d1092f5643d8e0ddc90d18ae6aa4b891cdd6ca58609b1cad5392c0633ed6995932a229bc1ae492c13cedddf337b3bae41dff54fbd491981b62ad32cdc46c1f4c67e99cd63c7be7c6f1785394e7d11c30e09b87076d48fa269d15ac90d5856632e9edca1e15183d6c96b82ec4ff44ca7f7948fc1db5207eaae72f92e9d133249558531f9449b4ae65fa31c7c12d49b52007b5b0d74fda2ec58838956237eeda27abadb60cc82cc8577639746206596f5cc13763adcb52441f959fa9c3ee94d8a989e1a974e694aeceb7013288158cc66a5602a74cb0560f0ba4b45bf1a9d1e3a535ce192dd6b4b902f2916805bdeb487b61fab5fca76839d53049e52cc19e83fa31055877dd6bba4213a5ed3d6a7d3731f77c396
+#
+# This script is Copyright (C) 2004-2024 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.0 $
+# $Date: 2024/10/28 $
+#
+# description : This .audit is designed against the CIS Google Kubernetes Engine (GKE) Benchmark v1.6.1
+#
+#<ui_metadata>
+#<display_name>CIS Google Kubernetes Engine (GKE) v1.6.1 L1 Node</display_name>
+#<spec>
+#  <type>CIS</type>
+#  <name>Google Kubernetes Engine (GKE)</name>
+#  <profile>L1 Node</profile>
+#  <version>1.6.1</version>
+#  <link>https://workbench.cisecurity.org/benchmarks/19166</link>
+#</spec>
+#<labels>google_kubernetes_engine</labels>
+#<benchmark_refs>CSCv6,CSCv7,CSCv8,LEVEL</benchmark_refs>
+#<variables>
+#  <variable>
+#    <name>CLIENT_CA_FILE</name>
+#    <default>/etc/srv/kubernetes/pki/ca-certificates.crt</default>
+#    <description>Client CA File</description>
+#    <info>Any request presenting a client certificate signed by one of the authorities in the client-ca-file is authenticated with an identity corresponding to the CommonName of the client certificate.</info>
+#    <value_type>UNIX_FILE_PATH</value_type>
+#  </variable>
+#  <variable>
+#    <name>KUBECONFIG</name>
+#    <default>/var/lib/kube-proxy/kubeconfig</default>
+#    <description>Kubeconfig file path</description>
+#    <info>The location of the kubeconfig configuration file</info>
+#    <value_type>UNIX_FILE_PATH</value_type>
+#  </variable>
+#  <variable>
+#    <name>KUBELET_CONFIG</name>
+#    <default>/home/kubernetes/kubelet-config.yaml</default>
+#    <description>Kubelet config file path</description>
+#    <info>The location of the kubelet-config.yaml configuration file</info>
+#    <value_type>UNIX_FILE_PATH</value_type>
+#  </variable>
+#</variables>
+#</ui_metadata>
+
+<check_type:"Unix">
+
+<if>
+  <condition type:"AND">
+    <custom_item>
+      type        : PROCESS_CHECK
+      description : "Check if kubelet is running"
+      name        : "kubelet"
+      status      : ON
+    </custom_item>
+  </condition>
+
+  <then>
+    <report type:"PASSED">
+      description : "CIS_Google_Kubernetes_Engine_GKE_v1.6.1_L1.audit from CIS Google Kubernetes Engine (GKE) Benchmark v1.6.1"
+      see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+    </report>
+
+    <custom_item>
+      type        : FILE_CHECK
+      description : "3.1.1 Ensure that the proxy kubeconfig file permissions are set to 644 or more restrictive"
+      info        : "If kube-proxy is running, and if it is configured by a kubeconfig file, ensure that the proxy kubeconfig file has permissions of 644 or more restrictive.
+
+The kube-proxy kubeconfig file controls various parameters of the kube-proxy service on the worker node. You should restrict its file permissions to maintain the integrity of the file. The file should be writable only by the administrators on the system."
+      solution    : "Run the below command (based on the file location on your system) on the each workernode. For example,
+
+chmod 644 <proxy kubeconfig file>
+
+Impact:
+
+Overly permissive file permissions increase security risk to the platform."
+      reference   : "800-171|3.1.1,800-171|3.1.4,800-171|3.1.5,800-171|3.8.1,800-171|3.8.2,800-171|3.8.3,800-53|AC-3,800-53|AC-5,800-53|AC-6,800-53|MP-2,800-53r5|AC-3,800-53r5|AC-5,800-53r5|AC-6,800-53r5|MP-2,CN-L3|7.1.3.2(b),CN-L3|7.1.3.2(g),CN-L3|8.1.4.2(d),CN-L3|8.1.4.2(f),CN-L3|8.1.4.11(b),CN-L3|8.1.10.2(c),CN-L3|8.1.10.6(a),CN-L3|8.5.3.1,CN-L3|8.5.4.1(a),CSCv7|5.2,CSCv8|3.3,CSF|PR.AC-4,CSF|PR.DS-5,CSF|PR.PT-2,CSF|PR.PT-3,CSF2.0|PR.AA-05,CSF2.0|PR.DS-10,CSF2.0|PR.IR-01,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ISO/IEC-27001|A.6.1.2,ISO/IEC-27001|A.9.4.1,ISO/IEC-27001|A.9.4.5,ITSG-33|AC-3,ITSG-33|AC-5,ITSG-33|AC-6,ITSG-33|MP-2,ITSG-33|MP-2a.,LEVEL|1A,NESA|T1.3.2,NESA|T1.3.3,NESA|T1.4.1,NESA|T4.2.1,NESA|T5.1.1,NESA|T5.2.2,NESA|T5.4.1,NESA|T5.4.4,NESA|T5.4.5,NESA|T5.5.4,NESA|T5.6.1,NESA|T7.5.2,NESA|T7.5.3,NIAv2|AM1,NIAv2|AM3,NIAv2|AM23f,NIAv2|SS13c,NIAv2|SS15c,NIAv2|SS29,PCI-DSSv3.2.1|7.1.2,PCI-DSSv4.0|7.2.1,PCI-DSSv4.0|7.2.2,QCSC-v1|3.2,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|13.2,SWIFT-CSCv1|5.1,TBA-FIISB|31.1,TBA-FIISB|31.4.2,TBA-FIISB|31.4.3"
+      see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+      file        : "@KUBECONFIG@"
+      mask        : "133"
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CHECK
+      description : "3.1.2 Ensure that the proxy kubeconfig file ownership is set to root:root"
+      info        : "If kube-proxy is running, ensure that the file ownership of its kubeconfig file is set to root:root
+
+The kubeconfig file for kube-proxy controls various parameters for the kube-proxy service in the worker node. You should set its file ownership to maintain the integrity of the file. The file should be owned by root:root"
+      solution    : "Run the below command (based on the file location on your system) on each worker node. For example,
+
+chown root:root <proxy kubeconfig file>
+
+Impact:
+
+Overly permissive file access increases the security risk to the platform."
+      reference   : "800-171|3.1.1,800-171|3.1.4,800-171|3.1.5,800-171|3.8.1,800-171|3.8.2,800-171|3.8.3,800-53|AC-3,800-53|AC-5,800-53|AC-6,800-53|MP-2,800-53r5|AC-3,800-53r5|AC-5,800-53r5|AC-6,800-53r5|MP-2,CN-L3|7.1.3.2(b),CN-L3|7.1.3.2(g),CN-L3|8.1.4.2(d),CN-L3|8.1.4.2(f),CN-L3|8.1.4.11(b),CN-L3|8.1.10.2(c),CN-L3|8.1.10.6(a),CN-L3|8.5.3.1,CN-L3|8.5.4.1(a),CSCv7|5.2,CSCv8|3.3,CSF|PR.AC-4,CSF|PR.DS-5,CSF|PR.PT-2,CSF|PR.PT-3,CSF2.0|PR.AA-05,CSF2.0|PR.DS-10,CSF2.0|PR.IR-01,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ISO/IEC-27001|A.6.1.2,ISO/IEC-27001|A.9.4.1,ISO/IEC-27001|A.9.4.5,ITSG-33|AC-3,ITSG-33|AC-5,ITSG-33|AC-6,ITSG-33|MP-2,ITSG-33|MP-2a.,LEVEL|1A,NESA|T1.3.2,NESA|T1.3.3,NESA|T1.4.1,NESA|T4.2.1,NESA|T5.1.1,NESA|T5.2.2,NESA|T5.4.1,NESA|T5.4.4,NESA|T5.4.5,NESA|T5.5.4,NESA|T5.6.1,NESA|T7.5.2,NESA|T7.5.3,NIAv2|AM1,NIAv2|AM3,NIAv2|AM23f,NIAv2|SS13c,NIAv2|SS15c,NIAv2|SS29,PCI-DSSv3.2.1|7.1.2,PCI-DSSv4.0|7.2.1,PCI-DSSv4.0|7.2.2,QCSC-v1|3.2,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|13.2,SWIFT-CSCv1|5.1,TBA-FIISB|31.1,TBA-FIISB|31.4.2,TBA-FIISB|31.4.3"
+      see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+      file        : "@KUBECONFIG@"
+      owner       : "root"
+      group       : "root"
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CHECK
+      description : "3.1.3 Ensure that the kubelet configuration file has permissions set to 600"
+      info        : "Ensure that if the kubelet configuration file exists, it has permissions of 600.
+
+The kubelet reads various parameters, including security settings, from a config file specified by the --config argument. If this file exists, you should restrict its file permissions to maintain the integrity of the file. The file should be writable by only the administrators on the system."
+      solution    : "Run the following command (using the kubelet config file location):
+
+chmod 600 <kubelet_config_file>
+
+Impact:
+
+Overly permissive file access increases the security risk to the platform."
+      reference   : "800-171|3.1.1,800-171|3.1.4,800-171|3.1.5,800-171|3.8.1,800-171|3.8.2,800-171|3.8.3,800-53|AC-3,800-53|AC-5,800-53|AC-6,800-53|MP-2,800-53r5|AC-3,800-53r5|AC-5,800-53r5|AC-6,800-53r5|MP-2,CN-L3|7.1.3.2(b),CN-L3|7.1.3.2(g),CN-L3|8.1.4.2(d),CN-L3|8.1.4.2(f),CN-L3|8.1.4.11(b),CN-L3|8.1.10.2(c),CN-L3|8.1.10.6(a),CN-L3|8.5.3.1,CN-L3|8.5.4.1(a),CSCv7|5.2,CSCv8|3.3,CSF|PR.AC-4,CSF|PR.DS-5,CSF|PR.PT-2,CSF|PR.PT-3,CSF2.0|PR.AA-05,CSF2.0|PR.DS-10,CSF2.0|PR.IR-01,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ISO/IEC-27001|A.6.1.2,ISO/IEC-27001|A.9.4.1,ISO/IEC-27001|A.9.4.5,ITSG-33|AC-3,ITSG-33|AC-5,ITSG-33|AC-6,ITSG-33|MP-2,ITSG-33|MP-2a.,LEVEL|1A,NESA|T1.3.2,NESA|T1.3.3,NESA|T1.4.1,NESA|T4.2.1,NESA|T5.1.1,NESA|T5.2.2,NESA|T5.4.1,NESA|T5.4.4,NESA|T5.4.5,NESA|T5.5.4,NESA|T5.6.1,NESA|T7.5.2,NESA|T7.5.3,NIAv2|AM1,NIAv2|AM3,NIAv2|AM23f,NIAv2|SS13c,NIAv2|SS15c,NIAv2|SS29,PCI-DSSv3.2.1|7.1.2,PCI-DSSv4.0|7.2.1,PCI-DSSv4.0|7.2.2,QCSC-v1|3.2,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|13.2,SWIFT-CSCv1|5.1,TBA-FIISB|31.1,TBA-FIISB|31.4.2,TBA-FIISB|31.4.3"
+      see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+      file        : "@KUBELET_CONFIG@"
+      mask        : "177"
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CHECK
+      description : "3.1.4 Ensure that the kubelet configuration file ownership is set to root:root"
+      info        : "Ensure that if the kubelet configuration file exists, it is owned by root:root.
+
+The kubelet reads various parameters, including security settings, from a config file specified by the --config argument. If this file is specified you should restrict its file permissions to maintain the integrity of the file. The file should be owned by root:root."
+      solution    : "Run the following command (using the config file location identified in the Audit step):
+
+chown root:root <kubelet_config_file>
+
+Impact:
+
+Overly permissive file access increases the security risk to the platform."
+      reference   : "800-171|3.1.1,800-171|3.1.4,800-171|3.1.5,800-171|3.8.1,800-171|3.8.2,800-171|3.8.3,800-53|AC-3,800-53|AC-5,800-53|AC-6,800-53|MP-2,800-53r5|AC-3,800-53r5|AC-5,800-53r5|AC-6,800-53r5|MP-2,CN-L3|7.1.3.2(b),CN-L3|7.1.3.2(g),CN-L3|8.1.4.2(d),CN-L3|8.1.4.2(f),CN-L3|8.1.4.11(b),CN-L3|8.1.10.2(c),CN-L3|8.1.10.6(a),CN-L3|8.5.3.1,CN-L3|8.5.4.1(a),CSCv7|5.2,CSCv8|3.3,CSF|PR.AC-4,CSF|PR.DS-5,CSF|PR.PT-2,CSF|PR.PT-3,CSF2.0|PR.AA-05,CSF2.0|PR.DS-10,CSF2.0|PR.IR-01,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ISO/IEC-27001|A.6.1.2,ISO/IEC-27001|A.9.4.1,ISO/IEC-27001|A.9.4.5,ITSG-33|AC-3,ITSG-33|AC-5,ITSG-33|AC-6,ITSG-33|MP-2,ITSG-33|MP-2a.,LEVEL|1A,NESA|T1.3.2,NESA|T1.3.3,NESA|T1.4.1,NESA|T4.2.1,NESA|T5.1.1,NESA|T5.2.2,NESA|T5.4.1,NESA|T5.4.4,NESA|T5.4.5,NESA|T5.5.4,NESA|T5.6.1,NESA|T7.5.2,NESA|T7.5.3,NIAv2|AM1,NIAv2|AM3,NIAv2|AM23f,NIAv2|SS13c,NIAv2|SS15c,NIAv2|SS29,PCI-DSSv3.2.1|7.1.2,PCI-DSSv4.0|7.2.1,PCI-DSSv4.0|7.2.2,QCSC-v1|3.2,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|13.2,SWIFT-CSCv1|5.1,TBA-FIISB|31.1,TBA-FIISB|31.4.2,TBA-FIISB|31.4.3"
+      see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+      file        : "@KUBELET_CONFIG@"
+      owner       : "root"
+      group       : "root"
+    </custom_item>
+
+    <if>
+      <condition type:"AND">
+        <custom_item>
+          type        : CMD_EXEC
+          description : "check if anonymous-auth argument"
+          cmd         : "ps -ef | grep kubelet | grep -v grep"
+          expect      : "--anonymous-auth="
+        </custom_item>
+      </condition>
+
+      <then>
+        <custom_item>
+          type        : CMD_EXEC
+          description : "3.2.1 Ensure that the Anonymous Auth is Not Enabled Draft"
+          info        : "Disable anonymous requests to the Kubelet server.
+
+When enabled, requests that are not rejected by other configured authentication methods are treated as anonymous requests. These requests are then served by the Kubelet server. You should rely on authentication to authorize access and disallow anonymous requests."
+          solution    : "Remediation Method 1:
+
+If configuring via the Kubelet config file, you first need to locate the file.
+
+To do this, SSH to each node and execute the following command to find the kubelet process:
+
+ps -ef | grep kubelet
+
+The output of the above command provides details of the active kubelet process, from which we can see the location of the configuration file provided to the kubelet service with the --config argument. The file can be viewed with a command such as more or less like so:
+
+sudo less /path/to/kubelet-config.json
+
+Disable Anonymous Authentication by setting the following parameter:
+
+\"authentication\": { \"anonymous\": { \"enabled\": false } }
+
+Remediation Method 2:
+
+If using executable arguments, edit the kubelet service file on each worker node and ensure the below parameters are part of the KUBELET_ARGS variable string.
+
+For systems using systemd such as the Amazon EKS Optimised Amazon Linux or Bottlerocket AMIs, then this file can be found at /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf Otherwise, you may need to look up documentation for your chosen operating system to determine which service manager is configured:
+
+--anonymous-auth=false
+
+For Both Remediation Steps:
+
+Based on your system, restart the kubelet service and check the service status.
+
+The following example is for operating systems using systemd such as the Amazon EKS Optimised Amazon Linux or Bottlerocket AMIs, and invokes the systemctl command. If systemctl is not available then you will need to look up documentation for your chosen operating system to determine which service manager is configured:
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+systemctl status kubelet -l
+
+Impact:
+
+Anonymous requests will be rejected."
+          reference   : "800-171|3.1.1,800-53|AC-2(3),800-53r5|AC-2(3),CN-L3|7.1.3.2(e),CN-L3|8.1.4.2(c),CSCv7|14.6,CSCv8|5.3,CSF|PR.AC-1,CSF|PR.AC-4,CSF2.0|DE.CM-01,CSF2.0|DE.CM-03,CSF2.0|PR.AA-01,CSF2.0|PR.AA-05,CSF2.0|PR.DS-10,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ISO/IEC-27001|A.9.2.1,ISO/IEC-27001|A.9.2.6,ITSG-33|AC-2(3),LEVEL|1A,NIAv2|AM26,QCSC-v1|5.2.2,QCSC-v1|8.2.1,QCSC-v1|13.2,QCSC-v1|15.2,TBA-FIISB|36.2.2"
+          see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+          cmd         : "ps -ef | grep kubelet | grep -v grep"
+          expect      : "--anonymous-auth=false"
+        </custom_item>
+      </then>
+
+      <else>
+        <if>
+          <condition type:"AND">
+            <custom_item>
+              type        : CMD_EXEC
+              description : "check if config argument"
+              cmd         : "ps -ef | grep kubelet | grep -v grep"
+              expect      : "--config[=\\s]+@KUBELET_CONFIG@[$\\s]"
+            </custom_item>
+          </condition>
+
+          <then>
+            <custom_item>
+              type        : CMD_EXEC
+              description : "3.2.1 Ensure that the Anonymous Auth is Not Enabled Draft"
+              info        : "Disable anonymous requests to the Kubelet server.
+
+When enabled, requests that are not rejected by other configured authentication methods are treated as anonymous requests. These requests are then served by the Kubelet server. You should rely on authentication to authorize access and disallow anonymous requests."
+              solution    : "Remediation Method 1:
+
+If configuring via the Kubelet config file, you first need to locate the file.
+
+To do this, SSH to each node and execute the following command to find the kubelet process:
+
+ps -ef | grep kubelet
+
+The output of the above command provides details of the active kubelet process, from which we can see the location of the configuration file provided to the kubelet service with the --config argument. The file can be viewed with a command such as more or less like so:
+
+sudo less /path/to/kubelet-config.json
+
+Disable Anonymous Authentication by setting the following parameter:
+
+\"authentication\": { \"anonymous\": { \"enabled\": false } }
+
+Remediation Method 2:
+
+If using executable arguments, edit the kubelet service file on each worker node and ensure the below parameters are part of the KUBELET_ARGS variable string.
+
+For systems using systemd such as the Amazon EKS Optimised Amazon Linux or Bottlerocket AMIs, then this file can be found at /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf Otherwise, you may need to look up documentation for your chosen operating system to determine which service manager is configured:
+
+--anonymous-auth=false
+
+For Both Remediation Steps:
+
+Based on your system, restart the kubelet service and check the service status.
+
+The following example is for operating systems using systemd such as the Amazon EKS Optimised Amazon Linux or Bottlerocket AMIs, and invokes the systemctl command. If systemctl is not available then you will need to look up documentation for your chosen operating system to determine which service manager is configured:
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+systemctl status kubelet -l
+
+Impact:
+
+Anonymous requests will be rejected."
+              reference   : "800-171|3.1.1,800-53|AC-2(3),800-53r5|AC-2(3),CN-L3|7.1.3.2(e),CN-L3|8.1.4.2(c),CSCv7|14.6,CSCv8|5.3,CSF|PR.AC-1,CSF|PR.AC-4,CSF2.0|DE.CM-01,CSF2.0|DE.CM-03,CSF2.0|PR.AA-01,CSF2.0|PR.AA-05,CSF2.0|PR.DS-10,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ISO/IEC-27001|A.9.2.1,ISO/IEC-27001|A.9.2.6,ITSG-33|AC-2(3),LEVEL|1A,NIAv2|AM26,QCSC-v1|5.2.2,QCSC-v1|8.2.1,QCSC-v1|13.2,QCSC-v1|15.2,TBA-FIISB|36.2.2"
+              see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+              cmd         : "sed 's/\\(\\s*\\)\\(.*:\\)\\s*\\(.*\\)/\\1\\|\\2\\|\\3/g' '@KUBELET_CONFIG@' | awk -F'|' '{ indent = length($1)/2; vname[indent] = $2; for (i in vname) {if (i > indent) {delete vname[i]}} if (length($3) > 0) { vn=none; for (i=0; i<=indent; i++) {vn=(vn)(vname[i])} { print vn $3 } } }'"
+              expect      : "^authentication:anonymous:enabled:false$"
+            </custom_item>
+          </then>
+
+          <else>
+            <report type:"PASSED">
+              description : "3.2.1 Ensure that the Anonymous Auth is Not Enabled Draft"
+              info        : "Disable anonymous requests to the Kubelet server.
+
+When enabled, requests that are not rejected by other configured authentication methods are treated as anonymous requests. These requests are then served by the Kubelet server. You should rely on authentication to authorize access and disallow anonymous requests."
+              solution    : "Remediation Method 1:
+
+If configuring via the Kubelet config file, you first need to locate the file.
+
+To do this, SSH to each node and execute the following command to find the kubelet process:
+
+ps -ef | grep kubelet
+
+The output of the above command provides details of the active kubelet process, from which we can see the location of the configuration file provided to the kubelet service with the --config argument. The file can be viewed with a command such as more or less like so:
+
+sudo less /path/to/kubelet-config.json
+
+Disable Anonymous Authentication by setting the following parameter:
+
+\"authentication\": { \"anonymous\": { \"enabled\": false } }
+
+Remediation Method 2:
+
+If using executable arguments, edit the kubelet service file on each worker node and ensure the below parameters are part of the KUBELET_ARGS variable string.
+
+For systems using systemd such as the Amazon EKS Optimised Amazon Linux or Bottlerocket AMIs, then this file can be found at /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf Otherwise, you may need to look up documentation for your chosen operating system to determine which service manager is configured:
+
+--anonymous-auth=false
+
+For Both Remediation Steps:
+
+Based on your system, restart the kubelet service and check the service status.
+
+The following example is for operating systems using systemd such as the Amazon EKS Optimised Amazon Linux or Bottlerocket AMIs, and invokes the systemctl command. If systemctl is not available then you will need to look up documentation for your chosen operating system to determine which service manager is configured:
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+systemctl status kubelet -l
+
+Impact:
+
+Anonymous requests will be rejected."
+              reference   : "800-171|3.1.1,800-53|AC-2(3),800-53r5|AC-2(3),CN-L3|7.1.3.2(e),CN-L3|8.1.4.2(c),CSCv7|14.6,CSCv8|5.3,CSF|PR.AC-1,CSF|PR.AC-4,CSF2.0|DE.CM-01,CSF2.0|DE.CM-03,CSF2.0|PR.AA-01,CSF2.0|PR.AA-05,CSF2.0|PR.DS-10,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ISO/IEC-27001|A.9.2.1,ISO/IEC-27001|A.9.2.6,ITSG-33|AC-2(3),LEVEL|1A,NIAv2|AM26,QCSC-v1|5.2.2,QCSC-v1|8.2.1,QCSC-v1|13.2,QCSC-v1|15.2,TBA-FIISB|36.2.2"
+              see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+            </report>
+          </else>
+        </if>
+      </else>
+    </if>
+
+    <if>
+      <condition type:"OR">
+        <custom_item>
+          type        : CMD_EXEC
+          description : "check if authorization-mode argument"
+          cmd         : "ps -ef | grep kubelet | grep -v grep"
+          expect      : "(--authorization-mode=|--authentication-token-webhook)"
+        </custom_item>
+      </condition>
+
+      <then>
+        <if>
+          <condition auto:"FAILED" type:"AND">
+            <custom_item>
+              type        : CMD_EXEC
+              description : "authentication token webhook"
+              cmd         : "ps -ef | grep kubelet | grep -v grep"
+              expect      : "--authentication-token-webhook"
+            </custom_item>
+
+            <custom_item>
+              type        : CMD_EXEC
+              description : "authorization mode"
+              cmd         : "ps -ef | grep kubelet | grep -v grep"
+              expect      : "--authorization-mode=Webhook"
+            </custom_item>
+          </condition>
+
+          <then>
+            <report type:"PASSED">
+              description : "3.2.2 Ensure that the --authorization-mode argument is not set to AlwaysAllow"
+              info        : "Do not allow all requests. Enable explicit authorization.
+
+Kubelets can be configured to allow all authenticated requests (even anonymous ones) without needing explicit authorization checks from the apiserver. You should restrict this behavior and only allow explicitly authorized requests."
+              solution    : "Remediation Method 1:
+
+If configuring via the Kubelet config file, you first need to locate the file.
+
+To do this, SSH to each node and execute the following command to find the kubelet process:
+
+ps -ef | grep kubelet
+
+The output of the above command provides details of the active kubelet process, from which we can see the location of the configuration file provided to the kubelet service with the --config argument. The file can be viewed with a command such as more or less like so:
+
+sudo less /path/to/kubelet-config.json
+
+Enable Webhook Authentication by setting the following parameter:
+
+\"authentication\": { \"webhook\": { \"enabled\": true } }
+
+Next, set the Authorization Mode to Webhook by setting the following parameter:
+
+\"authorization\": { \"mode\": \"Webhook }
+
+Finer detail of the authentication and authorization fields can be found in the Kubelet Configuration documentation.
+
+Remediation Method 2:
+
+If using executable arguments, edit the kubelet service file on each worker node and ensure the below parameters are part of the KUBELET_ARGS variable string.
+
+For systems using systemd such as the Amazon EKS Optimised Amazon Linux or Bottlerocket AMIs, then this file can be found at /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf Otherwise, you may need to look up documentation for your chosen operating system to determine which service manager is configured:
+
+--authentication-token-webhook
+--authorization-mode=Webhook
+
+For Both Remediation Steps:
+
+Based on your system, restart the kubelet service and check the service status.
+
+The following example is for operating systems using systemd such as the Amazon EKS Optimised Amazon Linux or Bottlerocket AMIs, and invokes the systemctl command. If systemctl is not available then you will need to look up documentation for your chosen operating system to determine which service manager is configured:
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+systemctl status kubelet -l
+
+Impact:
+
+Unauthorized requests will be denied."
+              reference   : "800-171|3.1.5,800-171|3.1.6,800-53|AC-6(2),800-53|AC-6(5),800-53r5|AC-6(2),800-53r5|AC-6(5),CN-L3|7.1.3.2(b),CN-L3|7.1.3.2(g),CN-L3|8.1.4.2(d),CN-L3|8.1.10.6(a),CSCv7|4.2,CSCv8|5.4,CSF|PR.AC-4,CSF2.0|PR.AA-05,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ISO/IEC-27001|A.9.2.3,ITSG-33|AC-6(2),ITSG-33|AC-6(5),LEVEL|1A,NESA|T5.1.1,NESA|T5.2.2,NESA|T5.6.1,NIAv2|AM1,NIAv2|AM23f,NIAv2|AM32,NIAv2|AM33,NIAv2|SS13c,NIAv2|SS15c,NIAv2|VL3a,PCI-DSSv3.2.1|7.1.2,PCI-DSSv4.0|7.2.1,PCI-DSSv4.0|7.2.2,QCSC-v1|5.2.2,QCSC-v1|6.2,SWIFT-CSCv1|1.2,SWIFT-CSCv1|5.1,TBA-FIISB|31.4.2,TBA-FIISB|31.4.3"
+              see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+              show_output : YES
+            </report>
+          </then>
+        </if>
+      </then>
+
+      <else>
+        <if>
+          <condition type:"AND">
+            <custom_item>
+              type        : CMD_EXEC
+              description : "check if config argument"
+              cmd         : "ps -ef | grep kubelet | grep -v grep"
+              expect      : "--config[=\\s]+@KUBELET_CONFIG@([\\s]|$)"
+            </custom_item>
+          </condition>
+
+          <then>
+            <if>
+              <condition auto:"FAILED" type:"AND">
+                <custom_item>
+                  type        : CMD_EXEC
+                  description : "authorization mode"
+                  cmd         : "sed 's/\\(\\s*\\)\\(.*:\\)\\s*\\(.*\\)/\\1\\|\\2\\|\\3/g' '@KUBELET_CONFIG@' | awk -F'|' '{ indent = length($1)/2; vname[indent] = $2; for (i in vname) {if (i > indent) {delete vname[i]}} if (length($3) > 0) { vn=none; for (i=0; i<=indent; i++) {vn=(vn)(vname[i])} { print vn $3 } } }'"
+                  expect      : "^authorization:mode:Webhook"
+                </custom_item>
+
+                <custom_item>
+                  type        : CMD_EXEC
+                  description : "authentication webhook enabled"
+                  cmd         : "sed 's/\\(\\s*\\)\\(.*:\\)\\s*\\(.*\\)/\\1\\|\\2\\|\\3/g' '@KUBELET_CONFIG@' | awk -F'|' '{ indent = length($1)/2; vname[indent] = $2; for (i in vname) {if (i > indent) {delete vname[i]}} if (length($3) > 0) { vn=none; for (i=0; i<=indent; i++) {vn=(vn)(vname[i])} { print vn $3 } } }'"
+                  expect      : "^authentication:webhook:enabled:true"
+                </custom_item>
+              </condition>
+
+              <then>
+                <report type:"PASSED">
+                  description : "3.2.2 Ensure that the --authorization-mode argument is not set to AlwaysAllow"
+                  info        : "Do not allow all requests. Enable explicit authorization.
+
+Kubelets can be configured to allow all authenticated requests (even anonymous ones) without needing explicit authorization checks from the apiserver. You should restrict this behavior and only allow explicitly authorized requests."
+                  solution    : "Remediation Method 1:
+
+If configuring via the Kubelet config file, you first need to locate the file.
+
+To do this, SSH to each node and execute the following command to find the kubelet process:
+
+ps -ef | grep kubelet
+
+The output of the above command provides details of the active kubelet process, from which we can see the location of the configuration file provided to the kubelet service with the --config argument. The file can be viewed with a command such as more or less like so:
+
+sudo less /path/to/kubelet-config.json
+
+Enable Webhook Authentication by setting the following parameter:
+
+\"authentication\": { \"webhook\": { \"enabled\": true } }
+
+Next, set the Authorization Mode to Webhook by setting the following parameter:
+
+\"authorization\": { \"mode\": \"Webhook }
+
+Finer detail of the authentication and authorization fields can be found in the Kubelet Configuration documentation.
+
+Remediation Method 2:
+
+If using executable arguments, edit the kubelet service file on each worker node and ensure the below parameters are part of the KUBELET_ARGS variable string.
+
+For systems using systemd such as the Amazon EKS Optimised Amazon Linux or Bottlerocket AMIs, then this file can be found at /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf Otherwise, you may need to look up documentation for your chosen operating system to determine which service manager is configured:
+
+--authentication-token-webhook
+--authorization-mode=Webhook
+
+For Both Remediation Steps:
+
+Based on your system, restart the kubelet service and check the service status.
+
+The following example is for operating systems using systemd such as the Amazon EKS Optimised Amazon Linux or Bottlerocket AMIs, and invokes the systemctl command. If systemctl is not available then you will need to look up documentation for your chosen operating system to determine which service manager is configured:
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+systemctl status kubelet -l
+
+Impact:
+
+Unauthorized requests will be denied."
+                  reference   : "800-171|3.1.5,800-171|3.1.6,800-53|AC-6(2),800-53|AC-6(5),800-53r5|AC-6(2),800-53r5|AC-6(5),CN-L3|7.1.3.2(b),CN-L3|7.1.3.2(g),CN-L3|8.1.4.2(d),CN-L3|8.1.10.6(a),CSCv7|4.2,CSCv8|5.4,CSF|PR.AC-4,CSF2.0|PR.AA-05,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ISO/IEC-27001|A.9.2.3,ITSG-33|AC-6(2),ITSG-33|AC-6(5),LEVEL|1A,NESA|T5.1.1,NESA|T5.2.2,NESA|T5.6.1,NIAv2|AM1,NIAv2|AM23f,NIAv2|AM32,NIAv2|AM33,NIAv2|SS13c,NIAv2|SS15c,NIAv2|VL3a,PCI-DSSv3.2.1|7.1.2,PCI-DSSv4.0|7.2.1,PCI-DSSv4.0|7.2.2,QCSC-v1|5.2.2,QCSC-v1|6.2,SWIFT-CSCv1|1.2,SWIFT-CSCv1|5.1,TBA-FIISB|31.4.2,TBA-FIISB|31.4.3"
+                  see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+                  show_output : YES
+                </report>
+              </then>
+            </if>
+          </then>
+
+          <else>
+            <report type:"FAILED">
+              description : "3.2.2 Ensure that the --authorization-mode argument is not set to AlwaysAllow"
+              info        : "Do not allow all requests. Enable explicit authorization.
+
+Kubelets can be configured to allow all authenticated requests (even anonymous ones) without needing explicit authorization checks from the apiserver. You should restrict this behavior and only allow explicitly authorized requests."
+              solution    : "Remediation Method 1:
+
+If configuring via the Kubelet config file, you first need to locate the file.
+
+To do this, SSH to each node and execute the following command to find the kubelet process:
+
+ps -ef | grep kubelet
+
+The output of the above command provides details of the active kubelet process, from which we can see the location of the configuration file provided to the kubelet service with the --config argument. The file can be viewed with a command such as more or less like so:
+
+sudo less /path/to/kubelet-config.json
+
+Enable Webhook Authentication by setting the following parameter:
+
+\"authentication\": { \"webhook\": { \"enabled\": true } }
+
+Next, set the Authorization Mode to Webhook by setting the following parameter:
+
+\"authorization\": { \"mode\": \"Webhook }
+
+Finer detail of the authentication and authorization fields can be found in the Kubelet Configuration documentation.
+
+Remediation Method 2:
+
+If using executable arguments, edit the kubelet service file on each worker node and ensure the below parameters are part of the KUBELET_ARGS variable string.
+
+For systems using systemd such as the Amazon EKS Optimised Amazon Linux or Bottlerocket AMIs, then this file can be found at /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf Otherwise, you may need to look up documentation for your chosen operating system to determine which service manager is configured:
+
+--authentication-token-webhook
+--authorization-mode=Webhook
+
+For Both Remediation Steps:
+
+Based on your system, restart the kubelet service and check the service status.
+
+The following example is for operating systems using systemd such as the Amazon EKS Optimised Amazon Linux or Bottlerocket AMIs, and invokes the systemctl command. If systemctl is not available then you will need to look up documentation for your chosen operating system to determine which service manager is configured:
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+systemctl status kubelet -l
+
+Impact:
+
+Unauthorized requests will be denied."
+              reference   : "800-171|3.1.5,800-171|3.1.6,800-53|AC-6(2),800-53|AC-6(5),800-53r5|AC-6(2),800-53r5|AC-6(5),CN-L3|7.1.3.2(b),CN-L3|7.1.3.2(g),CN-L3|8.1.4.2(d),CN-L3|8.1.10.6(a),CSCv7|4.2,CSCv8|5.4,CSF|PR.AC-4,CSF2.0|PR.AA-05,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ISO/IEC-27001|A.9.2.3,ITSG-33|AC-6(2),ITSG-33|AC-6(5),LEVEL|1A,NESA|T5.1.1,NESA|T5.2.2,NESA|T5.6.1,NIAv2|AM1,NIAv2|AM23f,NIAv2|AM32,NIAv2|AM33,NIAv2|SS13c,NIAv2|SS15c,NIAv2|VL3a,PCI-DSSv3.2.1|7.1.2,PCI-DSSv4.0|7.2.1,PCI-DSSv4.0|7.2.2,QCSC-v1|5.2.2,QCSC-v1|6.2,SWIFT-CSCv1|1.2,SWIFT-CSCv1|5.1,TBA-FIISB|31.4.2,TBA-FIISB|31.4.3"
+              see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+            </report>
+          </else>
+        </if>
+      </else>
+    </if>
+
+    <if>
+      <condition type:"AND">
+        <custom_item>
+          type        : CMD_EXEC
+          description : "check if client-ca-file argument"
+          cmd         : "ps -ef | grep kubelet | grep -v grep"
+          expect      : "--client-ca-file="
+        </custom_item>
+      </condition>
+
+      <then>
+        <custom_item>
+          type        : CMD_EXEC
+          description : "3.2.3 Ensure that a Client CA File is Configured"
+          info        : "Enable Kubelet authentication using certificates.
+
+The connections from the apiserver to the kubelet are used for fetching logs for pods, attaching (through kubectl) to running pods, and using the kubelet's port-forwarding functionality. These connections terminate at the kubelet's HTTPS endpoint. By default, the apiserver does not verify the kubelet's serving certificate, which makes the connection subject to man-in-the-middle attacks, and unsafe to run over untrusted and/or public networks. Enabling Kubelet certificate authentication ensures that the apiserver could authenticate the Kubelet before submitting any requests."
+          solution    : "Remediation Method 1:
+
+If configuring via the Kubelet config file, you first need to locate the file.
+
+To do this, SSH to each node and execute the following command to find the kubelet process:
+
+ps -ef | grep kubelet
+
+The output of the above command provides details of the active kubelet process, from which we can see the location of the configuration file provided to the kubelet service with the --config argument. The file can be viewed with a command such as more or less like so:
+
+sudo less /path/to/kubelet-config.json
+
+Configure the client certificate authority file by setting the following parameter appropriately:
+
+\"authentication\": { \"x509\": {\"clientCAFile\": <path/to/client-ca-file> } }\"
+
+Remediation Method 2:
+
+If using executable arguments, edit the kubelet service file on each worker node and ensure the below parameters are part of the KUBELET_ARGS variable string.
+
+For systems using systemd such as the Amazon EKS Optimised Amazon Linux or Bottlerocket AMIs, then this file can be found at /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf Otherwise, you may need to look up documentation for your chosen operating system to determine which service manager is configured:
+
+--client-ca-file=<path/to/client-ca-file>
+
+For Both Remediation Steps:
+
+Based on your system, restart the kubelet service and check the service status.
+
+The following example is for operating systems using systemd such as the Amazon EKS Optimised Amazon Linux or Bottlerocket AMIs, and invokes the systemctl command. If systemctl is not available then you will need to look up documentation for your chosen operating system to determine which service manager is configured:
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+systemctl status kubelet -l
+
+Impact:
+
+You require TLS to be configured on apiserver as well as kubelets."
+          reference   : "800-171|3.1.13,800-171|3.5.2,800-171|3.13.8,800-53|AC-17(2),800-53|IA-5,800-53|IA-5(1),800-53|SC-8,800-53|SC-8(1),800-53r5|AC-17(2),800-53r5|IA-5,800-53r5|IA-5(1),800-53r5|SC-8,800-53r5|SC-8(1),CN-L3|7.1.2.7(g),CN-L3|7.1.3.1(d),CN-L3|8.1.2.2(a),CN-L3|8.1.2.2(b),CN-L3|8.1.4.1(c),CN-L3|8.1.4.7(a),CN-L3|8.1.4.8(a),CN-L3|8.2.4.5(c),CN-L3|8.2.4.5(d),CN-L3|8.5.2.2,CSCv7|14.4,CSCv8|3.10,CSF|PR.AC-1,CSF|PR.AC-3,CSF|PR.DS-2,CSF|PR.DS-5,CSF|PR.PT-4,CSF2.0|PR.AA-01,CSF2.0|PR.AA-03,CSF2.0|PR.AA-05,CSF2.0|PR.DS-02,GDPR|32.1.a,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),HIPAA|164.312(a)(2)(i),HIPAA|164.312(d),HIPAA|164.312(e)(1),HIPAA|164.312(e)(2)(i),ISO/IEC-27001|A.6.2.2,ISO/IEC-27001|A.10.1.1,ISO/IEC-27001|A.13.2.3,ITSG-33|AC-17(2),ITSG-33|IA-5,ITSG-33|IA-5(1),ITSG-33|SC-8,ITSG-33|SC-8a.,ITSG-33|SC-8(1),LEVEL|1A,NESA|T4.3.1,NESA|T4.3.2,NESA|T4.5.1,NESA|T4.5.2,NESA|T5.2.3,NESA|T5.4.2,NESA|T7.3.3,NESA|T7.4.1,NIAv2|AM37,NIAv2|IE8,NIAv2|IE9,NIAv2|IE12,NIAv2|NS5d,NIAv2|NS6b,NIAv2|NS29,NIAv2|SS24,PCI-DSSv3.2.1|2.3,PCI-DSSv3.2.1|4.1,PCI-DSSv4.0|2.2.7,PCI-DSSv4.0|4.2.1,QCSC-v1|3.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|13.2,SWIFT-CSCv1|2.1,SWIFT-CSCv1|2.6,SWIFT-CSCv1|4.1,TBA-FIISB|29.1"
+          see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+          cmd         : "ps -ef | grep kubelet | grep -v grep"
+          expect      : "--client-ca-file=@CLIENT_CA_FILE@([\\s]|$)"
+        </custom_item>
+      </then>
+
+      <else>
+        <if>
+          <condition type:"AND">
+            <custom_item>
+              type        : CMD_EXEC
+              description : "check if config argument"
+              cmd         : "ps -ef | grep kubelet | grep -v grep"
+              expect      : "--config[=\\s]+@KUBELET_CONFIG@([\\s]|$)"
+            </custom_item>
+          </condition>
+
+          <then>
+            <custom_item>
+              type        : CMD_EXEC
+              description : "3.2.3 Ensure that a Client CA File is Configured"
+              info        : "Enable Kubelet authentication using certificates.
+
+The connections from the apiserver to the kubelet are used for fetching logs for pods, attaching (through kubectl) to running pods, and using the kubelet's port-forwarding functionality. These connections terminate at the kubelet's HTTPS endpoint. By default, the apiserver does not verify the kubelet's serving certificate, which makes the connection subject to man-in-the-middle attacks, and unsafe to run over untrusted and/or public networks. Enabling Kubelet certificate authentication ensures that the apiserver could authenticate the Kubelet before submitting any requests."
+              solution    : "Remediation Method 1:
+
+If configuring via the Kubelet config file, you first need to locate the file.
+
+To do this, SSH to each node and execute the following command to find the kubelet process:
+
+ps -ef | grep kubelet
+
+The output of the above command provides details of the active kubelet process, from which we can see the location of the configuration file provided to the kubelet service with the --config argument. The file can be viewed with a command such as more or less like so:
+
+sudo less /path/to/kubelet-config.json
+
+Configure the client certificate authority file by setting the following parameter appropriately:
+
+\"authentication\": { \"x509\": {\"clientCAFile\": <path/to/client-ca-file> } }\"
+
+Remediation Method 2:
+
+If using executable arguments, edit the kubelet service file on each worker node and ensure the below parameters are part of the KUBELET_ARGS variable string.
+
+For systems using systemd such as the Amazon EKS Optimised Amazon Linux or Bottlerocket AMIs, then this file can be found at /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf Otherwise, you may need to look up documentation for your chosen operating system to determine which service manager is configured:
+
+--client-ca-file=<path/to/client-ca-file>
+
+For Both Remediation Steps:
+
+Based on your system, restart the kubelet service and check the service status.
+
+The following example is for operating systems using systemd such as the Amazon EKS Optimised Amazon Linux or Bottlerocket AMIs, and invokes the systemctl command. If systemctl is not available then you will need to look up documentation for your chosen operating system to determine which service manager is configured:
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+systemctl status kubelet -l
+
+Impact:
+
+You require TLS to be configured on apiserver as well as kubelets."
+              reference   : "800-171|3.1.13,800-171|3.5.2,800-171|3.13.8,800-53|AC-17(2),800-53|IA-5,800-53|IA-5(1),800-53|SC-8,800-53|SC-8(1),800-53r5|AC-17(2),800-53r5|IA-5,800-53r5|IA-5(1),800-53r5|SC-8,800-53r5|SC-8(1),CN-L3|7.1.2.7(g),CN-L3|7.1.3.1(d),CN-L3|8.1.2.2(a),CN-L3|8.1.2.2(b),CN-L3|8.1.4.1(c),CN-L3|8.1.4.7(a),CN-L3|8.1.4.8(a),CN-L3|8.2.4.5(c),CN-L3|8.2.4.5(d),CN-L3|8.5.2.2,CSCv7|14.4,CSCv8|3.10,CSF|PR.AC-1,CSF|PR.AC-3,CSF|PR.DS-2,CSF|PR.DS-5,CSF|PR.PT-4,CSF2.0|PR.AA-01,CSF2.0|PR.AA-03,CSF2.0|PR.AA-05,CSF2.0|PR.DS-02,GDPR|32.1.a,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),HIPAA|164.312(a)(2)(i),HIPAA|164.312(d),HIPAA|164.312(e)(1),HIPAA|164.312(e)(2)(i),ISO/IEC-27001|A.6.2.2,ISO/IEC-27001|A.10.1.1,ISO/IEC-27001|A.13.2.3,ITSG-33|AC-17(2),ITSG-33|IA-5,ITSG-33|IA-5(1),ITSG-33|SC-8,ITSG-33|SC-8a.,ITSG-33|SC-8(1),LEVEL|1A,NESA|T4.3.1,NESA|T4.3.2,NESA|T4.5.1,NESA|T4.5.2,NESA|T5.2.3,NESA|T5.4.2,NESA|T7.3.3,NESA|T7.4.1,NIAv2|AM37,NIAv2|IE8,NIAv2|IE9,NIAv2|IE12,NIAv2|NS5d,NIAv2|NS6b,NIAv2|NS29,NIAv2|SS24,PCI-DSSv3.2.1|2.3,PCI-DSSv3.2.1|4.1,PCI-DSSv4.0|2.2.7,PCI-DSSv4.0|4.2.1,QCSC-v1|3.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|13.2,SWIFT-CSCv1|2.1,SWIFT-CSCv1|2.6,SWIFT-CSCv1|4.1,TBA-FIISB|29.1"
+              see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+              cmd         : "sed 's/\\(\\s*\\)\\(.*:\\)\\s*\\(.*\\)/\\1\\|\\2\\|\\3/g' '@KUBELET_CONFIG@' | awk -F'|' '{ indent = length($1)/2; vname[indent] = $2; for (i in vname) {if (i > indent) {delete vname[i]}} if (length($3) > 0) { vn=none; for (i=0; i<=indent; i++) {vn=(vn)(vname[i])} { print vn $3 } } }'"
+              expect      : "^authentication:x509:clientCAFile:@CLIENT_CA_FILE@([\\s]|$)"
+            </custom_item>
+          </then>
+
+          <else>
+            <report type:"FAILED">
+              description : "3.2.3 Ensure that a Client CA File is Configured"
+              info        : "Enable Kubelet authentication using certificates.
+
+The connections from the apiserver to the kubelet are used for fetching logs for pods, attaching (through kubectl) to running pods, and using the kubelet's port-forwarding functionality. These connections terminate at the kubelet's HTTPS endpoint. By default, the apiserver does not verify the kubelet's serving certificate, which makes the connection subject to man-in-the-middle attacks, and unsafe to run over untrusted and/or public networks. Enabling Kubelet certificate authentication ensures that the apiserver could authenticate the Kubelet before submitting any requests."
+              solution    : "Remediation Method 1:
+
+If configuring via the Kubelet config file, you first need to locate the file.
+
+To do this, SSH to each node and execute the following command to find the kubelet process:
+
+ps -ef | grep kubelet
+
+The output of the above command provides details of the active kubelet process, from which we can see the location of the configuration file provided to the kubelet service with the --config argument. The file can be viewed with a command such as more or less like so:
+
+sudo less /path/to/kubelet-config.json
+
+Configure the client certificate authority file by setting the following parameter appropriately:
+
+\"authentication\": { \"x509\": {\"clientCAFile\": <path/to/client-ca-file> } }\"
+
+Remediation Method 2:
+
+If using executable arguments, edit the kubelet service file on each worker node and ensure the below parameters are part of the KUBELET_ARGS variable string.
+
+For systems using systemd such as the Amazon EKS Optimised Amazon Linux or Bottlerocket AMIs, then this file can be found at /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf Otherwise, you may need to look up documentation for your chosen operating system to determine which service manager is configured:
+
+--client-ca-file=<path/to/client-ca-file>
+
+For Both Remediation Steps:
+
+Based on your system, restart the kubelet service and check the service status.
+
+The following example is for operating systems using systemd such as the Amazon EKS Optimised Amazon Linux or Bottlerocket AMIs, and invokes the systemctl command. If systemctl is not available then you will need to look up documentation for your chosen operating system to determine which service manager is configured:
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+systemctl status kubelet -l
+
+Impact:
+
+You require TLS to be configured on apiserver as well as kubelets."
+              reference   : "800-171|3.1.13,800-171|3.5.2,800-171|3.13.8,800-53|AC-17(2),800-53|IA-5,800-53|IA-5(1),800-53|SC-8,800-53|SC-8(1),800-53r5|AC-17(2),800-53r5|IA-5,800-53r5|IA-5(1),800-53r5|SC-8,800-53r5|SC-8(1),CN-L3|7.1.2.7(g),CN-L3|7.1.3.1(d),CN-L3|8.1.2.2(a),CN-L3|8.1.2.2(b),CN-L3|8.1.4.1(c),CN-L3|8.1.4.7(a),CN-L3|8.1.4.8(a),CN-L3|8.2.4.5(c),CN-L3|8.2.4.5(d),CN-L3|8.5.2.2,CSCv7|14.4,CSCv8|3.10,CSF|PR.AC-1,CSF|PR.AC-3,CSF|PR.DS-2,CSF|PR.DS-5,CSF|PR.PT-4,CSF2.0|PR.AA-01,CSF2.0|PR.AA-03,CSF2.0|PR.AA-05,CSF2.0|PR.DS-02,GDPR|32.1.a,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),HIPAA|164.312(a)(2)(i),HIPAA|164.312(d),HIPAA|164.312(e)(1),HIPAA|164.312(e)(2)(i),ISO/IEC-27001|A.6.2.2,ISO/IEC-27001|A.10.1.1,ISO/IEC-27001|A.13.2.3,ITSG-33|AC-17(2),ITSG-33|IA-5,ITSG-33|IA-5(1),ITSG-33|SC-8,ITSG-33|SC-8a.,ITSG-33|SC-8(1),LEVEL|1A,NESA|T4.3.1,NESA|T4.3.2,NESA|T4.5.1,NESA|T4.5.2,NESA|T5.2.3,NESA|T5.4.2,NESA|T7.3.3,NESA|T7.4.1,NIAv2|AM37,NIAv2|IE8,NIAv2|IE9,NIAv2|IE12,NIAv2|NS5d,NIAv2|NS6b,NIAv2|NS29,NIAv2|SS24,PCI-DSSv3.2.1|2.3,PCI-DSSv3.2.1|4.1,PCI-DSSv4.0|2.2.7,PCI-DSSv4.0|4.2.1,QCSC-v1|3.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|13.2,SWIFT-CSCv1|2.1,SWIFT-CSCv1|2.6,SWIFT-CSCv1|4.1,TBA-FIISB|29.1"
+              see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+            </report>
+          </else>
+        </if>
+      </else>
+    </if>
+
+    <if>
+      <condition type:"AND">
+        <custom_item>
+          type        : CMD_EXEC
+          description : "check if read-only-port argument"
+          cmd         : "ps -ef | grep kubelet | grep -v grep"
+          expect      : "--read-only-port="
+        </custom_item>
+      </condition>
+
+      <then>
+        <custom_item>
+          type        : CMD_EXEC
+          description : "3.2.4 Ensure that the --read-only-port is disabled"
+          info        : "Disable the read-only port.
+
+The Kubelet process provides a read-only API in addition to the main Kubelet API. Unauthenticated access is provided to this read-only API which could possibly retrieve potentially sensitive information about the cluster."
+          solution    : "If modifying the Kubelet config file, edit the kubelet-config.json file /etc/kubernetes/kubelet/kubelet-config.json and set the below parameter to 0
+
+\"readOnlyPort\": 0
+
+If using executable arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf on each worker node and add the below parameter at the end of the KUBELET_ARGS variable string.
+
+--read-only-port=0
+
+For each remediation:Based on your system, restart the kubelet service and check status
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+systemctl status kubelet -l
+
+Impact:
+
+Removal of the read-only port will require that any service which made use of it will need to be re-configured to use the main Kubelet API."
+          reference   : "800-171|3.1.16,800-171|3.13.15,800-53|AC-18,800-53|SC-23,800-53r5|AC-18,800-53r5|SC-23,CSCv7|9.2,CSCv8|12.6,CSF|PR.PT-4,CSF2.0|PR.AA-05,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ITSG-33|AC-18,ITSG-33|SC-23,ITSG-33|SC-23a.,LEVEL|1A,NESA|T4.5.1,QCSC-v1|5.2.1,SWIFT-CSCv1|2.3"
+          see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+          cmd         : "ps -ef | grep kubelet | grep -v grep"
+          expect      : "--read-only-port=0([\\s]|$)"
+        </custom_item>
+      </then>
+
+      <else>
+        <if>
+          <condition type:"AND">
+            <custom_item>
+              type        : CMD_EXEC
+              description : "check if config argument"
+              cmd         : "ps -ef | grep kubelet | grep -v grep"
+              expect      : "--config[=\\s]+@KUBELET_CONFIG@([\\s]|$)"
+            </custom_item>
+          </condition>
+
+          <then>
+            <custom_item>
+              type        : CMD_EXEC
+              description : "3.2.4 Ensure that the --read-only-port is disabled"
+              info        : "Disable the read-only port.
+
+The Kubelet process provides a read-only API in addition to the main Kubelet API. Unauthenticated access is provided to this read-only API which could possibly retrieve potentially sensitive information about the cluster."
+              solution    : "If modifying the Kubelet config file, edit the kubelet-config.json file /etc/kubernetes/kubelet/kubelet-config.json and set the below parameter to 0
+
+\"readOnlyPort\": 0
+
+If using executable arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf on each worker node and add the below parameter at the end of the KUBELET_ARGS variable string.
+
+--read-only-port=0
+
+For each remediation:Based on your system, restart the kubelet service and check status
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+systemctl status kubelet -l
+
+Impact:
+
+Removal of the read-only port will require that any service which made use of it will need to be re-configured to use the main Kubelet API."
+              reference   : "800-171|3.1.16,800-171|3.13.15,800-53|AC-18,800-53|SC-23,800-53r5|AC-18,800-53r5|SC-23,CSCv7|9.2,CSCv8|12.6,CSF|PR.PT-4,CSF2.0|PR.AA-05,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ITSG-33|AC-18,ITSG-33|SC-23,ITSG-33|SC-23a.,LEVEL|1A,NESA|T4.5.1,QCSC-v1|5.2.1,SWIFT-CSCv1|2.3"
+              see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+              cmd         : "sed 's/\\(\\s*\\)\\(.*:\\)\\s*\\(.*\\)/\\1\\|\\2\\|\\3/g' '@KUBELET_CONFIG@' | awk -F'|' '{ indent = length($1)/2; vname[indent] = $2; for (i in vname) {if (i > indent) {delete vname[i]}} if (length($3) > 0) { vn=none; for (i=0; i<=indent; i++) {vn=(vn)(vname[i])} { print vn $3 } } }'"
+              expect      : "^readOnlyPort:0([\\s]|$)"
+            </custom_item>
+          </then>
+
+          <else>
+            <report type:"FAILED">
+              description : "3.2.4 Ensure that the --read-only-port is disabled"
+              info        : "Disable the read-only port.
+
+The Kubelet process provides a read-only API in addition to the main Kubelet API. Unauthenticated access is provided to this read-only API which could possibly retrieve potentially sensitive information about the cluster."
+              solution    : "If modifying the Kubelet config file, edit the kubelet-config.json file /etc/kubernetes/kubelet/kubelet-config.json and set the below parameter to 0
+
+\"readOnlyPort\": 0
+
+If using executable arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf on each worker node and add the below parameter at the end of the KUBELET_ARGS variable string.
+
+--read-only-port=0
+
+For each remediation:Based on your system, restart the kubelet service and check status
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+systemctl status kubelet -l
+
+Impact:
+
+Removal of the read-only port will require that any service which made use of it will need to be re-configured to use the main Kubelet API."
+              reference   : "800-171|3.1.16,800-171|3.13.15,800-53|AC-18,800-53|SC-23,800-53r5|AC-18,800-53r5|SC-23,CSCv7|9.2,CSCv8|12.6,CSF|PR.PT-4,CSF2.0|PR.AA-05,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ITSG-33|AC-18,ITSG-33|SC-23,ITSG-33|SC-23a.,LEVEL|1A,NESA|T4.5.1,QCSC-v1|5.2.1,SWIFT-CSCv1|2.3"
+              see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+            </report>
+          </else>
+        </if>
+      </else>
+    </if>
+
+    <if>
+      <condition type:"AND">
+        <custom_item>
+          type        : CMD_EXEC
+          description : "check if streaming-connection-idle-timeout argument"
+          cmd         : "ps -ef | grep kubelet | grep -v grep"
+          expect      : "--streaming-connection-idle-timeout="
+        </custom_item>
+      </condition>
+
+      <then>
+        <custom_item>
+          type        : CMD_EXEC
+          description : "3.2.5 Ensure that the --streaming-connection-idle-timeout argument is not set to 0"
+          info        : "Do not disable timeouts on streaming connections.
+
+Setting idle timeouts ensures that you are protected against Denial-of-Service attacks, inactive connections and running out of ephemeral ports.
+
+Note: By default, --streaming-connection-idle-timeout is set to 4 hours which might be too high for your environment. Setting this as appropriate would additionally ensure that such streaming connections are timed out after serving legitimate use cases."
+          solution    : "Remediation Method 1:
+
+If modifying the Kubelet config file, edit the kubelet-config.json file /etc/kubernetes/kubelet-config.yaml and set the below parameter to a non-zero value in the format of #h#m#s
+
+\"streamingConnectionIdleTimeout\": \"4h0m0s\"
+
+You should ensure that the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf does not specify a --streaming-connection-idle-timeout argument because it would override the Kubelet config file.
+
+Remediation Method 2:
+
+If using executable arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf on each worker node and add the below parameter at the end of the KUBELET_ARGS variable string.
+
+--streaming-connection-idle-timeout=4h0m0s
+
+Remediation Method 3:
+
+If using the api configz endpoint consider searching for the status of \"streamingConnectionIdleTimeout\": by extracting the live configuration from the nodes running kubelet.
+
+**See detailed step-by-step configmap procedures in
+
+Reconfigure a Node's Kubelet in a Live Cluster
+
+, and then rerun the curl statement from audit process to check for kubelet configuration changes
+
+kubectl proxy --port=8001 &amp;
+
+export HOSTNAME_PORT=localhost:8001 (example host and port number)
+export NODE_NAME=gke-cluster-1-pool1-5e572947-r2hg (example node name from \"kubectl get nodes\")
+
+curl -sSL \"http://${HOSTNAME_PORT}/api/v1/nodes/${NODE_NAME}/proxy/configz\"
+
+For all three remediations: Based on your system, restart the kubelet service and check status
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+systemctl status kubelet -l
+
+Impact:
+
+Long-lived connections could be interrupted."
+          reference   : "800-171|3.1.16,800-171|3.13.15,800-53|AC-18,800-53|SC-23,800-53r5|AC-18,800-53r5|SC-23,CSCv7|9.2,CSCv8|12.6,CSF|PR.PT-4,CSF2.0|PR.AA-05,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ITSG-33|AC-18,ITSG-33|SC-23,ITSG-33|SC-23a.,LEVEL|1A,NESA|T4.5.1,QCSC-v1|5.2.1,SWIFT-CSCv1|2.3"
+          see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+          cmd         : "ps -ef | grep kubelet | grep -v grep"
+          expect      : "--streaming-connection-idle-timeout=[1-9]"
+        </custom_item>
+      </then>
+
+      <else>
+        <if>
+          <condition type:"AND">
+            <custom_item>
+              type        : CMD_EXEC
+              description : "check if config argument"
+              cmd         : "ps -ef | grep kubelet | grep -v grep"
+              expect      : "--config[=\\s]+@KUBELET_CONFIG@([\\s]|$)"
+            </custom_item>
+          </condition>
+
+          <then>
+            <custom_item>
+              type        : FILE_CONTENT_CHECK_NOT
+              description : "3.2.5 Ensure that the --streaming-connection-idle-timeout argument is not set to 0"
+              info        : "Do not disable timeouts on streaming connections.
+
+Setting idle timeouts ensures that you are protected against Denial-of-Service attacks, inactive connections and running out of ephemeral ports.
+
+Note: By default, --streaming-connection-idle-timeout is set to 4 hours which might be too high for your environment. Setting this as appropriate would additionally ensure that such streaming connections are timed out after serving legitimate use cases."
+              solution    : "Remediation Method 1:
+
+If modifying the Kubelet config file, edit the kubelet-config.json file /etc/kubernetes/kubelet-config.yaml and set the below parameter to a non-zero value in the format of #h#m#s
+
+\"streamingConnectionIdleTimeout\": \"4h0m0s\"
+
+You should ensure that the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf does not specify a --streaming-connection-idle-timeout argument because it would override the Kubelet config file.
+
+Remediation Method 2:
+
+If using executable arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf on each worker node and add the below parameter at the end of the KUBELET_ARGS variable string.
+
+--streaming-connection-idle-timeout=4h0m0s
+
+Remediation Method 3:
+
+If using the api configz endpoint consider searching for the status of \"streamingConnectionIdleTimeout\": by extracting the live configuration from the nodes running kubelet.
+
+**See detailed step-by-step configmap procedures in
+
+Reconfigure a Node's Kubelet in a Live Cluster
+
+, and then rerun the curl statement from audit process to check for kubelet configuration changes
+
+kubectl proxy --port=8001 &amp;
+
+export HOSTNAME_PORT=localhost:8001 (example host and port number)
+export NODE_NAME=gke-cluster-1-pool1-5e572947-r2hg (example node name from \"kubectl get nodes\")
+
+curl -sSL \"http://${HOSTNAME_PORT}/api/v1/nodes/${NODE_NAME}/proxy/configz\"
+
+For all three remediations: Based on your system, restart the kubelet service and check status
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+systemctl status kubelet -l
+
+Impact:
+
+Long-lived connections could be interrupted."
+              reference   : "800-171|3.1.16,800-171|3.13.15,800-53|AC-18,800-53|SC-23,800-53r5|AC-18,800-53r5|SC-23,CSCv7|9.2,CSCv8|12.6,CSF|PR.PT-4,CSF2.0|PR.AA-05,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ITSG-33|AC-18,ITSG-33|SC-23,ITSG-33|SC-23a.,LEVEL|1A,NESA|T4.5.1,QCSC-v1|5.2.1,SWIFT-CSCv1|2.3"
+              see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+              file        : "@KUBELET_CONFIG@"
+              regex       : "^[\\s]*streamingConnectionIdleTimeout[\\s]*:"
+              expect      : "^[\\s]*streamingConnectionIdleTimeout[\\s]*:[\\s]*0"
+            </custom_item>
+          </then>
+
+          <else>
+            <report type:"PASSED">
+              description : "3.2.5 Ensure that the --streaming-connection-idle-timeout argument is not set to 0"
+              info        : "Do not disable timeouts on streaming connections.
+
+Setting idle timeouts ensures that you are protected against Denial-of-Service attacks, inactive connections and running out of ephemeral ports.
+
+Note: By default, --streaming-connection-idle-timeout is set to 4 hours which might be too high for your environment. Setting this as appropriate would additionally ensure that such streaming connections are timed out after serving legitimate use cases."
+              solution    : "Remediation Method 1:
+
+If modifying the Kubelet config file, edit the kubelet-config.json file /etc/kubernetes/kubelet-config.yaml and set the below parameter to a non-zero value in the format of #h#m#s
+
+\"streamingConnectionIdleTimeout\": \"4h0m0s\"
+
+You should ensure that the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf does not specify a --streaming-connection-idle-timeout argument because it would override the Kubelet config file.
+
+Remediation Method 2:
+
+If using executable arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf on each worker node and add the below parameter at the end of the KUBELET_ARGS variable string.
+
+--streaming-connection-idle-timeout=4h0m0s
+
+Remediation Method 3:
+
+If using the api configz endpoint consider searching for the status of \"streamingConnectionIdleTimeout\": by extracting the live configuration from the nodes running kubelet.
+
+**See detailed step-by-step configmap procedures in
+
+Reconfigure a Node's Kubelet in a Live Cluster
+
+, and then rerun the curl statement from audit process to check for kubelet configuration changes
+
+kubectl proxy --port=8001 &amp;
+
+export HOSTNAME_PORT=localhost:8001 (example host and port number)
+export NODE_NAME=gke-cluster-1-pool1-5e572947-r2hg (example node name from \"kubectl get nodes\")
+
+curl -sSL \"http://${HOSTNAME_PORT}/api/v1/nodes/${NODE_NAME}/proxy/configz\"
+
+For all three remediations: Based on your system, restart the kubelet service and check status
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+systemctl status kubelet -l
+
+Impact:
+
+Long-lived connections could be interrupted."
+              reference   : "800-171|3.1.16,800-171|3.13.15,800-53|AC-18,800-53|SC-23,800-53r5|AC-18,800-53r5|SC-23,CSCv7|9.2,CSCv8|12.6,CSF|PR.PT-4,CSF2.0|PR.AA-05,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ITSG-33|AC-18,ITSG-33|SC-23,ITSG-33|SC-23a.,LEVEL|1A,NESA|T4.5.1,QCSC-v1|5.2.1,SWIFT-CSCv1|2.3"
+              see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+            </report>
+          </else>
+        </if>
+      </else>
+    </if>
+
+    <if>
+      <condition type:"AND">
+        <custom_item>
+          type        : CMD_EXEC
+          description : "check if make-iptables-util-chains argument"
+          cmd         : "ps -ef | grep kubelet | grep -v grep"
+          expect      : "--make-iptables-util-chains="
+        </custom_item>
+      </condition>
+
+      <then>
+        <custom_item>
+          type        : CMD_EXEC
+          description : "3.2.6 Ensure that the --make-iptables-util-chains argument is set to true"
+          info        : "Allow Kubelet to manage iptables.
+
+Kubelets can automatically manage the required changes to iptables based on how you choose your networking options for the pods. It is recommended to let kubelets manage the changes to iptables. This ensures that the iptables configuration remains in sync with pods networking configuration. Manually configuring iptables with dynamic pod network configuration changes might hamper the communication between pods/containers and to the outside world. You might have iptables rules too restrictive or too open."
+          solution    : "Remediation Method 1:
+
+If modifying the Kubelet config file, edit the kubelet-config.json file /etc/kubernetes/kubelet/kubelet-config.json and set the below parameter to true
+
+\"makeIPTablesUtilChains\": true
+
+Ensure that /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf does not set the --make-iptables-util-chains argument because that would override your Kubelet config file.
+
+Remediation Method 2:
+
+If using executable arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf on each worker node and add the below parameter at the end of the KUBELET_ARGS variable string.
+
+--make-iptables-util-chains:true
+
+Remediation Method 3:
+
+If using the api configz endpoint consider searching for the status of \"makeIPTablesUtilChains.: true by extracting the live configuration from the nodes running kubelet.
+
+**See detailed step-by-step configmap procedures in
+
+Reconfigure a Node's Kubelet in a Live Cluster
+
+, and then rerun the curl statement from audit process to check for kubelet configuration changes
+
+kubectl proxy --port=8001 &amp;
+
+export HOSTNAME_PORT=localhost:8001 (example host and port number)
+export NODE_NAME=gke-cluster-1-pool1-5e572947-r2hg (example node name from \"kubectl get nodes\")
+
+curl -sSL \"http://${HOSTNAME_PORT}/api/v1/nodes/${NODE_NAME}/proxy/configz\"
+
+For all three remediations: Based on your system, restart the kubelet service and check status
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+systemctl status kubelet -l
+
+Impact:
+
+Kubelet would manage the iptables on the system and keep it in sync. If you are using any other iptables management solution, then there might be some conflicts."
+          reference   : "800-171|3.4.2,800-171|3.4.6,800-171|3.4.7,800-171|3.13.15,800-53|CM-6,800-53|CM-7,800-53|SC-23,800-53r5|CM-6,800-53r5|CM-7,800-53r5|SC-23,CSCv7|11.1,CSCv8|12.3,CSF|PR.IP-1,CSF|PR.PT-3,CSF2.0|DE.CM-09,CSF2.0|PR.PS-01,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6,ITSG-33|CM-7,ITSG-33|SC-23,ITSG-33|SC-23a.,LEVEL|1A,NESA|T4.5.1,NIAv2|SS15a,PCI-DSSv3.2.1|2.2.2,QCSC-v1|5.2.1,SWIFT-CSCv1|2.3"
+          see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+          cmd         : "ps -ef | grep kubelet | grep -v grep"
+          expect      : "--make-iptables-util-chains=true([\\s]|$)"
+        </custom_item>
+      </then>
+
+      <else>
+        <if>
+          <condition type:"AND">
+            <custom_item>
+              type        : CMD_EXEC
+              description : "check if config argument"
+              cmd         : "ps -ef | grep kubelet | grep -v grep"
+              expect      : "--config[=\\s]+@KUBELET_CONFIG@([\\s]|$)"
+            </custom_item>
+          </condition>
+
+          <then>
+            <custom_item>
+              type        : FILE_CONTENT_CHECK_NOT
+              description : "3.2.6 Ensure that the --make-iptables-util-chains argument is set to true"
+              info        : "Allow Kubelet to manage iptables.
+
+Kubelets can automatically manage the required changes to iptables based on how you choose your networking options for the pods. It is recommended to let kubelets manage the changes to iptables. This ensures that the iptables configuration remains in sync with pods networking configuration. Manually configuring iptables with dynamic pod network configuration changes might hamper the communication between pods/containers and to the outside world. You might have iptables rules too restrictive or too open."
+              solution    : "Remediation Method 1:
+
+If modifying the Kubelet config file, edit the kubelet-config.json file /etc/kubernetes/kubelet/kubelet-config.json and set the below parameter to true
+
+\"makeIPTablesUtilChains\": true
+
+Ensure that /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf does not set the --make-iptables-util-chains argument because that would override your Kubelet config file.
+
+Remediation Method 2:
+
+If using executable arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf on each worker node and add the below parameter at the end of the KUBELET_ARGS variable string.
+
+--make-iptables-util-chains:true
+
+Remediation Method 3:
+
+If using the api configz endpoint consider searching for the status of \"makeIPTablesUtilChains.: true by extracting the live configuration from the nodes running kubelet.
+
+**See detailed step-by-step configmap procedures in
+
+Reconfigure a Node's Kubelet in a Live Cluster
+
+, and then rerun the curl statement from audit process to check for kubelet configuration changes
+
+kubectl proxy --port=8001 &amp;
+
+export HOSTNAME_PORT=localhost:8001 (example host and port number)
+export NODE_NAME=gke-cluster-1-pool1-5e572947-r2hg (example node name from \"kubectl get nodes\")
+
+curl -sSL \"http://${HOSTNAME_PORT}/api/v1/nodes/${NODE_NAME}/proxy/configz\"
+
+For all three remediations: Based on your system, restart the kubelet service and check status
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+systemctl status kubelet -l
+
+Impact:
+
+Kubelet would manage the iptables on the system and keep it in sync. If you are using any other iptables management solution, then there might be some conflicts."
+              reference   : "800-171|3.4.2,800-171|3.4.6,800-171|3.4.7,800-171|3.13.15,800-53|CM-6,800-53|CM-7,800-53|SC-23,800-53r5|CM-6,800-53r5|CM-7,800-53r5|SC-23,CSCv7|11.1,CSCv8|12.3,CSF|PR.IP-1,CSF|PR.PT-3,CSF2.0|DE.CM-09,CSF2.0|PR.PS-01,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6,ITSG-33|CM-7,ITSG-33|SC-23,ITSG-33|SC-23a.,LEVEL|1A,NESA|T4.5.1,NIAv2|SS15a,PCI-DSSv3.2.1|2.2.2,QCSC-v1|5.2.1,SWIFT-CSCv1|2.3"
+              see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+              file        : "@KUBELET_CONFIG@"
+              regex       : "^[\\s]*makeIPTablesUtilChains[\\s]*:"
+              expect      : "^[\\s]*makeIPTablesUtilChains[\\s]*:[\\s]*false([\\s]|$)"
+            </custom_item>
+          </then>
+
+          <else>
+            <report type:"PASSED">
+              description : "3.2.6 Ensure that the --make-iptables-util-chains argument is set to true"
+              info        : "Allow Kubelet to manage iptables.
+
+Kubelets can automatically manage the required changes to iptables based on how you choose your networking options for the pods. It is recommended to let kubelets manage the changes to iptables. This ensures that the iptables configuration remains in sync with pods networking configuration. Manually configuring iptables with dynamic pod network configuration changes might hamper the communication between pods/containers and to the outside world. You might have iptables rules too restrictive or too open."
+              solution    : "Remediation Method 1:
+
+If modifying the Kubelet config file, edit the kubelet-config.json file /etc/kubernetes/kubelet/kubelet-config.json and set the below parameter to true
+
+\"makeIPTablesUtilChains\": true
+
+Ensure that /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf does not set the --make-iptables-util-chains argument because that would override your Kubelet config file.
+
+Remediation Method 2:
+
+If using executable arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf on each worker node and add the below parameter at the end of the KUBELET_ARGS variable string.
+
+--make-iptables-util-chains:true
+
+Remediation Method 3:
+
+If using the api configz endpoint consider searching for the status of \"makeIPTablesUtilChains.: true by extracting the live configuration from the nodes running kubelet.
+
+**See detailed step-by-step configmap procedures in
+
+Reconfigure a Node's Kubelet in a Live Cluster
+
+, and then rerun the curl statement from audit process to check for kubelet configuration changes
+
+kubectl proxy --port=8001 &amp;
+
+export HOSTNAME_PORT=localhost:8001 (example host and port number)
+export NODE_NAME=gke-cluster-1-pool1-5e572947-r2hg (example node name from \"kubectl get nodes\")
+
+curl -sSL \"http://${HOSTNAME_PORT}/api/v1/nodes/${NODE_NAME}/proxy/configz\"
+
+For all three remediations: Based on your system, restart the kubelet service and check status
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+systemctl status kubelet -l
+
+Impact:
+
+Kubelet would manage the iptables on the system and keep it in sync. If you are using any other iptables management solution, then there might be some conflicts."
+              reference   : "800-171|3.4.2,800-171|3.4.6,800-171|3.4.7,800-171|3.13.15,800-53|CM-6,800-53|CM-7,800-53|SC-23,800-53r5|CM-6,800-53r5|CM-7,800-53r5|SC-23,CSCv7|11.1,CSCv8|12.3,CSF|PR.IP-1,CSF|PR.PT-3,CSF2.0|DE.CM-09,CSF2.0|PR.PS-01,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6,ITSG-33|CM-7,ITSG-33|SC-23,ITSG-33|SC-23a.,LEVEL|1A,NESA|T4.5.1,NIAv2|SS15a,PCI-DSSv3.2.1|2.2.2,QCSC-v1|5.2.1,SWIFT-CSCv1|2.3"
+              see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+            </report>
+          </else>
+        </if>
+      </else>
+    </if>
+
+    <if>
+      <condition type:"AND">
+        <custom_item>
+          type        : CMD_EXEC
+          description : "check if eventRecordQPS argument"
+          cmd         : "ps -ef | grep kubelet | grep -v grep"
+          expect      : "--eventRecordQPS="
+        </custom_item>
+      </condition>
+
+      <then>
+        <custom_item>
+          type        : CMD_EXEC
+          description : "3.2.7 Ensure that the --eventRecordQPS argument is set to 0 or a level which ensures appropriate event capture"
+          info        : "Security relevant information should be captured. The eventRecordQPS on the Kubelet configuration can be used to limit the rate at which events are gathered and sets the maximum event creations per second. Setting this too low could result in relevant events not being logged, however the unlimited setting of 0 could result in a denial of service on the kubelet.
+
+It is important to capture all events and not restrict event creation. Events are an important source of security information and analytics that ensure that your environment is consistently monitored using the event data."
+          solution    : "If using a Kubelet config file, edit the file to set eventRecordQPS: to an appropriate level.
+
+If using command line arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubeadm.conf on each worker node and set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable.
+
+Based on your system, restart the kubelet service. For example:
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+
+Impact:
+
+Setting this parameter to 0 could result in a denial of service condition due to excessive events being created. The cluster's event processing and storage systems should be scaled to handle expected event loads."
+          reference   : "800-171|3.3.1,800-171|3.3.2,800-171|3.3.6,800-53|AU-2,800-53|AU-3,800-53|AU-3(1),800-53|AU-7,800-53|AU-12,800-53r5|AU-2,800-53r5|AU-3,800-53r5|AU-3(1),800-53r5|AU-7,800-53r5|AU-12,CN-L3|7.1.2.3(a),CN-L3|7.1.2.3(b),CN-L3|7.1.2.3(c),CN-L3|7.1.3.3(a),CN-L3|7.1.3.3(b),CN-L3|8.1.4.3(a),CN-L3|8.1.4.3(b),CSCv7|6.2,CSCv7|6.3,CSCv8|8.2,CSCv8|8.5,CSF|DE.CM-1,CSF|DE.CM-3,CSF|DE.CM-7,CSF|PR.PT-1,CSF|RS.AN-3,CSF2.0|DE.CM-01,CSF2.0|DE.CM-03,CSF2.0|DE.CM-09,CSF2.0|PR.PS-04,CSF2.0|RS.AN-03,CSF2.0|RS.AN-06,CSF2.0|RS.AN-07,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ITSG-33|AU-2,ITSG-33|AU-3,ITSG-33|AU-3(1),ITSG-33|AU-7,ITSG-33|AU-12,LEVEL|1A,NESA|M1.2.2,NESA|M5.5.1,NESA|T3.6.2,NIAv2|AM7,NIAv2|AM11a,NIAv2|AM11b,NIAv2|AM11c,NIAv2|AM11d,NIAv2|AM11e,NIAv2|AM34a,NIAv2|AM34b,NIAv2|AM34c,NIAv2|AM34d,NIAv2|AM34e,NIAv2|AM34f,NIAv2|AM34g,NIAv2|SS30,NIAv2|VL8,PCI-DSSv3.2.1|10.1,PCI-DSSv3.2.1|10.3,PCI-DSSv3.2.1|10.3.1,PCI-DSSv3.2.1|10.3.2,PCI-DSSv3.2.1|10.3.3,PCI-DSSv3.2.1|10.3.4,PCI-DSSv3.2.1|10.3.5,PCI-DSSv3.2.1|10.3.6,PCI-DSSv4.0|10.2.2,QCSC-v1|3.2,QCSC-v1|6.2,QCSC-v1|8.2.1,QCSC-v1|10.2.1,QCSC-v1|11.2,QCSC-v1|13.2,SWIFT-CSCv1|6.4"
+          see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+          cmd         : "ps -ef | grep kubelet | grep -v grep"
+          expect      : "--eventRecordQPS=[0-9]+([\\s]|$)"
+        </custom_item>
+      </then>
+
+      <else>
+        <if>
+          <condition type:"AND">
+            <custom_item>
+              type        : CMD_EXEC
+              description : "check if config argument"
+              cmd         : "ps -ef | grep kubelet | grep -v grep"
+              expect      : "--config[=\\s]+@KUBELET_CONFIG@([\\s]|$)"
+            </custom_item>
+          </condition>
+
+          <then>
+            <custom_item>
+              type            : FILE_CONTENT_CHECK
+              description     : "3.2.7 Ensure that the --eventRecordQPS argument is set to 0 or a level which ensures appropriate event capture"
+              info            : "Security relevant information should be captured. The eventRecordQPS on the Kubelet configuration can be used to limit the rate at which events are gathered and sets the maximum event creations per second. Setting this too low could result in relevant events not being logged, however the unlimited setting of 0 could result in a denial of service on the kubelet.
+
+It is important to capture all events and not restrict event creation. Events are an important source of security information and analytics that ensure that your environment is consistently monitored using the event data."
+              solution        : "If using a Kubelet config file, edit the file to set eventRecordQPS: to an appropriate level.
+
+If using command line arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubeadm.conf on each worker node and set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable.
+
+Based on your system, restart the kubelet service. For example:
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+
+Impact:
+
+Setting this parameter to 0 could result in a denial of service condition due to excessive events being created. The cluster's event processing and storage systems should be scaled to handle expected event loads."
+              reference       : "800-171|3.3.1,800-171|3.3.2,800-171|3.3.6,800-53|AU-2,800-53|AU-3,800-53|AU-3(1),800-53|AU-7,800-53|AU-12,800-53r5|AU-2,800-53r5|AU-3,800-53r5|AU-3(1),800-53r5|AU-7,800-53r5|AU-12,CN-L3|7.1.2.3(a),CN-L3|7.1.2.3(b),CN-L3|7.1.2.3(c),CN-L3|7.1.3.3(a),CN-L3|7.1.3.3(b),CN-L3|8.1.4.3(a),CN-L3|8.1.4.3(b),CSCv7|6.2,CSCv7|6.3,CSCv8|8.2,CSCv8|8.5,CSF|DE.CM-1,CSF|DE.CM-3,CSF|DE.CM-7,CSF|PR.PT-1,CSF|RS.AN-3,CSF2.0|DE.CM-01,CSF2.0|DE.CM-03,CSF2.0|DE.CM-09,CSF2.0|PR.PS-04,CSF2.0|RS.AN-03,CSF2.0|RS.AN-06,CSF2.0|RS.AN-07,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ITSG-33|AU-2,ITSG-33|AU-3,ITSG-33|AU-3(1),ITSG-33|AU-7,ITSG-33|AU-12,LEVEL|1A,NESA|M1.2.2,NESA|M5.5.1,NESA|T3.6.2,NIAv2|AM7,NIAv2|AM11a,NIAv2|AM11b,NIAv2|AM11c,NIAv2|AM11d,NIAv2|AM11e,NIAv2|AM34a,NIAv2|AM34b,NIAv2|AM34c,NIAv2|AM34d,NIAv2|AM34e,NIAv2|AM34f,NIAv2|AM34g,NIAv2|SS30,NIAv2|VL8,PCI-DSSv3.2.1|10.1,PCI-DSSv3.2.1|10.3,PCI-DSSv3.2.1|10.3.1,PCI-DSSv3.2.1|10.3.2,PCI-DSSv3.2.1|10.3.3,PCI-DSSv3.2.1|10.3.4,PCI-DSSv3.2.1|10.3.5,PCI-DSSv3.2.1|10.3.6,PCI-DSSv4.0|10.2.2,QCSC-v1|3.2,QCSC-v1|6.2,QCSC-v1|8.2.1,QCSC-v1|10.2.1,QCSC-v1|11.2,QCSC-v1|13.2,SWIFT-CSCv1|6.4"
+              see_also        : "https://workbench.cisecurity.org/benchmarks/19166"
+              file            : "@KUBELET_CONFIG@"
+              regex           : "^[\\s]*eventRecordQPS[\\s]*:"
+              expect          : "^[\\s]*eventRecordQPS[\\s]*:[\\s]*[0-9]+([\\s]|$)"
+              string_required : NO
+            </custom_item>
+          </then>
+
+          <else>
+            <report type:"PASSED">
+              description : "3.2.7 Ensure that the --eventRecordQPS argument is set to 0 or a level which ensures appropriate event capture"
+              info        : "Security relevant information should be captured. The eventRecordQPS on the Kubelet configuration can be used to limit the rate at which events are gathered and sets the maximum event creations per second. Setting this too low could result in relevant events not being logged, however the unlimited setting of 0 could result in a denial of service on the kubelet.
+
+It is important to capture all events and not restrict event creation. Events are an important source of security information and analytics that ensure that your environment is consistently monitored using the event data."
+              solution    : "If using a Kubelet config file, edit the file to set eventRecordQPS: to an appropriate level.
+
+If using command line arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubeadm.conf on each worker node and set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable.
+
+Based on your system, restart the kubelet service. For example:
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+
+Impact:
+
+Setting this parameter to 0 could result in a denial of service condition due to excessive events being created. The cluster's event processing and storage systems should be scaled to handle expected event loads."
+              reference   : "800-171|3.3.1,800-171|3.3.2,800-171|3.3.6,800-53|AU-2,800-53|AU-3,800-53|AU-3(1),800-53|AU-7,800-53|AU-12,800-53r5|AU-2,800-53r5|AU-3,800-53r5|AU-3(1),800-53r5|AU-7,800-53r5|AU-12,CN-L3|7.1.2.3(a),CN-L3|7.1.2.3(b),CN-L3|7.1.2.3(c),CN-L3|7.1.3.3(a),CN-L3|7.1.3.3(b),CN-L3|8.1.4.3(a),CN-L3|8.1.4.3(b),CSCv7|6.2,CSCv7|6.3,CSCv8|8.2,CSCv8|8.5,CSF|DE.CM-1,CSF|DE.CM-3,CSF|DE.CM-7,CSF|PR.PT-1,CSF|RS.AN-3,CSF2.0|DE.CM-01,CSF2.0|DE.CM-03,CSF2.0|DE.CM-09,CSF2.0|PR.PS-04,CSF2.0|RS.AN-03,CSF2.0|RS.AN-06,CSF2.0|RS.AN-07,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ITSG-33|AU-2,ITSG-33|AU-3,ITSG-33|AU-3(1),ITSG-33|AU-7,ITSG-33|AU-12,LEVEL|1A,NESA|M1.2.2,NESA|M5.5.1,NESA|T3.6.2,NIAv2|AM7,NIAv2|AM11a,NIAv2|AM11b,NIAv2|AM11c,NIAv2|AM11d,NIAv2|AM11e,NIAv2|AM34a,NIAv2|AM34b,NIAv2|AM34c,NIAv2|AM34d,NIAv2|AM34e,NIAv2|AM34f,NIAv2|AM34g,NIAv2|SS30,NIAv2|VL8,PCI-DSSv3.2.1|10.1,PCI-DSSv3.2.1|10.3,PCI-DSSv3.2.1|10.3.1,PCI-DSSv3.2.1|10.3.2,PCI-DSSv3.2.1|10.3.3,PCI-DSSv3.2.1|10.3.4,PCI-DSSv3.2.1|10.3.5,PCI-DSSv3.2.1|10.3.6,PCI-DSSv4.0|10.2.2,QCSC-v1|3.2,QCSC-v1|6.2,QCSC-v1|8.2.1,QCSC-v1|10.2.1,QCSC-v1|11.2,QCSC-v1|13.2,SWIFT-CSCv1|6.4"
+              see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+            </report>
+          </else>
+        </if>
+      </else>
+    </if>
+
+    <if>
+      <condition type:"AND">
+        <custom_item>
+          type        : CMD_EXEC
+          description : "check if rotate-certificates argument"
+          cmd         : "ps -ef | grep kubelet | grep -v grep"
+          expect      : "--rotate-certificates="
+        </custom_item>
+      </condition>
+
+      <then>
+        <custom_item>
+          type        : CMD_EXEC
+          description : "3.2.8 Ensure that the --rotate-certificates argument is not present or is set to true"
+          info        : "Enable kubelet client certificate rotation.
+
+The --rotate-certificates setting causes the kubelet to rotate its client certificates by creating new CSRs as its existing credentials expire. This automated periodic rotation ensures that the there is no downtime due to expired certificates and thus addressing availability in the CIA (Confidentiality, Integrity, and Availability) security triad.
+
+Note: This recommendation only applies if you let kubelets get their certificates from the API server. In case your kubelet certificates come from an outside authority/tool (e.g. Vault) then you need to implement rotation yourself.
+
+Note: This feature also requires the RotateKubeletClientCertificate feature gate to be enabled."
+          solution    : "Remediation Method 1:
+
+If modifying the Kubelet config file, edit the kubelet-config.yaml file /etc/kubernetes/kubelet/kubelet-config.yaml and set the below parameter to true
+
+\"RotateCertificate\":true
+
+Additionally, ensure that the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf does not set the --RotateCertificate executable argument to false because this would override the Kubelet config file.
+
+Remediation Method 2:
+
+If using executable arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf on each worker node and add the below parameter at the end of the KUBELET_ARGS variable string.
+
+--RotateCertificate=true
+
+Impact:
+
+None"
+          reference   : "800-171|3.1.13,800-171|3.5.2,800-171|3.13.8,800-53|AC-17(2),800-53|IA-5,800-53|IA-5(1),800-53|SC-8,800-53|SC-8(1),800-53r5|AC-17(2),800-53r5|IA-5,800-53r5|IA-5(1),800-53r5|SC-8,800-53r5|SC-8(1),CN-L3|7.1.2.7(g),CN-L3|7.1.3.1(d),CN-L3|8.1.2.2(a),CN-L3|8.1.2.2(b),CN-L3|8.1.4.1(c),CN-L3|8.1.4.7(a),CN-L3|8.1.4.8(a),CN-L3|8.2.4.5(c),CN-L3|8.2.4.5(d),CN-L3|8.5.2.2,CSCv7|14.4,CSCv8|3.10,CSF|PR.AC-1,CSF|PR.AC-3,CSF|PR.DS-2,CSF|PR.DS-5,CSF|PR.PT-4,CSF2.0|PR.AA-01,CSF2.0|PR.AA-03,CSF2.0|PR.AA-05,CSF2.0|PR.DS-02,GDPR|32.1.a,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),HIPAA|164.312(a)(2)(i),HIPAA|164.312(d),HIPAA|164.312(e)(1),HIPAA|164.312(e)(2)(i),ISO/IEC-27001|A.6.2.2,ISO/IEC-27001|A.10.1.1,ISO/IEC-27001|A.13.2.3,ITSG-33|AC-17(2),ITSG-33|IA-5,ITSG-33|IA-5(1),ITSG-33|SC-8,ITSG-33|SC-8a.,ITSG-33|SC-8(1),LEVEL|1A,NESA|T4.3.1,NESA|T4.3.2,NESA|T4.5.1,NESA|T4.5.2,NESA|T5.2.3,NESA|T5.4.2,NESA|T7.3.3,NESA|T7.4.1,NIAv2|AM37,NIAv2|IE8,NIAv2|IE9,NIAv2|IE12,NIAv2|NS5d,NIAv2|NS6b,NIAv2|NS29,NIAv2|SS24,PCI-DSSv3.2.1|2.3,PCI-DSSv3.2.1|4.1,PCI-DSSv4.0|2.2.7,PCI-DSSv4.0|4.2.1,QCSC-v1|3.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|13.2,SWIFT-CSCv1|2.1,SWIFT-CSCv1|2.6,SWIFT-CSCv1|4.1,TBA-FIISB|29.1"
+          see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+          cmd         : "ps -ef | grep kubelet | grep -v grep"
+          expect      : "--rotate-certificates=true([\\s]|$)"
+        </custom_item>
+      </then>
+
+      <else>
+        <if>
+          <condition type:"AND">
+            <custom_item>
+              type        : CMD_EXEC
+              description : "check if config argument"
+              cmd         : "ps -ef | grep kubelet | grep -v grep"
+              expect      : "--config[=\\s]+@KUBELET_CONFIG@([\\s]|$)"
+            </custom_item>
+          </condition>
+
+          <then>
+            <custom_item>
+              type            : FILE_CONTENT_CHECK
+              description     : "3.2.8 Ensure that the --rotate-certificates argument is not present or is set to true"
+              info            : "Enable kubelet client certificate rotation.
+
+The --rotate-certificates setting causes the kubelet to rotate its client certificates by creating new CSRs as its existing credentials expire. This automated periodic rotation ensures that the there is no downtime due to expired certificates and thus addressing availability in the CIA (Confidentiality, Integrity, and Availability) security triad.
+
+Note: This recommendation only applies if you let kubelets get their certificates from the API server. In case your kubelet certificates come from an outside authority/tool (e.g. Vault) then you need to implement rotation yourself.
+
+Note: This feature also requires the RotateKubeletClientCertificate feature gate to be enabled."
+              solution        : "Remediation Method 1:
+
+If modifying the Kubelet config file, edit the kubelet-config.yaml file /etc/kubernetes/kubelet/kubelet-config.yaml and set the below parameter to true
+
+\"RotateCertificate\":true
+
+Additionally, ensure that the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf does not set the --RotateCertificate executable argument to false because this would override the Kubelet config file.
+
+Remediation Method 2:
+
+If using executable arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf on each worker node and add the below parameter at the end of the KUBELET_ARGS variable string.
+
+--RotateCertificate=true
+
+Impact:
+
+None"
+              reference       : "800-171|3.1.13,800-171|3.5.2,800-171|3.13.8,800-53|AC-17(2),800-53|IA-5,800-53|IA-5(1),800-53|SC-8,800-53|SC-8(1),800-53r5|AC-17(2),800-53r5|IA-5,800-53r5|IA-5(1),800-53r5|SC-8,800-53r5|SC-8(1),CN-L3|7.1.2.7(g),CN-L3|7.1.3.1(d),CN-L3|8.1.2.2(a),CN-L3|8.1.2.2(b),CN-L3|8.1.4.1(c),CN-L3|8.1.4.7(a),CN-L3|8.1.4.8(a),CN-L3|8.2.4.5(c),CN-L3|8.2.4.5(d),CN-L3|8.5.2.2,CSCv7|14.4,CSCv8|3.10,CSF|PR.AC-1,CSF|PR.AC-3,CSF|PR.DS-2,CSF|PR.DS-5,CSF|PR.PT-4,CSF2.0|PR.AA-01,CSF2.0|PR.AA-03,CSF2.0|PR.AA-05,CSF2.0|PR.DS-02,GDPR|32.1.a,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),HIPAA|164.312(a)(2)(i),HIPAA|164.312(d),HIPAA|164.312(e)(1),HIPAA|164.312(e)(2)(i),ISO/IEC-27001|A.6.2.2,ISO/IEC-27001|A.10.1.1,ISO/IEC-27001|A.13.2.3,ITSG-33|AC-17(2),ITSG-33|IA-5,ITSG-33|IA-5(1),ITSG-33|SC-8,ITSG-33|SC-8a.,ITSG-33|SC-8(1),LEVEL|1A,NESA|T4.3.1,NESA|T4.3.2,NESA|T4.5.1,NESA|T4.5.2,NESA|T5.2.3,NESA|T5.4.2,NESA|T7.3.3,NESA|T7.4.1,NIAv2|AM37,NIAv2|IE8,NIAv2|IE9,NIAv2|IE12,NIAv2|NS5d,NIAv2|NS6b,NIAv2|NS29,NIAv2|SS24,PCI-DSSv3.2.1|2.3,PCI-DSSv3.2.1|4.1,PCI-DSSv4.0|2.2.7,PCI-DSSv4.0|4.2.1,QCSC-v1|3.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|13.2,SWIFT-CSCv1|2.1,SWIFT-CSCv1|2.6,SWIFT-CSCv1|4.1,TBA-FIISB|29.1"
+              see_also        : "https://workbench.cisecurity.org/benchmarks/19166"
+              file            : "@KUBELET_CONFIG@"
+              regex           : "^[\\s]*rotateCertificates[\\s]*:"
+              expect          : "^[\\s]*rotateCertificates[\\s]*:[\\s]*true([\\s]|$)"
+              string_required : NO
+            </custom_item>
+          </then>
+
+          <else>
+            <report type:"PASSED">
+              description : "3.2.8 Ensure that the --rotate-certificates argument is not present or is set to true"
+              info        : "Enable kubelet client certificate rotation.
+
+The --rotate-certificates setting causes the kubelet to rotate its client certificates by creating new CSRs as its existing credentials expire. This automated periodic rotation ensures that the there is no downtime due to expired certificates and thus addressing availability in the CIA (Confidentiality, Integrity, and Availability) security triad.
+
+Note: This recommendation only applies if you let kubelets get their certificates from the API server. In case your kubelet certificates come from an outside authority/tool (e.g. Vault) then you need to implement rotation yourself.
+
+Note: This feature also requires the RotateKubeletClientCertificate feature gate to be enabled."
+              solution    : "Remediation Method 1:
+
+If modifying the Kubelet config file, edit the kubelet-config.yaml file /etc/kubernetes/kubelet/kubelet-config.yaml and set the below parameter to true
+
+\"RotateCertificate\":true
+
+Additionally, ensure that the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf does not set the --RotateCertificate executable argument to false because this would override the Kubelet config file.
+
+Remediation Method 2:
+
+If using executable arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf on each worker node and add the below parameter at the end of the KUBELET_ARGS variable string.
+
+--RotateCertificate=true
+
+Impact:
+
+None"
+              reference   : "800-171|3.1.13,800-171|3.5.2,800-171|3.13.8,800-53|AC-17(2),800-53|IA-5,800-53|IA-5(1),800-53|SC-8,800-53|SC-8(1),800-53r5|AC-17(2),800-53r5|IA-5,800-53r5|IA-5(1),800-53r5|SC-8,800-53r5|SC-8(1),CN-L3|7.1.2.7(g),CN-L3|7.1.3.1(d),CN-L3|8.1.2.2(a),CN-L3|8.1.2.2(b),CN-L3|8.1.4.1(c),CN-L3|8.1.4.7(a),CN-L3|8.1.4.8(a),CN-L3|8.2.4.5(c),CN-L3|8.2.4.5(d),CN-L3|8.5.2.2,CSCv7|14.4,CSCv8|3.10,CSF|PR.AC-1,CSF|PR.AC-3,CSF|PR.DS-2,CSF|PR.DS-5,CSF|PR.PT-4,CSF2.0|PR.AA-01,CSF2.0|PR.AA-03,CSF2.0|PR.AA-05,CSF2.0|PR.DS-02,GDPR|32.1.a,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),HIPAA|164.312(a)(2)(i),HIPAA|164.312(d),HIPAA|164.312(e)(1),HIPAA|164.312(e)(2)(i),ISO/IEC-27001|A.6.2.2,ISO/IEC-27001|A.10.1.1,ISO/IEC-27001|A.13.2.3,ITSG-33|AC-17(2),ITSG-33|IA-5,ITSG-33|IA-5(1),ITSG-33|SC-8,ITSG-33|SC-8a.,ITSG-33|SC-8(1),LEVEL|1A,NESA|T4.3.1,NESA|T4.3.2,NESA|T4.5.1,NESA|T4.5.2,NESA|T5.2.3,NESA|T5.4.2,NESA|T7.3.3,NESA|T7.4.1,NIAv2|AM37,NIAv2|IE8,NIAv2|IE9,NIAv2|IE12,NIAv2|NS5d,NIAv2|NS6b,NIAv2|NS29,NIAv2|SS24,PCI-DSSv3.2.1|2.3,PCI-DSSv3.2.1|4.1,PCI-DSSv4.0|2.2.7,PCI-DSSv4.0|4.2.1,QCSC-v1|3.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|13.2,SWIFT-CSCv1|2.1,SWIFT-CSCv1|2.6,SWIFT-CSCv1|4.1,TBA-FIISB|29.1"
+              see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+            </report>
+          </else>
+        </if>
+      </else>
+    </if>
+
+    <if>
+      <condition type:"AND">
+        <custom_item>
+          type        : CMD_EXEC
+          description : "check if rotate-kubelet-server-certificate argument"
+          cmd         : "ps -ef | grep kubelet | grep -v grep"
+          expect      : "--rotate-kubelet-server-certificate="
+        </custom_item>
+      </condition>
+
+      <then>
+        <custom_item>
+          type        : CMD_EXEC
+          description : "3.2.9 Ensure that the RotateKubeletServerCertificate argument is set to true"
+          info        : "Enable kubelet server certificate rotation.
+
+RotateKubeletServerCertificate causes the kubelet to both request a serving certificate after bootstrapping its client credentials and rotate the certificate as its existing credentials expire. This automated periodic rotation ensures that the there are no downtimes due to expired certificates and thus addressing availability in the CIA (Confidentiality, Integrity, and Availability) security triad.
+
+Note: This recommendation only applies if you let kubelets get their certificates from the API server. In case your kubelet certificates come from an outside authority/tool (e.g. Vault) then you need to implement rotation yourself."
+          solution    : "Remediation Method 1:
+
+If modifying the Kubelet config file, edit the kubelet-config.json file /etc/kubernetes/kubelet-config.yaml and set the below parameter to true
+
+\"featureGates\": {
+  \"RotateKubeletServerCertificate\":true
+},
+
+Additionally, ensure that the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf does not set the --rotate-kubelet-server-certificate executable argument to false because this would override the Kubelet config file.
+
+Remediation Method 2:
+
+If using executable arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf on each worker node and add the below parameter at the end of the KUBELET_ARGS variable string.
+
+--rotate-kubelet-server-certificate=true
+
+Remediation Method 3:
+
+If using the api configz endpoint consider searching for the status of \"RotateKubeletServerCertificate\": by extracting the live configuration from the nodes running kubelet.
+
+**See detailed step-by-step configmap procedures in
+
+Reconfigure a Node's Kubelet in a Live Cluster
+
+, and then rerun the curl statement from audit process to check for kubelet configuration changes
+
+kubectl proxy --port=8001 &amp;
+
+export HOSTNAME_PORT=localhost:8001 (example host and port number)
+export NODE_NAME=gke-cluster-1-pool1-5e572947-r2hg (example node name from \"kubectl get nodes\")
+
+curl -sSL \"http://${HOSTNAME_PORT}/api/v1/nodes/${NODE_NAME}/proxy/configz\"
+
+For all three remediation methods: Restart the kubelet service and check status. The example below is for when using systemctl to manage services:
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+systemctl status kubelet -l
+
+Impact:
+
+None"
+          reference   : "800-171|3.1.13,800-171|3.5.2,800-171|3.13.8,800-53|AC-17(2),800-53|IA-5,800-53|IA-5(1),800-53|SC-8,800-53|SC-8(1),800-53r5|AC-17(2),800-53r5|IA-5,800-53r5|IA-5(1),800-53r5|SC-8,800-53r5|SC-8(1),CN-L3|7.1.2.7(g),CN-L3|7.1.3.1(d),CN-L3|8.1.2.2(a),CN-L3|8.1.2.2(b),CN-L3|8.1.4.1(c),CN-L3|8.1.4.7(a),CN-L3|8.1.4.8(a),CN-L3|8.2.4.5(c),CN-L3|8.2.4.5(d),CN-L3|8.5.2.2,CSCv7|14.4,CSCv8|3.10,CSF|PR.AC-1,CSF|PR.AC-3,CSF|PR.DS-2,CSF|PR.DS-5,CSF|PR.PT-4,CSF2.0|PR.AA-01,CSF2.0|PR.AA-03,CSF2.0|PR.AA-05,CSF2.0|PR.DS-02,GDPR|32.1.a,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),HIPAA|164.312(a)(2)(i),HIPAA|164.312(d),HIPAA|164.312(e)(1),HIPAA|164.312(e)(2)(i),ISO/IEC-27001|A.6.2.2,ISO/IEC-27001|A.10.1.1,ISO/IEC-27001|A.13.2.3,ITSG-33|AC-17(2),ITSG-33|IA-5,ITSG-33|IA-5(1),ITSG-33|SC-8,ITSG-33|SC-8a.,ITSG-33|SC-8(1),LEVEL|1A,NESA|T4.3.1,NESA|T4.3.2,NESA|T4.5.1,NESA|T4.5.2,NESA|T5.2.3,NESA|T5.4.2,NESA|T7.3.3,NESA|T7.4.1,NIAv2|AM37,NIAv2|IE8,NIAv2|IE9,NIAv2|IE12,NIAv2|NS5d,NIAv2|NS6b,NIAv2|NS29,NIAv2|SS24,PCI-DSSv3.2.1|2.3,PCI-DSSv3.2.1|4.1,PCI-DSSv4.0|2.2.7,PCI-DSSv4.0|4.2.1,QCSC-v1|3.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|13.2,SWIFT-CSCv1|2.1,SWIFT-CSCv1|2.6,SWIFT-CSCv1|4.1,TBA-FIISB|29.1"
+          see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+          cmd         : "ps -ef | grep kubelet | grep -v grep"
+          expect      : "--rotate-kubelet-server-certificate=true([\\s]|$)"
+        </custom_item>
+      </then>
+
+      <else>
+        <if>
+          <condition type:"AND">
+            <custom_item>
+              type        : CMD_EXEC
+              description : "check if config argument"
+              cmd         : "ps -ef | grep kubelet | grep -v grep"
+              expect      : "--config[=\\s]+@KUBELET_CONFIG@([\\s]|$)"
+            </custom_item>
+          </condition>
+
+          <then>
+            <custom_item>
+              type        : CMD_EXEC
+              description : "3.2.9 Ensure that the RotateKubeletServerCertificate argument is set to true"
+              info        : "Enable kubelet server certificate rotation.
+
+RotateKubeletServerCertificate causes the kubelet to both request a serving certificate after bootstrapping its client credentials and rotate the certificate as its existing credentials expire. This automated periodic rotation ensures that the there are no downtimes due to expired certificates and thus addressing availability in the CIA (Confidentiality, Integrity, and Availability) security triad.
+
+Note: This recommendation only applies if you let kubelets get their certificates from the API server. In case your kubelet certificates come from an outside authority/tool (e.g. Vault) then you need to implement rotation yourself."
+              solution    : "Remediation Method 1:
+
+If modifying the Kubelet config file, edit the kubelet-config.json file /etc/kubernetes/kubelet-config.yaml and set the below parameter to true
+
+\"featureGates\": {
+  \"RotateKubeletServerCertificate\":true
+},
+
+Additionally, ensure that the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf does not set the --rotate-kubelet-server-certificate executable argument to false because this would override the Kubelet config file.
+
+Remediation Method 2:
+
+If using executable arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf on each worker node and add the below parameter at the end of the KUBELET_ARGS variable string.
+
+--rotate-kubelet-server-certificate=true
+
+Remediation Method 3:
+
+If using the api configz endpoint consider searching for the status of \"RotateKubeletServerCertificate\": by extracting the live configuration from the nodes running kubelet.
+
+**See detailed step-by-step configmap procedures in
+
+Reconfigure a Node's Kubelet in a Live Cluster
+
+, and then rerun the curl statement from audit process to check for kubelet configuration changes
+
+kubectl proxy --port=8001 &amp;
+
+export HOSTNAME_PORT=localhost:8001 (example host and port number)
+export NODE_NAME=gke-cluster-1-pool1-5e572947-r2hg (example node name from \"kubectl get nodes\")
+
+curl -sSL \"http://${HOSTNAME_PORT}/api/v1/nodes/${NODE_NAME}/proxy/configz\"
+
+For all three remediation methods: Restart the kubelet service and check status. The example below is for when using systemctl to manage services:
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+systemctl status kubelet -l
+
+Impact:
+
+None"
+              reference   : "800-171|3.1.13,800-171|3.5.2,800-171|3.13.8,800-53|AC-17(2),800-53|IA-5,800-53|IA-5(1),800-53|SC-8,800-53|SC-8(1),800-53r5|AC-17(2),800-53r5|IA-5,800-53r5|IA-5(1),800-53r5|SC-8,800-53r5|SC-8(1),CN-L3|7.1.2.7(g),CN-L3|7.1.3.1(d),CN-L3|8.1.2.2(a),CN-L3|8.1.2.2(b),CN-L3|8.1.4.1(c),CN-L3|8.1.4.7(a),CN-L3|8.1.4.8(a),CN-L3|8.2.4.5(c),CN-L3|8.2.4.5(d),CN-L3|8.5.2.2,CSCv7|14.4,CSCv8|3.10,CSF|PR.AC-1,CSF|PR.AC-3,CSF|PR.DS-2,CSF|PR.DS-5,CSF|PR.PT-4,CSF2.0|PR.AA-01,CSF2.0|PR.AA-03,CSF2.0|PR.AA-05,CSF2.0|PR.DS-02,GDPR|32.1.a,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),HIPAA|164.312(a)(2)(i),HIPAA|164.312(d),HIPAA|164.312(e)(1),HIPAA|164.312(e)(2)(i),ISO/IEC-27001|A.6.2.2,ISO/IEC-27001|A.10.1.1,ISO/IEC-27001|A.13.2.3,ITSG-33|AC-17(2),ITSG-33|IA-5,ITSG-33|IA-5(1),ITSG-33|SC-8,ITSG-33|SC-8a.,ITSG-33|SC-8(1),LEVEL|1A,NESA|T4.3.1,NESA|T4.3.2,NESA|T4.5.1,NESA|T4.5.2,NESA|T5.2.3,NESA|T5.4.2,NESA|T7.3.3,NESA|T7.4.1,NIAv2|AM37,NIAv2|IE8,NIAv2|IE9,NIAv2|IE12,NIAv2|NS5d,NIAv2|NS6b,NIAv2|NS29,NIAv2|SS24,PCI-DSSv3.2.1|2.3,PCI-DSSv3.2.1|4.1,PCI-DSSv4.0|2.2.7,PCI-DSSv4.0|4.2.1,QCSC-v1|3.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|13.2,SWIFT-CSCv1|2.1,SWIFT-CSCv1|2.6,SWIFT-CSCv1|4.1,TBA-FIISB|29.1"
+              see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+              cmd         : "sed 's/\\(\\s*\\)\\(.*:\\)\\s*\\(.*\\)/\\1\\|\\2\\|\\3/g' '@KUBELET_CONFIG@' | awk -F'|' '{ indent = length($1)/2; vname[indent] = $2; for (i in vname) {if (i > indent) {delete vname[i]}} if (length($3) > 0) { vn=none; for (i=0; i<=indent; i++) {vn=(vn)(vname[i])} { print vn $3 } } }'"
+              expect      : "^featureGates:RotateKubeletServerCertificate:true$"
+            </custom_item>
+          </then>
+
+          <else>
+            <report type:"FAILED">
+              description : "3.2.9 Ensure that the RotateKubeletServerCertificate argument is set to true"
+              info        : "Enable kubelet server certificate rotation.
+
+RotateKubeletServerCertificate causes the kubelet to both request a serving certificate after bootstrapping its client credentials and rotate the certificate as its existing credentials expire. This automated periodic rotation ensures that the there are no downtimes due to expired certificates and thus addressing availability in the CIA (Confidentiality, Integrity, and Availability) security triad.
+
+Note: This recommendation only applies if you let kubelets get their certificates from the API server. In case your kubelet certificates come from an outside authority/tool (e.g. Vault) then you need to implement rotation yourself."
+              solution    : "Remediation Method 1:
+
+If modifying the Kubelet config file, edit the kubelet-config.json file /etc/kubernetes/kubelet-config.yaml and set the below parameter to true
+
+\"featureGates\": {
+  \"RotateKubeletServerCertificate\":true
+},
+
+Additionally, ensure that the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf does not set the --rotate-kubelet-server-certificate executable argument to false because this would override the Kubelet config file.
+
+Remediation Method 2:
+
+If using executable arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf on each worker node and add the below parameter at the end of the KUBELET_ARGS variable string.
+
+--rotate-kubelet-server-certificate=true
+
+Remediation Method 3:
+
+If using the api configz endpoint consider searching for the status of \"RotateKubeletServerCertificate\": by extracting the live configuration from the nodes running kubelet.
+
+**See detailed step-by-step configmap procedures in
+
+Reconfigure a Node's Kubelet in a Live Cluster
+
+, and then rerun the curl statement from audit process to check for kubelet configuration changes
+
+kubectl proxy --port=8001 &amp;
+
+export HOSTNAME_PORT=localhost:8001 (example host and port number)
+export NODE_NAME=gke-cluster-1-pool1-5e572947-r2hg (example node name from \"kubectl get nodes\")
+
+curl -sSL \"http://${HOSTNAME_PORT}/api/v1/nodes/${NODE_NAME}/proxy/configz\"
+
+For all three remediation methods: Restart the kubelet service and check status. The example below is for when using systemctl to manage services:
+
+systemctl daemon-reload
+systemctl restart kubelet.service
+systemctl status kubelet -l
+
+Impact:
+
+None"
+              reference   : "800-171|3.1.13,800-171|3.5.2,800-171|3.13.8,800-53|AC-17(2),800-53|IA-5,800-53|IA-5(1),800-53|SC-8,800-53|SC-8(1),800-53r5|AC-17(2),800-53r5|IA-5,800-53r5|IA-5(1),800-53r5|SC-8,800-53r5|SC-8(1),CN-L3|7.1.2.7(g),CN-L3|7.1.3.1(d),CN-L3|8.1.2.2(a),CN-L3|8.1.2.2(b),CN-L3|8.1.4.1(c),CN-L3|8.1.4.7(a),CN-L3|8.1.4.8(a),CN-L3|8.2.4.5(c),CN-L3|8.2.4.5(d),CN-L3|8.5.2.2,CSCv7|14.4,CSCv8|3.10,CSF|PR.AC-1,CSF|PR.AC-3,CSF|PR.DS-2,CSF|PR.DS-5,CSF|PR.PT-4,CSF2.0|PR.AA-01,CSF2.0|PR.AA-03,CSF2.0|PR.AA-05,CSF2.0|PR.DS-02,GDPR|32.1.a,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),HIPAA|164.312(a)(2)(i),HIPAA|164.312(d),HIPAA|164.312(e)(1),HIPAA|164.312(e)(2)(i),ISO/IEC-27001|A.6.2.2,ISO/IEC-27001|A.10.1.1,ISO/IEC-27001|A.13.2.3,ITSG-33|AC-17(2),ITSG-33|IA-5,ITSG-33|IA-5(1),ITSG-33|SC-8,ITSG-33|SC-8a.,ITSG-33|SC-8(1),LEVEL|1A,NESA|T4.3.1,NESA|T4.3.2,NESA|T4.5.1,NESA|T4.5.2,NESA|T5.2.3,NESA|T5.4.2,NESA|T7.3.3,NESA|T7.4.1,NIAv2|AM37,NIAv2|IE8,NIAv2|IE9,NIAv2|IE12,NIAv2|NS5d,NIAv2|NS6b,NIAv2|NS29,NIAv2|SS24,PCI-DSSv3.2.1|2.3,PCI-DSSv3.2.1|4.1,PCI-DSSv4.0|2.2.7,PCI-DSSv4.0|4.2.1,QCSC-v1|3.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|13.2,SWIFT-CSCv1|2.1,SWIFT-CSCv1|2.6,SWIFT-CSCv1|4.1,TBA-FIISB|29.1"
+              see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+            </report>
+          </else>
+        </if>
+      </else>
+    </if>
+  </then>
+
+  <else>
+    <report type:"WARNING">
+      description : "CIS_Google_Kubernetes_Engine_GKE_v1.6.1_L1.audit from CIS Google Kubernetes Engine (GKE) Benchmark v1.6.1"
+      info        : "NOTE: Nessus has not identified that the chosen audit applies to the target device."
+      see_also    : "https://workbench.cisecurity.org/benchmarks/19166"
+    </report>
+  </else>
+</if>
+
+</check_type>

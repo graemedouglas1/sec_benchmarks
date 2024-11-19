@@ -1,0 +1,44 @@
+#TRUSTED 0ff4c2581ed98afb0ab1a6c960540a0319b2c2da4a45cf1ddebd963d664880d294e05c1a7cde27cbce4e484c4934b0d32a559b3b3884606b230122e053ed48de431c83a4ff28fee725f061772128ee237d791807e066cee869fde3d7407e327b2501c5ceb431aa34a2561b3f4e44db990991b9c854ab3f355d53c073c06bc5c3d9b8fbde5060f734102a2d5b0b215736c06a1ae188396bacc74a416b7217a01b6afc647946a5956d2569bce3eeacac5789c8012acce1deaddf141a0e14096be233f71a2591438dd1222610805d7465d36aa73da8d86abbe61a82875a75d36f8986182a35514843517755426eece1efed31974ab9709c88916af70c7dbf783180ff13ef7ff237d7fbc1807d105c32f11665081363bfdfca4ca7d10ae42c2c1adc0b14e90beadd800c7888f8a0a1a8417d93a1d9b9493264d9f031e73c72f1e7cf5bf90bdddf614acbcd026ddf8b3c2434e6a1481ea0e44f9215c5c0315c17cf9432edd53a241c06308ef32d43e19cd4cdd2c508c511dad893f85561d7267cb42f2ae00d995b2a4804268860e63924cdeec2ea9083c8df7b015dea423ca3d30b87f5c446f7b5ff2f8652445def0046c6a363913d9be61215cf957b4c991eeae890a3c748af655e8af9c32b0969e75b60ec894e6c6fcf58fc10be176a36fd7505c002467fcf2c00f19994dfd793148ac14d80c880e453d4b1ee96cc28cc3948a2be
+#TRUST-RSA-SHA256 540af70dba45ec8d32ff024d3ef90c4d7c7f8921b0184ef3f1ce57a8f812b27350e46bb5320b696dd087b32ef8ecfb3d4fd8fd50319676af17b79116c518b60208e718cda37de0558e03c8add25da1285e53dc937aad0cd3cec5468ebe1d9ac8f77949c37016257106441fabb26f0b5dd24f12492af34f90c958b23860d13f11063d3479fef3924d06e2ec520d8412e618826de82569d5b57110d03789e526ce7e2f683e760d50b834b01221c0578b32decd8a74ab44a3e9c18e1650cf45a0ba9cefd234316b849d74414a3ef6b0bd05e16d699223bf454e5009532931d5a20d4072ded99bf3c9f8806e1d242fd3aa4dc0da93b304f4721e6bd911819e2ffd6a2a4ff8da4d4174bb73bccc7746d418944adb4e52cd3b0e006dc6e520700bfb8addd61add7de81c15bc6f5653b7439f04a6852f511a482f40f02acf2c183a81c318d7af8db722dc57e6c806311de1b341ac74c983615344cd02b1fd78e23520de42d22143803adabeed366f4505f362bc027607b19e38188dddb839a035fbec6b83e141a24deae5ae8c85b2c36f2c8eb012ad4e05f8da2b1296ebe7c1bb45aa7a817bbd513f86dc17b95f3a5ea2e6f3af75badf9720d4dca1dfd3d103992272d97512f5780ca9bccd3ae022dfb438495f8153b9da14f49a016b811220378b0fe6f8d0fd3a4a1698372daced1ca042e0421ec823f1a8807ad754e4d7deadbef773
+#
+# This script is Copyright (C) 2004-2023 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.8 $
+# $Date: 2023/03/07 $
+#
+# This .audit file searches the first 50k bytes of all text, Word,
+# Excel and PDF files for evidence of a French Social Security
+# Number (numero de securite sociale).
+#
+#<ui_metadata>
+#<display_name>TNS File Analysis - French Social Security Number</display_name>
+#<spec>
+#  <type>TNS</type>
+#  <name>File Analysis - French Social Security Number</name>
+#  <version>1.0.0</version>
+#</spec>
+#<labels>filecontent,content,french,social,security,number,update_20230227</labels>
+#</ui_metadata>
+
+<check_type:"FileContent">
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "PII - File contains a French Social Security Number (numero de securite sociale)."
+  file_extension : "txt" | "pdf" | "doc" | "xls" | "xlsx" | "xlsm" | "xlsb" | "xml" | "xltx" | "xltm" | "docx" | "docm" | "dotx" | "dot"
+  regex          : "([^0-9-]|^)[12][0-9]{2}(0[1-9]|1[0-2]|20)((0[1-9]|2[1-9AB]|[3-9][0-9]|9[0-59])(00[1-9]|0[1-9][0-9]|[1-8][0-9][0-9]|9[0-8][0-9]|990)|(9[78][0-9])(0[1-9]|[2-8][0-9]|90))(00[1-9]|0[1-9][0-9]|[1-9][0-9][0-9])[ /-]?(0[1-9]|[2-8][0-9]|9[0-7])([^0-9-]|$)"
+  regex_replace  : "\0"
+  expect         : "(n..? |num..?ro )?(de )?(s..?curit..? sociale|SS)" | "Security Number" | "SSN" | "SOCIAL SECURITY" | "social security" | "SS#" | "Social" | "INSEE"
+  max_size       : "50K"
+</item>
+
+</check_type>

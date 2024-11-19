@@ -1,0 +1,97 @@
+#TRUSTED 8f34512c5eaeb408292975976fdf5f104955d77c884ff5fab4678ae9dc0df6f1d9d3350b1d0e7bb31cec6d22386bbdd9bbf78dec7c1f1e7b65a39c60108300b8b1d0326ade47b98885a35168bc3eba6de8c9462ff04300724de10595da048c324d698340cfeb62947b11260d22d436c38be59436cd2cc9b64eede77e244f608e88e154e62d4f4b88a0aca01fb0a7153e4cf16092377bade424378a47af6ccfa8caae2b932d619a2b2f99f9a0f03d327c214af8b4601882ecab4cde1581c081a92b42352b39a0d8d459990fa677807b632917f2c3d8697800186b51940e71edc6ede1fa6d540904f12c2b2ba5bfcb2bba6980790f9aac2bbbb5f964857cd497dd0cf000ad51d0bd84c9d742a1089d7b9deefa98f3c9a0c6e17b0a86468ab75d6162624fb9b8030f45b196cc6a78a5f36096eaa8ad56057618029471378981988c8c64700ea01b064f3ce9221691515c74eb5a7437c5b7baa9a9319547cc532fe6c0d26abe06e0ee1ffe947f6e65d8190cb8b8599427c7045ca1e9694fea194b77f13f1379864e6f1b4b7a810a8abcbbc8914692b75fb3e6613ae2ec45ea7e8499f6b2354fc534e43c500b406c93a47804ab57903ea2eee17b85eb0e092b19e0aeb666ebd2011ef22ed4a28245ceb4f5377697bdb3b719135c2776989aac2b19ef58cc2f9d2ce5ab7340373e83398a3d29b842b4f3b291dd36838d9d1b3a130ab7
+#TRUST-RSA-SHA256 088696f7c7afb01ffb59bd80651f58821ab35b38cd1d9849f06a230737f25ccdd71f2a595cb0300d4a6c54c562add1689708139c0d33bd2f7bd6799757bdae02c1e36e2ca005fa88282c3c63257bce9d777712c3d00f56aa2667ffed2fdec8d40349b7fadfd88df9d2dbb07ea7b7c42a4d8cfa675c923eee13198c913bd88a8235f2e355377031f121417bd0fe69a95fd29fb45dae92bb750c5bad249f9148ed547413f82f35876788e6d5baaf2a820c7a5ab32db07d28188d8ba0b556bff74c3c43334db0465f787e73908b35addbcb388a10ace0d543d9de57d0cac29f7fde1dd9eee9868a71fd4e4a202dc96a0ef1936cc99b42e7669fc3fe7a945f7d97ff88ebfcebed9eaddf8f8c2c5a1c07ed63327b338baa5fd8019fb825e1844f422bdc0f57199f82a94eb10ab05be912a9bee8064ff2be550f618dbafd3a57c42b1f82bf73272fa4f085f5f5159e7908ad05353cc2554e3e1bc967d4dfbb323871a4133515efa96e5aa4894deae6ce5bf5d14cac26e6270fec561ae3644a27d06b79d35b571742770ebede4d958da8a4a66d65d5e2e63bc1c6efb22d641c9ed02a3360ddc02cfe9a86ec1cc79185ccf999df3c852226ac2b92bf81fd96fe077eac270376dfada82738f57db3507b24c467d5d5f49efda888f2d01530a030c8fb4f540baea748cc8a85c660470a6fc95c46b7a53536367d175eb24a67a2328bfac508
+#
+# This script is Copyright (C) 2004-2024 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.0 $
+# $Date: 2024/10/31 $
+#
+# description : This .audit is designed against the CIS Microsoft SQL Server 2019 Benchmark 1.4.0
+#
+#<ui_metadata>
+#<display_name>CIS Microsoft SQL Server 2019 v1.4.0 L2 Database Engine</display_name>
+#<spec>
+#  <type>CIS</type>
+#  <name>SQL Server 2019 Database</name>
+#  <profile>L2 DB</profile>
+#  <version>1.4.0</version>
+#  <link>https://workbench.cisecurity.org/benchmarks/14058</link>
+#</spec>
+#<labels>database,cis,microsoft,mssql,mssql_2019</labels>
+#<benchmark_refs>CSCv6,CSCv7,CSCv8,LEVEL</benchmark_refs>
+#</ui_metadata>
+
+<check_type:"MS_SQLDB">
+
+<custom_item>
+  type        : SQL_POLICY
+  description : "7.3 Ensure Database Backups are Encrypted"
+  info        : "Ensure Database Backups are Encrypted
+
+Databases may contain sensitive data. Backups of this data allow the data to easily leave the Enterprise and secure environments. Encrypting the backup makes accessing the data much more difficult."
+  solution    : "SQL Server backups need to 'Back up to a new media set', not 'Back up to the existing media set' in order to allow for encryption. The backup option to Encrypt Backup can be implemented after a Certificate or Asymmetric key has been applied to the SQL Server for this purpose.
+
+Alternatively, encrypt the database with TDE. This automatically encrypts the backups as well. See 7.5
+
+Impact:
+
+A database backup accidentally exposed to the Internet or transmitted outside a secure environment can be easily restored to a SQL Server anywhere and its contents discovered."
+  reference   : "800-171|3.13.16,800-53|SC-28(1),800-53r5|SC-28(1),CN-L3|8.1.4.7(b),CN-L3|8.1.4.8(b),CSF|PR.DS-1,CSF2.0|PR.DS-01,GDPR|32.1.a,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(2)(iv),HIPAA|164.312(e)(2)(ii),ITSG-33|SC-28(1),LEVEL|2A,PCI-DSSv3.2.1|3.4,PCI-DSSv4.0|3.3.2,PCI-DSSv4.0|3.5.1,QCSC-v1|5.2.2,QCSC-v1|6.2,TBA-FIISB|28.1"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/14058"
+  sql_request : "SELECT TOP 500 b.key_algorithm, b.encryptor_type, d.is_encrypted, b.database_name, b.server_name FROM msdb.dbo.backupset b inner join sys.databases d on b.database_name = d.name where b.key_algorithm IS NULL AND b.encryptor_type IS NULL AND d.is_encrypted = 0;"
+  sql_types   : NULL
+  sql_expect  : NULL
+</custom_item>
+
+<custom_item>
+  type        : SQL_POLICY
+  description : "7.4 Ensure Network Encryption is Configured and Enabled"
+  info        : "Configuring and enabling network encryption ensures traffic between the application and the database system is encrypted. This will ensure compliance to security standards such as PCI DSS, which is required if connections are through a public network.
+
+Network encryption can be configured in SQL Server either with self-signed certificates or TLS certificates.
+
+Network encryption will ensure data transmitted over the network is protected, so attackers can't ex-filtrate passwords, and confidential data. This protects against man in the middle attack, and network sniffing attacks to ex-filtrate data transmitted between the database system and applications."
+  solution    : "Refer to Microsoft SQL Server Encryption Documentation:
+
+https://learn.microsoft.com/en-us/sql/relational-databases/security/encryption/sql-server-encryption"
+  reference   : "800-171|3.1.13,800-171|3.5.2,800-171|3.13.8,800-53|AC-17(2),800-53|IA-5,800-53|IA-5(1),800-53|SC-8,800-53|SC-8(1),800-53r5|AC-17(2),800-53r5|IA-5,800-53r5|IA-5(1),800-53r5|SC-8,800-53r5|SC-8(1),CN-L3|7.1.2.7(g),CN-L3|7.1.3.1(d),CN-L3|8.1.2.2(a),CN-L3|8.1.2.2(b),CN-L3|8.1.4.1(c),CN-L3|8.1.4.7(a),CN-L3|8.1.4.8(a),CN-L3|8.2.4.5(c),CN-L3|8.2.4.5(d),CN-L3|8.5.2.2,CSCv7|14.4,CSCv8|3.10,CSF|PR.AC-1,CSF|PR.AC-3,CSF|PR.DS-2,CSF|PR.DS-5,CSF|PR.PT-4,CSF2.0|PR.AA-01,CSF2.0|PR.AA-03,CSF2.0|PR.AA-05,CSF2.0|PR.DS-02,GDPR|32.1.a,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),HIPAA|164.312(a)(2)(i),HIPAA|164.312(d),HIPAA|164.312(e)(1),HIPAA|164.312(e)(2)(i),ISO/IEC-27001|A.6.2.2,ISO/IEC-27001|A.10.1.1,ISO/IEC-27001|A.13.2.3,ITSG-33|AC-17(2),ITSG-33|IA-5,ITSG-33|IA-5(1),ITSG-33|SC-8,ITSG-33|SC-8a.,ITSG-33|SC-8(1),LEVEL|2A,NESA|T4.3.1,NESA|T4.3.2,NESA|T4.5.1,NESA|T4.5.2,NESA|T5.2.3,NESA|T5.4.2,NESA|T7.3.3,NESA|T7.4.1,NIAv2|AM37,NIAv2|IE8,NIAv2|IE9,NIAv2|IE12,NIAv2|NS5d,NIAv2|NS6b,NIAv2|NS29,NIAv2|SS24,PCI-DSSv3.2.1|2.3,PCI-DSSv3.2.1|4.1,PCI-DSSv4.0|2.2.7,PCI-DSSv4.0|4.2.1,QCSC-v1|3.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|13.2,SWIFT-CSCv1|2.1,SWIFT-CSCv1|2.6,SWIFT-CSCv1|4.1,TBA-FIISB|29.1"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/14058"
+  sql_request : "select distinct(encrypt_option) from sys.dm_exec_connections;"
+  sql_types   : STRING
+  sql_expect  : "TRUE"
+</custom_item>
+
+<custom_item>
+  type        : SQL_POLICY
+  description : "7.5 Ensure Databases are Encrypted with TDE"
+  info        : "Ensure user databases are encrypted using Transparent Data Encryption (TDE). Backups of databases encrypted with TDE are automatically encrypted as well.
+
+A malicious party who steals physical media like drives or backup tapes can restore or attach the database and browse its data.
+
+One solution is to encrypt sensitive data in a database and use a certificate to protect the keys that encrypt the data. This solution prevents anyone without the keys from using the data."
+  solution    : "Implement TDE encryption on each user database with sensitive data.
+
+More info on how to do this is available here:
+
+https://learn.microsoft.com/en-us/sql/relational-databases/security/encryption/transparent-data-encryption
+
+Impact:
+
+A database datafile, logfile or backup accidentally exposed to the Internet or transmitted outside a secure environment can be easily copied/restored to a SQL Server anywhere and its contents discovered."
+  reference   : "800-171|3.5.2,800-171|3.13.16,800-53|IA-5(1),800-53|SC-28,800-53|SC-28(1),800-53r5|IA-5(1),800-53r5|SC-28,800-53r5|SC-28(1),CN-L3|8.1.4.7(b),CN-L3|8.1.4.8(b),CSCv7|14.8,CSCv8|3.11,CSF|PR.AC-1,CSF|PR.DS-1,CSF2.0|PR.AA-01,CSF2.0|PR.AA-03,CSF2.0|PR.DS-01,GDPR|32.1.a,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(2)(i),HIPAA|164.312(a)(2)(iv),HIPAA|164.312(d),HIPAA|164.312(e)(2)(ii),ITSG-33|IA-5(1),ITSG-33|SC-28,ITSG-33|SC-28a.,ITSG-33|SC-28(1),LEVEL|2A,NESA|T5.2.3,PCI-DSSv3.2.1|3.4,PCI-DSSv4.0|3.3.2,PCI-DSSv4.0|3.5.1,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|13.2,SWIFT-CSCv1|4.1,TBA-FIISB|28.1"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/14058"
+  sql_request : "select database_id, name, is_encrypted from sys.databases where database_id > 4 and is_encrypted != 1;"
+  sql_types   : NULL
+  sql_expect  : NULL
+</custom_item>
+
+</check_type>

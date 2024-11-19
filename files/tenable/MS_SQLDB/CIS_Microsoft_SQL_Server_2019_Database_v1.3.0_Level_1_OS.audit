@@ -1,0 +1,170 @@
+#TRUSTED a4d49b4480336380998479fc4d275e6a206bd53d7f2889cd2fd5ca757445ec42e2c22a4ada6b512bbcaf428a53d0709123f70ce0cde0db6716b04d38a574bd944a03af67069df2b12a5c08389705fbc84d2b9fcdd6ec3b4e0996758ff9bcd664614d43bec2ed6464848607fc8a30d7ebb8284ad3b6be9fdf902d12c635466a82e892caa6a6ba3e5c358ad9da45e4974da1c08dee6368de88c6063f45da79e874ca35ab876ecce5b52ed4629eed38f157e23eeb77b19018eaf0b847e3f6fd2680566123cdd6021a34d1c2c068a1ccc0a6f807581d65c3e6bf1bf767119700af305bafb495b062e85744bf018dca674b9213b4d85484cfcb17793d387f7865f8b415bafa8d91b848d13965ea9a26f59494347bf0515f95b390ec6462441b99b158e52fe6843d7f99dc7501143cb4abf3aa0f24096d9dc1f1298d947902e7474e07a1a1cf062b5c1d485edc60230facdd651265b04271ede062bb8b5d0be5c0b1b9343d44283ccd8330348dbe3cbcc39a1cf83736a668144711ebb100a3b4e1260c965d46cf55ab9d72e81028b7bb4b91356f00ed70615e3c394db7c8bfebd9cfeb8422fd53ff5c91a8fe78d395d9756e60160cd0b6d4c5b72ab9dce4db0bbf9642a28f5042a10df3a97d88c5c6402c5e8a9d1fc5ac37950892c08121d8381ba5fa8493bba30e01fd27e2e2506760f195355f12fcb6f2aaecfbb63408fdcbbd1844
+#TRUST-RSA-SHA256 44cdf4293a7dcce2b09f253031a3272cc69e738b9b09c153888f4de4e07ce9710ee51d4e5ab6660f208206498afa1d02ef86032e30243d27ea905e5623fa4fd5800ddd003c20487be832f9cf9ae33e7edb98643eab28738ffc48b6a6ec1c7d7d42dcded1513df131fbce8cef0f455c583d41eedb13a2f87dc38bb7c94c7c109413d3276ab3cc40f62ce53e0a48e0514ac76f4c5f6faaa1f0fb8ea57aa208b3aeba7d3754468457f67dae49eb01fe84f556930102d13410bd040210fcb9a1a6221a08b89b2eb37b4c6997baa1797a718924fe56089659d1192dba6fcca41b51431e1dafa1e17cef620bce929614b3fb587fde68cd52ab7c878ef5f9b2aa1e74e20c075775a8bbea91b3727d1242a5851155541b279bf8011cb1038bc36ba204aa3853c90fcf1ffe7ad5db355c3324cd3388631b7cafc22599426e8e07efc326d4dbf51e219a01a59da7ebbff2212cc22ab44d8884a2ad0aed03f697b023deb21c2c3ed76f77daba8710748ba2195bb09c5b2349464c119a7b66b1dbff75215fe9624defaf2c7f94d1abcde4fc36775af49ce619985099970b9dfa2153a88a7f561b2b9cc867a9eb5ce9ba21e086f02e93fafb05119701c811e3de19feb7354749c589ba811366836d3edea4a158237027517164a37c1292671092ec049e05c3567231f54fbcce0e78cb09fd36f99a9c1a0814e52bd1b97e085012e7933fd0d634
+#
+# This script is Copyright (C) 2004-2024 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.2 $
+# $Date: 2024/06/18 $
+#
+# Description   : This .audit is designed against the CIS Security Configuration Benchmark For
+#                 Microsoft SQL Server 2019 Version 1.3.0
+#
+#<ui_metadata>
+#<display_name>CIS SQL Server 2019 Database L1 OS v1.3.0</display_name>
+#<spec>
+#  <type>CIS</type>
+#  <name>SQL Server 2019 Database</name>
+#  <profile>L1 OS Windows</profile>
+#  <version>1.3.0</version>
+#  <link>https://workbench.cisecurity.org/files/4544</link>
+#</spec>
+#<labels>database,cis,ms_sql_server_2019,update_20230227</labels>
+#<benchmark_refs>CCE,CIS_Recommendation,CSCv6,CSCv7,CSCv8,LEVEL</benchmark_refs>
+#</ui_metadata>
+
+<check_type:"Windows" version:"2">
+<group_policy:"CIS MS SQL Server 2019 Database OS Level 1 Audit">
+
+<if>
+  <condition type:"AND">
+    <custom_item>
+      type        : REG_CHECK
+      description : "Windows is installed"
+      value_type  : POLICY_TEXT
+      value_data  : "HKLM\SOFTWARE\Microsoft\Windows NT"
+      reg_option  : MUST_EXIST
+    </custom_item>
+  </condition>
+
+  <then>
+    <report type:"PASSED">
+      description : "CIS_Microsoft_SQL_Server_2019_Database_v1.3.0_Level_1_OS.audit from Microsoft SQL Server 2019 Version 1.3.0"
+      info        : "Nessus has identified that Windows is installed."
+      see_also    : "https://workbench.cisecurity.org/files/4544"
+    </report>
+
+    <custom_item>
+      type            : AUDIT_POWERSHELL
+      description     : "2.10 Ensure Unnecessary SQL Server Protocols are set to 'Disabled'"
+      info            : "SQL Server supports Shared Memory, Named Pipes, and TCP/IP protocols. However, SQL Server should be configured to use the bare minimum required based on the organization's needs.
+
+Rationale:
+
+Using fewer protocols minimizes the attack surface of SQL Server and, in some cases, can protect it from remote attacks.
+
+Impact:
+
+The Database Engine (MSSQL and SQLAgent) services must be stopped and restarted for the change to take effect.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+      solution        : "Open SQL Server Configuration Manager; go to the SQL Server Network Configuration. Ensure that only required protocols are enabled. Disable protocols not necessary.
+
+Default Value:
+
+By default, TCP/IP and Shared Memory protocols are enabled on all commercial editions."
+      reference       : "800-171|3.13.1,800-171|3.13.5,800-171|3.13.6,800-53|CA-9,800-53|SC-7,800-53|SC-7(5),800-53r5|CA-9,800-53r5|SC-7,800-53r5|SC-7(5),CN-L3|7.1.2.2(c),CN-L3|8.1.10.6(j),CSCv7|9.2,CSCv8|4.4,CSCv8|4.5,CSF|DE.CM-1,CSF|ID.AM-3,CSF|PR.AC-5,CSF|PR.DS-5,CSF|PR.PT-4,GDPR|32.1.b,GDPR|32.1.d,GDPR|32.2,HIPAA|164.306(a)(1),ISO/IEC-27001|A.13.1.3,ITSG-33|SC-7,ITSG-33|SC-7(5),LEVEL|1M,NESA|T4.5.4,NIAv2|GS1,NIAv2|GS2a,NIAv2|GS2b,NIAv2|GS7b,NIAv2|NS25,PCI-DSSv3.2.1|1.1,PCI-DSSv3.2.1|1.2,PCI-DSSv3.2.1|1.2.1,PCI-DSSv3.2.1|1.3,PCI-DSSv4.0|1.2.1,PCI-DSSv4.0|1.4.1,QCSC-v1|4.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|5.2.3,QCSC-v1|6.2,QCSC-v1|8.2.1,SWIFT-CSCv1|2.1,TBA-FIISB|43.1"
+      see_also        : "https://workbench.cisecurity.org/files/4544"
+      value_type      : POLICY_TEXT
+      value_data      : ""
+      powershell_args : "Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL14*\MSSQLServer\SuperSocketNetLib\*' | Format-Table -Property DisplayName, Enabled"
+      severity        : MEDIUM
+    </custom_item>
+
+    <custom_item>
+      type            : AUDIT_POWERSHELL
+      description     : "3.5 Ensure the SQL Server's MSSQL Service Account is Not an Administrator"
+      info            : "The service account and/or service SID used by the MSSQLSERVER service for a default instance or <InstanceName> service for a named instance should not be a member of the Windows Administrator group either directly or indirectly (via a group). This also means that the account known as LocalSystem (aka NT AUTHORITY\SYSTEM) should not be used for the MSSQL service as this account has higher privileges than the SQL Server service requires.
+
+Rationale:
+
+Following the principle of least privilege, the service account should have no more privileges than required to do its job. For SQL Server services, the SQL Server Setup will assign the required permissions directly to the service SID. No additional permissions or privileges should be necessary.
+
+Impact:
+
+The SQL Server Configuration Manager tool should always be used to change the SQL Server's service account. This will ensure that the account has the necessary privileges. If the service needs access to resources other than the standard Microsoft defined directories and registry, then additional permissions may need to be granted separately to those resources."
+      solution        : "In the case where LocalSystem is used, use SQL Server Configuration Manager to change to a less privileged account. Otherwise, remove the account or service SID from the Administrators group. You may need to run the SQL Server Configuration Manager if underlying permissions had been changed or if SQL Server Configuration Manager was not originally used to set the service account.
+
+Default Value:
+
+By default, the Service Account (or Service SID) is not a member of the Administrators group."
+      reference       : "800-171|3.1.5,800-171|3.1.6,800-53|AC-6(2),800-53|AC-6(5),800-53r5|AC-6(2),800-53r5|AC-6(5),CN-L3|7.1.3.2(b),CN-L3|7.1.3.2(g),CN-L3|8.1.4.2(d),CN-L3|8.1.10.6(a),CSCv7|4.3,CSCv8|5.4,CSF|PR.AC-4,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ISO/IEC-27001|A.9.2.3,ITSG-33|AC-6(2),ITSG-33|AC-6(5),LEVEL|1M,NESA|T5.1.1,NESA|T5.2.2,NESA|T5.6.1,NIAv2|AM1,NIAv2|AM23f,NIAv2|AM32,NIAv2|AM33,NIAv2|SS13c,NIAv2|SS15c,NIAv2|VL3a,PCI-DSSv3.2.1|7.1.2,PCI-DSSv4.0|7.2.1,PCI-DSSv4.0|7.2.2,QCSC-v1|5.2.2,QCSC-v1|6.2,SWIFT-CSCv1|1.2,SWIFT-CSCv1|5.1,TBA-FIISB|31.4.2,TBA-FIISB|31.4.3"
+      see_also        : "https://workbench.cisecurity.org/files/4544"
+      value_type      : POLICY_TEXT
+      value_data      : " IS a member "
+      powershell_args : "$name = 'MSSQL(SERVER|\$[A-Z]+)$'; $account = 'None'; $result = 'is not'; Get-WmiObject Win32_Service | Where-Object { $_.name -match $name } | ForEach-Object { $account = $_.StartName }; net localgroup administrators | Where-Object { $_ -eq $account } | ForEach-Object { $result = 'IS' }; Write-Host Account $account $result a member of local Administrators"
+      check_type      : CHECK_NOT_REGEX
+    </custom_item>
+
+    <custom_item>
+      type            : AUDIT_POWERSHELL
+      description     : "3.6 Ensure the SQL Server's SQLAgent Service Account is Not an Administrator"
+      info            : "The service account and/or service SID used by the SQLSERVERAGENT service for a default instance or SQLAGENT$<InstanceName> service for a named instance should not be a member of the Windows Administrator group either directly or indirectly (via a group). This also means that the account known as LocalSystem (AKA NT AUTHORITY\SYSTEM) should not be used for the SQLAGENT service as this account has higher privileges than the SQL Server service requires.
+
+Rationale:
+
+Following the principle of least privilege, the service account should have no more privileges than required to do its job. For SQL Server services, the SQL Server Setup will assign the required permissions directly to the service SID. No additional permissions or privileges should be necessary.
+
+Impact:
+
+The SQL Server Configuration Manager tool should always be used to change the SQL Server's service account. This will ensure that the account has the necessary privileges. If the service needs access to resources other than the standard Microsoft-defined directories and registry, then additional permissions may need to be granted separately to those resources.
+
+If using the auto restart feature, then the SQLAGENT service must be an Administrator."
+      solution        : "In the case where LocalSystem is used, use SQL Server Configuration Manager to change to a less privileged account. Otherwise, remove the account or service SID from the Administrators group. You may need to run the SQL Server Configuration Manager if underlying permissions had been changed or if SQL Server Configuration Manager was not originally used to set the service account.
+
+Default Value:
+
+By default, the Service Account (or Service SID) is not a member of the Administrators group."
+      reference       : "800-171|3.1.5,800-171|3.1.6,800-53|AC-6(2),800-53|AC-6(5),800-53r5|AC-6(2),800-53r5|AC-6(5),CN-L3|7.1.3.2(b),CN-L3|7.1.3.2(g),CN-L3|8.1.4.2(d),CN-L3|8.1.10.6(a),CSCv7|4.3,CSCv8|5.4,CSF|PR.AC-4,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ISO/IEC-27001|A.9.2.3,ITSG-33|AC-6(2),ITSG-33|AC-6(5),LEVEL|1M,NESA|T5.1.1,NESA|T5.2.2,NESA|T5.6.1,NIAv2|AM1,NIAv2|AM23f,NIAv2|AM32,NIAv2|AM33,NIAv2|SS13c,NIAv2|SS15c,NIAv2|VL3a,PCI-DSSv3.2.1|7.1.2,PCI-DSSv4.0|7.2.1,PCI-DSSv4.0|7.2.2,QCSC-v1|5.2.2,QCSC-v1|6.2,SWIFT-CSCv1|1.2,SWIFT-CSCv1|5.1,TBA-FIISB|31.4.2,TBA-FIISB|31.4.3"
+      see_also        : "https://workbench.cisecurity.org/files/4544"
+      value_type      : POLICY_TEXT
+      value_data      : " IS a member "
+      powershell_args : "$name = 'SQL(SERVERAGENT|AGENT\$[A-Z]+)$'; $account = 'None'; $result = 'is not'; Get-WmiObject Win32_Service | Where-Object { $_.name -match $name } | ForEach-Object { $account = $_.StartName }; net localgroup administrators | Where-Object { $_ -eq $account } | ForEach-Object { $result = 'IS' }; Write-Host Account $account $result a member of local Administrators"
+      check_type      : CHECK_NOT_REGEX
+    </custom_item>
+
+    <custom_item>
+      type            : AUDIT_POWERSHELL
+      description     : "3.7 Ensure the SQL Server's Full-Text Service Account is Not an Administrator"
+      info            : "The service account and/or service SID used by the MSSQLFDLauncher service for a default instance or MSSQLFDLauncher$<InstanceName> service for a named instance should not be a member of the Windows Administrator group either directly or indirectly (via a group). This also means that the account known as LocalSystem (aka NT AUTHORITY\SYSTEM) should not be used for the Full-Text service as this account has higher privileges than the SQL Server service requires.
+
+Rationale:
+
+Following the principle of least privilege, the service account should have no more privileges than required to do its job. For SQL Server services, the SQL Server Setup will assign the required permissions directly to the service SID. No additional permissions or privileges should be necessary.
+
+Impact:
+
+The SQL Server Configuration Manager tool should always be used to change the SQL Server's service account. This will ensure that the account has the necessary privileges. If the service needs access to resources other than the standard Microsoft-defined directories and registry, then additional permissions may need to be granted separately to those resources."
+      solution        : "In the case where LocalSystem is used, use SQL Server Configuration Manager to change to a less privileged account. Otherwise, remove the account or service SID from the Administrators group. You may need to run the SQL Server Configuration Manager if underlying permissions had been changed or if SQL Server Configuration Manager was not originally used to set the service account.
+
+Default Value:
+
+By default, the Service Account (or Service SID) is not a member of the Administrators group."
+      reference       : "800-171|3.1.5,800-171|3.1.6,800-53|AC-6(2),800-53|AC-6(5),800-53r5|AC-6(2),800-53r5|AC-6(5),CN-L3|7.1.3.2(b),CN-L3|7.1.3.2(g),CN-L3|8.1.4.2(d),CN-L3|8.1.10.6(a),CSCv7|4.3,CSCv8|5.4,CSF|PR.AC-4,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ISO/IEC-27001|A.9.2.3,ITSG-33|AC-6(2),ITSG-33|AC-6(5),LEVEL|1M,NESA|T5.1.1,NESA|T5.2.2,NESA|T5.6.1,NIAv2|AM1,NIAv2|AM23f,NIAv2|AM32,NIAv2|AM33,NIAv2|SS13c,NIAv2|SS15c,NIAv2|VL3a,PCI-DSSv3.2.1|7.1.2,PCI-DSSv4.0|7.2.1,PCI-DSSv4.0|7.2.2,QCSC-v1|5.2.2,QCSC-v1|6.2,SWIFT-CSCv1|1.2,SWIFT-CSCv1|5.1,TBA-FIISB|31.4.2,TBA-FIISB|31.4.3"
+      see_also        : "https://workbench.cisecurity.org/files/4544"
+      value_type      : POLICY_TEXT
+      value_data      : " IS a member "
+      powershell_args : "$name = 'MSSQLFDLauncher(\$[A-Z]+)?$'; $account = 'None'; $result = 'is not'; Get-WmiObject Win32_Service | Where-Object { $_.name -match $name } | ForEach-Object { $account = $_.StartName }; net localgroup administrators | Where-Object { $_ -eq $account } | ForEach-Object { $result = 'IS' }; Write-Host Account $account $result a member of local Administrators"
+      check_type      : CHECK_NOT_REGEX
+    </custom_item>
+  </then>
+
+  <else>
+    <report type:"WARNING">
+      description : "CIS_Microsoft_SQL_Server_2019_Database_v1.3.0_Level_1_OS.audit from Microsoft SQL Server 2019 Version 1.3.0"
+      info        : "NOTE: Nessus has not identified that the chosen audit applies to the target device. Check Windows version and verify that Remote Registry service is enabled on the target."
+      see_also    : "https://workbench.cisecurity.org/files/4544"
+    </report>
+  </else>
+</if>
+
+</group_policy>
+</check_type>

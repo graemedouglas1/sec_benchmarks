@@ -1,0 +1,113 @@
+1.1 - Ensure the Appropriate VersionPatches for Oracle Software Is Installed
+2.1.1 - Ensure extproc Is Not Present in listener.ora
+2.1.2 - Ensure ADMIN RESTRICTIONS listener name Is Set to ON
+2.2.1 - Ensure AUDIT SYS OPERATIONS Is Set to TRUE
+2.2.2 - Ensure AUDIT TRAIL Is Set to DB XML OS DBEXTENDED or XMLEXTENDED
+2.2.3 - Ensure GLOBAL NAMES Is Set to TRUE
+2.2.4 - Ensure OS ROLES Is Set to FALSE
+2.2.5 - Ensure REMOTE LISTENER Is Empty
+2.2.6 - Ensure REMOTE LOGIN PASSWORDFILE Is Set to NONE
+2.2.7 - Ensure REMOTE OS AUTHENT Is Set to FALSE
+2.2.8 - Ensure REMOTE OS ROLES Is Set to FALSE
+2.2.9 - Ensure SEC CASE SENSITIVE LOGON Is Set to TRUE
+2.2.10 - Ensure SEC MAX FAILED LOGIN ATTEMPTS Is 3 or Less
+2.2.11 - Ensure SEC PROTOCOL ERROR FURTHER ACTION Is Set to DROP3
+2.2.12 - Ensure SEC PROTOCOL ERROR TRACE ACTION Is Set to LOG
+2.2.13 - Ensure SEC RETURN SERVER RELEASE BANNER Is Set to FALSE
+2.2.14 - Ensure SQL92 SECURITY Is Set to TRUE
+2.2.15 - Ensure  trace files public Is Set to FALSE
+2.2.16 - Ensure RESOURCE LIMIT Is Set to TRUE
+2.2.17 - Ensure PDB OS CREDENTIAL is NOT null
+2.3.1 - Ensure ENCRYPTION SERVER Is Set to REQUIRED Automated
+2.3.2 - Ensure SQLNET.CRYPTO CHECKSUM SERVER Is Set to REQUIRED Automated
+3.1 - Ensure FAILED LOGIN ATTEMPTS Is Less than or Equal to 5
+3.2 - Ensure PASSWORD LOCK TIME Is Greater than or Equal to 1
+3.3 - Ensure PASSWORD LIFE TIME Is Less than or Equal to 90
+3.4 - Ensure PASSWORD REUSE MAX Is Greater than or Equal to 20
+3.5 - Ensure PASSWORD REUSE TIME Is Greater than or Equal to 365
+3.6 - Ensure PASSWORD GRACE TIME Is Less than or Equal to 5
+3.7 - Ensure PASSWORD VERIFY FUNCTION Is Set for All Profiles
+3.8 - Ensure SESSIONS PER USER Is Less than or Equal to 10
+3.9 - Ensure INACTIVE ACCOUNT TIME Is Less than or Equal to 120
+4.1 - Ensure All Default Passwords Are Changed
+4.2 - Ensure All Sample Data And Users Have Been Removed
+4.3 - Ensure DBA USERS.AUTHENTICATION TYPE Is Not Set to EXTERNAL for Any User
+4.4 - Ensure No Users Are Assigned the DEFAULT Profile
+4.5 - Ensure SYS.USERMIG Has Been Dropped
+4.6 - Ensure No Public Database Links Exist
+5.1.1.1 - Ensure EXECUTE is revoked from PUBLIC on Network Packages
+5.1.1.2 - Ensure EXECUTE is revoked from PUBLIC on File System Packages
+5.1.1.3 - Ensure EXECUTE is revoked from PUBLIC on Encryption Packages
+5.1.1.4 - Ensure EXECUTE is revoked from PUBLIC on Java Packages
+5.1.1.5 - Ensure EXECUTE is revoked from PUBLIC on Job Scheduler Packages
+5.1.1.6 - Ensure EXECUTE is revoked from PUBLIC on SQL Injection Helper Packages
+5.1.1.7 - Ensure EXECUTE is revoked from PUBLIC on DBMS CREDENTIAL Package
+5.1.2.1 - Ensure EXECUTE is not granted to PUBLIC on Non-default Packages
+5.1.3.1 - Ensure ALL Is Revoked from Unauthorized GRANTEE on AUD
+5.1.3.2 - Ensure ALL Is Revoked from Unauthorized GRANTEE on DBA 
+5.1.3.3 - Ensure ALL Is Revoked on Sensitive Tables
+5.2.1 - Ensure ANY Is Revoked from Unauthorized GRANTEE
+5.2.2 - Ensure DBA SYS PRIVS. Is Revoked from Unauthorized GRANTEE with ADMIN OPTION Set to YES
+5.2.3 - Ensure EXECUTE ANY PROCEDURE Is Revoked from OUTLN
+5.2.4 - Ensure EXECUTE ANY PROCEDURE Is Revoked from DBSNMP
+5.2.5 - Ensure SELECT ANY DICTIONARY Is Revoked from Unauthorized GRANTEE
+5.2.6 - Ensure SELECT ANY TABLE Is Revoked from Unauthorized GRANTEE
+5.2.7 - Ensure AUDIT SYSTEM Is Revoked from Unauthorized GRANTEE
+5.2.8 - Ensure EXEMPT ACCESS POLICY Is Revoked from Unauthorized GRANTEE
+5.2.9 - Ensure BECOME USER Is Revoked from Unauthorized GRANTEE
+5.2.10 - Ensure CREATE PROCEDURE Is Revoked from Unauthorized GRANTEE
+5.2.11 - Ensure ALTER SYSTEM Is Revoked from Unauthorized GRANTEE
+5.2.12 - Ensure CREATE ANY LIBRARY Is Revoked from Unauthorized GRANTEE
+5.2.13 - Ensure CREATE LIBRARY Is Revoked from Unauthorized GRANTEE
+5.2.14 - Ensure GRANT ANY OBJECT PRIVILEGE Is Revoked from Unauthorized GRANTEE
+5.2.15 - Ensure GRANT ANY ROLE Is Revoked from Unauthorized GRANTEE
+5.2.16 - Ensure GRANT ANY PRIVILEGE Is Revoked from Unauthorized GRANTEE
+5.3.1 - Ensure SELECT CATALOG ROLE Is Revoked from Unauthorized GRANTEE
+5.3.2 - Ensure EXECUTE CATALOG ROLE Is Revoked from Unauthorized GRANTEE
+5.3.3 - Ensure DBA Is Revoked from Unauthorized GRANTEE
+5.3.4 - Ensure AUDIT ADMIN Is Revoked from Unauthorized GRANTEE
+6.1.1 - Ensure the USER Audit Option Is Enabled
+6.1.2 - Ensure the ROLE Audit Option Is Enabled
+6.1.3 - Ensure the SYSTEM GRANT Audit Option Is Enabled
+6.1.4 - Ensure the PROFILE Audit Option Is Enabled
+6.1.5 - Ensure the DATABASE LINK Audit Option Is Enabled
+6.1.6 - Ensure the PUBLIC DATABASE LINK Audit Option Is Enabled
+6.1.7 - Ensure the PUBLIC SYNONYM Audit Option Is Enabled
+6.1.8 - Ensure the SYNONYM Audit Option Is Enabled
+6.1.9 - Ensure the DIRECTORY Audit Option Is Enabled
+6.1.10 - Ensure the SELECT ANY DICTIONARY Audit Option Is Enabled
+6.1.11 - Ensure the GRANT ANY OBJECT PRIVILEGE Audit Option Is Enabled
+6.1.12 - Ensure the GRANT ANY PRIVILEGE Audit Option Is Enabled
+6.1.13 - Ensure the DROP ANY PROCEDURE Audit Option Is Enabled
+6.1.14 - Ensure the ALL Audit Option on SYS.AUD Is Enabled
+6.1.15 - Ensure the PROCEDURE Audit Option Is Enabled
+6.1.16 - Ensure the ALTER SYSTEM Audit Option Is Enabled
+6.1.17 - Ensure the TRIGGER Audit Option Is Enabled
+6.1.18 - Ensure the CREATE SESSION Audit Option Is Enabled
+6.2.1 - Ensure the CREATE USER Action Audit Is Enabled
+6.2.2 - Ensure the ALTER USER Action Audit Is Enabled
+6.2.3 - Ensure the DROP USER Audit Option Is Enabled
+6.2.4 - Ensure the CREATE ROLE Action Audit Is Enabled
+6.2.5 - Ensure the ALTER ROLE Action Audit Is Enabled
+6.2.6 - Ensure the DROP ROLE Action Audit Is Enabled
+6.2.7 - Ensure the GRANT Action Audit Is Enabled
+6.2.8 - Ensure the REVOKE Action Audit Is Enabled
+6.2.9 - Ensure the CREATE PROFILE Action Audit Is Enabled
+6.2.10 - Ensure the ALTER PROFILE Action Audit Is Enabled
+6.2.11 - Ensure the DROP PROFILE Action Audit Is Enabled
+6.2.12 - Ensure the CREATE DATABASE LINK Action Audit Is Enabled
+6.2.13 - Ensure the ALTER DATABASE LINK Action Audit Is Enabled
+6.2.14 - Ensure the DROP DATABASE LINK Action Audit Is Enabled
+6.2.15 - Ensure the CREATE SYNONYM Action Audit Is Enabled
+6.2.16 - Ensure the ALTER SYNONYM Action Audit Is Enabled
+6.2.17 - Ensure the DROP SYNONYM Action Audit Is Enabled
+6.2.18 - Ensure the SELECT ANY DICTIONARY Privilege Audit Is Enabled
+6.2.19 - Ensure the AUDSYS.AUDUNIFIED Access Audit Is Enabled
+6.2.20 - Ensure the CREATE PROCEDUREFUNCTIONPACKAGEPACKAGE BODY Action Audit Is Enabled
+6.2.21 - Ensure the ALTER PROCEDUREFUNCTIONPACKAGEPACKAGE BODY Action Audit Is Enabled
+6.2.22 - Ensure the DROP PROCEDUREFUNCTIONPACKAGEPACKAGE BODY Action Audit Is Enabled
+6.2.23 - Ensure the ALTER SYSTEM Action Audit is Enabled
+6.2.24 - Ensure the CREATE TRIGGER Action Audit Is Enabled
+6.2.25 - Ensure the  ALTER TRIGGER Action Audit IS Enabled
+6.2.26 - Ensure the DROP TRIGGER Action Audit Is Enabled
+6.2.27 - Ensure the LOGON AND LOGOFF Actions Audit Is Enabled

@@ -1,0 +1,206 @@
+1.1.2 - Ensure tmp is configured
+1.1.7 - Ensure noexec option set on devshm partition
+1.1.8 - Ensure nodev option set on devshm partition
+1.1.9 - Ensure nosuid option set on devshm partition
+1.1.10 - Ensure separate partition exists for var
+1.1.16 - Ensure separate partition exists for varlogaudit
+1.1.19 - Ensure nosuid is set on users home directories.
+1.1.22 - Ensure nosuid option set on removable media partitions - manual
+1.1.23 - Ensure noexec option is configured for NFS.
+1.1.24 - Ensure nosuid option is set for NFS
+1.1.26 - Ensure all world-writable directories are group-owned. - manual
+1.1.27 - Disable Automounting
+1.1.28 - Disable USB Storage
+1.2.3 - Ensure gpgcheck is globally activated
+1.2.4 - Ensure software packages have been digitally signed by a Certificate Authority CA
+1.2.5 - Ensure removal of software components after update
+1.2.6 - Ensure the version of the operating system is an active vendor supported release - manual
+1.3.1 - Ensure AIDE is installed
+1.3.2 - Ensure filesystem integrity is regularly checked
+1.3.3 - Ensure AIDE is configured to verify ACLs - manual
+1.3.4 - Ensure AIDE is configured to verify XATTRS - manual
+1.3.5 - Ensure AIDE is configured to use FIPS 140-2 - manual
+1.4.1 - Ensure bootloader password is set - manual
+1.4.3 - Ensure authentication required for single user mode
+1.4.4 - Ensure boot loader does not allow removable media
+1.4.5 - Ensure version 7.2 or newer booted with a BIOS have a unique name for the grub superusers account - manual
+1.4.6 - Ensure version 7.2 or newer booted with UEFI have a unique name for the grub superusers account - manual
+1.5.3 - Ensure address space layout randomization ASLR is enabled
+1.5.5 - Ensure number of concurrent sessions is limited
+1.5.6 - Ensure the Ctrl-Alt-Delete key sequence is disabled.
+1.5.7 - Ensure kernel core dumps are disabled.
+1.5.8 - Ensure DNS is servers are configured
+1.5.9 - Ensure NIST FIPS-validated cryptography is configured
+1.6.1.3 - Ensure SELinux policy is configured
+1.6.1.5 - Ensure the SELinux mode is enforcing
+1.6.1.9 - Ensure non-privileged users are prevented from executing privileged functions - manual
+1.6.1.10 - Ensure system device files are labeled. - manual
+1.7.3 - Ensure the Standard Mandatory DoD Notice and Consent Banner are configured
+1.7.8 - Ensure the Standard Mandatory DoD Notice and Consent Banner are configured
+1.8.1 - Ensure GDM login banner is configured
+1.8.2 - Ensure Standard Mandatory DoD Notice and Consent Banner displayed via a graphical user logon - manual
+1.8.3 - Ensure GDM session lock is enabled
+1.8.4 - Ensure the graphical user Ctrl-Alt-Delete key sequence is disabled
+1.8.5 - Ensure users must authenticate users using MFA via a graphical user logon
+1.8.6 - Ensure GNOME Screensaver period of inactivity is configured
+1.8.7 - Ensure screensaver lock-enabled is set
+1.8.8 - Ensure overriding the screensaver lock-delay setting is prevented
+1.8.9 - Ensure session idle-delay settings is enforced
+1.8.10 - Ensure GNOME Idle activation is set
+1.8.11 - Ensure the screensaver idle-activation-enabled setting
+1.8.12 - Ensure GNOME Lock Delay is configured
+1.8.13 - Ensure automatic logon via GUI is not allowed
+1.8.14 - Ensure unrestricted logon is not allowed
+1.8.15 - Ensure graphical user interface automounter is disabled
+1.9 - Ensure updates patches and additional security software are installed - manual
+1.10 - Ensure required packages for multifactor authentication are installed
+1.11 - Ensure anti-virus is installed and running - manual
+1.12 - Ensure host-based intrusion detection tool is used - manual
+2.2.1.4 - Ensure internal information system clocks are synchronizing
+2.2.2 - Ensure X11 Server components are not installed
+2.2.8 - Ensure FTP Server is not installed
+2.2.14 - Ensure NIS server is not installed
+2.2.20 - Ensure the rsh package has been removed
+2.2.21 - Ensure the TFTP server has not been installed
+2.2.22 - Ensure TFTP daemon is configured to operate in secure mode
+2.2.23 - Ensure default SNMP community strings dont exist
+2.2.24 - Ensure NFS is configured to use RPCSEC GSS
+2.2.25 - Ensure unrestricted mail relaying is prevented
+2.2.26 - Ensure ldap tls cacert is set for LDAP.
+2.2.27 - Ensure ldap id use start tls is set for LDAP.
+2.2.28 - Ensure ldap tls reqcert is set for LDAP
+2.3.4 - Ensure telnet client is not installed
+3.1.2 - Ensure wireless interfaces are disabled - manual
+3.2.1 - Ensure IP forwarding is disabled
+3.2.2 - Ensure packet redirect sending is disabled - manual
+3.3.1 - Ensure source routed packets are not accepted - manual
+3.3.2 - Ensure ICMP redirects are not accepted - manual
+3.3.3 - Ensure network interfaces are not in promiscuous mode - manual
+3.3.6 - Ensure broadcast ICMP requests are ignored - manual
+3.3.8 - Ensure Reverse Path Filtering is enabled - manual
+3.4.1 - Ensure DCCP is disabled
+3.5.1.4 - Ensure firewalld service enabled and running
+3.5.1.5 - Ensure firewalld default zone is set
+3.5.3.2.3 - Ensure iptables rules exist for all open ports - manual
+3.5.4 - Ensure IP tunnels are not configured
+4.1.1.2 - Ensure auditd service is enabled and running
+4.1.2.3 - Ensure audit system is set to single when the disk is full.
+4.1.2.4 - Ensure system notification is sent out when volume is 75 full - manual
+4.1.2.5 - Ensure system is disabled when audit logs are full
+4.1.2.6 - Ensure audit system action is defined for sending errors
+4.1.2.8 - Ensure audit logs are stored on a different system. - manual
+4.1.2.9 - Ensure audit logs on separate system are encrypted.
+4.1.2.10 - Ensure the auditing processing failures are handled.
+4.1.2.11 - Enure off-load of audit logs.
+4.1.2.12 - Ensure action is taken when audisp-remote buffer is full
+4.1.2.13 - Ensure off-loaded audit logs are labeled.
+4.1.3.7 - Ensure kernel module loading and unloading is collected - manual
+4.1.3.8 - Ensure changes to system administration scope sudoers is collected - manual
+4.1.3.9 - Ensure file deletion events by users are collected - manual
+4.1.3.10 - Ensure use of privileged commands is collected - manual
+4.1.3.11 - Ensure unsuccessful unauthorized file access attempts are collected - manual
+4.1.3.12 - Ensure discretionary access control permission modification events are collected - manual
+4.1.3.13 - Ensure login and logout events are collected - manual
+4.1.3.14 - Ensure events that modify usergroup information are collected - manual
+4.1.3.15 - Ensure all uses of the passwd command are audited. - manual
+4.1.3.16 - Ensure auditing of the unix chkpwd command - manual
+4.1.3.17 - Ensure audit of the gpasswd command - manual
+4.1.3.18 - Ensure audit all uses of chage - manual
+4.1.3.19 - Ensure audit all uses of the chsh command. - manual
+4.1.3.20 - Ensure audit the umount command - manual
+4.1.3.21 - Ensure audit of postdrop command - manual
+4.1.3.22 - Ensure audit of postqueue command. - manual
+4.1.3.23 - Ensure audit ssh-keysign command. - manual
+4.1.3.24 - Ensure audit of crontab command - manual
+4.1.3.25 - Ensure audit of kmod command - manual
+4.1.3.26 - Ensure audit of the rmdir syscall - manual
+4.1.3.27 - Ensure audit of unlink syscall - manual
+4.1.3.28 - Ensure audit unlinkat syscall - manual
+4.1.3.29 - Ensure audit pam timestamp check command - manual
+4.1.3.30 - Ensure audit of the finit module syscall - manual
+4.1.3.31 - Ensure audit of the create module syscall - manual
+4.1.3.32 - Ensure auditing of all privileged functions - manual
+4.1.3.33 - Ensure audit of semanage command - manual
+4.1.3.34 - Ensure audit of the setsebool command. - manual
+4.1.3.35 - Ensure audit of the chcon command - manual
+4.1.3.36 - Ensure audit of the userhelper command - manual
+4.1.3.37 - Ensure audit of the mount command and syscall - manual
+4.1.3.38 - Ensure audit of the su command - manual
+4.1.3.39 - Ensure audit of setfiles command - manual
+4.1.3.40 - Ensure audit all uses of the newgrp command - manual
+4.1.4.1 - Ensure Audit logs are are owned by root and mode 0600 or less permissive
+4.2.1.4 - Ensure logging is configured - manual
+4.2.1.5 - Ensure rsyslog is configured to send logs to a remote log host
+4.2.1.6 - Ensure remote rsyslog messages are only accepted on designated log hosts. - manual
+5.1.8 - Ensure cron is restricted to authorized users
+5.2.4 - Ensure users must provide password for escalation
+5.2.5 - Ensure users must re-authenticate for privilege escalation
+5.2.6 - Ensure the sudoers file restricts sudo access to authorized personnel
+5.2.7 - Ensure sudo authentication timeout is configured
+5.2.8 - Ensure users password required for privilege escalation when using sudo
+5.3.1 - Ensure SSH is installed
+5.3.2 - Ensure SSH is running
+5.3.4 - Ensure permissions on SSH private host key files are configured
+5.3.5 - Ensure permissions on SSH public host key files are configured
+5.3.8 - Ensure SSH X11 forwarding is disabled
+5.3.10 - Ensure SSH IgnoreRhosts is enabled
+5.3.11 - Ensure SSH HostbasedAuthentication is disabled
+5.3.14 - Ensure SSH PermitUserEnvironment is disabled
+5.3.16 - Ensure only FIPS 140-2 ciphers are used for SSH
+5.3.17 - Ensure only strong MAC algorithms are used
+5.3.19 - Ensure SSH Idle Timeout Interval is configured
+5.3.26 - Ensure RSA rhosts authentication is not allowed
+5.3.27 - Ensure Printlastlog is enabled
+5.3.28 - Ensure SSH IgnoreUserKnownHosts is enabled
+5.3.29 - Ensure SSH Protocol is set to 2
+5.3.30 - Ensure SSH does not permit GSSAPI
+5.3.31 - Ensure SSH does not permit Kerberos authentication
+5.3.32 - Ensure SSH performs checks of home directory configuration files
+5.3.33 - Ensure SSH uses privilege separation
+5.3.34 - Ensure SSH compressions setting is delayed
+5.3.35 - Ensure SSH X11UseLocalhost is disabled
+5.3.36 - Ensure no .shosts files exist on the system - manual
+5.3.37 - Ensure no shosts.equiv files exist on the system - manual
+5.4.1 - Ensure password creation requirements are configured
+5.4.3 - Ensure password hashing algorithm is SHA-512
+5.4.5 - Ensure system-auth is used when changing passwords
+5.4.6 - Ensure no accounts are configured with blank or null passwords
+5.4.7 - Ensure minimum and maximum requirements are set for password changes
+5.4.8 - Ensure date and time of last successful logon
+5.4.9 - Ensure multifactor authentication for access to privileged accounts
+5.4.10 - Ensure certificate status checking for PKI authentication
+5.4.11 - Ensure password prohibited reuse is at a minimum 5
+5.4.12 - Ensure accounts lock for a minimum of 15 minutes after three unsuccessful logon attempts within a 15-minute timeframe
+5.4.13 - Ensure lockout for unsuccessful root logon attempts
+5.5.1.2 - Ensure minimum days between password changes is configured
+5.5.1.6 - Ensure shadow file is configured to use only encrypted representations of passwords
+5.5.1.7 - Ensure password expiration is 60 Day maximum for new users
+5.5.1.8 - Ensure password expiration is 60 Day maximum for existing passwords
+5.5.1.9 - Ensure inactive password lock is 0 days
+5.5.1.10 - Ensure delay between logon prompts on failure
+5.5.4 - Ensure default user shell timeout is configured - manual
+5.5.6 - Ensure user and group account administration utilities are configured to store only encrypted representations of passwords
+5.5.7 - Ensure multi-factor authentication is enable for users
+5.5.8 - Ensure Default user umask is 077
+5.5.9 - Ensure local interactive user accounts umask is 077 - manual
+5.5.10 - Ensure upon user creation a home directory is assigned.
+6.1.1 - Audit system file permissions - manual
+6.1.10 - Ensure no world writable files exist - manual
+6.1.11 - Ensure no unowned files or directories exist - manual
+6.1.12 - Ensure no ungrouped files or directories exist - manual
+6.1.15 - Ensure the file permissions ownership and group membership of system files and commands match the vendor values - manual
+6.1.16 - Ensure all world-writable directorys are owned by root sys bin or an application User Identifier - manual
+6.2.3 - Ensure all groups in etcpasswd exist in etcgroup - manual
+6.2.9 - Ensure root is the only UID 0 account
+6.2.11 - Ensure all users home directories exist - manual
+6.2.12 - Ensure users own their home directories - manual
+6.2.13 - Ensure users home directories permissions are 750 or more restrictive - manual
+6.2.18 - Ensure there are no unnecessary accounts - manual
+6.2.19 - Ensure all local interactive user home directories are group-owned - manual
+6.2.20 - Ensure that all files and directories contained in local interactive user home directories are owned by the user - manual
+6.2.21 - Ensure local interactive user is a member of the group owner. - manual
+6.2.22 - Ensure users files and directories within the home directory permissions are 750 or more restrictive - manual
+6.2.23 - Ensure local interactive users dot files for are owned by the user or root. - manual
+6.2.24 - Ensure local interactive users dot files are group-owned by the users group or root. - manual
+6.2.25 - Ensure users dot files have 0740 or less set. - manual
+6.2.26 - Ensure local interactive users dot files executable paths resolve to the users home directory. - manual

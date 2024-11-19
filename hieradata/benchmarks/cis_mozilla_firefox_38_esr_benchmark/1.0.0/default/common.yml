@@ -1,0 +1,872 @@
+---
+
+inspec_rules:
+  "1.1":
+    title: '1.1 | L1 Create local-settings.js file - manual'
+    section: 'Configure Locked Preferences'
+    description: |
+        The  localsettings.js  file is used by Firefox to reference and load the  mozilla.cfg  file which contains all the
+        locked preferences.
+    remediation: |
+        Perform the following procedure: Navigate to the  defaults/pref  directory inside the Firefox installation directory and
+        create a file called  local-settings.js. Include the following lines in  local-settings.js :
+        pref("general.config.obscure_value", 0);   pref("general.config.filename", "mozilla.cfg");
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2":
+    title: '1.2 | L1 Set permissions on local-settings.js - manual'
+    section: 'Configure Locked Preferences'
+    description: |
+        Set permissions on  localsettings.js  so that it can only be modified or deleted by an Administrator.
+    remediation: |
+        Deny non-administrators the ability to write to  local-settings.js .
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.2', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.3":
+    title: '1.3 | L1 Create mozilla.cfg file - manual'
+    section: 'Configure Locked Preferences'
+    description: |
+        The  mozilla.cfg  file is used by Firefox to configure all the locked preferences.
+    remediation: |
+        Perform the following procedure: Navigate to the  Firefox installation directory and create a file called  mozilla.cfg.
+        The first line of the file must be a comment: //
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.3', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.4":
+    title: '1.4 | L1 Set permissions on mozilla.cfg - manual'
+    section: 'Configure Locked Preferences'
+    description: |
+        Set permissions on  mozilla.cfg  so that it can only be modified or deleted by an Administrator.
+    remediation: |
+        Deny non-administrators the ability to write to  mozilla.cfg .
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.4', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.5":
+    title: '1.5 | L1 Protect Firefox Binaries - manual'
+    section: 'Configure Locked Preferences'
+    description: |
+        Ensure that Firefox is installed and owned by an administrative account in order to protect the binaries and to prevent
+        users from circumventing security settings.
+    remediation: |
+        Install Firefox into a shared location that can be accessed by users but modified only by Administrators. Impact:
+        Ordinary users will not be able to update or patch Firefox; only Administrators can perform upgrades.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.5', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.1":
+    title: '2.1 | L1 Enable Automatic Updates'
+    section: 'Updating Firefox'
+    description: |
+        This feature configures Firefox to automatically download and install updates as they are made available.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg:
+                                 lockPref("app.update.enabled", true); lockPref("app.update.auto", true);
+        lockPref("app.update.staging.enabled", true);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.1', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.2":
+    title: '2.2 | L1 Enable Auto-Notification of Outdated Plugins'
+    section: 'Updating Firefox'
+    description: |
+        This feature automatically detects when installed plugins are out of date and notifies the users to update the plugins.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("plugins.update.notifyUser", true);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.3":
+    title: '2.3 | L1 Enable Information Bar for Outdated Plugins'
+    section: 'Updating Firefox'
+    description: |
+        This feature automatically shows an information bar when installed Plugins are out of date and notifies the users to
+        update the plugins.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("plugins.hide_infobar_for_outdated_plugin", false);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.3', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.4":
+    title: '2.4 | L1 Set Update Interval Time Checks'
+    section: 'Updating Firefox'
+    description: |
+        This configuration sets the amount of time the system waits in between each check for updates.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("app.update.interval", 43200);
+                              Impact: app.update.enabled must be set to true for this preference to take effect.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.4', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.5":
+    title: '2.5 | L1 Set Update Wait Time Prompt'
+    section: 'Updating Firefox'
+    description: |
+        This setting determines the amount of time, in seconds, which the system will wait before displaying the Software Update
+        dialogue box after an unobtrusive alert has already been shown.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("app.update.promptWaitTime", 172800);
+                              Impact: For this preference to have an effect app.update.enabled must be true and
+        app.update.silent must be false. The full Software Update dialog is still subject toapp.update.idletime.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.5', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.6":
+    title: '2.6 | L1 Ensure Update-related UI Components are Displayed'
+    section: 'Updating Firefox'
+    description: |
+        This setting dictates whether the Firefox Update service will notify the user when update related events occur, such as
+        updates being available or downloaded. It is recommended that updatedrelated notifications be displayed.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("app.update.silent", false);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.6', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.7":
+    title: '2.7 | L1 Set Search Provider Update Behavior'
+    section: 'Updating Firefox'
+    description: |
+        This feature dictates whether Firefox will update installed search providers. Search providers allow the user to search
+        directly from the Search bar which is adjacent to the URL bar.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg:
+                                 lockPref("browser.search.update", true);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.7', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.1":
+    title: '3.1 | L1 Validate Proxy Settings - manual'
+    section: 'Network Settings'
+    description: |
+        Firefox can be configured to use one or more proxy servers. When a proxy server is configured for a given protocol HTTP,
+        FTP, Gopher, etc, Firefox will send applicable requests to that proxy server for fulfillment. It is recommended that the
+        list of proxy servers configured in Firefox be reviewed to ensure it contains only trusted proxy servers.
+    remediation: |
+        Perform the following procedure: Drop down the  Firefox  menu Click on  Options
+                              Select  Options  from the list Click on the  Advanced  Button in the Options window Click on
+        Network  Tab Click on  Settings  Button Ensure that the proxy listed (if any) is the one configured and approved by the
+        enterprise.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_3.1', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.2":
+    title: '3.2 | L2 Do Not Send Cross SSLTLS Referrer Header'
+    section: 'Network Settings'
+    description: |
+        This preference dictates whether Firefox will send the URL of the SSL/TLSprotected referring site to the referred
+        SSL/TLS protected site.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("network.http.sendSecureXSiteReferrer", false);
+                              Impact: Enabling this setting may negatively impact the functionality of websites that rely on
+        receiving referrer information.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_3.2', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.3":
+    title: '3.3 | L1 Disable NTLM v1'
+    section: 'Network Settings'
+    description: |
+        This feature NT Lan Manager NTLM v1 protocol to be used for authentication to resources that request this authentication
+        type.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("network.auth.force-generic-ntlm-v1", false);
+                              Impact: This may effect websites and browsers that require the use of NTLM v1
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.3', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.4":
+    title: '3.4 | L1 Enable Warning For Phishy URLs'
+    section: 'Network Settings'
+    description: |
+        It is possible to disguise a websites true location by making use of username/password syntax within the URL known as
+        phishy URLs. This setting will display a warning message whenever a user clicks a link to a phishy URL.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("network.http.phishy-userpass-length", 1);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.4', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.5":
+    title: '3.5 | L2 Enable IDN Show Punycode'
+    section: 'Network Settings'
+    description: |
+        This feature determines whether all Internationalized Domain Names IDNs displayed in the browser are displayed as
+        Punycode or as Unicode.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("network.IDN_show_punycode", true);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_3.5', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.6":
+    title: '3.6 | L1 Set File URI Origin Policy'
+    section: 'Network Settings'
+    description: |
+        This feature determines the restrictions placed on the scripts and links loaded into the browser from local HTML files.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("security.fileuri.strict_origin_policy", true)
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.6', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.7":
+    title: '3.7 | L1 Disable Cloud Sync'
+    section: 'Network Settings'
+    description: |
+        Firefox allows users to sync preferences and settings, including saved credentials, to cloudbased servers in order to
+        retrieve them from other computers. This setting determines whether cloud sync in enabled.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("services.sync.enabled", false);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.7', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "3.8":
+    title: '3.8 | L1 Disable WebRTC'
+    section: 'Network Settings'
+    description: |
+        These settings determine whether WebRTC Web Real Time Communications is allowed. WebRTC is used for peer to peer
+        communication such as file sharing or video calls.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg :
+                                 lockPref("media.peerconnection.enabled", false);
+        lockPref("media.peerconnection.use_document_iceservers", false);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.8', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.1":
+    title: '4.1 | L2 Set SSL Override Behavior'
+    section: 'Encryption Settings'
+    description: |
+        When Firefox encounters an invalid certificate and the user clicks Add Exception, a dialog is displayed with a text box
+        to fetch the certificate from the given URL. This preference controls whether Firefox will or will not automatically
+        fill in the URL text box and autofetch the certificate on behalf of the user. Setting this preference to  0  forces the
+        user to enter a URL and click the Get Certificate button before adding an exception for an invalid cert.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("browser.ssl_override_behavior", 0);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_4.1', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.2":
+    title: '4.2 | L1 Set Security TLS Version Maximum'
+    section: 'Encryption Settings'
+    description: |
+        This feature  sets the maximum required protocol version.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("security.tls.version.max", 3)
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.2', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.3":
+    title: '4.3 | L1 Set Security TLS Version Minimum '
+    section: 'Encryption Settings'
+    description: |
+        This feature  sets the minimum protocol version that may be used when negotiating TLS/SSL sessions.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("security.tls.version.min", 1)
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.3', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.4":
+    title: '4.4 | L1 Set OCSP Use Policy'
+    section: 'Encryption Settings'
+    description: |
+        This setting dictates whether Firefox will leverage Online Certificate Status Protocol OCSP to determine if a given
+        certificate has been revoked.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("security.OCSP.enabled", 1)
+                              Impact: Enabling OCSP carries potential privacy implications. For each HTTPS site Firefox visits,
+        a request is sent to an OCSP server to determine if the site's certificate has been revoked. This provides the OCSP
+        server with the IP address of the requester (Firefox or NAT) and, among other properties, the domain name of the site
+        Firefox is accessing. Firefox 26 and greater support OCSP Stapling, which mitigates the aforementioned privacy
+        implications of using OCSP.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_4.4', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.5":
+    title: '4.5 | L1 Block Mixed Active Content'
+    section: 'Encryption Settings'
+    description: |
+        This feature disables the ability to view HTTP content such as  JavaScript, CSS, objects, and xhr requests.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("security.mixed_content.block_active_content", true)
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.5', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.6":
+    title: '4.6 | L1 Set OCSP Response Policy'
+    section: 'Encryption Settings'
+    description: |
+        This setting dictates whether Firefox will consider a given certificate to be invalid if Firefox is unable to obtain an
+        Online Certificate Status Protocol OCSP response for it.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("security.ocsp.require", true);
+                              Impact: Enabling OCSP carries potential privacy implications. For each HTTPS site Firefox visits,
+        a request is sent to an OCSP server to determine if the site's certificate has been revoked. This provides the OCSP
+        server with the IP address of the requester (Firefox or NAT) and, among other properties, the domain name of the site
+        Firefox is accessing. Additionally, requiring an OCSP response increases opportunity for valid certificates to be deemed
+        invalid. This may occur if OCSP server becomes unavailable or is not accessible.  Firefox 26+ support OCSP Stapling
+        which mitigates the aforementioned privacy implications.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_4.6', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.1":
+    title: '5.1 | L1 Disallow JavaScripts Ability to Change the Status Bar Text'
+    section: 'JavaScript Settings'
+    description: |
+        The Status Bar shows the location of the content when a user hovers over a hyperlink, a user visits a link, or when
+        content is being downloaded on a web page.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("dom.disable_window_status_change", true);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.1', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.2":
+    title: '5.2 | L1 Disable Scripting of Plugins by JavaScript'
+    section: 'JavaScript Settings'
+    description: |
+        Javascript can initiate and interact with the Plugins installed in Firefox.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("security.xpconnect.plugin.unrestricted", false);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.3":
+    title: '5.3 | L1 Disallow JavaScripts Ability to Hide the Address Bar'
+    section: 'JavaScript Settings'
+    description: |
+        The Address Bar shows the current URL, which can be used to identify the website.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("dom.disable_window_open_feature.location", true);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.3', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.4":
+    title: '5.4 | L1 Disallow JavaScripts Ability to Hide the Status Bar'
+    section: 'JavaScript Settings'
+    description: |
+        The Status Bar shows the location of the content when a user visits a link or when content is being downloaded on a web
+        page.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("dom.disable_window_open_feature.status", true);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.4', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.5":
+    title: '5.5 | L1 Disable Closing of Windows via Scripts'
+    section: 'JavaScript Settings'
+    description: |
+        Firefox can be configured to prevent scripts from closing browser windows.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("dom.allow_scripts_to_close_windows", false);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.5', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.6":
+    title: '5.6 | L1 Block Pop-up Windows'
+    section: 'JavaScript Settings'
+    description: |
+        The Popup Blocker is used to block Popups which a website might open with or without any user interaction. These PopUps
+        can be used to open untrusted malicious content.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("privacy.popups.policy", 1);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.6', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.7":
+    title: '5.7 | L1 Disable Displaying JavaScript in History URLs'
+    section: 'JavaScript Settings'
+    description: |
+        This will ensure that JavaScript URLs are not displayed in the history bar.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("browser.urlbar.filter.javascript", true);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.7', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.1":
+    title: '6.1 | L1 Disallow Credential Storage'
+    section: 'Privacy Settings'
+    description: |
+        Firefox allows credentials to be stored for certain websites.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("signon.rememberSignons", false);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.1', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.2":
+    title: '6.2 | L1 Do Not Accept Third Party Cookies'
+    section: 'Privacy Settings'
+    description: |
+        A thirdparty cookie is a cookie sent by a domain that differs from the domain in the browsers address bar.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("network.cookie.cookieBehavior", 1);
+                              Impact: Blocking third-party cookies may adversely effect the functionality of some sites.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.2', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.3":
+    title: '6.3 | L1 Tracking Protection'
+    section: 'Privacy Settings'
+    description: |
+        These settings instruct the browser to communicate the preference not to be tracked to websites to which it connects,
+        and additionally attempt to block tracking.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("privacy.donottrackheader.enabled", true);
+        lockPref("privacy.donottrackheader.value", 1); lockPref("privacy.trackingprotection.enabled ", true);
+        lockPref("privacy.trackingprotection.pbmode", true);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.3', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.4":
+    title: '6.4 | L1 Set Delay for Enabling Security Sensitive Dialog Boxes'
+    section: 'Privacy Settings'
+    description: |
+        This feature sets the amount of time in milliseconds that elapse before the buttons on securitysensitive dialog boxes
+        are enabled.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("security.dialog_enable_delay", 2000);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.4', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.5":
+    title: '6.5 | L1 Disable Geolocation Serivces'
+    section: 'Privacy Settings'
+    description: |
+        This settings determines whether Firefox will provide geographic location information to websites.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("geo.enabled", false);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.5', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "7.1":
+    title: '7.1 | L1 Secure Application Plug-ins'
+    section: 'Extensions and Add-ons'
+    description: |
+        Some active content such as audio and video can be automatically loaded by Firefox on websites. It is recommended to
+        secure application plugins.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("browser.helperApps.alwaysAsk.force", true);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_7.1', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "7.2":
+    title: '7.2 | L1 Disabling Auto-Install of Add-ons'
+    section: 'Extensions and Add-ons'
+    description: |
+        This configuration will show how to ensure that no website is allowed to automatically install AddOns. Also, it will
+        list how to ensure that proper notifications are shown when installing AddOns.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("xpinstall.whitelist.required", true);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_7.2', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "7.3":
+    title: '7.3 | L1 Enable Extension Block List'
+    section: 'Extensions and Add-ons'
+    description: |
+        This feature enables Mozilla to retrieve a list of blocked applications from the server.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("extensions.blocklist.enabled", true);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_7.3', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "7.4":
+    title: '7.4 | L1 Set Extension Block List Interval'
+    section: 'Extensions and Add-ons'
+    description: |
+        This feature determines how often Mozilla will attempt to retrieve a list of blocked applications from the server.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("extensions.blocklist.interval", 86400);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_7.4', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "7.5":
+    title: '7.5 | L1 Enable Warning for External Protocol Handler'
+    section: 'Extensions and Add-ons'
+    description: |
+        This feature indicates whether the user is warned before opening an external application for preconfigured protocols
+        were its behavior is undefined.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("network.protocol-handler.warn-external-default", true);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_7.5', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "7.6":
+    title: '7.6 | L1 Disable Popups Initiated by Plugins'
+    section: 'Extensions and Add-ons'
+    description: |
+        This feature controls popups that are initiated by plugins.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("privacy.popups.disable_from_plugins", 2)
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_7.6', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "7.7":
+    title: '7.7 | L1 Enable Extension Auto Update'
+    section: 'Extensions and Add-ons'
+    description: |
+        This feature configures Firefox to automatically download and install updates as they are made available.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("extensions.update.autoUpdateDefault", true)
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_7.7', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "7.8":
+    title: '7.8 | L1 Enable Extension Update'
+    section: 'Extensions and Add-ons'
+    description: |
+        This feature configures Firefox to prompt when updates are made available.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("extensions.update.enabled", true)
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_7.8', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "7.9":
+    title: '7.9 | L1 Set Extension Update Interval Time Checks'
+    section: 'Extensions and Add-ons'
+    description: |
+        This feature sets the amount of time the system waits between checking for updates.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("extensions.update.interval", 86400)
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_7.9', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "8.1":
+    title: '8.1 | L1 Enable Virus Scanning for Downloads'
+    section: 'Malware Settings'
+    description: |
+        This feature configures the browser to scan downloads for viruses.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("browser.download.manager.scanWhenDone", true);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_8.1', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "8.2":
+    title: '8.2 | L1 Disable JAR from Opening Unsafe File Types'
+    section: 'Malware Settings'
+    description: |
+        This feature gives the user the ability to override the restriction on only loading files with  application/javaarchive
+        or  application/xjar  content types .
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg :  lockPref("network.jar.open-unsafe-types", false);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_8.2', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "8.3":
+    title: '8.3 | L1 Block Reported Web Forgeries'
+    section: 'Malware Settings'
+    description: |
+        This feature alerts the user if they are visiting a known phishing website.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("browser.safebrowsing.enabled", true);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_8.3', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "8.4":
+    title: '8.4 | L1 Block Reported Attack Sites'
+    section: 'Malware Settings'
+    description: |
+        This feature alerts the user if they are visiting a known malicious website.
+    remediation: |
+        Perform the following procedure: Open the  mozilla.cfg  file in the installation directory with a text editor Add the
+        following lines to  mozilla.cfg : lockPref("browser.safebrowsing.malware.enabled", true);
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_8.4', 'cis_mozilla_firefox_38_esr_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:

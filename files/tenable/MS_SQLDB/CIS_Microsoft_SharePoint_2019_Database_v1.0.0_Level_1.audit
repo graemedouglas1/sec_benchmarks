@@ -1,0 +1,317 @@
+#TRUSTED 842700c7839a21b89f0920182cfeb4ce3b371396f3949739b6b11b812ede424667655457738d3a33ca2017f80d7b73aadd284280f68e439bf0e74bc48f4c446287b5302809750e4adc41d88429132e180e9430c2c76783ec0c5dd980ee2a901147d6dc49b3e3f683e1b54041e62b76ec0b8b2cd25291c240f0ceef9031c1584931edc2ad9e56a42740aeed1c29ea4087f743ebe229269b4b7b0c07a85090c87f58d615a26f85ccfd471881d591368c8465fa965e140ff9b7a89c49e5e569eafe3bc5061d59660ee7973467a271c5071bea18e6dbefaf44fde7668042b96744b13e3250a77b09a97111629c75b18ec9c7628266f9605734f6c99e8f42f684da2b4cde08935ba057444405f7460e9ddeaf421b65d6cd13a8e40c41c55a45219e2e7d92118218e117164cdf8da9d099221148bf278a9747cba7bfb2c06d3127b64ae95a38dc66f8b7f7e1e0db370dba65a98733b71fe998dc84d1eb2b68fc57f828b3555b217ab325b92cc4d86aa895a07300d02acbe63611f1adefba81d367415463d0218c6f834a17e4699e3492904c4dcaa65963a9179bd423c45221b0d38ca8fb85e0d382e8cc45d22035f177956ae0d93ba2825adf6bfb2ddef23f7fd5547b21980097ff7361a64cd4951659d9eff1277bca3017c0f0998a2fb768c295909d775e6d18395e327ee12181aade49d9ad9e7e1760c5c607c188d34eb320299249
+#TRUST-RSA-SHA256 2c4981451669d613ce5ee22b13fd5dbeb4a70635bcc5624460d899b93280a6feada3238b9108bb9e1c5f6302a07bfa0bdfb25de76910b544d6d0be203489da268ee1cf135a1b430ce5a382fbef6d8127429db38a076d246214eac9746b0131912c0639f2bf7efe676e4f2bce9f19872cffd1e99487ab21f845e27796e652f52112cabe0ae1a4714e8fb367de80e284ecdfba2b373e32b045f2133f43bc480a402ce74c4dee77b88c15f785a0ac1834e80c73b8bf0ff68ff300a35b0055979f1bcacbf5e941352cb23b1c5940fe9ed2b8cb9ad674cfa5c2e45c3f55ec1106ea5002f0e8b0901fa3baf68751d316655e721c9924d5f6874fab3bafd7ff13f740cacee98abc5217f259a0acf7d1f94ad3e85e3766765185a37c61f0303e1d5e21bc46ee30375bfff60c08ebb2e0028867986834cb531e676f58be36c74136c3e36bc0fc790dffd98748d6bed542bbe79450b8c3d1d8dca4fca1071fc3be3e179d4846c0c80cd209c8c6c2bdfe91a688fe7b505caabc1edbc1360e9886924f3df75b4546d0adf69fe19e861d8b90a11a50e2879031ad63ba76273bec8792858ecb070218159f132652cc06262e7c500a884a6bbff8eaefb08564b95aca95b943f6a64efeb059d9bc3e4157005c13f9a2817c7e948f1879167d52ac98046e753a4aa5d94fafa208b91db5c49de45b0f2f8eb5bf4e769928d5735b332a43f8456a5151
+#
+# This script is Copyright (C) 2004-2024 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.1 $
+# $Date: 2024/06/17 $
+#
+# description : This document implements the security configuration as recommended by the
+#               CIS Microsoft SharePoint 2019 Benchmark v1.0.0
+#
+#               https://workbench.cisecurity.org/files/2395
+#
+#<ui_metadata>
+#<display_name>CIS Microsoft SharePoint 2019 DB v1.0.0</display_name>
+#<spec>
+#  <type>CIS</type>
+#  <name>Microsoft SharePoint 2019</name>
+#  <profile>L1</profile>
+#  <version>1.0.0</version>
+#  <link>https://workbench.cisecurity.org/files/2395</link>
+#</spec>
+#<labels>windows,cis,microsoft,sharepoint,sharepoint_2019,database,sql,update_20230227</labels>
+#<benchmark_refs>CCE,CIS_Recommendation,CSCv6,CSCv7,CSCv8,LEVEL</benchmark_refs>
+#<variables>
+#  <variable>
+#    <name>FARM_SVC_ACCT</name>
+#    <default>farmsvcaccount</default>
+#    <description>SharePoint farm service account</description>
+#    <info>The name of the Active Directory account used to run SharePoint services.</info>
+#    <value_type>SQL_REQUEST_VALUE</value_type>
+#  </variable>
+#</variables>
+#</ui_metadata>
+
+<check_type:"MS_SQLDB">
+
+<if>
+  <condition type:"AND">
+    <custom_item>
+      type        : SQL_POLICY
+      description : "Check for only 2 roles defined"
+      sql_request : "SELECT count(role.name) AS RoleName FROM sys.server_role_members JOIN sys.server_principals AS role ON sys.server_role_members.role_principal_id = role.principal_id JOIN sys.server_principals AS member ON sys.server_role_members.member_principal_id = member.principal_id where member.name = '@FARM_SVC_ACCT@';"
+      sql_types   : STRING
+      sql_expect  : "2"
+    </custom_item>
+
+    <custom_item>
+      type        : SQL_POLICY
+      description : "Check for dbcreator role"
+      sql_request : "SELECT role.name AS RoleName FROM sys.server_role_members JOIN sys.server_principals AS role ON sys.server_role_members.role_principal_id = role.principal_id JOIN sys.server_principals AS member ON sys.server_role_members.member_principal_id = member.principal_id where member.name = '@FARM_SVC_ACCT@' AND role.name = 'dbcreator';"
+      sql_types   : STRING
+      sql_expect  : "dbcreator"
+    </custom_item>
+
+    <custom_item>
+      type        : SQL_POLICY
+      description : "Check for securityadmin role"
+      sql_request : "SELECT role.name AS RoleName FROM sys.server_role_members JOIN sys.server_principals AS role ON sys.server_role_members.role_principal_id = role.principal_id JOIN sys.server_principals AS member ON sys.server_role_members.member_principal_id = member.principal_id where member.name = '@FARM_SVC_ACCT@' AND role.name = 'securityadmin';"
+      sql_types   : STRING
+      sql_expect  : "securityadmin"
+    </custom_item>
+  </condition>
+
+  <then>
+    <custom_item>
+      type        : SQL_POLICY
+      description : "2.4 Ensure the SharePoint setup account is configured with the minimum privileges on the SQL server."
+      info        : "The SharePoint setup account must be configured with the minimum privileges on the SQL
+    server.
+
+    Rationale:
+
+    Having the SharePoint setup account be configured with the minimum necessary privileges
+    on the SQL server would help reduce the risks related to account misuse. When excessive
+    roles are given to any SQL server accounts, the potential impact of actions performed
+    through the account increases. Malicious action performed by compromised accounts in
+    the control of an attacker, or even honest mistakes and gaffes performed by valid users can
+    have vast devastating consequences, depending on the roles and privileges given."
+      solution    : "1. Launch SQL Server Management Console and navigate to Security > Logins.
+    2. Select the SharePoint Setup User account.
+    3. Click on Server Roles and check only dbcreator and securityadmin."
+      reference   : "CSCv6|5.1,LEVEL|1A"
+      see_also    : "https://workbench.cisecurity.org/files/2395"
+      sql_request : "SELECT role.name AS RoleName FROM sys.server_role_members JOIN sys.server_principals AS role ON sys.server_role_members.role_principal_id = role.principal_id JOIN sys.server_principals AS member ON sys.server_role_members.member_principal_id = member.principal_id where member.name = '@FARM_SVC_ACCT@' ORDER BY RoleName;"
+      sql_types   : REGEX
+      sql_expect  : ".*"
+    </custom_item>
+  </then>
+
+  <else>
+    <custom_item>
+      type        : SQL_POLICY
+      description : "2.4 Ensure the SharePoint setup account is configured with the minimum privileges on the SQL server."
+      info        : "The SharePoint setup account must be configured with the minimum privileges on the SQL
+    server.
+
+    Rationale:
+
+    Having the SharePoint setup account be configured with the minimum necessary privileges
+    on the SQL server would help reduce the risks related to account misuse. When excessive
+    roles are given to any SQL server accounts, the potential impact of actions performed
+    through the account increases. Malicious action performed by compromised accounts in
+    the control of an attacker, or even honest mistakes and gaffes performed by valid users can
+    have vast devastating consequences, depending on the roles and privileges given."
+      solution    : "1. Launch SQL Server Management Console and navigate to Security > Logins.
+    2. Select the SharePoint Setup User account.
+    3. Click on Server Roles and check only dbcreator and securityadmin."
+      reference   : "CSCv6|5.1,LEVEL|1A"
+      see_also    : "https://workbench.cisecurity.org/files/2395"
+      sql_request : "SELECT role.name AS RoleName FROM sys.server_role_members JOIN sys.server_principals AS role ON sys.server_role_members.role_principal_id = role.principal_id JOIN sys.server_principals AS member ON sys.server_role_members.member_principal_id = member.principal_id where member.name = '@FARM_SVC_ACCT@' ORDER BY RoleName;"
+      sql_types   : STRING
+      sql_expect  : "Failed"
+    </custom_item>
+  </else>
+</if>
+
+<if>
+  <condition type:"AND">
+    <custom_item>
+      type        : SQL_POLICY
+      description : "Check for only 2 roles defined"
+      sql_request : "SELECT count(role.name) AS RoleName FROM sys.server_role_members JOIN sys.server_principals AS role ON sys.server_role_members.role_principal_id = role.principal_id JOIN sys.server_principals AS member ON sys.server_role_members.member_principal_id = member.principal_id where member.name = '@FARM_SVC_ACCT@';"
+      sql_types   : STRING
+      sql_expect  : "2"
+    </custom_item>
+
+    <custom_item>
+      type        : SQL_POLICY
+      description : "Check for dbcreator role"
+      sql_request : "SELECT role.name AS RoleName FROM sys.server_role_members JOIN sys.server_principals AS role ON sys.server_role_members.role_principal_id = role.principal_id JOIN sys.server_principals AS member ON sys.server_role_members.member_principal_id = member.principal_id where member.name = '@FARM_SVC_ACCT@' AND role.name = 'dbcreator';"
+      sql_types   : STRING
+      sql_expect  : "dbcreator"
+    </custom_item>
+
+    <custom_item>
+      type        : SQL_POLICY
+      description : "Check for securityadmin role"
+      sql_request : "SELECT role.name AS RoleName FROM sys.server_role_members JOIN sys.server_principals AS role ON sys.server_role_members.role_principal_id = role.principal_id JOIN sys.server_principals AS member ON sys.server_role_members.member_principal_id = member.principal_id where member.name = '@FARM_SVC_ACCT@' AND role.name = 'securityadmin';"
+      sql_types   : STRING
+      sql_expect  : "securityadmin"
+    </custom_item>
+  </condition>
+
+  <then>
+    <custom_item>
+      type        : SQL_POLICY
+      description : "2.5 Ensure the SharePoint farm service account (database access account) is configured with the minimum privileges on the SQL server."
+      info        : "The SharePoint farm service account (database access account) must be configured with
+    the minimum privileges on the SQL server
+
+    Rationale:
+
+    Separation of duties is a prevalent Information Technology control implemented at
+    different layers of the information system including the operating system and in
+    applications. It serves to eliminate or reduce the possibility that a single user may carry out
+    a prohibited action. Separation of duties requires the person accountable for approving an
+    action not be the same person who is tasked with implementing the action.
+
+    This requirement is intended to limit exposure due to user accounts being used to operate
+    from within a privileged account or role. Limiting the access and permissions of privileged
+    accounts to the minimum required, reduces exposure if the account is compromised and
+    provides forensic history of activity when operating from these accounts.
+
+    This policy limits the Farm Account privileges in AD. However, default permissions for this
+    account are configured by the SharePoint Products Configuration Wizard during product
+    installation. This account is referred to during the installation as the Database Access
+    account. By default, the account is used as the service account for the SharePoint Timer
+    Service and the SharePoint Central Administration Web Site Application Pool. These
+    settings should not be changed. Furthermore, this account should not be used as the service
+    account for non-privileged services, applications, or application pools."
+      solution    : "1. Launch the SQL Server Management Console and navigate to Security > Logins.
+    2. Select the SharePoint farm service account.
+    3. Click on Server Roles and check ONLY dbcreator and securityadmin."
+      reference   : "CSCv6|5.1,LEVEL|1A"
+      see_also    : "https://workbench.cisecurity.org/files/2395"
+      sql_request : "SELECT role.name AS RoleName FROM sys.server_role_members JOIN sys.server_principals AS role ON sys.server_role_members.role_principal_id = role.principal_id JOIN sys.server_principals AS member ON sys.server_role_members.member_principal_id = member.principal_id where member.name = '@FARM_SVC_ACCT@' ORDER BY RoleName;"
+      sql_types   : REGEX
+      sql_expect  : ".*"
+    </custom_item>
+  </then>
+
+  <else>
+    <custom_item>
+      type        : SQL_POLICY
+      description : "2.5 Ensure the SharePoint farm service account (database access account) is configured with the minimum privileges on the SQL server."
+      info        : "The SharePoint farm service account (database access account) must be configured with
+    the minimum privileges on the SQL server
+
+    Rationale:
+
+    Separation of duties is a prevalent Information Technology control implemented at
+    different layers of the information system including the operating system and in
+    applications. It serves to eliminate or reduce the possibility that a single user may carry out
+    a prohibited action. Separation of duties requires the person accountable for approving an
+    action not be the same person who is tasked with implementing the action.
+
+    This requirement is intended to limit exposure due to user accounts being used to operate
+    from within a privileged account or role. Limiting the access and permissions of privileged
+    accounts to the minimum required, reduces exposure if the account is compromised and
+    provides forensic history of activity when operating from these accounts.
+
+    This policy limits the Farm Account privileges in AD. However, default permissions for this
+    account are configured by the SharePoint Products Configuration Wizard during product
+    installation. This account is referred to during the installation as the Database Access
+    account. By default, the account is used as the service account for the SharePoint Timer
+    Service and the SharePoint Central Administration Web Site Application Pool. These
+    settings should not be changed. Furthermore, this account should not be used as the service
+    account for non-privileged services, applications, or application pools."
+      solution    : "1. Launch the SQL Server Management Console and navigate to Security > Logins.
+    2. Select the SharePoint farm service account.
+    3. Click on Server Roles and check ONLY dbcreator and securityadmin."
+      reference   : "CSCv6|5.1,LEVEL|1A"
+      see_also    : "https://workbench.cisecurity.org/files/2395"
+      sql_request : "SELECT role.name AS RoleName FROM sys.server_role_members JOIN sys.server_principals AS role ON sys.server_role_members.role_principal_id = role.principal_id JOIN sys.server_principals AS member ON sys.server_role_members.member_principal_id = member.principal_id where member.name = '@FARM_SVC_ACCT@' ORDER BY RoleName;"
+      sql_types   : STRING
+      sql_expect  : "Failed"
+    </custom_item>
+  </else>
+</if>
+
+<custom_item>
+  type        : SQL_POLICY
+  description : "2.8 Ensure Dbcreator and Securityadmin roles are only used as needed"
+  info        : "In certain situations, database administrators (DBAs) may want to operate independently
+from SharePoint 2016 administrators and create and manage all the databases. This is
+typical in IT environments where security requirements and company policies require a
+separation of administrator roles. The farm administrator provides SharePoint 2016
+database requirements to the DBA, who then creates the necessary databases and sets up
+the logins that are required for the farm.
+
+Rationale:
+
+The ability to grant access to the database engine and to configure user permissions allows
+the securityadmin to assign most server permissions. You should treat the securityadmin
+role as equal to the sysadmin role.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+  solution    : "Using SQL Server Management Studio access Object Explorer.
+
+1. Expand the server in which you want to view a fixed server role.
+2. Expand the Security folder.
+3. Expand the Server Roles folder.
+4. Right-click the dbcreator or securityadmin role and select Properties.
+5. In the dbcreator or securityadmin dialog box, on the Members page click the list of
+members.
+6. Remove the members from the list."
+  reference   : "800-171|3.1.5,800-53|AC-6(1),800-53r5|AC-6(1),CN-L3|7.1.3.2(b),CN-L3|7.1.3.2(g),CN-L3|8.1.4.2(d),CN-L3|8.1.10.6(a),CSCv6|5.1,CSF|PR.AC-4,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ISO/IEC-27001|A.9.4.4,ITSG-33|AC-6(1),LEVEL|1M,NESA|T5.1.1,NESA|T5.4.4,NESA|T5.5.4,NESA|T5.6.1,NESA|T7.5.3,NIAv2|AM31,NIAv2|GS3,NIAv2|GS4,NIAv2|GS8c,NIAv2|VL3b,PCI-DSSv3.2.1|7.1.2,PCI-DSSv4.0|7.2.1,PCI-DSSv4.0|7.2.2,QCSC-v1|5.2.2,QCSC-v1|6.2,SWIFT-CSCv1|5.1,TBA-FIISB|31.4.2,TBA-FIISB|31.4.3"
+  see_also    : "https://workbench.cisecurity.org/files/2395"
+  sql_request : "SELECT member.name, role.name AS RoleName FROM sys.server_role_members JOIN sys.server_principals AS role ON sys.server_role_members.role_principal_id = role.principal_id JOIN sys.server_principals AS member ON sys.server_role_members.member_principal_id = member.principal_id WHERE role.name = 'dbcreator' OR role.name = 'securityadmin';"
+  sql_types   : STRING, STRING
+  sql_expect  : "", ""
+  severity    : MEDIUM
+</custom_item>
+
+<custom_item>
+  type        : SQL_POLICY
+  description : "6.1 Ensure that the SQL Server component to SharePoint is set to listen on non-default ports, with the defaults (UDP 1434 and TCP 1433) disabled"
+  info        : "The default instance of SQL Server listens for client requests on TCP 1433. By default, client
+computers that connect to SQL Server first connect by using TCP 1433. If this
+communication is unsuccessful, the client computers query the SQL Server Resolution
+Service that is listening on UDP 1434 to determine the port on which the database instance
+is listening.
+
+Rationale:
+
+The default port-communication behavior of SQL Server introduces several issues that
+affect server hardening. First, the ports used by SQL Server are well-publicized ports and
+the SQL Server Resolution Service has been the target of buffer overrun attacks and denial-
+of-service attacks, including the 'Slammer' worm virus. Even if SQL Server is updated to
+mitigate security issues in the SQL Server Resolution Service, the well-publicized ports
+remain a target. Second, if databases are installed on a named instance of SQL Server, the
+corresponding communication port is randomly assigned and can change. This behavior
+can potentially prevent server-to-server communication in a hardened environment."
+  solution    : "1. Verify that the User account that is performing this procedure is a member of
+either the sysadmin or the serveradmin fixed server role.
+2. Navigate to SQL Server Configuration Manager on the computer that is running
+SQL Server.
+3. Expand SQL Server Network Configuration in the navigation pane.
+4. Click the corresponding entry for the instance that you are examining. The default
+instance is listed as Protocols for MSSQLSERVER. Named instances will appear as
+Protocols for named_instance.
+5. Right-click TCP/IP in the main window in the Protocol Name column,
+6. Click on Properties.
+7. Click on the IP Addresses tab.
+For every IP address that is assigned to the computer that is running SQL Server,
+there is a corresponding entry on this tab. By default, SQL Server listens on all IP
+addresses that are assigned to the computer.
+
+To globally examine the port that the default instance is listening on, follow these
+steps:
+
+1. For each IP address except IPAll, examine all values for both TCP dynamic ports
+and TCP Port and confirm UDP 1434 and TCP 1433 are blocked.
+2. For IPAll, examine the value for TCP dynamic ports and confirm UDP 1434 and
+TCP 1433 are blocked.
+
+Default Value:
+
+No ports are blocked."
+  reference   : "800-171|3.4.6,800-171|3.4.7,800-53|CM-7b.,800-53r5|CM-7b.,CN-L3|7.1.3.5(c),CN-L3|7.1.3.7(d),CN-L3|8.1.4.4(b),CSCv6|9,CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-7a.,LEVEL|1M,NIAv2|SS13b,NIAv2|SS14a,NIAv2|SS14c,PCI-DSSv3.2.1|2.2.2,PCI-DSSv4.0|2.2.4,QCSC-v1|3.2,SWIFT-CSCv1|2.3"
+  see_also    : "https://workbench.cisecurity.org/files/2395"
+  sql_request : "select local_tcp_port from sys.dm_exec_connections where local_tcp_port = 1433;"
+  sql_types   : REGEX
+  sql_expect  : "[^1][^4][^3][^3]"
+</custom_item>
+
+</check_type>

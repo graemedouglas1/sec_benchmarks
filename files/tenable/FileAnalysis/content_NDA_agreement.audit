@@ -1,0 +1,60 @@
+#TRUSTED a29b9207b93ae62121d0e5dd7d56768bbe40ea669327223daae201a8e2f66a9623d5bf5e88aec6365cab95405b6625a5b84f7d2e8fb3cecbbda453250966afab6c83bf812bfe7e46ac23dc5fa19577700468ff62731d7e9becf63298e6284743ff561c1a0d73045635ba9cb68302684b4a3075dbf705192fd5e835bd599587eeff82aa6c942d9cda2ea5bc95f642a1e60587eeba35c8e3b312a4e6bcf522d0ab324cffb25dba00b480e1485b1d99e0b182737348d19a95c1db637243011fc1c7c768dced283df7e874f6d58b3ceb7a7e19dbeaac2122c606120ad6e970d60e91e2d6cddfc9094dc62576c0d518ce1dd798a08e75bf31280d73164433cd19a48323aeff7ebfff8377420187bf07ff85c6d963baa09ae81a32bdeff08736e227c4d2fe805bb35f596fa54db3cf6c41450bfcac7380445281f272e301e9e0e6585108a8ae39e3cb19b65a43d386acf1a670944a1de9621d4eda9f0dff113b2088ab67bdc323747ed3ea5bccd19ef0e2c4abe7fd231743621c594b15919e05d1ab89b61cb81363ca2748d3e4a6abd8e8a04e4432ac0d9a58f0c1c115475e33bf1341200c2626f83d2a2c4c60ec01f9db728d9fd929e2c0f07580f094cdbae2b6e541a364b8d3552eb344375d4e00dca007afc0559f9bc66b92788a63ecd7aead52f7ce4a130ca9d484db9e3a9eb37c50308dbb534c98169356ced5ff3f5c4d9fd4d7
+#TRUST-RSA-SHA256 548f968732706b180b4a8b1ef970e64efbb7b71ae0a380a842a1cec109b2beee01731e4a1ea902ca2ea159a7a6c69f9eace2ad2450343aa22fa4b929b1f35fd0b8933fdab5b9144d2fdeee9ec15ff7534de702dd045d5246b647031036655be5411d00f971d11c3689939278c9083b8f9cc1d62c5a422f46fe58a8ec559c57700e72c66cbd691ddb989592563f1c10e3d8b17888d45e8e9d9764e68464cb034c4b17a50017a81e6c942192db628cfb1eddd30a4619c4a5a5c8fa5e5c8afe2212ce7f182045c6e6f8cec3c7d1e75af495d77fc914509bc4bc674946bfb097b74ddd2c1f4c3479b5f2286534f06d263aef301c35f5d5a8b826e3af42fd96ebdb19ff472da991e83e035b69e6938e436852ac2d030811baedf3cad7b1313ce625ab2743d09d4c45ae47e6965ede9b1b3884d8e1cbefa250716de7232cded0951970094be85086108dc5ccb9813b90de76e6e0028c3b5621131338fda2bbb285e001e5ed1d8031c7769e34b0522f95cb1714888a8a7516c6934d6a879634ab7ad6a8ce79cb1f0029114e201b9ba012823859bd881180cc5ddd6c35f899342cbdd3e7d98bfc813a7eec6ab34d8b0460c611bf5e125df13cabdc6cb74ea74f22eef75517a46ceedf434347f36369f7e47bb43b1d5747f8e096fa10f2d0cdc224fa1f42cf907aa76cf19f6fdd7fa34a0b9d90018d6c0acfb435c630c71bebe9f580d836
+#
+# This script is Copyright (C) 2004-2023 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.9 $
+# $Date: 2023/03/07 $
+#
+# This .audit file looks for Non-Disclosure agreements
+#
+# The first rule searches for a generic NDA within a
+# PDF or DOC file
+#
+# The second rule is commented out but could include a
+# specific company name which you wished to search for
+# within an NDA.  For instance, if your company was being
+# acquired and you were going through due diligence with
+# company X, you could search for NDA agreements between
+# your company X and company Y.
+#
+#<ui_metadata>
+#<display_name>TNS File Analysis - Non-Disclosure Agreements</display_name>
+#<spec>
+#  <type>TNS</type>
+#  <name>File Analysis - Non-Disclosure Agreements</name>
+#  <version>1.0.0</version>
+#</spec>
+#<labels>filecontent,content,nda,agreement,update_20230227</labels>
+#</ui_metadata>
+
+<check_type:"FileContent">
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "DLP - Determine if a file is a Non-disclosure agreement"
+  file_extension : "pdf" | "doc"
+  expect         : "Disclosure" | "Agreement" | "NDA"
+  regex          : "[nN]on.[dD]isclosure[ ]+[aA]greement"
+  max_size       : "10K"
+</item>
+
+#<item>
+#        type: FILE_CONTENT_CHECK
+#        description: "DLP - Determine if a file is a specific Non-disclosure agreement"
+#        file_extension: "pdf" | "doc"
+#        expect: "Disclosure" | "Agreement" | "NDA"
+#        regex: "[nN]on.[dD]isclosure[ ]+[aA]greement.*between.*CompanyX.*CompanyY"
+#        max_size : "10K"
+#</item>
+
+</check_type>

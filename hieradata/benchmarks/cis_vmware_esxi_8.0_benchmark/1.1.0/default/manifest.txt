@@ -1,0 +1,133 @@
+1.1 - L1 Host hardware must have auditable authentic and up to date system  device firmware - manual
+1.2 - L1 Host hardware must enable UEFI Secure Boot - manual
+1.3 - L1 Host hardware must enable Intel TXT if available - manual
+1.4 - L1 Host hardware must enable and configure a TPM 2.0 - manual
+1.5 - L1 Host integrated hardware management controller must be secure - manual
+1.6 - L1 Host integrated hardware management controller must enable time synchronization - manual
+1.7 - L1 Host integrated hardware management controller must enable remote logging of events - manual
+1.8 - L1 Host integrated hardware management controller must secure authentication - manual
+1.9 - L2 Host hardware must enable AMD SEV-ES if available - manual
+1.10 - L2 Host hardware must enable Intel SGX if available - manual
+1.11 - L2 Host hardware must secure unused external hardware ports - manual
+1.12 - L2 Host integrated hardware management controller must deactivate internal networking - manual
+2.1 - L1 Host must run software that has not reached End of General Support status - manual
+2.2 - L1 Host must have all software updates installed - manual
+2.3 - L1 Host must enable Secure Boot enforcement - manual
+2.4 - L1 Host image profile acceptance level must be PartnerSupported or higher
+2.5 - L1 Host must only run binaries delivered via signed VIB - manual
+2.6 - L1 Host must have reliable time synchronization sources
+2.7 - L1 Host must have time synchronization services enabled and running - manual
+2.8 - L1 Host must require TPM-based configuration encryption - manual
+2.9 - L1 Host must not suppress warnings about unmitigated hyperthreading vulnerabilities - manual
+2.10 - L1 Host must restrict inter-VM transparent page sharing
+2.11 - L1 Host must use sufficient entropy for cryptographic operations - manual
+2.12 - L2 Host must enable volatile key destruction - manual
+3.1 - L1 Host should deactivate SSH
+3.2 - L1 Host must deactivate the ESXi shell
+3.3 - L1 Host must deactivate the ESXi Managed Object Browser MOB
+3.4 - L1 Host must deactivate SLP - manual
+3.5 - L1 Host must deactivate CIM - manual
+3.6 - L1 Host should deactivate SNMP - manual
+3.7 - L1 Host must automatically terminate idle DCUI sessions
+3.8 - L1 Host must automatically terminate idle shells
+3.9 - L1 Host must automatically deactivate shell services
+3.10 - L1 Host must not suppress warnings that the shell is enabled - manual
+3.11 - L1 Host must enforce password complexity - manual
+3.12 - L1 Host must lock an account after a specified number of failed login attempts
+3.13 - L1 Host must unlock accounts after a specified timeout period
+3.14 - L1 Host must configure the password history setting to restrict the reuse of passwords - manual
+3.15 - L1 Host must be configured with an appropriate maximum password age - manual
+3.16 - L1 Host must configure a session timeout for the API - manual
+3.17 - L1 Host must automatically terminate idle host client sessions - manual
+3.18 - L1 Host must have an accurate DCUI.Access list
+3.19 - L1 Host must have an accurate Exception Users list - manual
+3.20 - L1 Host must enable normal lockdown mode
+3.21 - L2 Host should enable strict lockdown mode
+3.22 - L1 Host must deny shell access for the dcui account - manual
+3.23 - L2 Host must deny shell access for the vpxuser account - manual
+3.24 - L1 Host must display a login banner for the DCUI and Host Client - manual
+3.25 - L1 Host must display a login banner for SSH connections - manual
+3.26 - L1 Host must enable the highest version of TLS supported - manual
+4.1 - L1 Host must configure a persistent log location for all locally stored system logs - manual
+4.2 - L1 Host must transmit system logs to a remote log collector
+4.3 - L1 Host must log sufficient information for events - manual
+4.4 - L1 Host must set the logging informational level to info - manual
+4.5 - L1 Host must deactivate log filtering - manual
+4.6 - L1 Host must enable audit record logging - manual
+4.7 - L1 Host must configure a persistent log location for all locally stored audit records - manual
+4.8 - L1 Host must store one week of audit records - manual
+4.9 - L1 Host must transmit audit records to a remote log collector - manual
+4.10 - L1 Host must verify certificates for TLS remote logging endpoints - manual
+4.11 - L1 Host must use strict x509 verification for TLS-enabled remote logging endpoints - manual
+5.1 - L1 Host firewall must only allow traffic from authorized networks - manual
+5.2 - L1 Host must block network traffic by default - manual
+5.3 - L1 Host must restrict use of the dvFilter network API - manual
+5.4 - L1 Host must filter Bridge Protocol Data Unit BPDU packets - manual
+5.5 - L2 Host should deactivate virtual hardware management network interfaces - manual
+5.6 - L1 Host should reject forged transmits on standard virtual switches and port groups
+5.7 - L1 Host should reject MAC address changes on standard virtual switches and port groups
+5.8 - L1 Host should reject promiscuous mode requests on standard virtual switches and port groups
+5.9 - L1 Host must restrict access to a default or native VLAN on standard virtual switches
+5.10 - L1 Host must restrict the use of Virtual Guest Tagging VGT on standard virtual switches
+5.11 - L1 Host must isolate management communications - manual
+6.1.1 - L1 Host CIM services if enabled must limit access - manual
+6.2.1 - L1 Host must isolate storage communications - manual
+6.2.2 - L1 Host must ensure all datastores have unique names - manual
+6.3.1 - L1 Host iSCSI client if enabled must employ bidirectionalmutual CHAP authentication
+6.3.2 - L1 Host iSCSI client if enabled must employ unique CHAP authentication secrets - manual
+6.4.1 - L1 Host SNMP services if enabled must limit access - manual
+6.5.1 - L1 Host SSH daemon if enabled must use FIPS 140-2140-3 validated ciphers - manual
+6.5.2 - L1 Host SSH daemon if enabled must use FIPS 140-2140-3 validated cryptographic modules - manual
+6.5.3 - L1 Host SSH daemon if enabled must not allow use of gateway ports - manual
+6.5.4 - L1 Host SSH daemon if enabled must not allow host-based authentication - manual
+6.5.5 - L1 Host SSH daemon if enabled must set a timeout count on idle sessions - manual
+6.5.6 - L1 Host SSH daemon if enabled must set a timeout interval on idle sessions - manual
+6.5.7 - L1 Host SSH daemon if enabled must display the system login banner before granting access - manual
+6.5.8 - L1 Host SSH daemon if enabled must ignore .rhosts files - manual
+6.5.9 - L1 Host SSH daemon if enabled must disable stream local forwarding - manual
+6.5.10 - L1 Host SSH daemon if enabled must disable TCP forwarding - manual
+6.5.11 - L1 Host SSH daemon if enabled must not permit tunnels - manual
+6.5.12 - L1 Host SSH daemon if enabled must not permit user environment settings - manual
+7.1 - L1 Virtual machines must enable Secure Boot - manual
+7.2 - L1 Virtual machines must require encryption for vMotion - manual
+7.3 - L1 Virtual machines must require encryption for Fault Tolerance - manual
+7.4 - L1 Virtual machines should deactivate 3D graphics features when not required
+7.5 - L1 Virtual machines must be configured to lock when the last console connection is closed - manual
+7.6 - L1 Virtual machines must limit console sharing.
+7.7 - L1 Virtual machines must limit PCIPCIe device passthrough functionality
+7.8 - L1 Virtual machines must prevent unauthorized modification of devices
+7.9 - L1 Virtual machines must remove unnecessary audio devices - manual
+7.10 - L1 Virtual machines must remove unnecessary AHCI devices - manual
+7.11 - L1 Virtual machines must remove unnecessary USBXHCI devices
+7.12 - L1 Virtual machines must remove unnecessary serial port devices
+7.13 - L1 Virtual machines must remove unnecessary parallel port devices
+7.14 - L2 Virtual machines must remove unnecessary CDDVD devices
+7.15 - L1 Virtual machines must remove unnecessary floppy devices
+7.16 - L1 Virtual machines must deactivate console drag and drop operations
+7.17 - L1 Virtual machines must deactivate console copy operations
+7.18 - L1 Virtual machines must deactivate console paste operations
+7.19 - L1 Virtual machines must limit access through the dvfilter network API - manual
+7.20 - L1 Virtual machines must deactivate virtual disk shrinking operations
+7.21 - L1 Virtual machines must deactivate virtual disk wiping operations
+7.22 - L1 Virtual machines must restrict sharing of memory pages with other VMs - manual
+7.23 - L1 Virtual machines must not be able to obtain host information from the hypervisor
+7.24 - L1 Virtual machines must enable diagnostic logging - manual
+7.25 - L1 Virtual machines must limit the number of retained diagnostic logs
+7.26 - L1 Virtual machines must limit the size of diagnostic logs
+7.27 - L1 Virtual machines must limit informational messages from the virtual machine to the VMX file - manual
+7.28 - L2 Virtual machines should have virtual machine hardware version 19 or newer - manual
+8.1 - L1 VMware Tools must be a version that has not reached End of General Support status - manual
+8.2 - L1 VMware Tools must have all software updates installed - manual
+8.3 - L1 VMware Tools should configure automatic upgrades as appropriate for the environment - manual
+8.4 - L1 VMware Tools on deployed virtual machines must prevent being recustomized - manual
+8.5 - L1 VMware Tools must limit the automatic addition of features - manual
+8.6 - L1 VMware Tools must limit the automatic removal of features - manual
+8.7 - L1 VMware Tools must deactivate GlobalConf unless required - manual
+8.8 - L1 VMware Tools must deactivate ContainerInfo unless required - manual
+8.9 - L1 VMware Tools must deactivate Appinfo information gathering unless required - manual
+8.10 - L1 VMware Tools must deactivate Guest Store Upgrade operations unless required - manual
+8.11 - L1 VMware Tools must deactivate Service Discovery unless required - manual
+8.12 - L1 VMware Tools must limit the use of MSI transforms when reconfiguring VMware Tools - manual
+8.13 - L1 VMware Tools must enable VMware Tools logging - manual
+8.14 - L1 VMware Tools must send VMware Tools logs to the system log service - manual
+8.15 - L2 VMware Tools must deactivate Guest Operations unless required - manual

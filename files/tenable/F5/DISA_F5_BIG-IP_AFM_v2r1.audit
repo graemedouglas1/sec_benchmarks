@@ -1,0 +1,191 @@
+#TRUSTED a41b66b01778a3cd7a141a9acc8d872809b31cac69ac1ad41ec898f0c829e93c24dbef0f13610b1e5ea5829a3a273539350d652f1e4c0d18f71b246172f7d8ddd72a9c371d2d6f78fccc31d3ae0125070d04f5d20182e3e8eead7a31efe80903631d30dd4ac7401ecabdec4dfc5bd6061d22fa65a91f46b280448fbc4d0f210e21b1314a1ce7e73be4711131628bb9721fd2ac7a53d194da1106ecad2d5847f94faaffd04fb4da9c993d24a568baa1f379f3d24d25b429e65248718e6722a3a2bab7632899a65e2166f674c434a22290ff481bab4d7f6e281ece12322d04b76c7238a5664fe4249d753b21b8eaec1c11f9023dcbdc5fed211468ab97b309f9b8774ac1adb1b244802b0db64e652f7f6cc6cb95bea01a0c3eae617f2a26bb4908e1b5712cf856126d15f2bf405d3405092c1f463e197d230c20ea051011290fc080e404065d885ce74c165cda39e1841692ed71c60878b9d19910525dc76adba162e1726922068745ff92905007f3bccc344d989b5d7442625d1d91e2c86c2d952cc22db5833b04cc916965972a4c2a6f2ee72fbe87508feb462e48f12e25b093d61ba703942b39b9755b63000e2e76ce580bd9de8720499680b485ee51c82050c9ce8df6892a5ac693377f986db8f1b2b7ada0e3f0c4f59b8aa5d56169b502e68a0434f9dcf6edc3f859a7f29023056a74658bf08f9dfd7b78767f413739c798
+#TRUST-RSA-SHA256 791cd78a175353690aeacc972695123020c052627e2ad9b6f7afa742c6234bd8e28dc08d0b276f710af459796f332d4d49a31cadb28673ab63cb41767902d7838f354889463b71f549a7dce741be18300a13f7c4417bf86c1e63398320a0aa76d9cf704910c570999cf316855d235a651666257c71e23cc109329bb7c76962a69360b8c068d124b6f47ec0f0bc1c5f6f7afd6b7e0c597b2f0acb2a76cf8ad10a9fee95b2d63623a11db38663ee0861e5ce579762672e5f2d4081f974874c3fa999f153d9f8ea87b2fd602c871ef9cabfc2f5e48ecb5b92079bc6042e5e95255d719fd72041ad1a9c9e87dfea261f3f3dd8d1804fdc689ca1f06ba9d8140a1d5e7f6118749c7b44bfc74a0180c2fdd5c0b81053a3ea9d560a0b9b50f3edd958c6872e351c4f9352a3ba5ad192fbc001b52406f34759f3918831e7137bad1e0cbee0c1c6cc8a40f0d80d50b6dbd2fb919b007ca2b24b75be1b51a712d51d3a98cc1e7ad7959bb703683eaa64fc245b0913fe78468c6410d55784490564ababa2974c209cea481898398dd92ffe9780d6f13002e36d0aa9dacd410055f38c2bcfff9d07ff5ccbe7831575fe47d005881480b8e35b677eefa01ff7ac15e6623028240a1947dfa9b57f6ac169d6616c7479e47f28ae2c1722ac181c2d1d4da2c1a1467e8f436bb1e178a456b597ae0089c09f6f6408359aaa259fb23822135ad264e3
+#
+# This script is Copyright (C) 2004-2024 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.0 $
+# $Date: 2024/03/19 $
+#
+# Description : This document implements the security configuration as recommended by the
+#               DISA F5 BIG-IP Advanced Firewall Manager v2r1 STIG.
+#
+#<ui_metadata>
+#<display_name>DISA F5 BIG-IP Advanced Firewall Manager STIG v2r1</display_name>
+#<spec>
+#  <type>DISA STIG</type>
+#  <name>F5 BIG-IP Advanced Firewall Manager</name>
+#  <version>2.1.0</version>
+#  <link>https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_F5_BIG-IP_Y24M01_STIG.zip</link>
+#</spec>
+#<labels>disa,f5,f5_big-ip</labels>
+#<benchmark_refs>CAT,CCE,CCI,DISA_Benchmark,Group-ID,Rule-ID,STIG-ID,STIG-Legacy,Vuln-ID</benchmark_refs>
+#</ui_metadata>
+
+<check_type:"F5">
+
+<if>
+  <condition type:"AND">
+    <custom_item>
+      description    : "Verify the target returns expected F5 data"
+      f5_command     : "/tm/sys/software/volume"
+      json_transform : ".items[] | .product"
+      expect         : "^BIG-IP$"
+    </custom_item>
+  </condition>
+
+  <then>
+    <report type:"PASSED">
+      description : "DISA_F5_BIG-IP_AFM_v2r1.audit from DISA F5 BIG-IP Advanced Firewall Manager v2r1 STIG"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_F5_BIG-IP_Y24M01_STIG.zip"
+    </report>
+
+    <custom_item>
+      description    : "F5BI-AF-000005 - The BIG-IP AFM module must be configured to enforce approved authorizations for controlling the flow of information within the network based on attribute- and content-based inspection of the source, destination, headers, and/or content of the communications traffic."
+      info           : "Information flow control regulates where information is allowed to travel within a network. The flow of all network traffic must be monitored and controlled so it does not introduce any unacceptable risk to the network infrastructure or data.
+
+Information flow control policies and enforcement mechanisms are commonly employed by organizations to control the flow of information between designated sources and destinations (e.g., networks, individuals, devices) within information systems. Examples of information flow control restrictions include keeping export-controlled information from being transmitted in the clear to the Internet or blocking information marked as classified but being transported to an unapproved destination.
+
+Application Layer Gateways (ALGs) enforce approved authorizations by employing security policy and/or rules that restrict information system services, provide packet filtering capability based on header or protocol information and/or message filtering capability based on data content (e.g., implementing key word searches or using document characteristics).
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+      solution       : "If the BIG-IP AFM module is used to support user access control intermediary services for virtual servers, configure the BIG-IP AFM module to enforce approved authorizations for controlling the flow of information within the network based on attribute- and content-based inspection of the source, destination, headers, and/or content of the communications traffic."
+      reference      : "800-171|3.1.3,800-53|AC-4,800-53r5|AC-4,CAT|II,CCI|CCI-001368,CN-L3|8.1.10.2(c),CSF|DE.AE-1,CSF|ID.AM-3,CSF|PR.AC-4,CSF|PR.AC-5,CSF|PR.DS-5,CSF|PR.PT-4,DISA_Benchmark|F5_BIG-IP_Advanced_Firewall_Manager_11-x_STIG,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ITSG-33|AC-4,NESA|T4.2.1,NESA|T4.5.1,NESA|T4.5.3,NESA|T4.5.4,NESA|T5.4.6,NESA|T5.7.2,NESA|T7.5.2,NESA|T7.6.4,NIAv2|GS11a,NIAv2|GS12a,NIAv2|GS14a,NIAv2|GS15a,NIAv2|GS16a,NIAv2|NS13a,NIAv2|NS13b,NIAv2|NS13c,NIAv2|NS14,NIAv2|SS23,NIAv2|SS27a,NIAv2|SS27b,NIAv2|SS32,QCSC-v1|4.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|5.2.3,QCSC-v1|6.2,Rule-ID|SV-214498r395865_rule,STIG-ID|F5BI-AF-000005,STIG-Legacy|SV-74347,STIG-Legacy|V-59917,SWIFT-CSCv1|2.1,SWIFT-CSCv1|2.4,Vuln-ID|V-214498"
+      see_also       : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_F5_BIG-IP_Y24M01_STIG.zip"
+      f5_command     : "/tm/security/firewall/policy"
+      json_transform : ".items[].name"
+      expect         : "^Manual Review Required$"
+      severity       : MEDIUM
+    </custom_item>
+
+    <custom_item>
+      description    : "F5BI-AF-000007 - The BIG-IP AFM module must be configured to restrict or block harmful or suspicious communications traffic by controlling the flow of information between interconnected networks based on attribute- and content-based inspection of the source, destination, headers, and/or content of the communications traffic."
+      info           : "Information flow control regulates where information is allowed to travel within a network and between interconnected networks. Blocking or restricting detected harmful or suspicious communications between interconnected networks enforces approved authorizations for controlling the flow of traffic.
+
+This requirement applies to the flow of information between the Application Layer Gateway (ALG) when used as a gateway or boundary device which allows traffic flow between interconnected networks of differing security policies.
+
+The ALG installed and configured in such a way that restricts or blocks information flows based on guidance in the Ports, Protocols, & Services (PPSM) regarding restrictions for boundary crossing for ports, protocols, and services. Information flow restrictions may be implemented based on attribute- and content-based inspection of the source, destination, headers, and/or content of the communications traffic.
+
+The ALGs must be configured with policy filters (e.g., security policy, rules, and/or signatures) that restrict or block information system services; provide a packet filtering capability based on header information; and/or perform message filtering based on message content. The policy filters used depend upon the type of application gateway (e.g., web, email, or TLS).
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+      solution       : "If the BIG-IP AFM module is used to support user access control intermediary services for virtual servers, configure the BIG-IP AFM module to restrict or block harmful or suspicious communications traffic by controlling the flow of information between interconnected networks based on attribute- and content-based inspection of the source, destination, headers, and/or content of the communications traffic."
+      reference      : "800-171|3.1.3,800-53|AC-4,800-53r5|AC-4,CAT|I,CCI|CCI-001414,CN-L3|8.1.10.2(c),CSF|DE.AE-1,CSF|ID.AM-3,CSF|PR.AC-4,CSF|PR.AC-5,CSF|PR.DS-5,CSF|PR.PT-4,DISA_Benchmark|F5_BIG-IP_Advanced_Firewall_Manager_11-x_STIG,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ITSG-33|AC-4,NESA|T4.2.1,NESA|T4.5.1,NESA|T4.5.3,NESA|T4.5.4,NESA|T5.4.6,NESA|T5.7.2,NESA|T7.5.2,NESA|T7.6.4,NIAv2|GS11a,NIAv2|GS12a,NIAv2|GS14a,NIAv2|GS15a,NIAv2|GS16a,NIAv2|NS13a,NIAv2|NS13b,NIAv2|NS13c,NIAv2|NS14,NIAv2|SS23,NIAv2|SS27a,NIAv2|SS27b,NIAv2|SS32,QCSC-v1|4.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|5.2.3,QCSC-v1|6.2,Rule-ID|SV-214499r395868_rule,STIG-ID|F5BI-AF-000007,STIG-Legacy|SV-74351,STIG-Legacy|V-59921,SWIFT-CSCv1|2.1,SWIFT-CSCv1|2.4,Vuln-ID|V-214499"
+      see_also       : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_F5_BIG-IP_Y24M01_STIG.zip"
+      f5_command     : "/tm/security/firewall/policy"
+      json_transform : ".items[].name"
+      expect         : "^Manual Review Required$"
+      severity       : MEDIUM
+    </custom_item>
+
+    <custom_item>
+      description    : "F5BI-AF-000039 - The BIG-IP AFM module must be configured to produce audit records containing information to establish what type of events occurred."
+      info           : "Without establishing what type of event occurred, it would be difficult to establish, correlate, and investigate the events leading up to an outage or attack.
+
+Audit record content that may be necessary to satisfy this requirement includes, for example, event descriptions, success/fail indications, filenames involved, and access control or flow control rules invoked.
+
+Associating event types with detected events in the gateway logs provides a means of investigating an attack, recognizing resource utilization or capacity thresholds, or identifying an improperly configured network element.
+
+This requirement does not apply to audit logs generated on behalf of the device itself (management).
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+      solution       : "Configure the BIG-IP AFM module to produce audit records containing information to establish what type of events occurred.
+
+Navigate to the BIG-IP System manager >> Security >> Event Logs >> Logging Profiles.
+
+Click on 'Create'.
+
+Name the Profile.
+
+Check the box next to 'Network Firewall'.
+
+Configure settings to log required information.
+
+Click 'Finished'."
+      reference      : "800-171|3.3.1,800-171|3.3.2,800-53|AU-3,800-53r5|AU-3,CAT|II,CCI|CCI-000130,CN-L3|7.1.2.3(a),CN-L3|7.1.2.3(b),CN-L3|7.1.3.3(a),CN-L3|8.1.4.3(b),CSF|PR.PT-1,DISA_Benchmark|F5_BIG-IP_Advanced_Firewall_Manager_11-x_STIG,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ITSG-33|AU-3,NESA|T3.6.2,NIAv2|AM34a,NIAv2|AM34b,NIAv2|AM34c,NIAv2|AM34d,NIAv2|AM34e,NIAv2|AM34f,NIAv2|AM34g,PCI-DSSv3.2.1|10.3,PCI-DSSv3.2.1|10.3.1,PCI-DSSv3.2.1|10.3.2,PCI-DSSv3.2.1|10.3.3,PCI-DSSv3.2.1|10.3.4,PCI-DSSv3.2.1|10.3.5,PCI-DSSv3.2.1|10.3.6,PCI-DSSv4.0|10.2.2,QCSC-v1|8.2.1,QCSC-v1|13.2,Rule-ID|SV-214500r395919_rule,STIG-ID|F5BI-AF-000039,STIG-Legacy|SV-74353,STIG-Legacy|V-59923,SWIFT-CSCv1|6.4,Vuln-ID|V-214500"
+      see_also       : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_F5_BIG-IP_Y24M01_STIG.zip"
+      f5_command     : "/tm/security/log/profile"
+      json_transform : ".items[].name"
+      expect         : "^Manual Review Required$"
+      severity       : MEDIUM
+    </custom_item>
+
+    <if>
+      <condition auto:"WARNING" type:"AND">
+        <custom_item>
+          description    : "Virtual Servers"
+          f5_command     : "/tm/ltm/virtual"
+          json_transform : ".items[].name"
+          regex          : ".*"
+          expect         : "^Manual Review Required$"
+          severity       : MEDIUM
+        </custom_item>
+
+        <custom_item>
+          description    : "Security Policies"
+          f5_command     : "/tm/ltm/virtual"
+          json_transform : ".items[].fwEnforcedPolicy"
+          regex          : ".*"
+          expect         : "^Manual Review Required$"
+          severity       : MEDIUM
+        </custom_item>
+
+        <custom_item>
+          description    : "Active FW Rules"
+          f5_command     : "/tm/security/firewall/policy"
+          json_transform : ".items[].name"
+          regex          : ".*"
+          expect         : "^Manual Review Required$"
+          severity       : MEDIUM
+        </custom_item>
+      </condition>
+
+      <then>
+        <report type:"PASSED">
+          description : "F5BI-AF-000223 - The BIG-IP AFM module must be configured to only allow incoming communications from authorized sources routed to authorized destinations."
+          info        : "Unrestricted traffic may contain malicious traffic that poses a threat to an enclave or to other connected networks. Additionally, unrestricted traffic may transit a network, which uses bandwidth and other resources.
+
+Access control policies and access control lists implemented on devices that control the flow of network traffic (e.g., application-level firewalls and Web content filters) ensure the flow of traffic is only allowed from authorized sources to authorized destinations. Networks with different levels of trust (e.g., the Internet or CDS) must be kept separate.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+          solution    : "Configure the BIG-IP AFM module to only allow incoming communications from authorized sources routed to authorized destinations."
+          reference   : "800-171|3.13.1,800-53|SC-7(11),800-53r5|SC-7(11),CAT|II,CCI|CCI-002403,CN-L3|8.1.10.6(j),CSF|PR.AC-5,CSF|PR.PT-4,DISA_Benchmark|F5_BIG-IP_Advanced_Firewall_Manager_11-x_STIG,GDPR|32.1.b,HIPAA|164.306(a)(1),ISO/IEC-27001|A.13.1.3,ITSG-33|SC-7(11),NESA|T4.5.4,NIAv2|GS7c,PCI-DSSv3.2.1|1.3.1,PCI-DSSv3.2.1|1.3.2,PCI-DSSv3.2.1|1.3.3,PCI-DSSv3.2.1|1.3.5,PCI-DSSv4.0|1.3.1,PCI-DSSv4.0|1.4.2,PCI-DSSv4.0|1.4.3,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|8.2.1,Rule-ID|SV-214501r831450_rule,STIG-ID|F5BI-AF-000223,STIG-Legacy|SV-74355,STIG-Legacy|V-59925,TBA-FIISB|31.3,Vuln-ID|V-214501"
+          see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_F5_BIG-IP_Y24M01_STIG.zip"
+          show_output : YES
+        </report>
+      </then>
+    </if>
+
+    <report type:"WARNING">
+      description : "F5BI-AF-000229 - The BIG-IP AFM module must be configured to handle invalid inputs in a predictable and documented manner that reflects organizational and system objectives."
+      info        : "A common vulnerability of network elements is unpredictable behavior when invalid inputs are received. This requirement guards against adverse or unintended system behavior caused by invalid inputs where information system responses to the invalid input may be disruptive or cause the system to fail into an unsafe state.
+
+The behavior will be derived from the organizational and system requirements and includes, but is not limited to, notification of the appropriate personnel, creating an audit record, and rejecting invalid input.
+
+This requirement applies to gateways and firewalls that perform content inspection or have higher layer proxy functions.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+      solution    : "Configure the BIG-IP AFM module to handle invalid inputs in a predictable and documented manner that reflects organizational and system objectives."
+      reference   : "800-53|SI-10(3),800-53r5|SI-10(3),CAT|II,CCI|CCI-002754,CN-L3|8.1.4.4(d),DISA_Benchmark|F5_BIG-IP_Advanced_Firewall_Manager_11-x_STIG,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SI-10,ITSG-33|SI-10a.,NESA|T7.3.1,NIAv2|SS6e,Rule-ID|SV-214502r831451_rule,STIG-ID|F5BI-AF-000229,STIG-Legacy|SV-74357,STIG-Legacy|V-59927,Vuln-ID|V-214502"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_F5_BIG-IP_Y24M01_STIG.zip"
+    </report>
+  </then>
+
+  <else>
+    <report type:"WARNING">
+      description : "DISA_F5_BIG-IP_AFM_v2r1.audit from DISA F5 BIG-IP Advanced Firewall Manager v2r1 STIG"
+      info        : "NOTE: Nessus has not identified that the chosen audit applies to the target device."
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_F5_BIG-IP_Y24M01_STIG.zip"
+    </report>
+  </else>
+</if>
+
+</check_type>

@@ -1,0 +1,55 @@
+1.1 - Ensure All Apple-provided Software Is Current - manual
+1.2 - Ensure Auto Update Is Enabled - manual
+1.3 - Ensure Download New Updates When Available Is Enabled - manual
+1.4 - Ensure Install of macOS Updates Is Enabled - manual
+1.5 - Ensure Install Application Updates from the App Store Is Enabled - manual
+1.6 - Ensure Install Security Responses and System Files Is Enabled - manual
+2.1.1 - Ensure Firewall Is Enabled - manual
+2.2.1.1 - Ensure Set Time and Date Automatically Is Enabled
+2.2.1.2 - Ensure the Time Service Is Enabled - manual
+2.2.2.1 - Ensure Remote Apple Events Is Disabled
+2.2.2.2 - Ensure Content Caching Is Disabled - manual
+2.3.1 - Ensure Sending Diagnostic and Usage Data to Apple Is Disabled
+2.3.2 - Ensure Limit Ad Tracking Is Enabled
+2.3.3 - Ensure Gatekeeper Is Enabled
+2.4.1 - Ensure an Inactivity Interval of 20 Minutes Or Less for the Screen Saver Is Enabled - manual
+2.4.2 - Ensure Require Password After Screen Saver Begins or Display Is Turned Off Is Enabled for 5 Seconds or Immediately - manual
+2.4.3 - Ensure a Custom Message for the Login Screen Is Enabled - manual
+2.4.4 - Ensure Login Window Displays as Name and Password Is Enabled - manual
+2.4.5 - Ensure Show Password Hints Is Disabled - manual
+2.5.1 - Ensure Users Accounts Do Not Have a Password Hint - manual
+2.6.1 - Ensure Guest Account Is Disabled
+2.6.2 - Ensure Guest Access to Shared Folders Is Disabled - manual
+2.6.3 - Ensure Automatic Login Is Disabled - manual
+3.1 - Ensure Security Auditing Is Enabled - manual
+3.2 - Ensure Security Auditing Flags For User-Attributable Events Are Configured Per Local Organizational Requirements - manual
+3.3 - Ensure install.log Is Retained for 365 or More Days and No Maximum Size - manual
+3.4 - Ensure Security Auditing Retention Is Enabled - manual
+3.5 - Ensure Access to Audit Records Is Controlled - manual
+3.6 - Ensure Firewall Logging Is Enabled and Configured - manual
+4.1 - Ensure Bonjour Advertising Services Is Disabled - manual
+4.2 - Ensure HTTP Server Is Disabled - manual
+4.3 - Ensure NFS Server Is Disabled - manual
+5.1.1 - Ensure Home Folders Are Secure - manual
+5.1.2 - Ensure Apple Mobile File Integrity AMFI Is Enabled - manual
+5.1.3 - Ensure Signed System Volume SSV Is Enabled - manual
+5.1.4 - Ensure Appropriate Permissions Are Enabled for System Wide Applications - manual
+5.1.5 - Ensure No World Writable Folders Exist in the System Folder - manual
+5.1.6 - Ensure No World Writable Folders Exist in the Library Folder - manual
+5.2.1 - Ensure Password Account Lockout Threshold Is Configured - manual
+5.2.2 - Ensure Password Minimum Length Is Configured - manual
+5.2.3 - Ensure Complex Password Must Contain Alphabetic Characters Is Configured - manual
+5.2.4 - Ensure Complex Password Must Contain Numeric Character Is Configured - manual
+5.2.5 - Ensure Complex Password Must Contain Special Character Is Configured - manual
+5.2.6 - Ensure Complex Password Must Contain Uppercase and Lowercase Characters Is Configured - manual
+5.2.7 - Ensure Password Age Is Configured - manual
+5.2.8 - Ensure Password History Is Configured - manual
+5.3 - Ensure the Sudo Timeout Period Is Set to Zero - manual
+5.4 - Ensure a Separate Timestamp Is Enabled for Each Usertty Combo - manual
+5.5 - Ensure the root Account Is Disabled - manual
+5.6 - Ensure an Administrator Account Cannot Login to Another Users Active and Locked Session
+5.7 - Ensure a Login Window Banner Exists - manual
+5.8 - Ensure the Guest Home Folder Does Not Exist - manual
+5.9 - Ensure XProtect Is Running and Updated - manual
+5.10 - Ensure Secure Keyboard Entry Terminal.app Is Enabled
+5.11 - Ensure Show All Filename Extensions Setting is Enabled - manual

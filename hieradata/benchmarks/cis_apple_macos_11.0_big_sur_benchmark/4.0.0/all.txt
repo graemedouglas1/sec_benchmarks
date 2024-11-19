@@ -1,0 +1,111 @@
+1.1 - Ensure All Apple-provided Software Is Current
+1.2 - Ensure Auto Update Is Enabled
+1.3 - Ensure Download New Updates When Available Is Enabled
+1.4 - Ensure Installation of App Update Is Enabled
+1.5 - Ensure System Data Files and Security Updates Are Downloaded Automatically Is Enabled
+1.6 - Ensure Install of macOS Updates Is Enabled
+1.7 - Ensure Software Update Deferment Is Less Than or Equal to 30 Days
+1.8 - Ensure Computer Name Does Not Contain PII or Protected Organizational Information
+1.9 - Ensure the System is Managed by a Mobile Device Management MDM Software
+2.9 - Ensure Legacy EFI Is Valid and Updating
+2.10 - Audit Siri Settings
+2.11 - Audit Sidecar Settings
+2.12 - Audit Touch ID
+2.13 - Audit Notification  Focus Settings
+2.14 - Audit Dictation
+2.15 - Audit Internet Accounts for Authorized Use
+2.1.1 - Ensure Show Bluetooth Status in Menu Bar Is Enabled
+2.1.2 - Ensure Show Wi-Fi status in Menu Bar Is Enabled
+2.2.1 - Ensure Set time and date automatically Is Enabled
+2.2.2 - Ensure Time Is Set Within Appropriate Limits
+2.3.1 - Ensure an Inactivity Interval of 20 Minutes Or Less for the Screen Saver Is Enabled
+2.3.2 - Ensure Screen Saver Corners Are Secure
+2.4.1 - Ensure Remote Apple Events Is Disabled
+2.4.2 - Ensure Internet Sharing Is Disabled
+2.4.3 - Ensure Screen Sharing Is Disabled
+2.4.4 - Ensure Printer Sharing Is Disabled
+2.4.5 - Ensure Remote Login Is Disabled
+2.4.6 - Ensure DVD or CD Sharing Is Disabled
+2.4.7 - Ensure Bluetooth Sharing Is Disabled
+2.4.8 - Ensure File Sharing Is Disabled
+2.4.9 - Ensure Remote Management Is Disabled
+2.4.10 - Ensure Content Caching Is Disabled
+2.4.11 - Ensure AirDrop Is Disabled When Not Actively Transferring Files
+2.4.12 - Ensure Media Sharing Is Disabled
+2.5.3 - Ensure Location Services Is Enabled
+2.5.4 - Audit Location Services Access
+2.5.5 - Ensure Sending Diagnostic and Usage Data to Apple Is Disabled
+2.5.6 - Ensure Limit Ad Tracking Is Enabled
+2.5.7 - Ensure Gatekeeper Is Enabled
+2.5.8 - Ensure a Custom Message for the Login Screen Is Enabled
+2.5.9 - Ensure an Administrator Password Is Required to Access System-Wide Preferences
+2.5.10 - Ensure a Password is Required to Wake the Computer From Sleep or Screen Saver Is Enabled
+2.5.1.1 - Ensure FileVault Is Enabled
+2.5.1.2 - Ensure all user storage APFS volumes are encrypted
+2.5.1.3 - Ensure all user storage CoreStorage volumes are encrypted
+2.5.2.1 - Ensure Firewall Is Enabled
+2.5.2.2 - Ensure Firewall Stealth Mode Is Enabled
+2.6.2 - Audit App Store Password Settings
+2.6.1.1 - Audit iCloud Keychain
+2.6.1.2 - Audit iCloud Drive
+2.6.1.3 - Ensure iCloud Drive Document and Desktop Sync Is Disabled
+2.7.1 - Ensure Backup Automatically is Enabled If Time Machine Is Enabled
+2.7.2 - Ensure Time Machine Volumes Are Encrypted If Time Machine Is Enabled
+2.8.2 - Ensure Wake for Network Access Is Disabled
+2.8.3 - Ensure Power Nap Is Disabled for Intel Macs
+2.8.1.1 - Ensure the OS Is Not Active When Resuming from Standby Intel
+2.8.1.2 - Ensure the OS Is Not Active When Resuming from Sleep and Display Sleep Apple Silicon
+2.8.1.3 - Ensure FileVault is Locked on Sleep
+3.1 - Ensure Security Auditing Is Enabled
+3.2 - Ensure Security Auditing Flags For User-Attributable Events Are Configured Per Local Organizational Requirements
+3.3 - Ensure install.log Is Retained for 365 or More Days and No Maximum Size
+3.4 - Ensure Security Auditing Retention Is Enabled
+3.5 - Ensure Access to Audit Records Is Controlled
+3.6 - Ensure Firewall Logging Is Enabled and Configured
+3.7 - Audit Software Inventory
+4.1 - Ensure Bonjour Advertising Services Is Disabled
+4.2 - Ensure HTTP Server Is Disabled
+4.3 - Ensure NFS Server Is Disabled
+5.3 - Ensure the Sudo Timeout Period Is Set to Zero
+5.4 - Ensure a Separate Timestamp Is Enabled for Each Usertty Combo
+5.5 - Ensure the root Account Is Disabled
+5.6 - Ensure Automatic Login Is Disabled
+5.7 - Ensure an Administrator Account Cannot Log In to Another Users Active and Locked Session
+5.8 - Ensure a Login Window Banner Exists
+5.9 - Ensure Users Accounts Do Not Have a Password Hint
+5.10 - Ensure Secure Keyboard Entry Terminal.app Is Enabled
+5.11 - Ensure XProtect Is Running and Updated
+5.1.1 - Ensure Home Folders Are Secure
+5.1.2 - Ensure System Integrity Protection Status SIP Is Enabled
+5.1.3 - Ensure Apple Mobile File Integrity AMFI Is Enabled
+5.1.4 - Ensure Sealed System Volume SSV Is Enabled
+5.1.5 - Ensure Appropriate Permissions Are Enabled for System Wide Applications
+5.1.6 - Ensure No World Writable Files Exist in the System Folder
+5.1.7 - Ensure No World Writable Files Exist in the Library Folder
+5.2.1 - Ensure Password Account Lockout Threshold Is Configured
+5.2.2 - Ensure Password Minimum Length Is Configured
+5.2.3 - Ensure Complex Password Must Contain Alphabetic Characters Is Configured
+5.2.4 - Ensure Complex Password Must Contain Numeric Character Is Configured
+5.2.5 - Ensure Complex Password Must Contain Special Character Is Configured
+5.2.6 - Ensure Complex Password Must Contain Uppercase and Lowercase Characters Is Configured
+5.2.7 - Ensure Password Age Is Configured
+5.2.8 - Ensure Password History Is Configured
+6.2 - Ensure Show All Filename Extensions Setting is Enabled
+6.1.1 - Ensure Login Window Displays as Name and Password Is Enabled
+6.1.2 - Ensure Show Password Hints Is Disabled
+6.1.3 - Ensure Guest Account Is Disabled
+6.1.4 - Ensure Guest Access to Shared Folders Is Disabled
+6.1.5 - Ensure the Guest Home Folder Does Not Exist
+7.1.1 - Ensure Protect Mail Activity in Mail Is Enabled
+7.2.1 - Ensure Automatic Opening of Safe Files in Safari Is Disabled
+7.2.2 - Audit History and Remove History Items
+7.2.3 - Audit Passwords System Preference Setting
+7.2.4 - Ensure Warn When Visiting A Fradulent Website in Safari Is Enabled
+7.2.5 - Ensure Prevent Cross-site Tracking in Safari Is Enabled
+7.2.6 - Audit Hide IP Address in Safari Setting
+7.2.7 - Ensure Advertising Privacy Protection in Safari Is Enabled
+7.2.8 - Ensure Show Full Website Address in Safari Is Enabled
+7.2.9 - Audit Autofill
+7.2.10 - Ensure Pop-up Windows Are Blocked
+7.2.11 - Ensure Javascript Is Enabled
+7.2.12 - Ensure Show Status Bar Is Enabled

@@ -1,0 +1,367 @@
+#TRUSTED 23c5b998a961c1880c1e308fc7c3bdfe847e17c7133756a308c4a71dcd9a9df6b962d00a0e35f57fd7569a523d1f3d48d195ea60c898a180a41b9b4a631458f015e1d7df2af63471cd2a74e8f729e380ad73085bba369d5e7e5b35882d55e35e715d7bb81df3f98fe13c637220b6f0f40da2a360f43a2dcd2142f6a867dbabefced6abaf1b4d73d127278f674b7900ebba7fcd3f5ebd6b0f6b0ded67cf40546c080629ddd6fc39cc5f1a5e9070a9378137fe3977bbb9c9a1429efc60eba94eca86c71b66ba5f697c2b43508e5a331698cc77b1a771ae9df923bf08403383124712315bbc2fe773a98b4335c50874a3221b53c1061e67984b56ab2acf25c3cc52d76ad3dff0e455e5baebe868025ccb7679679e1e909a2876459f44941d34f04d450fd17e3e84318d50e6d7a6dedfc05caaa14f3e9f8cdf7ddbcb0abe85a2b7f6b0ee7b3388d8c1c07d15c6cc27695d73af944054fb6ae586b45daac1a951ef2c6f903e342cb21803e2f71895f1e19e0121ed53eaf1daddbae572268f41900e9497d762eb4d122cf0d67e42c4f87ab5c2d42e12856b627885bef6622e3da002dda7a75334a4f600620018cdc9b4dcc9150999c5a2e1b472ba7fad92402379229e0a73907a63975c02e50e7f5792a4a1a05863ebf552f7b154d405c0e57340bca7812ff00bf448d75def61ce66257552c28204b242a07cd623f792e509c1dcc99a
+#TRUST-RSA-SHA256 388aa6220df12445147029605fc247b74bb34673a1f285d7e6d90273a013efac0e29fb3a2313a74c488e3f6270c777fb9dd86b74386b9eb6ae49a9fd49d17cc083db26d60c863f83f6a76721fb1c777a1390597601c973af99d061517da0d05ec6407ad988b71a30b2a79ebde34583875332ac2b001cbca952d6dffb89b4c6915ac96444c2cc94939d50d2b61f06d218a333aec9ecd5a707a0c776cf463db26540b7dcaf5c0f07f82bed20287464884ce6fc25a0aeb9953eb045476ae45c3b4167ddfaba19d9bbd84420d51b9924bf0d7597c49cfba6ea25b5e0691f275aaf39a43ca05e93043621a5d3043685d7461a525c3d8ebfbfb3496c8d366580418b16d3a0ee7dc9cbf9c722054b72487c09cf853976dcc4dff7363df78820c4cb24ced33dcc14e37e5529e54e05e16e4a7277c5705bf3d8cc2e0d17ad0c80583ed2f36626daea348750413042ff1290b58fe3edcaf2d6216bbff98cef1cc5ccbc0806e2cb595d0f907b169ce2213a015ef0e8cc93e620f4fe44924993eb64f60fe298452f863d1690d34c153379373322237bf79699d8a4bc4b90aa5fe656ee30768312a9ddb93d6a1cfec3d9ec3cbaf78a9f748517b43c758ca68735c01b1e48d69e411c55a0a408f3535c20fb9a4402b89663327a51f06a15352ff8a27310a7bb1bad4eda41662a3a589efc0fb9ce503e671e8928b272571680ba4aed1798a2a29e
+#
+# This script is Copyright (C) 2004-2024 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.0 $
+# $Date: 2024/08/28 $
+#
+# Description : This document implements the security configuration as recommended by the
+#               DISA MariaDB Enterprise 10.x v2r1 STIG.
+#
+#<ui_metadata>
+#<display_name>DISA MariaDB Enterprise 10.x v2r1 OS Linux</display_name>
+#<spec>
+#  <type>DISA STIG</type>
+#  <name>MariaDB Enterprise 10.x</name>
+#  <profile>OS Linux</profile>
+#  <version>2.1.0</version>
+#  <link>https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MariaDB_Enterprise_10-x_V2R1_STIG.zip</link>
+#</spec>
+#<labels>unix,disa,mariadb,distribution_independent_linux</labels>
+#<benchmark_refs>CAT,CCE,CCI,DISA_Benchmark,Group-ID,Rule-ID,STIG-ID,STIG-Legacy,Vuln-ID</benchmark_refs>
+#<variables>
+#  <variable>
+#    <name>SSL_CERT</name>
+#    <default>/etc/my.cnf.d/certificates/server-cert.pem</default>
+#    <description>MariaDB Certificate File</description>
+#    <info>This is your MariaDB Certificate variable.</info>
+#    <value_type>UNIX_FILE_PATH</value_type>
+#  </variable>
+#  <variable>
+#    <name>SSL_CA</name>
+#    <default>/etc/my.cnf.d/certificates/ca.pem</default>
+#    <description>MariaDB Certificate Authority File</description>
+#    <info>This is your MariaDB Certificate Authority variable.</info>
+#    <value_type>UNIX_FILE_PATH</value_type>
+#  </variable>
+#</variables>
+#</ui_metadata>
+
+<check_type:"Unix">
+
+<if>
+  <condition type:"OR">
+    <custom_item>
+      type        : CMD_EXEC
+      description : "Linux found"
+      cmd         : "uname -a"
+      expect      : "Linux"
+    </custom_item>
+  </condition>
+
+  <then>
+    <report type:"PASSED">
+      description : "DISA_STIG_MariaDB_Enterprise_10.x_v2r1_OS_Linux.audit from DISA MariaDB Enterprise 10.x v2r1 STIG"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MariaDB_Enterprise_10-x_V2R1_STIG.zip"
+    </report>
+
+    <if>
+      <condition auto:"WARNING" type:"AND">
+        <custom_item>
+          type        : CMD_EXEC
+          description : "openssl"
+          cmd         : "openssl version"
+          expect      : "((?i)openssl(?-i) 3|fips)"
+        </custom_item>
+
+        <custom_item>
+          type        : CMD_EXEC
+          description : "fips_enabled"
+          cmd         : "sysctl crypto.fips_enabled"
+          expect      : "crypto.fips_enabled = 1"
+        </custom_item>
+
+        <custom_item>
+          type        : CMD_EXEC
+          description : "Review benchmark guidance."
+          cmd         : "echo \"Examine the application's code to ensure is does not make calls using libmysqlclient.\""
+          expect      : "^Manual Review Required$"
+          severity    : MEDIUM
+        </custom_item>
+      </condition>
+
+      <then>
+        <report type:"PASSED">
+          description : "MADB-10-004400 - MariaDB must use NIST FIPS 140-2 validated cryptographic modules for cryptographic operations."
+          info        : "Use of weak or not validated cryptographic algorithms undermines the purposes of utilizing encryption and digital signatures to protect data. Weak algorithms can be easily broken and not validated cryptographic modules may not implement algorithms correctly. Unapproved cryptographic modules or algorithms should not be relied on for authentication, confidentiality, or integrity. Weak cryptography could allow an attacker to gain access to and modify data stored in the database as well as the administration settings of the DBMS.
+
+Applications, including DBMSs, utilizing cryptography are required to use approved NIST FIPS 140-2 validated cryptographic modules that meet the requirements of applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance.
+
+The security functions validated as part of FIPS 140-2 for cryptographic modules are described in FIPS 140-2 Annex A.
+
+NSA Type-X (where X=1, 2, 3, 4) products are NSA-certified, hardware-based encryption modules.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+          solution    : "If crypto.fips_enabled = 0, for Red Hat Linux, configure the operating system to implement DoD-approved encryption by following the steps below:
+
+To enable strict FIPS compliance, the fips=1 kernel option must be added to the kernel command line during system installation so key generation is done with FIPS-approved algorithms and continuous monitoring tests in place.
+
+Enable FIPS mode with the following command:
+# sudo fips-mode-setup --enable
+
+Modify the kernel command line of the current kernel in the 'grub.cfg' file by adding the following option to the GRUB_CMDLINE_LINUX key in the '/etc/default/grub' file and then rebuild the 'grub.cfg' file:
+fips=1
+
+Changes to '/etc/default/grub' require rebuilding the 'grub.cfg' file as follows:
+On BIOS-based machines, use the following command:
+# sudo grub2-mkconfig -o /boot/grub2/grub.cfg
+
+On UEFI-based machines, use the following command:
+# sudo grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg
+
+If /boot or /boot/efi reside on separate partitions, the kernel parameter 'boot=<partition of /boot or /boot/efi>' must be added to the kernel command line. Identify a partition by running the df /boot or df /boot/efi command:
+# sudo df /boot
+
+Filesystem 1K-blocks Used Available Use% Mounted on
+/dev/sda1 495844 53780 416464 12% /boot
+
+To ensure the 'boot=' configuration option will work even if device naming changes occur between boots, identify the universally unique identifier (UUID) of the partition with the following command:
+# sudo blkid /dev/sda1
+/dev/sda1: UUID='05c000f1-a213-759e-c7a2-f11b7424c797' TYPE='ext4'
+
+For the example above, append the following string to the kernel command line:
+boot=UUID=05c000f1-a213-759e-c7a2-f11b7424c797
+
+Reboot the system for the changes to take effect.
+
+More information can be found here:
+RedHat: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/chap-federal_standards_and_regulations
+Ubuntu: https://security-certs.docs.ubuntu.com/en/fips"
+          reference   : "800-53|IA-7,800-53r5|IA-7,CAT|I,CCI|CCI-000803,CSF2.0|PR.AA-01,CSF2.0|PR.AA-03,DISA_Benchmark|MariaDB_Enterprise_10-x_STIG,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(d),ITSG-33|IA-7,ITSG-33|IA-7a.,NESA|M5.2.1,NESA|M5.2.6,NESA|M5.3.1,NESA|T7.4.1,QCSC-v1|13.2,Rule-ID|SV-253703r961050_rule,STIG-ID|MADB-10-004400,Vuln-ID|V-253703"
+          see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MariaDB_Enterprise_10-x_V2R1_STIG.zip"
+          show_output : YES
+        </report>
+      </then>
+    </if>
+
+    <custom_item>
+      type        : CMD_EXEC
+      description : "MADB-10-009200 - When updates are applied to the MariaDB software, any software components that have been replaced or made unnecessary must be removed."
+      info        : "Previous versions of MariaDB components that are not removed from the information system after updates have been installed may be exploited by adversaries.
+
+MariaDB may remove older versions of software automatically from the information system. In other cases, manual review and removal will be required. In planning installations and upgrades, organizations must include steps (automated, manual, or both) to identify and remove the outdated modules.
+
+A transition period may be necessary when both the old and the new software are required. This should be taken into account in the planning.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+      solution    : "If after the upgrade outdated packages remain, update them if needed or remove. Example:
+
+$ sudo yum remove package_name"
+      reference   : "800-171|3.14.1,800-53|SI-2(6),800-53r5|SI-2(6),CAT|II,CCI|CCI-002617,CN-L3|8.1.4.4(e),CN-L3|8.1.10.5(a),CN-L3|8.1.10.5(b),CN-L3|8.5.4.1(b),CN-L3|8.5.4.1(d),CN-L3|8.5.4.1(e),CSF|ID.RA-1,CSF|PR.IP-12,CSF2.0|ID.IM-01,CSF2.0|ID.IM-02,CSF2.0|ID.IM-03,CSF2.0|PR.PS-02,DISA_Benchmark|MariaDB_Enterprise_10-x_STIG,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SI-2,NESA|T7.6.2,NESA|T7.7.1,NIAv2|PR9,PCI-DSSv3.2.1|6.2,PCI-DSSv4.0|6.3,PCI-DSSv4.0|6.3.3,QCSC-v1|11.2,Rule-ID|SV-253744r961677_rule,STIG-ID|MADB-10-009200,SWIFT-CSCv1|2.2,Vuln-ID|V-253744"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MariaDB_Enterprise_10-x_V2R1_STIG.zip"
+      cmd         : "yum list installed | grep -i mariadb"
+      expect      : "^Manual Review Required$"
+      severity    : MEDIUM
+    </custom_item>
+
+    <custom_item>
+      type        : CMD_EXEC
+      description : "MADB-10-009300 - Security-relevant software updates to MariaDB must be installed within the time period directed by an authoritative source (e.g., IAVM, CTOs, DTMs, and STIGs)."
+      info        : "Security flaws with software applications, including database management systems, are discovered daily. Vendors are constantly updating and patching their products to address newly discovered security vulnerabilities. Organizations (including any contractor to the organization) are required to promptly install security-relevant software updates (e.g., patches, service packs, and hot fixes). Flaws discovered during security assessments, continuous monitoring, incident response activities, or information system error handling must also be addressed expeditiously.
+
+Organization-defined time periods for updating security-relevant software may vary based on a variety of factors including, for example, the security category of the information system or the criticality of the update (i.e., severity of the vulnerability related to the discovered flaw).
+
+This requirement will apply to software patch management solutions that are used to install patches across the enclave and also to applications themselves that are not part of that patch management solution. For example, many browsers today provide the capability to install their own patch software. Patch criticality, as well as system criticality, will vary. Therefore, the tactical situations regarding the patch management process will also vary. This means that the time period utilized must be a configurable parameter. Time frames for application of security-relevant software updates may be dependent upon the Information Assurance Vulnerability Management (IAVM) process.
+
+The application will be configured to check for and install security-relevant software updates within an identified time period from the availability of the update. The specific time period will be defined by an authoritative source (e.g., IAVM, CTOs, DTMs, and STIGs).
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+      solution    : "Institute and adhere to policies and procedures to ensure that patches are consistently applied to MariaDB within the time allowed."
+      reference   : "800-171|3.14.1,800-53|SI-2c.,800-53r5|SI-2c.,CAT|II,CCI|CCI-002605,CN-L3|8.1.4.4(e),CN-L3|8.1.10.5(a),CN-L3|8.1.10.5(b),CN-L3|8.5.4.1(b),CN-L3|8.5.4.1(d),CN-L3|8.5.4.1(e),CSF|ID.RA-1,CSF|PR.IP-12,CSF2.0|ID.IM-01,CSF2.0|ID.IM-02,CSF2.0|ID.IM-03,CSF2.0|PR.PS-02,DISA_Benchmark|MariaDB_Enterprise_10-x_STIG,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SI-2,NESA|T7.6.2,NESA|T7.7.1,NIAv2|AM38,NIAv2|AM39,NIAv2|SS14b,PCI-DSSv3.2.1|6.2,PCI-DSSv4.0|6.3,PCI-DSSv4.0|6.3.3,QCSC-v1|11.2,Rule-ID|SV-253745r961683_rule,STIG-ID|MADB-10-009300,SWIFT-CSCv1|2.2,Vuln-ID|V-253745"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MariaDB_Enterprise_10-x_V2R1_STIG.zip"
+      cmd         : "yum list installed | grep -i mariadb"
+      expect      : "^Manual Review Required$"
+      severity    : MEDIUM
+    </custom_item>
+
+    <if>
+      <condition auto:"WARNING" type:"AND">
+        <custom_item>
+          type        : CMD_EXEC
+          description : "openssl"
+          cmd         : "openssl version"
+          expect      : "((?i)openssl(?-i) 3|fips)"
+        </custom_item>
+
+        <custom_item>
+          type        : CMD_EXEC
+          description : "fips_enabled"
+          cmd         : "sysctl crypto.fips_enabled"
+          expect      : "crypto.fips_enabled = 1"
+        </custom_item>
+
+        <custom_item>
+          type        : CMD_EXEC
+          description : "Review benchmark guidance."
+          cmd         : "echo \"Examine the application's code to ensure is does not make calls using libmysqlclient.\""
+          expect      : "^Manual Review Required$"
+          severity    : MEDIUM
+        </custom_item>
+      </condition>
+
+      <then>
+        <report type:"PASSED">
+          description : "MADB-10-012100 - MariaDB must implement NIST FIPS 140-2 validated cryptographic modules to provision digital signatures."
+          info        : "Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to protect data. The application must implement cryptographic modules adhering to the higher standards approved by the federal government since this provides assurance they have been tested and validated.
+
+For detailed information, refer to NIST FIPS Publication 140-2, Security Requirements For Cryptographic Modules. Note that the product's cryptographic modules must be validated and certified by NIST as FIPS-compliant.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+          solution    : "If crypto.fips_enabled = 0, configure operating system per operating system documentation:
+RedHat: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/chap-federal_standards_and_regulations
+Ubuntu: https://security-certs.docs.ubuntu.com/en/fips"
+          reference   : "800-171|3.13.11,800-53|SC-13,800-53r5|SC-13b.,CAT|II,CCI|CCI-002450,CSF|PR.DS-5,CSF2.0|PR.DS-01,CSF2.0|PR.DS-02,CSF2.0|PR.DS-10,DISA_Benchmark|MariaDB_Enterprise_10-x_STIG,GDPR|32.1.a,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(2)(iv),HIPAA|164.312(e)(2)(ii),ISO/IEC-27001|A.10.1.1,ITSG-33|SC-13,ITSG-33|SC-13a.,NESA|M5.2.6,NESA|T7.4.1,NIAv2|CY3,NIAv2|CY4,NIAv2|CY5b,NIAv2|CY5c,NIAv2|CY5d,NIAv2|CY7,NIAv2|NS5e,QCSC-v1|6.2,Rule-ID|SV-253773r961857_rule,STIG-ID|MADB-10-012100,Vuln-ID|V-253773"
+          see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MariaDB_Enterprise_10-x_V2R1_STIG.zip"
+          show_output : YES
+        </report>
+      </then>
+    </if>
+
+    <if>
+      <condition auto:"WARNING" type:"AND">
+        <custom_item>
+          type        : CMD_EXEC
+          description : "openssl"
+          cmd         : "openssl version"
+          expect      : "((?i)openssl(?-i) 3|fips)"
+        </custom_item>
+
+        <custom_item>
+          type        : CMD_EXEC
+          description : "fips_enabled"
+          cmd         : "sysctl crypto.fips_enabled"
+          expect      : "crypto.fips_enabled = 1"
+        </custom_item>
+
+        <custom_item>
+          type        : CMD_EXEC
+          description : "Review benchmark guidance."
+          cmd         : "echo \"Examine the application's code to ensure is does not make calls using libmysqlclient.\""
+          expect      : "^Manual Review Required$"
+          severity    : MEDIUM
+        </custom_item>
+      </condition>
+
+      <then>
+        <report type:"PASSED">
+          description : "MADB-10-012200 - MariaDB must implement NIST FIPS 140-2 validated cryptographic modules to generate and validate cryptographic hashes."
+          info        : "Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to protect data. The application must implement cryptographic modules adhering to the higher standards approved by the federal government since this provides assurance they have been tested and validated.
+
+For detailed information, refer to NIST FIPS Publication 140-2, Security Requirements For Cryptographic Modules. Note that the product's cryptographic modules must be validated and certified by NIST as FIPS-compliant.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+          solution    : "If crypto.fips_enabled = 0, configure operating system per operating system documentation:
+RedHat: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/chap-federal_standards_and_regulations
+Ubuntu: https://security-certs.docs.ubuntu.com/en/fips"
+          reference   : "800-171|3.13.11,800-53|SC-13,800-53r5|SC-13b.,CAT|II,CCI|CCI-002450,CSF|PR.DS-5,CSF2.0|PR.DS-01,CSF2.0|PR.DS-02,CSF2.0|PR.DS-10,DISA_Benchmark|MariaDB_Enterprise_10-x_STIG,GDPR|32.1.a,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(2)(iv),HIPAA|164.312(e)(2)(ii),ISO/IEC-27001|A.10.1.1,ITSG-33|SC-13,ITSG-33|SC-13a.,NESA|M5.2.6,NESA|T7.4.1,NIAv2|CY3,NIAv2|CY4,NIAv2|CY5b,NIAv2|CY5c,NIAv2|CY5d,NIAv2|CY7,NIAv2|NS5e,QCSC-v1|6.2,Rule-ID|SV-253774r961857_rule,STIG-ID|MADB-10-012200,Vuln-ID|V-253774"
+          see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MariaDB_Enterprise_10-x_V2R1_STIG.zip"
+          show_output : YES
+        </report>
+      </then>
+    </if>
+
+    <if>
+      <condition auto:"WARNING" type:"AND">
+        <custom_item>
+          type        : CMD_EXEC
+          description : "openssl"
+          cmd         : "openssl version"
+          expect      : "((?i)openssl(?-i) 3|fips)"
+        </custom_item>
+
+        <custom_item>
+          type        : CMD_EXEC
+          description : "fips_enabled"
+          cmd         : "sysctl crypto.fips_enabled"
+          expect      : "crypto.fips_enabled = 1"
+        </custom_item>
+
+        <custom_item>
+          type        : CMD_EXEC
+          description : "Review benchmark guidance."
+          cmd         : "echo \"Examine the application's code to ensure is does not make calls using libmysqlclient.\""
+          expect      : "^Manual Review Required$"
+          severity    : MEDIUM
+        </custom_item>
+      </condition>
+
+      <then>
+        <report type:"PASSED">
+          description : "MADB-10-012300 - MariaDB must implement NIST FIPS 140-2 validated cryptographic modules to protect unclassified information requiring confidentiality and cryptographic protection, in accordance with the data owners requirements."
+          info        : "Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to protect data. The application must implement cryptographic modules adhering to the higher standards approved by the federal government since this provides assurance they have been tested and validated.
+
+It is the responsibility of the data owner to assess the cryptography requirements in light of applicable federal laws, Executive Orders, directives, policies, regulations, and standards.
+
+For detailed information, refer to NIST FIPS Publication 140-2, Security Requirements For Cryptographic Modules. Note that the product's cryptographic modules must be validated and certified by NIST as FIPS-compliant.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+          solution    : "If crypto.fips_enabled = 0, configure operating system per operating system documentation:
+RedHat: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/chap-federal_standards_and_regulations
+Ubuntu: https://security-certs.docs.ubuntu.com/en/fips"
+          reference   : "800-171|3.13.11,800-53|SC-13,800-53r5|SC-13b.,CAT|II,CCI|CCI-002450,CSF|PR.DS-5,CSF2.0|PR.DS-01,CSF2.0|PR.DS-02,CSF2.0|PR.DS-10,DISA_Benchmark|MariaDB_Enterprise_10-x_STIG,GDPR|32.1.a,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(2)(iv),HIPAA|164.312(e)(2)(ii),ISO/IEC-27001|A.10.1.1,ITSG-33|SC-13,ITSG-33|SC-13a.,NESA|M5.2.6,NESA|T7.4.1,NIAv2|CY3,NIAv2|CY4,NIAv2|CY5b,NIAv2|CY5c,NIAv2|CY5d,NIAv2|CY7,NIAv2|NS5e,QCSC-v1|6.2,Rule-ID|SV-253775r961857_rule,STIG-ID|MADB-10-012300,Vuln-ID|V-253775"
+          see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MariaDB_Enterprise_10-x_V2R1_STIG.zip"
+          show_output : YES
+        </report>
+      </then>
+    </if>
+
+    <if>
+      <condition auto:"WARNING" type:"AND">
+        <custom_item>
+          type        : CMD_EXEC
+          description : "cert ca"
+          cmd         : "openssl x509 -in @SSL_CA@ -noout -issuer"
+          expect      : "^Manual Review Required$"
+          severity    : MEDIUM
+        </custom_item>
+
+        <custom_item>
+          type        : CMD_EXEC
+          description : "cert"
+          cmd         : "openssl x509 -in @SSL_CERT@ -noout -issuer"
+          expect      : "^Manual Review Required$"
+          severity    : MEDIUM
+        </custom_item>
+      </condition>
+
+      <then>
+        <report type:"PASSED">
+          description : "MADB-10-008500 - MariaDB must only accept end entity certificates issued by DoD PKI or DoD-approved PKI Certification Authorities (CAs) for the establishment of all encrypted sessions."
+          info        : "Only DoD-approved external PKIs have been evaluated to ensure that they have security controls and identity vetting procedures in place that are sufficient for DoD systems to rely on the identity asserted in the certificate. PKIs lacking sufficient security controls and identity vetting procedures risk being compromised and issuing certificates that enable adversaries to impersonate legitimate users.
+
+The authoritative list of DoD-approved PKIs is published at https://dl.dod.cyber.mil/wp-content/uploads/pki-pke/pdf/unclass-ss_using_commercial_pki_certificates.pdf.
+
+This requirement focuses on communications protection for the MariaDB session rather than for the network packet.
+
+NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+          solution    : "Revoke trust in any certificates not issued by a DoD-approved certificate authority.
+
+Configure MariaDB to accept only DoD and DoD-approved PKI end-entity certificates."
+          reference   : "800-171|3.13.15,800-53|SC-23(5),800-53r5|SC-23(5),CAT|II,CCI|CCI-002470,DISA_Benchmark|MariaDB_Enterprise_10-x_STIG,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-23,ITSG-33|SC-23a.,NESA|T4.5.1,QCSC-v1|5.2.1,Rule-ID|SV-253738r961596_rule,STIG-ID|MADB-10-008500,Vuln-ID|V-253738"
+          see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MariaDB_Enterprise_10-x_V2R1_STIG.zip"
+          show_output : YES
+        </report>
+      </then>
+    </if>
+  </then>
+
+  <else>
+    <report type:"WARNING">
+      description : "DISA_STIG_MariaDB_Enterprise_10.x_v2r1_OS_Linux.audit from DISA MariaDB Enterprise 10.x v2r1 STIG"
+      info        : "NOTE: Nessus has not identified that the chosen audit applies to the target device."
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MariaDB_Enterprise_10-x_V2R1_STIG.zip"
+    </report>
+  </else>
+</if>
+
+</check_type>

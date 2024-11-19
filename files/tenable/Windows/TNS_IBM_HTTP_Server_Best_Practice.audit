@@ -1,0 +1,948 @@
+#TRUSTED 54a8be127de420f50887e78572a3c0dd21a435f2d3f586b187c9c54f9759e84391dd92309fb9e4289ba5a222e27bc57761755a99b2e9fff564315e5c05acacaa4a973340f11da3c8ae47ecf4d8c00246b97b7d14d3a14a6969911d137194b8675d430da8bd39030aa6460655fff8fda4ce848e89e173d9ab3d22bed707ccd0af4eb36cdde4438d4a87f2d753c2c321fdbf12104c8c9288ea9373cb47879cc43a302381f391a11ed896fe4ad4fff5912b8e0c3cd5ee708349b847322a1579de95ef82fbed60b9dae91d81877e52f81c907ceb474ddd928d9451361fb65b1e6f5981ced15c7d1bf2a1e267b144dedc6bdc8904fe8dc989686b0858418288b8391036557a31d9aa13ea94215a7460fc8dab72108f161ed61a503a046fb16fadb33a7f8a47fa0b4e0ddffe47403dd895240b25b7ccd343b05b4daa8ab0ff5e518fe5795ccf6a1709981d4f07c6ff77d0c9c3a5d01f0a5ef7fea9f69cd3a28e06a36de3fd087efb1859e3a89031dfef77b01f872bf06ac416a3fbfb0411222d2ff6aa0bdf27d85efe22735b242ca140d2bc234c21e97d7eb0eba73448e866ccdac500c1d9c7ab70c721e1c085f0b9e8dcda0850fd0e91465e2d08c9da7b92f008afda09ca0317262d1d6ec4eb86aaac44e5b91b1f52d6043cac9c28407aba44e70bcbb333e330ec34d2b5ab1df446e6ff4024be82a7b0b6ce8528b61e7a697f97f180
+#TRUST-RSA-SHA256 2add62ebcf4a792212a729668e3c7dc2df2dce094fd679a7ac2a4a058153638b223e19fb69bab4aacf5e48cbcb2a3908760778cbeabdf9f2e996da53c7af6a5ebb25511bd4a3b3073b4aaf2c458ac7affe4e81a1d6bd54d6cf10f2e885b722d4cf9d346a6f31bbb0b047da2203197b8ca4c43461604613c2e5f561b52d28f0f68047adee21b293b8f91cbeb9d806075a1e3f553f86f9fdb038181802cde8faa10f4b378fb433a25c50a98555a05cffcd3115e4de6fe3d8453544596358c11c2d2618870ff802e6f45838166e6755751241fb16682d06a732f55805ca2373c5a22a29d0d79f18a8887d392653aabb85e566119a713c5d6ad747f834a6b5d3b5eee594a82bafa08bf72a295af53494dad3153d675eed86097082ef90276e9f4264ba932d7d0acb5a3af169c6c70dc9f87a8a56386fba16e660e73d3aba0feb3afd8841eb395f0a3eb9680ff752fc7d55653bc88c0d94b76dae6e354aa18e0541aae082d57d86bbeab74069111ad01cb58fae952af07aa6dae003aaeb2bd72ed74a8b8e6fb8418b443ee6bd0843299d8d42797d86dc0e0f6bb2e7134b194e11e865f310dc2c964ba9a66f401cfe221c268332c57cbee84f42058455dc9a98ec27bdf9028172e604cb4d13733a3a939bd586acb50a85e3c92422db56dd5e722118b190cc6d7704cd4c5322474b58b6516e6233344ce8b85640166bed93c8d62b78c5
+#
+# This script is Copyright (C) 2004-2024 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.16 $
+# $Date: 2024/06/17 $
+#
+#<ui_metadata>
+#<display_name>TNS IBM HTTP Server Best Practice</display_name>
+#<spec>
+#  <type>IBM</type>
+#  <name>HTTP Server on Windows</name>
+#  <version>1.0.0</version>
+#</spec>
+#<labels>windows_ibm_http_server,update_20230227</labels>
+#<benchmark_refs>CSCv6</benchmark_refs>
+#<variables>
+#  <variable>
+#    <name>IBM_HTTP_LOGS_DIR</name>
+#    <default>C:\Program Files\IBM\HTTPServer\logs</default>
+#    <description>IBM HTTP Server logs directory</description>
+#    <info>Directory where IBM HTTP log files can be found.</info>
+#    <value_type>WIN_FILE_PATH</value_type>
+#  </variable>
+#  <variable>
+#    <name>HTDOCS_DIR</name>
+#    <default>C:\Program Files\IBM\HTTPServer\htdocs</default>
+#    <description>IBM htdocs directory</description>
+#    <info>Location of the document root directory.</info>
+#    <value_type>WIN_FILE_PATH</value_type>
+#  </variable>
+#  <variable>
+#    <name>CONF_DIR</name>
+#    <default>C:\Program Files\IBM\HTTPServer\conf</default>
+#    <description>Directory where configuration files are located</description>
+#    <info>Please set the value of your organizations conf directory.</info>
+#    <value_type>WIN_FILE_PATH</value_type>
+#  </variable>
+#  <variable>
+#    <name>CGI_BIN_DIR_PS</name>
+#    <default>C:/Program Files/IBM/HTTPServer/cgi-bin</default>
+#    <description>Directory path for CGI-BIN</description>
+#    <info>Please set the value of your organizations CGI-BIN directory found in the httpd.conf file.</info>
+#    <value_type>WIN_FILE_PATH</value_type>
+#  </variable>
+#  <variable>
+#    <name>IBM_HTTP_VERSION</name>
+#    <default>9\.0\.0\.1</default>
+#    <description>The most recent version of IBM HTTP Server running on the system</description>
+#    <info>To locate the most recent update visit website located in the solution</info>
+#    <value_type>STRING</value_type>
+#  </variable>
+#  <variable>
+#    <name>REWRITE_LOG_DIR</name>
+#    <default>C:\\\\tmp\\\\rewrite\\\.log</default>
+#    <description>Location of the rewrite log</description>
+#    <info>Please add the location of rewrite logs directory. Only applicable for HTTP Server 6.1 and lower.</info>
+#    <value_type>WIN_FILE_PATH</value_type>
+#  </variable>
+#  <variable>
+#    <name>WEB_ADMIN</name>
+#    <default>web administrator</default>
+#    <description>IBM HTTP Server web administrator account</description>
+#    <info>Please set your orgnizations web administrator user account.</info>
+#    <value_type>WIN_ACCT</value_type>
+#  </variable>
+#</variables>
+#</ui_metadata>
+
+<check_type:"Windows" version:"2">
+<group_policy:"IBMHTTPServer">
+
+<file_acl:"logs">
+  <user:"Administrators">
+    acl_inheritance : "not used"
+    acl_apply       : "This folder and files"
+    acl_allow       : "change permissions" | "create files / write data" | "create folders / append data" | "delete" | "delete subfolder and files" | "full control" | "list folder / read data" | "read attributes" | "read extended attributes" | "read permissions" | "take ownership" | "traverse folder / execute file" | "write attributes" | "write extended attributes"
+  </user>
+</file_acl>
+
+<file_acl:"htdocs">
+  <user:"Administrators">
+    acl_inheritance : "not used"
+    acl_apply       : "This folder and files"
+    acl_allow       : "change permissions" | "create files / write data" | "create folders / append data" | "delete" | "delete subfolder and files" | "full control" | "list folder / read data" | "read attributes" | "read extended attributes" | "read permissions" | "take ownership" | "traverse folder / execute file" | "write attributes" | "write extended attributes"
+  </user>
+</file_acl>
+
+<file_acl:"config">
+  <user:"Administrators">
+    acl_inheritance : "not used"
+    acl_apply       : "This folder and files"
+    acl_allow       : "change permissions" | "create files / write data" | "create folders / append data" | "delete" | "delete subfolder and files" | "full control" | "list folder / read data" | "read attributes" | "read extended attributes" | "read permissions" | "take ownership" | "traverse folder / execute file" | "write attributes" | "write extended attributes"
+  </user>
+</file_acl>
+
+<if>
+  <condition type:"AND">
+    <custom_item>
+      type                 : AUDIT_POWERSHELL
+      description          : "IBM HTTP Server is installed and running on the system"
+      value_type           : POLICY_TEXT
+      value_data           : ""
+      powershell_args      : 'get-service -Name \'IBMHTTPServer*\' | Where-Object {$_.Status -eq \'Running\' } | Format-List'
+      only_show_cmd_output : YES
+    </custom_item>
+  </condition>
+
+  <then>
+    <custom_item>
+      type        : FILE_PERMISSIONS
+      description : "Logs containing auditing information should be secured at the directory level."
+      info        : "Only root or web administrators must be able to read and write to log files."
+      solution    : "1. The HTTP server configuration file is located at <IBM Http Installation directory>/logs
+ 2. Ensure that only the administrators and no unauthorized users have permissions on the logs directory."
+      reference   : "800-171|3.3.8,800-171|3.3.9,800-171|3.4.2,800-53|AU-9(4),800-53|CM-6b.,800-53r5|AU-9(4),800-53r5|CM-6b.,CN-L3|8.1.4.3(d),CN-L3|8.1.10.6(d),CSCv6|3.1,CSF|PR.IP-1,CSF|PR.PT-1,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ISO/IEC-27001|A.12.4.2,ITSG-33|AU-9(4),ITSG-33|AU-9(4)(a),ITSG-33|AU-9(4)(b),ITSG-33|CM-6b.,NESA|M1.2.2,NESA|M5.2.3,NESA|M5.5.2,NESA|T3.2.1,NIAv2|SM5,NIAv2|SM6,PCI-DSSv3.2.1|10.5,PCI-DSSv3.2.1|10.5.2,PCI-DSSv4.0|10.3.2,QCSC-v1|8.2.1,QCSC-v1|13.2,SWIFT-CSCv1|2.3,SWIFT-CSCv1|5.1"
+      value_type  : FILE_ACL
+      value_data  : "logs"
+      file        : "@IBM_HTTP_LOGS_DIR@"
+    </custom_item>
+
+    <custom_item>
+      type            : AUDIT_POWERSHELL
+      description     : "Logging Directives should be restricted to authorized users. - 'LogLevel notice'"
+      info            : "The server logs are invaluable for a variety of reasons. They can be used to determine what resources are being used most. They can also be used to spot any potential problems before they become serious. Most importantly, they can be used to watch for anomalous behaviour that may be an indication that an attack is pending or has occurred. If there are multiple web sites, or with large websites with multiple people responsible for portions of the web site, each responsible individual or organization needs access to their own web logs, and needs the skills/training/tools for monitoring the logs."
+      solution        : "Edit the httpd.conf file and add the following:-
+ LogLevel notice
+ ErrorLog logs/error_log
+ LogFormat '%h %l %u %t \'%r\' %>s %b '%{Accept}i' '%{Referrer}i' '%{User-Agent}i'' combined
+ CustomLog logs/access_log combined"
+      reference       : "800-171|3.3.8,800-171|3.3.9,800-53|AU-9(4),800-53r5|AU-9(4),CN-L3|8.1.4.3(d),CSF|PR.PT-1,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ISO/IEC-27001|A.12.4.2,ITSG-33|AU-9(4),ITSG-33|AU-9(4)(a),ITSG-33|AU-9(4)(b),NESA|M1.2.2,NESA|M5.2.3,NESA|M5.5.2,NIAv2|SM5,NIAv2|SM6,PCI-DSSv3.2.1|10.5,PCI-DSSv3.2.1|10.5.2,PCI-DSSv4.0|10.3.2,QCSC-v1|8.2.1,QCSC-v1|13.2,SWIFT-CSCv1|5.1"
+      value_type      : POLICY_TEXT
+      value_data      : "LogLevel notice"
+      powershell_args : 'Get-Content \'C:\\Program Files\\IBM\\HTTPServer\\conf\\httpd.conf\' | where { $_.Contains(\\"LogLevel notice\\") }'
+    </custom_item>
+
+    <custom_item>
+      type            : AUDIT_POWERSHELL
+      description     : "Logging Directives should be restricted to authorized users. - 'ErrorLog logs/error_log'"
+      info            : "The server logs are invaluable for a variety of reasons. They can be used to determine what resources are being used most. They can also be used to spot any potential problems before they become serious. Most importantly, they can be used to watch for anomalous behaviour that may be an indication that an attack is pending or has occurred. If there are multiple web sites, or with large websites with multiple people responsible for portions of the web site, each responsible individual or organization needs access to their own web logs, and needs the skills/training/tools for monitoring the logs."
+      solution        : "Edit the httpd.conf file and add the following:-
+ LogLevel notice
+ ErrorLog logs/error_log
+ LogFormat '%h %l %u %t \'%r\' %>s %b '%{Accept}i' '%{Referrer}i' '%{User-Agent}i'' combined
+ CustomLog logs/access_log combined"
+      reference       : "800-171|3.3.8,800-171|3.3.9,800-53|AU-9(4),800-53r5|AU-9(4),CN-L3|8.1.4.3(d),CSF|PR.PT-1,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ISO/IEC-27001|A.12.4.2,ITSG-33|AU-9(4),ITSG-33|AU-9(4)(a),ITSG-33|AU-9(4)(b),NESA|M1.2.2,NESA|M5.2.3,NESA|M5.5.2,NIAv2|SM5,NIAv2|SM6,PCI-DSSv3.2.1|10.5,PCI-DSSv3.2.1|10.5.2,PCI-DSSv4.0|10.3.2,QCSC-v1|8.2.1,QCSC-v1|13.2,SWIFT-CSCv1|5.1"
+      value_type      : POLICY_TEXT
+      value_data      : "ErrorLog logs/error_log"
+      powershell_args : 'Get-Content \'C:\\Program Files\\IBM\\HTTPServer\\conf\\httpd.conf\' | where { $_.Contains(\\"ErrorLog logs/error_log\\") }'
+    </custom_item>
+
+    <custom_item>
+      type            : AUDIT_POWERSHELL
+      description     : "Logging Directives should be restricted to authorized users. - 'CustomLog logs/access_log combined'"
+      info            : "The server logs are invaluable for a variety of reasons. They can be used to determine what resources are being used most. They can also be used to spot any potential problems before they become serious. Most importantly, they can be used to watch for anomalous behaviour that may be an indication that an attack is pending or has occurred. If there are multiple web sites, or with large websites with multiple people responsible for portions of the web site, each responsible individual or organization needs access to their own web logs, and needs the skills/training/tools for monitoring the logs."
+      solution        : "Edit the httpd.conf file and add the following:-
+ LogLevel notice
+ ErrorLog logs/error_log
+ LogFormat '%h %l %u %t \'%r\' %>s %b '%{Accept}i' '%{Referrer}i' '%{User-Agent}i'' combined
+ CustomLog logs/access_log combined"
+      reference       : "800-171|3.3.8,800-171|3.3.9,800-53|AU-9(4),800-53r5|AU-9(4),CN-L3|8.1.4.3(d),CSF|PR.PT-1,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ISO/IEC-27001|A.12.4.2,ITSG-33|AU-9(4),ITSG-33|AU-9(4)(a),ITSG-33|AU-9(4)(b),NESA|M1.2.2,NESA|M5.2.3,NESA|M5.5.2,NIAv2|SM5,NIAv2|SM6,PCI-DSSv3.2.1|10.5,PCI-DSSv3.2.1|10.5.2,PCI-DSSv4.0|10.3.2,QCSC-v1|8.2.1,QCSC-v1|13.2,SWIFT-CSCv1|5.1"
+      value_type      : POLICY_TEXT
+      value_data      : "CustomLog logs/access_log combined"
+      powershell_args : 'Get-Content \'C:\\Program Files\\IBM\\HTTPServer\\conf\\httpd.conf\' | where { $_.Contains(\\"CustomLog logs/access_log combined\\") }'
+    </custom_item>
+
+    <custom_item>
+      type                 : AUDIT_POWERSHELL
+      description          : "Logging Directives should be restricted to authorized users. - 'LogFormat'"
+      info                 : "The server logs are invaluable for a variety of reasons. They can be used to determine what resources are being used most. They can also be used to spot any potential problems before they become serious. Most importantly, they can be used to watch for anomalous behaviour that may be an indication that an attack is pending or has occurred. If there are multiple web sites, or with large websites with multiple people responsible for portions of the web site, each responsible individual or organization needs access to their own web logs, and needs the skills/training/tools for monitoring the logs.
+ NOTE - Check output for LogFormat '%h %l %u %t \'%r\' %>s %b '%{Accept}i' '%{Referrer}i' '%{User-Agent}i'' combined
+
+ NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+      solution             : "Edit the httpd.conf file and add the following:-
+ LogLevel notice
+ ErrorLog logs/error_log
+ LogFormat '%h %l %u %t \'%r\' %>s %b '%{Accept}i' '%{Referrer}i' '%{User-Agent}i'' combined
+ CustomLog logs/access_log combined"
+      reference            : "800-171|3.3.8,800-171|3.3.9,800-53|AU-9(4),800-53r5|AU-9(4),CN-L3|8.1.4.3(d),CSF|PR.PT-1,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ISO/IEC-27001|A.12.4.2,ITSG-33|AU-9(4),ITSG-33|AU-9(4)(a),ITSG-33|AU-9(4)(b),NESA|M1.2.2,NESA|M5.2.3,NESA|M5.5.2,NIAv2|SM5,NIAv2|SM6,PCI-DSSv3.2.1|10.5,PCI-DSSv3.2.1|10.5.2,PCI-DSSv4.0|10.3.2,QCSC-v1|8.2.1,QCSC-v1|13.2,SWIFT-CSCv1|5.1"
+      value_type           : POLICY_TEXT
+      value_data           : ''
+      powershell_args      : 'Get-Content \'C:\\Program Files\\IBM\\HTTPServer\\conf\\httpd.conf\' | where { $_.Contains(\\"LogFormat\\") }'
+      only_show_cmd_output : YES
+      severity             : MEDIUM
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_PERMISSIONS
+      description : "File permissions in the root document should only be accessible by administrator"
+      info        : "The owner of the web server process should not have write permission to any file or directory."
+      solution    : "1. Open the http.conf file located at <IBM Http Installation directory>/conf
+ 2. Locate the Document root entry in the http.conf file.
+ DocumentRoot 'C:/Program Files/IBM/HTTPServer/htdocs'
+ 3. Ensure that only the administrators and no unauthorized users have permissions on the htdocs directory."
+      reference   : "CSCv6|3.1"
+      value_type  : FILE_ACL
+      value_data  : "htdocs"
+      file        : "@HTDOCS_DIR@"
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_PERMISSIONS
+      description : "Configuration files should be secured against unauthorized access."
+      info        : "The owner of the web server process should not have write permission to the server configuration file."
+      solution    : "1. The HTTP server configuration file is located at <IBM Http Installation directory>/conf
+ 2. Ensure that only the administrators and no unauthorized users have permissions on the conf directory."
+      reference   : "CSCv6|3.1"
+      value_type  : FILE_ACL
+      value_data  : "config"
+      file        : "@CONF_DIR@"
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK
+      description : "Server version information parameters should be turned off - 'ServerSignature Off'"
+      info        : "IBM http server is configured by default to add a signature to web pages that it dynamically generates."
+      solution    : "Change the default values of the parameters in <IBM Http Installation directory>/conf /httpd.conf to the following:
+ ServerSignature Off
+ ServerTokens Prod"
+      reference   : "800-53|SC-30(5),800-53r5|SC-30(5),GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-30,ITSG-33|SC-30a.,NIAv2|GS8f,NIAv2|NS1,NIAv2|NS28"
+      value_type  : POLICY_TEXT
+      value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+      regex       : '^[\\s]*ServerSignature[\\s]*'
+      expect      : '^[\\s]*ServerSignature[\\s]+[Oo][Ff][Ff][\\s]*$'
+      file_option : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK
+      description : "Server version information parameters should be turned off - 'ServerTokens Prod'"
+      info        : "IBM http server is configured by default to add a signature to web pages that it dynamically generates."
+      solution    : "Change the default values of the parameters in <IBM Http Installation directory>/conf /httpd.conf to the following:
+ ServerSignature Off
+ ServerTokens Prod"
+      reference   : "800-53|SC-30(5),800-53r5|SC-30(5),GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-30,ITSG-33|SC-30a.,NIAv2|GS8f,NIAv2|NS1,NIAv2|NS28"
+      value_type  : POLICY_TEXT
+      value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+      regex       : '^[\\s]*ServerTokens[\\s]*'
+      expect      : '^[\\s]*ServerTokens[\\s]+[pP][rR][oO][dD][\\s]*$'
+      file_option : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type                 : AUDIT_POWERSHELL
+      description          : "Directory access permissions should be restricted."
+      info                 : "The 'Options' Directive controls what extended web server functions are applied to directories and/or files. This feature should only be applied to the designated cgi-bin directory. The ExecCGI setting permits the execution of CGI scripts within the directory. The FollowSymLinks setting allows the server to follow symbolic links found in the directory. The Multiviews setting allows for multiple files to refer to the same request.
+ NOTE - User must check output for 'Options None'
+
+ NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+      solution             : "Modify the directory access permissions in the httpd.conf file to explicitly deny any extended directory functions stated above.
+ Using 'None' with the Options directive disables all extended directory access permissions. An example of a safe setting is given below.
+
+ <Directory <'directory path'>>
+    Options None
+    AllowOverride None
+    Order allow, deny
+    Deny from all
+ </Directory>"
+      reference            : "800-171|3.1.5,800-53|AC-6,800-53r5|AC-6,CN-L3|7.1.3.2(b),CN-L3|7.1.3.2(g),CN-L3|8.1.4.2(d),CN-L3|8.1.10.6(a),CSF|PR.AC-4,CSF|PR.DS-5,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ITSG-33|AC-6,NESA|T5.1.1,NESA|T5.2.2,NESA|T5.4.1,NESA|T5.4.4,NESA|T5.4.5,NESA|T5.5.4,NESA|T5.6.1,NESA|T7.5.3,NIAv2|AM1,NIAv2|AM23f,NIAv2|SS13c,NIAv2|SS15c,PCI-DSSv3.2.1|7.1.2,PCI-DSSv4.0|7.2.1,PCI-DSSv4.0|7.2.2,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|13.2,SWIFT-CSCv1|5.1,TBA-FIISB|31.4.2,TBA-FIISB|31.4.3"
+      value_type           : POLICY_TEXT
+      value_data           : ""
+      powershell_args      : 'Get-Content \'C:\\Program Files\\IBM\\HTTPServer\\conf\\httpd.conf\' | select-string -pattern \'^ *<Directory \\"@CGI_BIN_DIR_PS@\\">\' -context 0,5'
+      only_show_cmd_output : YES
+      severity             : MEDIUM
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK_NOT
+      description : "CGI-BIN directory should be disabled. 'LoadModule cgi_module'"
+      info        : "CGI-BIN directory is used to host CGI pages. CGI if not properly configured can enable execution of malicious scripts on the server."
+      solution    : "Disable CGI on websites that do not use any CGI scripts and programs. Comment out the following lines in httpd.conf file as shown below:
+ # LoadModule cgi_module modules/mod_cgi.so
+ # Loadmodule env_module modules/mod_env.so
+ # AddModule mod_env.c
+ # Addmodule mod_cgi.c
+ # ScriptAlias /cgi-bin/ '/var/www/cgi-bin/'
+ # <Directory '/var/www/cgi-bin'>
+ # AllowOverride None
+ # Options None
+ # Order allow, deny
+ # Allow from all
+ # </Directory>"
+      reference   : "800-171|3.4.6,800-171|3.4.7,800-53|CM-7b.,800-53r5|CM-7b.,CN-L3|7.1.3.5(c),CN-L3|7.1.3.7(d),CN-L3|8.1.4.4(b),CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-7a.,NIAv2|SS13b,NIAv2|SS14a,NIAv2|SS14c,PCI-DSSv3.2.1|2.2.2,PCI-DSSv4.0|2.2.4,QCSC-v1|3.2,SWIFT-CSCv1|2.3"
+      value_type  : POLICY_TEXT
+      value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+      regex       : '^[\\s]*[Ll]oad[Mm]odule[\\s]*cgi_module[\\s]*'
+      expect      : '^[\\s]*[Ll]oad[Mm]odule[\\s]*cgi_module[\\s]*modules/mod_cgi\.so[\\s]*$'
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK_NOT
+      description : "CGI-BIN directory should be disabled. 'LoadModule env_module'"
+      info        : "CGI-BIN directory is used to host CGI pages. CGI if not properly configured can enable execution of malicious scripts on the server."
+      solution    : "Disable CGI on websites that do not use any CGI scripts and programs. Comment out the following lines in httpd.conf file as shown below:
+ # LoadModule cgi_module modules/mod_cgi.so
+ # Loadmodule env_module modules/mod_env.so
+ # AddModule mod_env.c
+ # Addmodule mod_cgi.c
+ # ScriptAlias /cgi-bin/ '/var/www/cgi-bin/'
+ # <Directory '/var/www/cgi-bin'>
+ # AllowOverride None
+ # Options None
+ # Order allow, deny
+ # Allow from all
+ # </Directory>"
+      reference   : "800-171|3.4.6,800-171|3.4.7,800-53|CM-7b.,800-53r5|CM-7b.,CN-L3|7.1.3.5(c),CN-L3|7.1.3.7(d),CN-L3|8.1.4.4(b),CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-7a.,NIAv2|SS13b,NIAv2|SS14a,NIAv2|SS14c,PCI-DSSv3.2.1|2.2.2,PCI-DSSv4.0|2.2.4,QCSC-v1|3.2,SWIFT-CSCv1|2.3"
+      value_type  : POLICY_TEXT
+      value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+      regex       : '^[\\s]*[Ll]oad[Mm]odule[\\s]*env_module[\\s]*'
+      expect      : '^[\\s]*[Ll]oad[Mm]odule[\\s]*env_module[\\s]*modules/mod_env\.so[\\s]*$'
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK_NOT
+      description : "CGI-BIN directory should be disabled. 'AddModule mod_env.c'"
+      info        : "CGI-BIN directory is used to host CGI pages. CGI if not properly configured can enable execution of malicious scripts on the server."
+      solution    : "Disable CGI on websites that do not use any CGI scripts and programs. Comment out the following lines in httpd.conf file as shown below:
+ # LoadModule cgi_module modules/mod_cgi.so
+ # Loadmodule env_module modules/mod_env.so
+ # AddModule mod_env.c
+ # Addmodule mod_cgi.c
+ # ScriptAlias /cgi-bin/ '/var/www/cgi-bin/'
+ # <Directory '/var/www/cgi-bin'>
+ # AllowOverride None
+ # Options None
+ # Order allow, deny
+ # Allow from all
+ # </Directory>"
+      reference   : "800-171|3.4.6,800-171|3.4.7,800-53|CM-7b.,800-53r5|CM-7b.,CN-L3|7.1.3.5(c),CN-L3|7.1.3.7(d),CN-L3|8.1.4.4(b),CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-7a.,NIAv2|SS13b,NIAv2|SS14a,NIAv2|SS14c,PCI-DSSv3.2.1|2.2.2,PCI-DSSv4.0|2.2.4,QCSC-v1|3.2,SWIFT-CSCv1|2.3"
+      value_type  : POLICY_TEXT
+      value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+      regex       : '^[\\s]*[Aa]dd[Mm]odule[\\s]*mod_env.c[\\s]*$'
+      expect      : '^[\\s]*[Aa]dd[Mm]odule[\\s]*mod_env.c[\\s]*$'
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK_NOT
+      description : "CGI-BIN directory should be disabled. 'Addmodule mod_cgi.c'"
+      info        : "CGI-BIN directory is used to host CGI pages. CGI if not properly configured can enable execution of malicious scripts on the server."
+      solution    : "Disable CGI on websites that do not use any CGI scripts and programs. Comment out the following lines in httpd.conf file as shown below:
+ # LoadModule cgi_module modules/mod_cgi.so
+ # Loadmodule env_module modules/mod_env.so
+ # AddModule mod_env.c
+ # Addmodule mod_cgi.c
+ # ScriptAlias /cgi-bin/ '/var/www/cgi-bin/'
+ # <Directory '/var/www/cgi-bin'>
+ # AllowOverride None
+ # Options None
+ # Order allow, deny
+ # Allow from all
+ # </Directory>"
+      reference   : "800-171|3.4.6,800-171|3.4.7,800-53|CM-7b.,800-53r5|CM-7b.,CN-L3|7.1.3.5(c),CN-L3|7.1.3.7(d),CN-L3|8.1.4.4(b),CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-7a.,NIAv2|SS13b,NIAv2|SS14a,NIAv2|SS14c,PCI-DSSv3.2.1|2.2.2,PCI-DSSv4.0|2.2.4,QCSC-v1|3.2,SWIFT-CSCv1|2.3"
+      value_type  : POLICY_TEXT
+      value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+      regex       : '^[\\s]*[Aa]dd[Mm]odule[\\s]*mod_cgi.c[\\s]*$'
+      expect      : '^[\\s]*[Aa]dd[Mm]odule[\\s]*mod_cgi.c[\\s]*$'
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK_NOT
+      description : "CGI-BIN directory should be disabled. 'ScriptAlias'"
+      info        : "CGI-BIN directory is used to host CGI pages. CGI if not properly configured can enable execution of malicious scripts on the server."
+      solution    : "Disable CGI on websites that do not use any CGI scripts and programs. Comment out the following lines in httpd.conf file as shown below:
+ # LoadModule cgi_module modules/mod_cgi.so
+ # Loadmodule env_module modules/mod_env.so
+ # AddModule mod_env.c
+ # Addmodule mod_cgi.c
+ # ScriptAlias /cgi-bin/ '/var/www/cgi-bin/'
+ # <Directory '/var/www/cgi-bin'>
+ # AllowOverride None
+ # Options None
+ # Order allow, deny
+ # Allow from all
+ # </Directory>"
+      reference   : "800-171|3.4.6,800-171|3.4.7,800-53|CM-7b.,800-53r5|CM-7b.,CN-L3|7.1.3.5(c),CN-L3|7.1.3.7(d),CN-L3|8.1.4.4(b),CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-7a.,NIAv2|SS13b,NIAv2|SS14a,NIAv2|SS14c,PCI-DSSv3.2.1|2.2.2,PCI-DSSv4.0|2.2.4,QCSC-v1|3.2,SWIFT-CSCv1|2.3"
+      value_type  : POLICY_TEXT
+      value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+      regex       : '^[\\s]*[Ss]cript[Aa]lias[\\s]*/cgi-bin/[\\s]*'
+      expect      : '^[\\s]*[Ss]cript[Aa]lias[\\s]*/cgi-bin/[\\s]*"@CGI_BIN_DIR_PS@/"[\\s]*$'
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK_NOT
+      description : "CGI-BIN directory should be disabled. 'Directory'"
+      info        : "CGI-BIN directory is used to host CGI pages. CGI if not properly configured can enable execution of malicious scripts on the server."
+      solution    : "Disable CGI on websites that do not use any CGI scripts and programs. Comment out the following lines in httpd.conf file as shown below:
+ # LoadModule cgi_module modules/mod_cgi.so
+ # Loadmodule env_module modules/mod_env.so
+ # AddModule mod_env.c
+ # Addmodule mod_cgi.c
+ # ScriptAlias /cgi-bin/ '/var/www/cgi-bin/'
+ # <Directory '/var/www/cgi-bin'>
+ # AllowOverride None
+ # Options None
+ # Order allow, deny
+ # Allow from all
+ # </Directory>"
+      reference   : "800-171|3.4.6,800-171|3.4.7,800-53|CM-7b.,800-53r5|CM-7b.,CN-L3|7.1.3.5(c),CN-L3|7.1.3.7(d),CN-L3|8.1.4.4(b),CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-7a.,NIAv2|SS13b,NIAv2|SS14a,NIAv2|SS14c,PCI-DSSv3.2.1|2.2.2,PCI-DSSv4.0|2.2.4,QCSC-v1|3.2,SWIFT-CSCv1|2.3"
+      value_type  : POLICY_TEXT
+      value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+      regex       : '^[\\s]*<Directory[\\s]*"@CGI_BIN_DIR_PS@">[\\s]*'
+      expect      : '^[\\s]*<Directory[\\s]*"@CGI_BIN_DIR_PS@">[\\s]*$'
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK
+      description : "Timeout value parameter value should be appropriately configured"
+      info        : "The Timeout directive tells the server how long to wait to receive a GET request, the amount of time between receipt of TCP packets on a POST or PUT request, or the amount of time between ACKs on transmissions of TCP packets in responses. In order to prevent a denial of service attack from shutting down our web server, we need to change the default setting of 300 (which is 5 minutes) to 60 (which is 1 minute). You may even adjust this setting to be lower than 60."
+      solution    : "Change the default setting of Timeout parameter in httpd.conf file from 300 (which is 5 minutes) to 60 (which is 1 minute)."
+      reference   : "800-171|3.1.11,800-53|AC-12,800-53r5|AC-12,CN-L3|7.1.2.2(d),CN-L3|7.1.3.7(b),CN-L3|8.1.4.1(b),GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(2)(iii),ITSG-33|AC-12,NIAv2|NS49"
+      value_type  : POLICY_TEXT
+      value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+      regex       : '^[\\s]*[Tt]imeout[\\s]*'
+      expect      : '^[\\s]*[Tt]imeout[\\s]+(60|[1-5][0-9])[\\s]*$'
+      file_option : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK
+      description : "Keep Alive setting parameter value should be appropriately configured."
+      info        : "In order to make the web server more efficient in processing connections and therefore more resistant to DoS attacks, TCP KeepAlives should be configured. This setting will allow for multiple HTTP requests to be serviced across one connection."
+      solution    : "Enable keep alive by configuring KeepAlive parameter in httpd.conf to 'on'."
+      reference   : "800-171|3.1.11,800-53|AC-12,800-53r5|AC-12,CN-L3|7.1.2.2(d),CN-L3|7.1.3.7(b),CN-L3|8.1.4.1(b),GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(2)(iii),ITSG-33|AC-12,NIAv2|NS49"
+      value_type  : POLICY_TEXT
+      value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+      regex       : '^[\\s]*KeepAlive[\\s]'
+      expect      : '^[\\s]*KeepAlive[\\s]+[oO][nN][\\s]*$'
+      file_option : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK
+      description : "Keep Alive Timeout setting value should be appropriately configured."
+      info        : "This directive will limit the time the IBM http server web server will wait in seconds for a KeepAlive request to be completed."
+      solution    : "Enable KeepAlive timeout by configuring KeepAliveTimeout parameter in httpd.conf to '15'."
+      reference   : "800-171|3.1.11,800-53|AC-12,800-53r5|AC-12,CN-L3|7.1.2.2(d),CN-L3|7.1.3.7(b),CN-L3|8.1.4.1(b),GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(2)(iii),ITSG-33|AC-12,NIAv2|NS49"
+      value_type  : POLICY_TEXT
+      value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+      regex       : '^[\\s]*KeepAliveTimeout[\\s]*'
+      expect      : '^[\\s]*KeepAliveTimeout[\\s]+(15|1[0-4]|[1-9])[\\s]*$'
+      file_option : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK
+      description : "MaxKeepAliveRequests parameter value should be appropriately configured."
+      info        : "This directive will limit the time the number of simultaneous requests that the IBM http server will service."
+      solution    : "It is recommended to set the MaxKeepAlive requests parameter in httpd.conf to '100'."
+      reference   : "800-53|SC-5(2),800-53r5|SC-5(2),CSF|PR.DS-4,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-5(2),NESA|T3.3.1,NIAv2|GS8e,NIAv2|GS10c,QCSC-v1|8.2.1,SWIFT-CSCv1|6.4"
+      value_type  : POLICY_TEXT
+      value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+      regex       : '^[\\s]*MaxKeepAliveRequests[\\s]*'
+      expect      : '^[\\s]*MaxKeepAliveRequests[\\s]+[1-9][0-9][0-9][\\s]*$'
+      file_option : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK
+      description : "StartServers parameter value should be appropriately configured."
+      info        : "The StartServers directive sets the number of child server processes created on start-up."
+      solution    : "It is recommended to set the StartServers parameter in httpd.conf to '5'."
+      reference   : "800-53|SC-5(2),800-53r5|SC-5(2),CSF|PR.DS-4,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-5(2),NESA|T3.3.1,NIAv2|GS8e,NIAv2|GS10c,QCSC-v1|8.2.1,SWIFT-CSCv1|6.4"
+      value_type  : POLICY_TEXT
+      value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+      regex       : '^[\\s]*StartServers[\\s]*'
+      expect      : '^[\\s]*StartServers[\\s]+[1-5][\\s]*$'
+      file_option : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK
+      description : "MinSpareServers parameter value should be appropriately configured."
+      info        : "The MinSpareServers directive sets the desired minimum number of idle child server processes. An idle process is one which is not handling a request. If there are fewer than MinSpareServers idle, then the parent process creates new children at a maximum rate of 1per second. Tuning of this parameter should only be necessary on very busy sites. Setting this parameter to a large number is almost always a bad idea."
+      solution    : "It is recommended to set the MinSpareServers parameter in httpd.conf to '5'."
+      reference   : "800-53|SC-5(2),800-53r5|SC-5(2),CSF|PR.DS-4,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-5(2),NESA|T3.3.1,NIAv2|GS8e,NIAv2|GS10c,QCSC-v1|8.2.1,SWIFT-CSCv1|6.4"
+      value_type  : POLICY_TEXT
+      value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+      regex       : '^[\\s]*MinSpareServers[\\s]*'
+      expect      : '^[\\s]*MinSpareServers[\\s]+[1-5][\\s]*$'
+      file_option : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK
+      description : "MaxSpareServers parameter value should be appropriately configured."
+      info        : "The MaxSpareServers directive sets the desired maximum number of idle child server processes. An idle process is one which is not handling a request. If there are more than MaxSpareServers idle, then the parent process will kill off the excess processes. Tuning of this parameter should only be necessary on very busy sites. Setting this parameter to a large number is almost always a bad idea. If you are trying to set the value equal to or lower than MinSpareServers, Apache will automatically adjust it to MinSpareServers + 1."
+      solution    : "It is recommended to set the MaxSpareServers parameter in httpd.conf to '10'."
+      reference   : "800-53|SC-5(2),800-53r5|SC-5(2),CSF|PR.DS-4,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-5(2),NESA|T3.3.1,NIAv2|GS8e,NIAv2|GS10c,QCSC-v1|8.2.1,SWIFT-CSCv1|6.4"
+      value_type  : POLICY_TEXT
+      value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+      regex       : '^[\\s]*MaxSpareServers[\\s]*'
+      expect      : '^[\\s]*MaxSpareServers[\\s]+(10|[1-9])[\\s]*$'
+      file_option : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK
+      description : "MaxClients parameter value should be configured to appropriate value."
+      info        : "The MaxClients directive sets the limit on the number of simultaneous requests that will be served. Any connection attempts over the MaxClients limit will normally be queued, up to a number based on the ListenBacklog directive. Once a child process is freed at the end of a different request, the connection will then be serviced."
+      solution    : "It is recommended to set the MaxClients parameter in httpd.conf to '256'."
+      reference   : "800-53|SC-5(2),800-53r5|SC-5(2),CSF|PR.DS-4,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-5(2),NESA|T3.3.1,NIAv2|GS8e,NIAv2|GS10c,QCSC-v1|8.2.1,SWIFT-CSCv1|6.4"
+      value_type  : POLICY_TEXT
+      value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+      regex       : '^[\\s]*MaxClients[\\s]*'
+      expect      : '^[\\s]*MaxClients[\\s]+(2(5[0-6]|[0-4][0-9])|1[0-9]{2}|[1-9][0-9]?)[\\s]*$'
+      file_option : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK_NOT
+      description : "Non-Essential modules should be disabled. 'mod_autoindex'"
+      info        : "It is important to disable the modules that are not needed, in order to reduce the risk to the web server, as well as increase the performance. This is similar to the OS security issue of running unnecessary network services; such as Telnet and FTP. By enabling these unused modules, you are potentially providing additional avenues of attack against your web server. You should only enable the modules that you absolutely needed for the functionality of your web site."
+      solution    : "Disable modules listed below by commenting out the 'LoadModule' lines that refer to these modules in the httpd.conf file. Detailed functionality of the modules elaborated in Appendix 3.1
+ mod_autoindex
+ mod_include
+ mod_info
+ mod_status
+ mod_userdir
+ mod_dav"
+      reference   : "800-171|3.4.6,800-171|3.4.7,800-53|CM-7b.,800-53r5|CM-7b.,CN-L3|7.1.3.5(c),CN-L3|7.1.3.7(d),CN-L3|8.1.4.4(b),CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-7a.,NIAv2|SS13b,NIAv2|SS14a,NIAv2|SS14c,PCI-DSSv3.2.1|2.2.2,PCI-DSSv4.0|2.2.4,QCSC-v1|3.2,SWIFT-CSCv1|2.3"
+      value_type  : POLICY_TEXT
+      value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+      regex       : '^[\\s]*[Ll]oad[Mm]odule[\\s]*autoindex_module[\\s]*'
+      expect      : '^[\\s]*[Ll]oad[Mm]odule[\\s]*autoindex_module[\\s]*modules/mod_autoindex.so[\\s]*$'
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK_NOT
+      description : "Non-Essential modules should be disabled. 'mod_include'"
+      info        : "It is important to disable the modules that are not needed, in order to reduce the risk to the web server, as well as increase the performance. This is similar to the OS security issue of running unnecessary network services; such as Telnet and FTP. By enabling these unused modules, you are potentially providing additional avenues of attack against your web server. You should only enable the modules that you absolutely needed for the functionality of your web site."
+      solution    : "Disable modules listed below by commenting out the 'LoadModule' lines that refer to these modules in the httpd.conf file. Detailed functionality of the modules elaborated in Appendix 3.1
+ mod_autoindex
+ mod_include
+ mod_info
+ mod_status
+ mod_userdir
+ mod_dav"
+      reference   : "800-171|3.4.6,800-171|3.4.7,800-53|CM-7b.,800-53r5|CM-7b.,CN-L3|7.1.3.5(c),CN-L3|7.1.3.7(d),CN-L3|8.1.4.4(b),CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-7a.,NIAv2|SS13b,NIAv2|SS14a,NIAv2|SS14c,PCI-DSSv3.2.1|2.2.2,PCI-DSSv4.0|2.2.4,QCSC-v1|3.2,SWIFT-CSCv1|2.3"
+      value_type  : POLICY_TEXT
+      value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+      regex       : '^[\\s]*[Ll]oad[Mm]odule[\\s]*include_module[\\s]*'
+      expect      : '^[\\s]*[Ll]oad[Mm]odule[\\s]*include_module[\\s]*modules/mod_include\.so[\\s]*$'
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK_NOT
+      description : "Non-Essential modules should be disabled. 'mod_info'"
+      info        : "It is important to disable the modules that are not needed, in order to reduce the risk to the web server, as well as increase the performance. This is similar to the OS security issue of running unnecessary network services; such as Telnet and FTP. By enabling these unused modules, you are potentially providing additional avenues of attack against your web server. You should only enable the modules that you absolutely needed for the functionality of your web site."
+      solution    : "Disable modules listed below by commenting out the 'LoadModule' lines that refer to these modules in the httpd.conf file. Detailed functionality of the modules elaborated in Appendix 3.1
+ mod_autoindex
+ mod_include
+ mod_info
+ mod_status
+ mod_userdir
+ mod_dav"
+      reference   : "800-171|3.4.6,800-171|3.4.7,800-53|CM-7b.,800-53r5|CM-7b.,CN-L3|7.1.3.5(c),CN-L3|7.1.3.7(d),CN-L3|8.1.4.4(b),CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-7a.,NIAv2|SS13b,NIAv2|SS14a,NIAv2|SS14c,PCI-DSSv3.2.1|2.2.2,PCI-DSSv4.0|2.2.4,QCSC-v1|3.2,SWIFT-CSCv1|2.3"
+      value_type  : POLICY_TEXT
+      value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+      regex       : '^[\\s]*[Ll]oad[Mm]odule[\\s]*info_module[\\s]*'
+      expect      : '^[\\s]*[Ll]oad[Mm]odule[\\s]*info_module[\\s]*modules/mod_info\.so[\\s]*$'
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK_NOT
+      description : "Non-Essential modules should be disabled. 'mod_status'"
+      info        : "It is important to disable the modules that are not needed, in order to reduce the risk to the web server, as well as increase the performance. This is similar to the OS security issue of running unnecessary network services; such as Telnet and FTP. By enabling these unused modules, you are potentially providing additional avenues of attack against your web server. You should only enable the modules that you absolutely needed for the functionality of your web site."
+      solution    : "Disable modules listed below by commenting out the 'LoadModule' lines that refer to these modules in the httpd.conf file. Detailed functionality of the modules elaborated in Appendix 3.1
+ mod_autoindex
+ mod_include
+ mod_info
+ mod_status
+ mod_userdir
+ mod_dav"
+      reference   : "800-171|3.4.6,800-171|3.4.7,800-53|CM-7b.,800-53r5|CM-7b.,CN-L3|7.1.3.5(c),CN-L3|7.1.3.7(d),CN-L3|8.1.4.4(b),CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-7a.,NIAv2|SS13b,NIAv2|SS14a,NIAv2|SS14c,PCI-DSSv3.2.1|2.2.2,PCI-DSSv4.0|2.2.4,QCSC-v1|3.2,SWIFT-CSCv1|2.3"
+      value_type  : POLICY_TEXT
+      value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+      regex       : '^[\\s]*[Ll]oad[Mm]odule[\\s]*status_module[\\s]*'
+      expect      : '^[\\s]*[Ll]oad[Mm]odule[\\s]*status_module[\\s]*modules/mod_status\.so[\\s]*$'
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK_NOT
+      description : "Non-Essential modules should be disabled. 'mod_userdir'"
+      info        : "It is important to disable the modules that are not needed, in order to reduce the risk to the web server, as well as increase the performance. This is similar to the OS security issue of running unnecessary network services; such as Telnet and FTP. By enabling these unused modules, you are potentially providing additional avenues of attack against your web server. You should only enable the modules that you absolutely needed for the functionality of your web site."
+      solution    : "Disable modules listed below by commenting out the 'LoadModule' lines that refer to these modules in the httpd.conf file. Detailed functionality of the modules elaborated in Appendix 3.1
+ mod_autoindex
+ mod_include
+ mod_info
+ mod_status
+ mod_userdir
+ mod_dav"
+      reference   : "800-171|3.4.6,800-171|3.4.7,800-53|CM-7b.,800-53r5|CM-7b.,CN-L3|7.1.3.5(c),CN-L3|7.1.3.7(d),CN-L3|8.1.4.4(b),CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-7a.,NIAv2|SS13b,NIAv2|SS14a,NIAv2|SS14c,PCI-DSSv3.2.1|2.2.2,PCI-DSSv4.0|2.2.4,QCSC-v1|3.2,SWIFT-CSCv1|2.3"
+      value_type  : POLICY_TEXT
+      value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+      regex       : '^[\\s]*[Ll]oad[Mm]odule[\\s]*userdir_module[\\s]*'
+      expect      : '^[\\s]*[Ll]oad[Mm]odule[\\s]*userdir_module[\\s]*modules/mod_userdir\.so[\\s]*$'
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK_NOT
+      description : "Non-Essential modules should be disabled. 'mod_dav'"
+      info        : "It is important to disable the modules that are not needed, in order to reduce the risk to the web server, as well as increase the performance. This is similar to the OS security issue of running unnecessary network services; such as Telnet and FTP. By enabling these unused modules, you are potentially providing additional avenues of attack against your web server. You should only enable the modules that you absolutely needed for the functionality of your web site."
+      solution    : "Disable modules listed below by commenting out the 'LoadModule' lines that refer to these modules in the httpd.conf file. Detailed functionality of the modules elaborated in Appendix 3.1
+ mod_autoindex
+ mod_include
+ mod_info
+ mod_status
+ mod_userdir
+ mod_dav"
+      reference   : "800-171|3.4.6,800-171|3.4.7,800-53|CM-7b.,800-53r5|CM-7b.,CN-L3|7.1.3.5(c),CN-L3|7.1.3.7(d),CN-L3|8.1.4.4(b),CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-7a.,NIAv2|SS13b,NIAv2|SS14a,NIAv2|SS14c,PCI-DSSv3.2.1|2.2.2,PCI-DSSv4.0|2.2.4,QCSC-v1|3.2,SWIFT-CSCv1|2.3"
+      value_type  : POLICY_TEXT
+      value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+      regex       : '^[\\s]*[Ll]oad[Mm]odule[\\s]*dav_module[\\s]*'
+      expect      : '^[\\s]*[Ll]oad[Mm]odule[\\s]*dav_module[\\s]*modules/mod_dav\.so[\\s]*$'
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "Latest Patches/Fixes should be installed"
+      info        : "IBM provides periodic patches for IBM HTTP Server. Older or unfixed versions of the product can be affected with multiple vulnerabilities."
+      solution    : "Download and install the latest patch/fix available for the product. The comprehensive list of patches is available at the below URL:
+
+http://www-01.ibm.com/support/docview.wss?rs=177&uid=swg27006973"
+      reference   : "800-171|3.14.1,800-53|SI-2c.,800-53r5|SI-2c.,CN-L3|8.1.4.4(e),CN-L3|8.1.10.5(a),CN-L3|8.1.10.5(b),CN-L3|8.5.4.1(b),CN-L3|8.5.4.1(d),CN-L3|8.5.4.1(e),CSF|ID.RA-1,CSF|PR.IP-12,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SI-2,NESA|T7.6.2,NESA|T7.7.1,NIAv2|AM38,NIAv2|AM39,NIAv2|SS14b,PCI-DSSv3.2.1|6.2,PCI-DSSv4.0|6.3,PCI-DSSv4.0|6.3.3,QCSC-v1|11.2,SWIFT-CSCv1|2.2"
+      value_type  : POLICY_TEXT
+      value_data  : "IBM_HTTP_Server/@IBM_HTTP_VERSION@.*"
+      reg_key     : "HKLM\System\ControlSet001\Services\IBMHTTPServerV9.0"
+      reg_item    : "Description"
+      check_type  : CHECK_REGEX
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK
+      description : "Buffer overflow protection should be configured 'LimitRequestBody'"
+      info        : "Buffer overflow vulnerabilities stem from problems in string handling. Whenever a computer program tries copying a string or buffer into a buffer that is smaller than the string, an overflow is caused. If the destination buffer is overflowed sufficiently it will overwrite various crucial system data. In most situations an attacker can leverage this to takeover a specific program's process, thereby acquiring the privileges of process or program"
+      solution    : "Edit the httpd.conf file and add the following
+ LimitRequestBody 10240
+ LimitRequestFields 40
+ LimitRequestFieldsize 100
+ LimitRequestline 500"
+      reference   : "800-53|SC-5,800-53r5|SC-5,CSF|DE.CM-1,CSF|PR.DS-4,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-5,ITSG-33|SC-5a.,NESA|T3.3.1,NIAv2|GS8e,NIAv2|GS10c,QCSC-v1|8.2.1"
+      value_type  : POLICY_TEXT
+      value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+      regex       : '^[\\s]*LimitRequestBody[\\s]*'
+      expect      : '^[\\s]*LimitRequestBody[\\s]+\\b(10240|[1-9]|[1-8][0-9]|9[0-9]|[1-8][0-9]{2}|9[0-8][0-9]|99[0-9]|[1-8][0-9]{3}|9[0-8][0-9]{2}|99[0-8][0-9]|999[0-9]|10[01][0-9]{2}|102[0-3][0-9])\\b[\\s]*'
+      file_option : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK
+      description : "Buffer overflow protection should be configured 'LimitRequestFields'"
+      info        : "Buffer overflow vulnerabilities stem from problems in string handling. Whenever a computer program tries copying a string or buffer into a buffer that is smaller than the string, an overflow is caused. If the destination buffer is overflowed sufficiently it will overwrite various crucial system data. In most situations an attacker can leverage this to takeover a specific program's process, thereby acquiring the privileges of process or program"
+      solution    : "Edit the httpd.conf file and add the following
+ LimitRequestBody 10240
+ LimitRequestFields 40
+ LimitRequestFieldsize 100
+ LimitRequestline 500"
+      reference   : "800-53|SC-5,800-53r5|SC-5,CSF|DE.CM-1,CSF|PR.DS-4,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-5,ITSG-33|SC-5a.,NESA|T3.3.1,NIAv2|GS8e,NIAv2|GS10c,QCSC-v1|8.2.1"
+      value_type  : POLICY_TEXT
+      value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+      regex       : '^[\\s]*LimitRequestFields[\\s]+\\b(40|[1-9]|[1-3][0-9])\\b[\\s]*'
+      expect      : '^[\\s]*LimitRequestFields[\\s]+\\b(40|[1-9]|[1-3][0-9])\\b[\\s]*'
+      file_option : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK
+      description : "Buffer overflow protection should be configured 'LimitRequestFieldsize'"
+      info        : "Buffer overflow vulnerabilities stem from problems in string handling. Whenever a computer program tries copying a string or buffer into a buffer that is smaller than the string, an overflow is caused. If the destination buffer is overflowed sufficiently it will overwrite various crucial system data. In most situations an attacker can leverage this to takeover a specific program's process, thereby acquiring the privileges of process or program"
+      solution    : "Edit the httpd.conf file and add the following
+ LimitRequestBody 10240
+ LimitRequestFields 40
+ LimitRequestFieldsize 100
+ LimitRequestline 500"
+      reference   : "800-53|SC-5,800-53r5|SC-5,CSF|DE.CM-1,CSF|PR.DS-4,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-5,ITSG-33|SC-5a.,NESA|T3.3.1,NIAv2|GS8e,NIAv2|GS10c,QCSC-v1|8.2.1"
+      value_type  : POLICY_TEXT
+      value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+      regex       : '^[\\s]*LimitRequestFieldsize[\\s]*'
+      expect      : '^[\\s]*LimitRequestFieldsize[\\s]+\\b(100|[1-9]|[1-8][0-9]|9[0-9])\\b[\\s]*'
+      file_option : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : FILE_CONTENT_CHECK
+      description : "Buffer overflow protection should be configured 'LimitRequestline'"
+      info        : "Buffer overflow vulnerabilities stem from problems in string handling. Whenever a computer program tries copying a string or buffer into a buffer that is smaller than the string, an overflow is caused. If the destination buffer is overflowed sufficiently it will overwrite various crucial system data. In most situations an attacker can leverage this to takeover a specific program's process, thereby acquiring the privileges of process or program"
+      solution    : "Edit the httpd.conf file and add the following
+ LimitRequestBody 10240
+ LimitRequestFields 40
+ LimitRequestFieldsize 100
+ LimitRequestline 500"
+      reference   : "800-53|SC-5,800-53r5|SC-5,CSF|DE.CM-1,CSF|PR.DS-4,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-5,ITSG-33|SC-5a.,NESA|T3.3.1,NIAv2|GS8e,NIAv2|GS10c,QCSC-v1|8.2.1"
+      value_type  : POLICY_TEXT
+      value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+      regex       : '^[\\s]*LimitRequestline[\\s]*'
+      expect      : '^[\\s]*LimitRequestline[\\s]+\\b(500|[1-9]|[1-8][0-9]|9[0-9]|[1-4][0-9]{2})\\b[\\s]*'
+      file_option : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <if>
+      <condition type:"AND">
+        <custom_item>
+          type                 : AUDIT_POWERSHELL
+          description          : "IBM HTTP Server 7 or greater is installed and running on the system"
+          value_type           : POLICY_TEXT
+          value_data           : ""
+          powershell_args      : 'get-service -Name \'IBMHTTPServerV[7-9]*\' | Where-Object {$_.Status -eq \'Running\' } | Format-List'
+          only_show_cmd_output : YES
+        </custom_item>
+      </condition>
+
+      <then>
+        <custom_item>
+          type        : FILE_CONTENT_CHECK
+          description : "HTTP TRACE method should be disabled. 'TraceEnable'"
+          info        : "The HTTP 'TRACE' Method is essentially trace route for Web traffic. It is an application layer loop-back of the request. It will send a HTTP packet to a destination host and then return a packet describing the path, which was travelled. The interesting reconnaissance technique is that the TRACE method will identify intermediate Proxy and Load Balancer Servers that are between the client and the destination host."
+          solution    : "For IBM HTTP Server >= Version 7.0
+ In IBM HTTP Server 7.0 and later, the 'TraceEnable' directive is provided to disable the TRACE HTTP method.
+ To disable TRACE, enter the following line in httpd.conf file
+ TraceEnable off
+ For IBM HTTP Server < Version 7.0
+ Uncomment any lines in httpd.conf that contain 'mod_rewrite' like:
+ LoadModule rewrite_module modules/mod_rewrite.so
+ AddModule mod_rewrite.c
+ OR
+ Edit the httpd.conf file and add the following entries:
+ RewriteEngine On
+ RewriteLog /usr/local/apache/logs/rewrite.log
+ RewriteLogLevel 2
+ RewriteRule [^a-zA-Z0-9|\.|/|_|-] - [F]
+ RewriteCond %{REQUEST_METHOD} ^TRACE
+ RewriteRule .* - [F]"
+          reference   : "800-171|3.4.6,800-171|3.4.7,800-53|CM-7b.,800-53r5|CM-7b.,CN-L3|7.1.3.5(c),CN-L3|7.1.3.7(d),CN-L3|8.1.4.4(b),CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-7a.,NIAv2|SS13b,NIAv2|SS14a,NIAv2|SS14c,PCI-DSSv3.2.1|2.2.2,PCI-DSSv4.0|2.2.4,QCSC-v1|3.2,SWIFT-CSCv1|2.3"
+          value_type  : POLICY_TEXT
+          value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+          regex       : '^[\\s]*[Tt]race[Ee]nable[\\s]*'
+          expect      : '^[\\s]*[Tt]race[Ee]nable[\\s]*[Oo][Ff][Ff][\\s]*$'
+          file_option : CAN_NOT_BE_NULL
+        </custom_item>
+      </then>
+
+      <else>
+        <custom_item>
+          type        : FILE_CONTENT_CHECK
+          description : "HTTP TRACE method should be disabled. 'RewriteEngine'"
+          info        : "The HTTP 'TRACE' Method is essentially trace route for Web traffic. It is an application layer loop-back of the request. It will send a HTTP packet to a destination host and then return a packet describing the path, which was travelled. The interesting reconnaissance technique is that the TRACE method will identify intermediate Proxy and Load Balancer Servers that are between the client and the destination host."
+          solution    : "For IBM HTTP Server >= Version 7.0
+ In IBM HTTP Server 7.0 and later, the 'TraceEnable' directive is provided to disable the TRACE HTTP method.
+ To disable TRACE, enter the following line in httpd.conf file
+ TraceEnable off
+ For IBM HTTP Server < Version 7.0
+ Uncomment any lines in httpd.conf that contain 'mod_rewrite' like:
+ LoadModule rewrite_module modules/mod_rewrite.so
+ AddModule mod_rewrite.c
+ OR
+ Edit the httpd.conf file and add the following entries:
+ RewriteEngine On
+ RewriteLog /usr/local/apache/logs/rewrite.log
+ RewriteLogLevel 2
+ RewriteRule [^a-zA-Z0-9|\.|/|_|-] - [F]
+ RewriteCond %{REQUEST_METHOD} ^TRACE
+ RewriteRule .* - [F]"
+          reference   : "800-171|3.4.6,800-171|3.4.7,800-53|CM-7b.,800-53r5|CM-7b.,CN-L3|7.1.3.5(c),CN-L3|7.1.3.7(d),CN-L3|8.1.4.4(b),CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-7a.,NIAv2|SS13b,NIAv2|SS14a,NIAv2|SS14c,PCI-DSSv3.2.1|2.2.2,PCI-DSSv4.0|2.2.4,QCSC-v1|3.2,SWIFT-CSCv1|2.3"
+          value_type  : POLICY_TEXT
+          value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+          regex       : '^[\\s]*[Rr]ewrite[Ee]ngine[\\s]*'
+          expect      : '^[\\s]*[Rr]ewrite[Ee]ngine[\\s]+[Oo][Nn][\\s]*'
+          file_option : CAN_NOT_BE_NULL
+        </custom_item>
+
+        <custom_item>
+          type        : FILE_CONTENT_CHECK
+          description : "HTTP TRACE method should be disabled. 'RewriteLog'"
+          info        : "The HTTP 'TRACE' Method is essentially trace route for Web traffic. It is an application layer loop-back of the request. It will send a HTTP packet to a destination host and then return a packet describing the path, which was travelled. The interesting reconnaissance technique is that the TRACE method will identify intermediate Proxy and Load Balancer Servers that are between the client and the destination host."
+          solution    : "For IBM HTTP Server >= Version 7.0
+ In IBM HTTP Server 7.0 and later, the 'TraceEnable' directive is provided to disable the TRACE HTTP method.
+ To disable TRACE, enter the following line in httpd.conf file
+ TraceEnable off
+ For IBM HTTP Server < Version 7.0
+ Uncomment any lines in httpd.conf that contain 'mod_rewrite' like:
+ LoadModule rewrite_module modules/mod_rewrite.so
+ AddModule mod_rewrite.c
+ OR
+ Edit the httpd.conf file and add the following entries:
+ RewriteEngine On
+ RewriteLog /usr/local/apache/logs/rewrite.log
+ RewriteLogLevel 2
+ RewriteRule [^a-zA-Z0-9|\.|/|_|-] - [F]
+ RewriteCond %{REQUEST_METHOD} ^TRACE
+ RewriteRule .* - [F]"
+          reference   : "800-171|3.3.1,800-171|3.3.2,800-53|AU-2d.,800-53r5|AU-2d.,CN-L3|8.1.4.3(a),CSF|PR.PT-1,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ITSG-33|AU-2d.,NESA|T3.6.2,NESA|T3.6.5,NESA|T3.6.6,NIAv2|GS7e,NIAv2|SM4,PCI-DSSv3.2.1|10.2,PCI-DSSv3.2.1|10.2.1,PCI-DSSv3.2.1|10.2.2,PCI-DSSv3.2.1|10.2.3,PCI-DSSv3.2.1|10.2.4,PCI-DSSv3.2.1|10.2.5,PCI-DSSv3.2.1|10.2.6,PCI-DSSv3.2.1|10.2.7,PCI-DSSv4.0|10.2.1,PCI-DSSv4.0|10.2.1.1,PCI-DSSv4.0|10.2.1.2,PCI-DSSv4.0|10.2.1.3,PCI-DSSv4.0|10.2.1.4,PCI-DSSv4.0|10.2.1.5,PCI-DSSv4.0|10.2.1.6,PCI-DSSv4.0|10.2.1.7,QCSC-v1|8.2.1,QCSC-v1|13.2,SWIFT-CSCv1|6.4"
+          value_type  : POLICY_TEXT
+          value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+          regex       : '^[\\s]*[Rr]ewrite[Ll]og[\\s]+'
+          expect      : '^[\\s]*[Rr]ewrite[Ll]og[\\s]+@REWRITE_LOG_DIR@[\\s]*'
+          file_option : CAN_NOT_BE_NULL
+        </custom_item>
+
+        <custom_item>
+          type        : FILE_CONTENT_CHECK
+          description : "HTTP TRACE method should be disabled. 'RewriteLogLevel'"
+          info        : "The HTTP 'TRACE' Method is essentially trace route for Web traffic. It is an application layer loop-back of the request. It will send a HTTP packet to a destination host and then return a packet describing the path, which was travelled. The interesting reconnaissance technique is that the TRACE method will identify intermediate Proxy and Load Balancer Servers that are between the client and the destination host."
+          solution    : "For IBM HTTP Server >= Version 7.0
+ In IBM HTTP Server 7.0 and later, the 'TraceEnable' directive is provided to disable the TRACE HTTP method.
+ To disable TRACE, enter the following line in httpd.conf file
+ TraceEnable off
+ For IBM HTTP Server < Version 7.0
+ Uncomment any lines in httpd.conf that contain 'mod_rewrite' like:
+ LoadModule rewrite_module modules/mod_rewrite.so
+ AddModule mod_rewrite.c
+ OR
+ Edit the httpd.conf file and add the following entries:
+ RewriteEngine On
+ RewriteLog /usr/local/apache/logs/rewrite.log
+ RewriteLogLevel 2
+ RewriteRule [^a-zA-Z0-9|\.|/|_|-] - [F]
+ RewriteCond %{REQUEST_METHOD} ^TRACE
+ RewriteRule .* - [F]"
+          reference   : "800-171|3.3.1,800-171|3.3.2,800-53|AU-12c.,800-53r5|AU-12c.,CN-L3|7.1.3.3(a),CN-L3|7.1.3.3(b),CN-L3|7.1.3.3(c),CN-L3|8.1.3.5(a),CN-L3|8.1.3.5(b),CN-L3|8.1.4.3(a),CSF|DE.CM-1,CSF|DE.CM-3,CSF|DE.CM-7,CSF|PR.PT-1,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ISO/IEC-27001|A.12.4.1,ITSG-33|AU-12c.,NESA|T3.6.2,NESA|T3.6.5,NESA|T3.6.6,NIAv2|SM8,PCI-DSSv3.2.1|10.1,QCSC-v1|3.2,QCSC-v1|6.2,QCSC-v1|8.2.1,QCSC-v1|13.2,SWIFT-CSCv1|6.4,TBA-FIISB|45.1.1"
+          value_type  : POLICY_TEXT
+          value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+          regex       : '^[\\s]*[Rr]ewrite[Ll]og[Ll]evel[\\s]+'
+          expect      : '^[\\s]*[Rr]ewrite[Ll]og[Ll]evel[\\s]+[1-2][\\s]*'
+          file_option : CAN_NOT_BE_NULL
+        </custom_item>
+
+        <custom_item>
+          type        : FILE_CONTENT_CHECK
+          description : "HTTP TRACE method should be disabled. 'RewriteRule'"
+          info        : "The HTTP 'TRACE' Method is essentially trace route for Web traffic. It is an application layer loop-back of the request. It will send a HTTP packet to a destination host and then return a packet describing the path, which was travelled. The interesting reconnaissance technique is that the TRACE method will identify intermediate Proxy and Load Balancer Servers that are between the client and the destination host."
+          solution    : "For IBM HTTP Server >= Version 7.0
+ In IBM HTTP Server 7.0 and later, the 'TraceEnable' directive is provided to disable the TRACE HTTP method.
+ To disable TRACE, enter the following line in httpd.conf file
+ TraceEnable off
+ For IBM HTTP Server < Version 7.0
+ Uncomment any lines in httpd.conf that contain 'mod_rewrite' like:
+ LoadModule rewrite_module modules/mod_rewrite.so
+ AddModule mod_rewrite.c
+ OR
+ Edit the httpd.conf file and add the following entries:
+ RewriteEngine On
+ RewriteLog /usr/local/apache/logs/rewrite.log
+ RewriteLogLevel 2
+ RewriteRule [^a-zA-Z0-9|\.|/|_|-] - [F]
+ RewriteCond %{REQUEST_METHOD} ^TRACE
+ RewriteRule .* - [F]"
+          reference   : "800-171|3.4.6,800-171|3.4.7,800-53|CM-7b.,800-53r5|CM-7b.,CN-L3|7.1.3.5(c),CN-L3|7.1.3.7(d),CN-L3|8.1.4.4(b),CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-7a.,NIAv2|SS13b,NIAv2|SS14a,NIAv2|SS14c,PCI-DSSv3.2.1|2.2.2,PCI-DSSv4.0|2.2.4,QCSC-v1|3.2,SWIFT-CSCv1|2.3"
+          value_type  : POLICY_TEXT
+          value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+          regex       : '^[\\s]*[Rr]ewrite[Rr]ule[\\s]+'
+          expect      : '^[\\s]*[Rr]ewrite[Rr]ule[\\s]+.*-[\\s]*\\[F\\][\\s]*'
+          file_option : CAN_NOT_BE_NULL
+        </custom_item>
+
+        <custom_item>
+          type        : FILE_CONTENT_CHECK
+          description : "HTTP TRACE method should be disabled. 'RewriteCond'"
+          info        : "The HTTP 'TRACE' Method is essentially trace route for Web traffic. It is an application layer loop-back of the request. It will send a HTTP packet to a destination host and then return a packet describing the path, which was travelled. The interesting reconnaissance technique is that the TRACE method will identify intermediate Proxy and Load Balancer Servers that are between the client and the destination host."
+          solution    : "For IBM HTTP Server >= Version 7.0
+ In IBM HTTP Server 7.0 and later, the 'TraceEnable' directive is provided to disable the TRACE HTTP method.
+ To disable TRACE, enter the following line in httpd.conf file
+ TraceEnable off
+ For IBM HTTP Server < Version 7.0
+ Uncomment any lines in httpd.conf that contain 'mod_rewrite' like:
+ LoadModule rewrite_module modules/mod_rewrite.so
+ AddModule mod_rewrite.c
+ OR
+ Edit the httpd.conf file and add the following entries:
+ RewriteEngine On
+ RewriteLog /usr/local/apache/logs/rewrite.log
+ RewriteLogLevel 2
+ RewriteRule [^a-zA-Z0-9|\.|/|_|-] - [F]
+ RewriteCond %{REQUEST_METHOD} ^TRACE
+ RewriteRule .* - [F]"
+          reference   : "800-171|3.4.6,800-171|3.4.7,800-53|CM-7b.,800-53r5|CM-7b.,CN-L3|7.1.3.5(c),CN-L3|7.1.3.7(d),CN-L3|8.1.4.4(b),CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-7a.,NIAv2|SS13b,NIAv2|SS14a,NIAv2|SS14c,PCI-DSSv3.2.1|2.2.2,PCI-DSSv4.0|2.2.4,QCSC-v1|3.2,SWIFT-CSCv1|2.3"
+          value_type  : POLICY_TEXT
+          value_data  : "C:\Program Files\IBM\HTTPServer\conf\httpd.conf"
+          regex       : '^[\\s]*[Rr]ewrite[Cc]ond[\\s]+'
+          expect      : '^[\\s]*[Rr]ewrite[Cc]ond[\\s]+%{REQUEST_METHOD}[\\s]+\\^TRACE[\\s]*'
+          file_option : CAN_NOT_BE_NULL
+        </custom_item>
+      </else>
+    </if>
+
+    <custom_item>
+      type                 : AUDIT_POWERSHELL
+      description          : "Limit HTTP methods allowed by the Web Server."
+      info                 : "For normal web server operation only GET and POST request methods. This will allow for downloading of web pages and uploading any type of basic form submission information. LimitExcept directive can be used to limit the methods allowed by the web server. The HEAD requests are included with GET requests when using the LimitExcept directive. LimitExcept directive works well for all methods except TRACE.
+ NOTE - User must check output for 'deny from all'
+
+ NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+      solution             : "Edit the httpd.conf file and add the following inside the document root directory stanza:
+ <LimitExcept GET POST>
+ deny from all
+ </LimitExcept>
+ A sample conf file would look like:
+ <Directory '/var/www'>
+ Options -FollowSymLinks -Indexes -Includes -MultiViews
+ <LimitExcept GET POST>
+ deny from all
+ </LimitExcept>
+ AllowOverride None
+ Order allow, deny
+ Allow from all
+ </Directory>"
+      reference            : "800-171|3.4.2,800-53|CM-6b.,800-53r5|CM-6b.,CN-L3|8.1.10.6(d),CSF|PR.IP-1,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6b.,NESA|T3.2.1,SWIFT-CSCv1|2.3"
+      value_type           : POLICY_TEXT
+      value_data           : ""
+      powershell_args      : 'Get-Content \'C:\\Program Files\\IBM\\HTTPServer\\conf\\httpd.conf\' | select-string -pattern \'^ *<LimitExcept GET POST>\' -context 0,2'
+      only_show_cmd_output : YES
+      severity             : MEDIUM
+    </custom_item>
+
+    <custom_item>
+      type        : USER_RIGHTS_POLICY
+      description : "User IDs which disclose the privileges associated with it, should not be created."
+      info        : "The best way to reduce exposure to attack when running Apache web server is to create a unique unprivileged userid and group for the application. Once the server's startup tasks are complete, all active instances can run as the unprivileged user. The web user account should not be allowed shell login."
+      solution    : "Use low privileged account and group for Apache server.
+ Assign no shell to the Apache user account and lock this account. To lock the user account, add /sbin/nologin at the end of the username line."
+      reference   : "800-171|3.1.5,800-53|AC-6(7)(b),800-53r5|AC-6(7)(b),CN-L3|7.1.3.2(b),CN-L3|7.1.3.2(g),CN-L3|8.1.4.2(d),CN-L3|8.1.10.6(a),CSCv6|16,CSF|PR.AC-4,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ISO/IEC-27001|A.9.2.5,ITSG-33|AC-6,NESA|M1.1.3,NESA|T5.1.1,NIAv2|AM1,NIAv2|AM23f,NIAv2|SS13c,NIAv2|SS15c,PCI-DSSv3.2.1|7.1.2,PCI-DSSv4.0|7.2.1,PCI-DSSv4.0|7.2.2,QCSC-v1|5.2.2,QCSC-v1|6.2,SWIFT-CSCv1|5.1,TBA-FIISB|31.4.2,TBA-FIISB|31.4.3"
+      value_type  : USER_RIGHT
+      value_data  : "@WEB_ADMIN@"
+      right_type  : SeDenyInteractiveLogonRight
+    </custom_item>
+  </then>
+
+  <else>
+    <report type:"WARNING">
+      description : "TNS_IBM_HTTP_Server_Best_Practice.audit"
+      info        : "IBM HTTP Server is not installed or remote registry service is disabled.
+
+      NOTE: Nessus has not identified that the chosen audit applies to the target device."
+    </report>
+  </else>
+</if>
+
+</group_policy>
+</check_type>

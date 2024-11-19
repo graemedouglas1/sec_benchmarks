@@ -1,0 +1,387 @@
+#TRUSTED 7f0ab0d482f980462254ed5cdbdb63552539beb160045191099e634f5df4f7cf52441ecb2938ef96a1bbe34d537de1cdc8883929dafda62e9cb04a9873a7d7177a0dbf53644f16039df6685f5eaf52923830e02b7e8e6da91bb5daaf7ffce777ae768927cd26dc096d620db9543df62a441c05e4749eb7b01029d73053a53c6a4d7018cca42a04202c953a9989aae47e6287fceb47860a0091752f9ece302840b6c6c79a3a1c43abc9a75d2950cc619910470d01317b4854a7acd0f454d2dd6c406b031540ef6fdc0deeeb698aef0886ded197cbf7bc64a7be68ff016a7274e7658f9b9cc23ef94f743423443df0154cf05ff726147e6f391cc9df5e09896f2be12946316f366d3538e069b69ad4e9f5b5541b58297adbd0f766971d0968fa42415477501ff5907e53762d2283e4052b49ccfd9f7455e32ae74a1632a1f6af8ab60dc3520079e68d840ef6cbc33d0d7693f1688f859bc4c0e7563fbfa0dcb918660f0bdbe0d404843d09ec1dc42ce9ae5a41fbb3ea9da88959fbabd8021fd1d2fec54d10634557f45d7186bc6b7e50db25da393c4ea6344d65b10a0bca17b41a2c7c9686e69927935b5b35d69c884a74b64dea3007263d77b0d481eb2c36ae2f77dd4da6996e114a8776bf239dbc40427d4c79f4f45e6341f1245a6f467f12544c1bf556e140e06ee4391dec1067245d98540c44279427876a6773b676f53ac0
+#TRUST-RSA-SHA256 912e552682fca5c94af092a39747cb1b177c6b21495568cd0650191892ab37a419210679c15bc6712d2f2fd4372245b29cfaaa5ed18407fb69c4ef1ef7798dedd46b9cf604518c6226eb02c2c1e15ede90b7120da93f2300963dd88715c6af9bf47c7432bf2d8567518790935dcf4f197cb7a272633a9ad67e8570e9284e276eafd4bf1c5d48f49a1190d84e26090f6bc1b4972568e2063a29088406b1d104cbccc1137adaf2d3774c7024bf8fdb6284978e81a560bd52e89dc97989f131430813550a525e2e19661e91372e8710c8e51d11b4d4282acffcf35a98f5c992ffad29971c50deeb811cde9f4e2a64b97bddb04b5d832fca5be94e4d8161b043c7bbb2091f4b311182dccf91a1cdea1afa20e59770f877bff168f154c37f0b5b0d1be983ca9404473f83a5e487c7e40723429fae838941562eae06653ffb92c4b1714966e3dace03e935546cdfe655b98e59874b9234922d4048a2bf6be8a07a914fefbe8a24984c7eb3865e2745f43aadf8d3d4b040ed0e8f70c8cd756e12738b560ea08ca86d8329f3832432012799767bfc15cf1ce0e4e0d864ec2a6d729c0b62aa034f5cbd549bf0923bcef4ff52ffb586adde3d012a4cf6944671e7bac9739d0345e4f5a3a80e6068dad8accc001e9d0b72438e861f293ee914fe283ea593a7deb7a3e67e62aad8572622abdebc9b4120de7ef801662f3fd3eff5625b990fb7
+#
+# This script is Copyright (C) 2004-2024 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.1 $
+# $Date: 2024/06/17 $
+#
+# description : This .audit is designed against the CIS VMware ESXi 8.0 Benchmark v1.1.0
+#
+#<ui_metadata>
+#<display_name>CIS VMware ESXi 8.0 v1.1.0 L2</display_name>
+#<spec>
+#  <type>CIS</type>
+#  <name>VMware ESXi 8.0</name>
+#  <profile>L2</profile>
+#  <version>1.1.0</version>
+#  <link>https://workbench.cisecurity.org/benchmarks/15784</link>
+#</spec>
+#<labels>cis,vmware_esxi_8.0</labels>
+#<benchmark_refs>CSCv6,CSCv7,CSCv8,LEVEL</benchmark_refs>
+#<variables>
+#  <variable>
+#    <name>VOLATILE_KEY_DESTRUCTION</name>
+#    <default>1</default>
+#    <description>Enable volatile key destruction</description>
+#    <info>Value of Mem.MemEagerZero</info>
+#    <value_type>STRING</value_type>
+#  </variable>
+#  <variable>
+#    <name>DEACTIVATE_VIRTUAL_HMNS</name>
+#    <default>0</default>
+#    <description>Deactivate virtual hardware management network interfaces</description>
+#    <info>Whether to deactivate virtual hardware management network interfaces on the ESXi host.</info>
+#    <value_type>STRING</value_type>
+#  </variable>
+#</variables>
+#</ui_metadata>
+
+<check_type:"VMware">
+
+<report type:"WARNING">
+  description : "1.8 (L2) Host integrated hardware management controller must secure authentication"
+  info        : "Connections to centralized authentication sources, like Active Directory, should be disabled or carefully considered as attack vectors and dependency loops (for authentication, authorization, DNS, DHCP, and time). Consider managing local accounts on these devices through the APIs and CLI interfaces provided. If Active Directory must be used for authentication do authorization locally so that an attacker with access to Active Directory cannot promote themselves through group membership.
+
+To prevent unauthorized access and potential malicious control of server hardware functions, it's essential to ensure that the integrated hardware management controller utilizes secure authentication mechanisms.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+  solution    : "Impact:
+
+Not connecting hardware management controllers to centralized authentication &amp; authorization sources entails additional management. Most hardware management controllers have CLI toolkits or APIs to automate management of user accounts and/or authorization levels."
+  reference   : "800-171|3.1.5,800-171|3.1.6,800-53|AC-6(2),800-53|AC-6(5),800-53r5|AC-6(2),800-53r5|AC-6(5),CN-L3|7.1.3.2(b),CN-L3|7.1.3.2(g),CN-L3|8.1.4.2(d),CN-L3|8.1.10.6(a),CSCv7|4.3,CSCv8|5.4,CSF|PR.AC-4,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ISO/IEC-27001|A.9.2.3,ITSG-33|AC-6(2),ITSG-33|AC-6(5),LEVEL|2M,NESA|T5.1.1,NESA|T5.2.2,NESA|T5.6.1,NIAv2|AM1,NIAv2|AM23f,NIAv2|AM32,NIAv2|AM33,NIAv2|SS13c,NIAv2|SS15c,NIAv2|VL3a,PCI-DSSv3.2.1|7.1.2,PCI-DSSv4.0|7.2.1,PCI-DSSv4.0|7.2.2,QCSC-v1|5.2.2,QCSC-v1|6.2,SWIFT-CSCv1|1.2,SWIFT-CSCv1|5.1,TBA-FIISB|31.4.2,TBA-FIISB|31.4.3"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15784"
+</report>
+
+<report type:"WARNING">
+  description : "1.9 (L2) Host hardware must enable AMD SEV-ES, if available"
+  info        : "AMD EPYC platforms support SEV-ES, a technology to encrypt memory and CPU register state, and limit visibility to the hypervisor, in order to increase workload security and decrease exposure to certain types of attacks. When configured properly, vSphere supports the use of SEV-ES inside guest virtual machines and containers under vSphere and vSphere with Tanzu. Enabling SEV-ES in system firmware eases future enablement inside virtual machines, containers, and guest OSes.
+
+Enabling AMD SEV-ES (Secure Encrypted Virtualization-Encrypted State) on host hardware enhances the security of virtual machines by encrypting their memory and CPU state, reducing the risk of unauthorized data access and tampering from compromised hypervisors or malicious actors.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+  solution    : "Impact:
+
+Use of SEV-ES in a particular VM requires the guest OS to support it, and will limit some operational features such as vMotion, snapshots, and so on. Consult the documentation for more information about these tradeoffs."
+  reference   : "800-171|3.4.6,800-171|3.4.7,800-171|3.7.5,800-53|CM-7,800-53|MA-4,800-53r5|CM-7,800-53r5|MA-4,CSCv7|5.1,CSCv8|4.6,CSF|PR.IP-1,CSF|PR.MA-2,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-7,ITSG-33|MA-4,LEVEL|2M,NESA|T2.3.4,NESA|T5.4.4,NIAv2|SS15a,PCI-DSSv3.2.1|2.2.2,QCSC-v1|5.2.2,SWIFT-CSCv1|2.3,TBA-FIISB|45.2.3"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15784"
+</report>
+
+<report type:"WARNING">
+  description : "1.10 (L2) Host hardware must enable Intel SGX, if available"
+  info        : "Intel Xeon Scalable Processor platforms have Software Guard Extensions, or SGX, a technology that helps applications protect data in system memory. When configured properly, vSphere supports the use of SGX inside guest virtual machines. Enabling SGX in system firmware eases future enablement inside virtual machines and guest OSes.
+
+Intel SGX (Software Guard Extensions) provides hardware-based memory encryption that protects sensitive data from unauthorized access or modification by malicious software running at higher privilege levels, enhancing server security.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+  solution    : "Impact:
+
+Use of SGX requires guest OS support, and will limit some operational features inside vSphere, such as vMotion, snapshots, fault tolerance, and suspend/resume."
+  reference   : "800-171|3.4.6,800-171|3.4.7,800-171|3.7.5,800-53|CM-7,800-53|MA-4,800-53r5|CM-7,800-53r5|MA-4,CSCv7|5.1,CSCv8|4.6,CSF|PR.IP-1,CSF|PR.MA-2,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-7,ITSG-33|MA-4,LEVEL|2M,NESA|T2.3.4,NESA|T5.4.4,NIAv2|SS15a,PCI-DSSv3.2.1|2.2.2,QCSC-v1|5.2.2,SWIFT-CSCv1|2.3,TBA-FIISB|45.2.3"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15784"
+</report>
+
+<report type:"WARNING">
+  description : "1.11 (L2) Host hardware must secure unused external hardware ports"
+  info        : "Unused ports, especially USB, can be used by attackers to attach storage, networking, and keyboards. Take reasonable steps to control access to these ports through disablement, access control, and/or with other means such as solid rack doors, rack side panels, and flooring that makes the ports inaccessible from outside the rack when the rack door is closed. Cables fit easily through many gaps in and around racks and rack doors, and stiff wires can be used to push them into sockets from outside the rack, as well as to dislodge cables to create a service disruption.
+
+Where possible, USB ports should also be set to only permit keyboards.
+
+When disabling functionality like this please consider that you may need to access the server using a USB keyboard during an outage or as part of lifecycle operations, and plan accordingly.
+
+Unused external hardware ports can be exploited as potential entry points for unauthorized devices and malicious activity, thereby compromising server security.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+  solution    : "Impact:
+
+Security involves balancing risks, including ease of recovery from outages. Disabling external ports can hinder emergency use of the ESXi console. Servers can often toggle USB port access; ensure your choice aligns with organizational needs and is tested prior to incidents."
+  reference   : "800-171|3.4.2,800-171|3.4.6,800-171|3.4.7,800-53|CM-6,800-53|CM-7,800-53r5|CM-6,800-53r5|CM-7,CSCv7|1.7,CSCv7|9.2,CSCv8|4.8,CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6,ITSG-33|CM-7,LEVEL|2M,NIAv2|SS15a,PCI-DSSv3.2.1|2.2.2,SWIFT-CSCv1|2.3"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15784"
+</report>
+
+<report type:"WARNING">
+  description : "1.12 (L2) Host integrated hardware management controller must deactivate internal networking"
+  info        : "Many servers have integrated hardware management controllers with the ability to present virtual network interfaces to ESXi as a management interface. These approaches create potential backdoors for access and are used by adversaries to circumvent network-based/perimeter firewalls, in either direction, and avoid observation by IDS/IPS/threat analysis tools. In many cases this functionality is not strictly necessary to manage hosts.
+
+Using integrated hardware management controllers to present virtual network interfaces to ESXi can inadvertently create backdoors, allowing adversaries to bypass firewalls and evade detection by security tools; often, this functionality isn't essential for host management.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+  solution    : "Impact:
+
+Disablement of internal networking may limit vendor management tool effectiveness."
+  reference   : "800-171|3.4.2,800-171|3.4.6,800-171|3.4.7,800-53|CM-6,800-53|CM-7,800-53r5|CM-6,800-53r5|CM-7,CSCv7|11.7,CSCv8|4.8,CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6,ITSG-33|CM-7,LEVEL|2M,NIAv2|SS15a,PCI-DSSv3.2.1|2.2.2,SWIFT-CSCv1|2.3"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15784"
+</report>
+
+<custom_item>
+  type        : AUDIT_ESX
+  description : "2.12 (L2) Host must enable volatile key destruction"
+  info        : "By default, ESXi ensures that pages allocated for virtual machines (VMs), userspace applications, and kernel threads are zeroed out at the time of allocation, to prevent the exposure of sensitive data like cryptographic keys to other clients. However, these keys can remain in host memory for an extended period if the memory is not reused. The Mem.MemEagerZero parameter can be configured to enforce the zeroing out of userworld and guest memory pages when a userworld process or guest exits, and for kernel threads, memory spaces holding keys are zeroed out as soon as the secret is no longer needed. This practice adheres to the NIAP Virtualization Protection Profile and Server Virtualization Extended Package requirements of zeroing memory that may contain cryptographic keys upon process exit. The parameter governing this behavior is Mem.MemEagerZero with a recommended setting of 1.
+
+Enabling volatile key destruction through the Mem.MemEagerZero parameter enhances the security posture by ensuring that sensitive information such as cryptographic keys are not left residually in the system memory, which could be exploited by malicious entities. This configuration aligns with the guidelines provided by the NIAP Virtualization Protection Profile and Server Virtualization Extended Package, indicating its criticality in maintaining a secure virtualized environment."
+  solution    : "Impact:
+
+Activating volatile key destruction through the Mem.MemEagerZero parameter results in additional shutdown time required for virtual machines, corresponding to the amount of allocated memory. While this may extend the downtime during reboots or migrations, the trade-off ensures a higher level of security by preventing the potential exposure of sensitive data, fulfilling compliance requirements, and aiding in the effective management of cryptographic materials within the virtualized environment."
+  reference   : "800-171|3.4.6,800-171|3.4.7,800-171|3.7.5,800-53|CM-7,800-53|MA-4,800-53r5|CM-7,800-53r5|MA-4,CSCv7|5.1,CSCv8|4.6,CSF|PR.IP-1,CSF|PR.MA-2,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-7,ITSG-33|MA-4,LEVEL|2M,NESA|T2.3.4,NESA|T5.4.4,NIAv2|SS15a,PCI-DSSv3.2.1|2.2.2,QCSC-v1|5.2.2,SWIFT-CSCv1|2.3,TBA-FIISB|45.2.3"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15784"
+  xsl_stmt    : "<xsl:template match=\"/\">"
+  xsl_stmt    : "<xsl:for-each select=\"//audit:returnval\">"
+  xsl_stmt    : "<xsl:choose>"
+  xsl_stmt    : "<xsl:when test=\"audit:propSet/audit:val/audit:option[audit:key='Mem.MemEagerZero']/audit:value/text()\">"
+  xsl_stmt    : "<xsl:value-of select=\"audit:propSet[audit:name='name']/audit:val\"/> - <xsl:value-of select=\"audit:propSet/audit:val/audit:option[audit:key='Mem.MemEagerZero']/audit:key\"/> : <xsl:value-of select=\"audit:propSet/audit:val/audit:option[audit:key='Mem.MemEagerZero']/audit:value\"/><xsl:text>&#10;</xsl:text>"
+  xsl_stmt    : "</xsl:when>"
+  xsl_stmt    : "<xsl:otherwise>"
+  xsl_stmt    : "<xsl:value-of select=\"audit:propSet[audit:name='name']/audit:val\"/> - <xsl:text>Mem.MemEagerZero : NOT found</xsl:text>"
+  xsl_stmt    : "</xsl:otherwise>"
+  xsl_stmt    : "</xsl:choose>"
+  xsl_stmt    : "</xsl:for-each>"
+  xsl_stmt    : "</xsl:template>"
+  regex       : "Mem\.MemEagerZero : "
+  expect      : "Mem\.MemEagerZero : @VOLATILE_KEY_DESTRUCTION@$"
+</custom_item>
+
+<custom_item>
+  type        : AUDIT_ESX
+  description : "3.21 (L2) Host should enable strict lockdown mode"
+  info        : "Enabling lockdown mode disables direct local access to an ESXi host, requiring the host be managed remotely from vCenter Server.
+
+There are some operations, such as backup and troubleshooting, that require direct access to the host. In these cases, lockdown mode can be disabled on a temporary basis for specific hosts as needed, and then re-enabled when the task is completed.
+
+Note: Lockdown mode does not apply to users who log in using authorized keys. Also, users in the DCUI.Access list for each host are allowed to override lockdown mode and log in to the DCUI. By default, the \"root\" user is the only user listed in the DCUI.Access list.
+
+Lockdown mode limits ESXi host access to the vCenter server to ensure the roles and access controls implemented in vCenter are always enforced and users cannot bypass them by logging into a host directly. By forcing all interaction to occur through vCenter Server, the risk of someone inadvertently attaining elevated privileges or performing tasks that are not properly audited is greatly reduced. Additionally strict lockdown move will disabled DCUI - Disabling DCUI prevents all local activity, and thus forces actions to be performed in vCenter Server, where they can be centrally audited and monitored."
+  solution    : "To enable lockdown mode, perform the following from the vSphere web client:
+
+ - From the vSphere Web Client, select the host.
+ - Select Configure then expand System and select Security Profile
+ - Across from Lockdown Mode click on Edit
+ - Click the radio button for Strict
+ - Click OK
+
+Alternately, run the following PowerCLI command:
+
+# Enable lockdown mode for each host
+Get-VMHost | Foreach { $_.EnterLockdownMode() }
+
+Impact:
+
+With lockdown mode enabled the host will only be accessible through vCenter preventing 'local' access. Disabling the DCUI can create a potential \"lockout\" situation, should the host become isolated from vCenter Server. Recovering from a \"lockout\" scenario requires reinstalling ESXi. Consider leaving DCUI enabled, and instead enable lockdown mode and limit the users allowed to access the DCUI using the DCUI.Access list."
+  reference   : "800-171|3.1.1,800-53|AC-2(1),800-53r5|AC-2(1),CN-L3|7.1.3.2(d),CSCv7|16.2,CSCv8|5.6,CSF|PR.AC-1,CSF|PR.AC-4,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ISO/IEC-27001|A.9.2.1,ITSG-33|AC-2(1),LEVEL|2A,NIAv2|AM28,NIAv2|NS5j,NIAv2|SS14e,QCSC-v1|5.2.2,QCSC-v1|8.2.1,QCSC-v1|13.2,QCSC-v1|15.2"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15784"
+  xsl_stmt    : "<xsl:template match=\"/\">"
+  xsl_stmt    : "<xsl:for-each select=\"//audit:returnval\">"
+  xsl_stmt    : "<xsl:choose>"
+  xsl_stmt    : "<xsl:when test=\"audit:propSet/audit:val/audit:lockdownMode\">"
+  xsl_stmt    : "<xsl:value-of select=\"audit:propSet[audit:name=\'name\']/audit:val\"/> - Lockdown Mode : <xsl:value-of select=\"audit:propSet/audit:val/audit:lockdownMode\"/><xsl:text>&#10;</xsl:text>"
+  xsl_stmt    : "</xsl:when>"
+  xsl_stmt    : "<xsl:otherwise>"
+  xsl_stmt    : "<xsl:value-of select=\"audit:propSet[audit:name=\'name\']/audit:val\"/> - <xsl:text>Lockdown Mode : NOT found</xsl:text>"
+  xsl_stmt    : "</xsl:otherwise>"
+  xsl_stmt    : "</xsl:choose>"
+  xsl_stmt    : "</xsl:for-each>"
+  xsl_stmt    : "</xsl:template>"
+  regex       : "Lockdown Mode : "
+  expect      : "Lockdown Mode : (lockdownNormal|lockdownStrict)$"
+</custom_item>
+
+<report type:"WARNING">
+  description : "3.23 (L2) Host must deny shell access for the vpxuser account"
+  info        : "Deactivating shell access for the vpxuser account enhances security by enforcing an \"API only\" stance for predefined non-root ESXi users such as vpxuser and dcui.
+
+This control reduces the attack surface by limiting the avenues through which system configurations can be altered, aligning with modern least privilege principles and ensuring that privileged authentication through vCenter Server remains tightly controlled.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+  solution    : "Impact:
+
+Deactivating shell access prevents users from granting shell access to others or changing passwords of users who have shell access, necessitating host-by-host reconfiguration through an authorized account if changes are required. This could potentially impact third-party workflows and necessitates the retention of at least one fully privileged user for necessary configurations."
+  reference   : "800-171|3.4.6,800-171|3.4.7,800-171|3.4.8,800-53|CM-7,800-53|CM-7(1),800-53|CM-7(5),800-53|CM-10,800-53|SI-7,800-53|SI-7(1),800-53r5|CM-7,800-53r5|CM-7(1),800-53r5|CM-7(5),800-53r5|CM-10,800-53r5|SI-7,800-53r5|SI-7(1),CN-L3|7.1.3.5(b),CSCv7|2.7,CSCv7|2.8,CSCv7|2.9,CSCv8|2.5,CSCv8|2.7,CSF|DE.CM-3,CSF|PR.DS-6,CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(c)(1),HIPAA|164.312(c)(2),HIPAA|164.312(e)(2)(i),ISO/IEC-27001|A.12.5.1,ISO/IEC-27001|A.12.6.2,ITSG-33|CM-7,ITSG-33|CM-7(1),ITSG-33|SI-7,ITSG-33|SI-7a.,ITSG-33|SI-7(1),LEVEL|2M,NESA|T3.4.1,NESA|T7.3.2,NESA|T7.3.3,NIAv2|SS15a,PCI-DSSv3.2.1|2.2.2,PCI-DSSv3.2.1|10.5.5,QCSC-v1|3.2,QCSC-v1|8.2.1,SWIFT-CSCv1|2.3,SWIFT-CSCv1|6.2,TBA-FIISB|44.2.2,TBA-FIISB|49.2.3"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15784"
+</report>
+
+<custom_item>
+  type        : AUDIT_ESX
+  description : "5.5 (L2) Host should deactivate virtual hardware management network interfaces"
+  info        : "Hardware management controllers may present virtual or USB NICs to the host, potentially serving as backdoors if left active. It's recommended to deactivate these interfaces both in the hardware configuration and within ESXi to prevent unauthorized access. The parameter governing this behavior is Net.BMCNetworkEnable with a recommended value of 0.
+
+Deactivating virtual hardware management network interfaces minimizes the attack surface, thereby enhancing the security posture of the host."
+  solution    : "Impact:
+
+While this control enhances security, it may impact third-party managed solutions that require these interfaces, necessitating alternative configurations or additional management considerations."
+  reference   : "800-171|3.4.2,800-171|3.4.6,800-171|3.4.7,800-53|CM-6,800-53|CM-7,800-53r5|CM-6,800-53r5|CM-7,CSCv7|9.2,CSCv8|4.8,CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6,ITSG-33|CM-7,LEVEL|2M,NIAv2|SS15a,PCI-DSSv3.2.1|2.2.2,SWIFT-CSCv1|2.3"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15784"
+  xsl_stmt    : "<xsl:template match=\"/\">"
+  xsl_stmt    : "<xsl:for-each select=\"//audit:returnval\">"
+  xsl_stmt    : "<xsl:choose>"
+  xsl_stmt    : "<xsl:when test=\"audit:propSet/audit:val/audit:option[audit:key='Net.BMCNetworkEnable']/audit:value/text()\">"
+  xsl_stmt    : "<xsl:value-of select=\"audit:propSet[audit:name='name']/audit:val\"/> - <xsl:value-of select=\"audit:propSet/audit:val/audit:option[audit:key='Net.BMCNetworkEnable']/audit:key\"/> : <xsl:value-of select=\"audit:propSet/audit:val/audit:option[audit:key='Net.BMCNetworkEnable']/audit:value\"/><xsl:text>&#10;</xsl:text>"
+  xsl_stmt    : "</xsl:when>"
+  xsl_stmt    : "<xsl:otherwise>"
+  xsl_stmt    : "<xsl:value-of select=\"audit:propSet[audit:name='name']/audit:val\"/> - <xsl:text>Net.BMCNetworkEnable : NOT found</xsl:text>"
+  xsl_stmt    : "</xsl:otherwise>"
+  xsl_stmt    : "</xsl:choose>"
+  xsl_stmt    : "</xsl:for-each>"
+  xsl_stmt    : "</xsl:template>"
+  regex       : "Net\.BMCNetworkEnable : "
+  expect      : "Net\.BMCNetworkEnable : @DEACTIVATE_VIRTUAL_HMNS@$"
+</custom_item>
+
+<custom_item>
+  type        : AUDIT_VM
+  description : "7.4 (L1) Virtual machines should deactivate 3D graphics features when not required"
+  info        : "Due to performance reasons, modern graphic rendering is done within a dedicated graphic processing unit (GPU). Virtual machines can use the host-based GPU for such operations as well. Such dedicated hardware is typically accessed by using complex APIs like OpenGL and DirectX. This hardware-based 3D acceleration should be disabled if it is not needed.
+
+Security flaws within APIs can lead to serious security breaches like memory corruption, denial of service, and remote code execution."
+  solution    : "The following PowerCLI command may be used:
+
+Get-VM -Name $VM | Get-AdvancedSetting mks.enable3d | Set-AdvancedSetting -Value FALSE
+
+Impact:
+
+GPU and Virtual Desktops may require this functionality."
+  reference   : "800-171|3.4.2,800-171|3.4.6,800-171|3.4.7,800-53|CM-6,800-53|CM-7,800-53r5|CM-6,800-53r5|CM-7,CSCv7|9.2,CSCv8|4.8,CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6,ITSG-33|CM-7,LEVEL|2A,NIAv2|SS15a,PCI-DSSv3.2.1|2.2.2,SWIFT-CSCv1|2.3"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15784"
+  xsl_stmt    : "<xsl:template match=\"/\">"
+  xsl_stmt    : "<xsl:for-each select=\"//audit:returnval\">"
+  xsl_stmt    : "<xsl:choose>"
+  xsl_stmt    : "<xsl:when test=\"audit:propSet/audit:val[@xsi:type='VirtualMachineConfigInfo']/audit:extraConfig[audit:key='mks.enable3d']\">"
+  xsl_stmt    : "<xsl:choose>"
+  xsl_stmt    : "<xsl:when test=\"audit:propSet/audit:val[@xsi:type='VirtualMachineSummary']/audit:guest/audit:ipAddress\">"
+  xsl_stmt    : "<xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineConfigInfo']/audit:name\"/> (<xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineSummary']/audit:guest/audit:ipAddress\"/>) - mks.enable3d : <xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineConfigInfo']/audit:extraConfig[audit:key='mks.enable3d']/audit:value\"/><xsl:text>&#10;</xsl:text>"
+  xsl_stmt    : "</xsl:when>"
+  xsl_stmt    : "<xsl:otherwise>"
+  xsl_stmt    : "<xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineConfigInfo']/audit:name\"/> (<xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineSummary']/audit:guest/audit:toolsStatus\"/>) - mks.enable3d : <xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineConfigInfo']/audit:extraConfig[audit:key='mks.enable3d']/audit:value\"/><xsl:text>&#10;</xsl:text>"
+  xsl_stmt    : "</xsl:otherwise>"
+  xsl_stmt    : "</xsl:choose>"
+  xsl_stmt    : "</xsl:when>"
+  xsl_stmt    : "<xsl:otherwise>"
+  xsl_stmt    : "<xsl:choose>"
+  xsl_stmt    : "<xsl:when test=\"audit:propSet/audit:val[@xsi:type='VirtualMachineSummary']/audit:guest/audit:ipAddress\">"
+  xsl_stmt    : "<xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineConfigInfo']/audit:name\"/> (<xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineSummary']/audit:guest/audit:ipAddress\"/>) - mks.enable3d : NOT configured<xsl:text>&#10;</xsl:text>"
+  xsl_stmt    : "</xsl:when>"
+  xsl_stmt    : "<xsl:otherwise>"
+  xsl_stmt    : "<xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineConfigInfo']/audit:name\"/> (<xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineSummary']/audit:guest/audit:toolsStatus\"/>) - mks.enable3d : NOT configured<xsl:text>&#10;</xsl:text>"
+  xsl_stmt    : "</xsl:otherwise>"
+  xsl_stmt    : "</xsl:choose>"
+  xsl_stmt    : "</xsl:otherwise>"
+  xsl_stmt    : "</xsl:choose>"
+  xsl_stmt    : "</xsl:for-each>"
+  xsl_stmt    : "</xsl:template>"
+  regex       : "mks\.enable3d : "
+  not_expect  : "mks\.enable3d : (TRUE|NOT configured)$"
+</custom_item>
+
+<custom_item>
+  type        : AUDIT_VM
+  description : "7.14 (L2) Virtual machines must remove unnecessary CD/DVD devices"
+  info        : "Removing unnecessary devices from virtual machines minimizes the attack surface and reduces potential pathways for data exfiltration or unauthorized data capture. This practice aligns with the principle of least functionality, ensuring that VMs have only the essential components required to perform their designated functions.
+
+Eliminating unnecessary devices reduces attack surface and streamlines the virtual machine configuration, promoting a cleaner, more manageable, and less vulnerable setup."
+  solution    : "To disconnect all CD/DVD drives from VMs, run the following PowerCLI command:
+
+# Remove all CD/DVD Drives attached to VMs
+Get-VM | Get-CDDrive | Remove-CDDrive
+
+The VM will need to be powered off for this change to take effect.
+
+Impact:
+
+Careful analysis and understanding of the virtual machine's requirements and dependencies are crucial before implementing this security control to avoid unintended disruptions or degradation of service."
+  reference   : "800-171|3.4.2,800-171|3.4.6,800-171|3.4.7,800-53|CM-6,800-53|CM-7,800-53r5|CM-6,800-53r5|CM-7,CSCv7|9.2,CSCv8|4.8,CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6,ITSG-33|CM-7,LEVEL|2A,NIAv2|SS15a,PCI-DSSv3.2.1|2.2.2,SWIFT-CSCv1|2.3"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15784"
+  xsl_stmt    : "<xsl:template match=\"/\">"
+  xsl_stmt    : "<xsl:for-each select=\"//audit:returnval\">"
+  xsl_stmt    : "<xsl:choose>"
+  xsl_stmt    : "<xsl:when test=\"audit:propSet/audit:val[@xsi:type='VirtualMachineConfigInfo']/audit:hardware/audit:device[@xsi:type='VirtualCdrom']\">"
+  xsl_stmt    : "<xsl:choose>"
+  xsl_stmt    : "<xsl:when test=\"audit:propSet/audit:val[@xsi:type='VirtualMachineSummary']/audit:guest/audit:ipAddress\">"
+  xsl_stmt    : "<xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineConfigInfo']/audit:name\"/> (<xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineSummary']/audit:guest/audit:ipAddress\"/>) - Virtual CD/DVD : <xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineConfigInfo']/audit:hardware/audit:device[@xsi:type='VirtualCdrom']/audit:deviceInfo/audit:label\"/><xsl:text>&#10;</xsl:text>"
+  xsl_stmt    : "</xsl:when>"
+  xsl_stmt    : "<xsl:otherwise>"
+  xsl_stmt    : "<xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineConfigInfo']/audit:name\"/> (<xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineSummary']/audit:guest/audit:toolsStatus\"/>) - Virtual CD/DVD : <xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineConfigInfo']/audit:hardware/audit:device[@xsi:type='VirtualCdrom']/audit:deviceInfo/audit:label\"/><xsl:text>&#10;</xsl:text>"
+  xsl_stmt    : "</xsl:otherwise>"
+  xsl_stmt    : "</xsl:choose>"
+  xsl_stmt    : "</xsl:when>"
+  xsl_stmt    : "<xsl:otherwise>"
+  xsl_stmt    : "<xsl:choose>"
+  xsl_stmt    : "<xsl:when test=\"audit:propSet/audit:val[@xsi:type='VirtualMachineSummary']/audit:guest/audit:ipAddress\">"
+  xsl_stmt    : "<xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineConfigInfo']/audit:name\"/> (<xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineSummary']/audit:guest/audit:ipAddress\"/>) - Virtual CD/DVD : NOT found<xsl:text>&#10;</xsl:text>"
+  xsl_stmt    : "</xsl:when>"
+  xsl_stmt    : "<xsl:otherwise>"
+  xsl_stmt    : "<xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineConfigInfo']/audit:name\"/> (<xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineSummary']/audit:guest/audit:toolsStatus\"/>) - Virtual CD/DVD : NOT found<xsl:text>&#10;</xsl:text>"
+  xsl_stmt    : "</xsl:otherwise>"
+  xsl_stmt    : "</xsl:choose>"
+  xsl_stmt    : "</xsl:otherwise>"
+  xsl_stmt    : "</xsl:choose>"
+  xsl_stmt    : "</xsl:for-each>"
+  xsl_stmt    : "</xsl:template>"
+  regex       : "Virtual CD/DVD :"
+  expect      : "Virtual CD/DVD : (False|NOT found)$"
+</custom_item>
+
+<custom_item>
+  type        : AUDIT_VM
+  description : "7.28 (L2) Virtual machines should have virtual machine hardware version 19 or newer"
+  info        : "Upgrade to hardware version 19 or newer to access enhanced features and better performance. Test the upgrades and ensure compatibility across all operational landscapes.
+
+Upgrading facilitates improved performance and feature access, aligning with ESXi and vSphere updates, while ensuring service continuity across various environments."
+  solution    : "Impact:
+
+Changes in device versions within the guest may occur, requiring thorough testing to prevent service disruptions. Snapshots can aid in testing, allowing you to revert the hardware version if needed."
+  reference   : "800-53|SA-22,800-53r5|SA-22,CSCv7|2.2,CSCv7|18.3,CSCv8|2.2,GDPR|32.1.b,HIPAA|164.306(a)(1),LEVEL|2M"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15784"
+  xsl_stmt    : "<xsl:template match=\"/\">"
+  xsl_stmt    : "<xsl:for-each select=\"//audit:returnval\">"
+  xsl_stmt    : "<xsl:choose>"
+  xsl_stmt    : "<xsl:when test=\"audit:propSet/audit:val[@xsi:type='VirtualMachineSummary']/audit:guest/audit:hwVersion\">"
+  xsl_stmt    : "<xsl:choose>"
+  xsl_stmt    : "<xsl:when test=\"audit:propSet/audit:val[@xsi:type='VirtualMachineSummary']/audit:guest/audit:ipAddress\">"
+  xsl_stmt    : "<xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineConfigInfo']/audit:name\"/> (<xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineSummary']/audit:guest/audit:ipAddress\"/>) - hwVersion : <xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineSummary']/audit:guest/audit:hwVersion\"/><xsl:text>&#10;</xsl:text>"
+  xsl_stmt    : "</xsl:when>"
+  xsl_stmt    : "<xsl:otherwise>"
+  xsl_stmt    : "<xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineConfigInfo']/audit:name\"/> (<xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineSummary']/audit:guest/audit:toolsStatus\"/>) - hwVersion : <xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineSummary']/audit:guest/audit:hwVersion\"/><xsl:text>&#10;</xsl:text>"
+  xsl_stmt    : "</xsl:otherwise>"
+  xsl_stmt    : "</xsl:choose>"
+  xsl_stmt    : "</xsl:when>"
+  xsl_stmt    : "<xsl:otherwise>"
+  xsl_stmt    : "<xsl:choose>"
+  xsl_stmt    : "<xsl:when test=\"audit:propSet/audit:val[@xsi:type='VirtualMachineSummary']/audit:guest/audit:ipAddress\">"
+  xsl_stmt    : "<xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineConfigInfo']/audit:name\"/> (<xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineSummary']/audit:guest/audit:ipAddress\"/>) - hwVersion : NOT found<xsl:text>&#10;</xsl:text>"
+  xsl_stmt    : "</xsl:when>"
+  xsl_stmt    : "<xsl:otherwise>"
+  xsl_stmt    : "<xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineConfigInfo']/audit:name\"/> (<xsl:value-of select=\"audit:propSet/audit:val[@xsi:type='VirtualMachineSummary']/audit:guest/audit:toolsStatus\"/>) - hwVersion : NOT found<xsl:text>&#10;</xsl:text>"
+  xsl_stmt    : "</xsl:otherwise>"
+  xsl_stmt    : "</xsl:choose>"
+  xsl_stmt    : "</xsl:otherwise>"
+  xsl_stmt    : "</xsl:choose>"
+  xsl_stmt    : "</xsl:for-each>"
+  xsl_stmt    : "</xsl:template>"
+  regex       : "hwVersion : "
+  expect      : "hwVersion : vmx-(19|2[0-9]|[3-9][0-9])$"
+</custom_item>
+
+<report type:"WARNING">
+  description : "8.15 (L2) VMware Tools must deactivate Guest Operations unless required"
+  info        : "Guest Operations are a set of functions that underpin most host-to-guest interaction. Deactivating them reduces attack surface but also drastically reduces functionality. Ensure that your environment does not require these functions. Do not do this on template VMs. For a list of functions see:
+
+https://vdc-download.vmware.com/vmwb-repository/dcr-public/fe08899f-1eec-4d8d-b3bc-a6664c168c2c/7fdf97a1-4c0d-4be0-9d43-2ceebbc174d9/doc/vim.vm.guest.GuestOperationsManager.html
+
+Reducing the attack surface by deactivating unnecessary functions is a standard security measure. This control is crucial for mitigating risks associated with host-to-guest interactions.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+  solution    : "Impact:
+
+Deactivation of Guest Operations can hinder the functionality of certain products and services within the VMware ecosystem, requiring alternative configurations or methods to maintain required functionalities. This includes guest customization."
+  reference   : "800-171|3.4.2,800-171|3.4.6,800-171|3.4.7,800-53|CM-6,800-53|CM-7,800-53r5|CM-6,800-53r5|CM-7,CSCv7|9.1,CSCv8|4.8,CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6,ITSG-33|CM-7,LEVEL|2M,NIAv2|SS15a,PCI-DSSv3.2.1|2.2.2,SWIFT-CSCv1|2.3"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15784"
+</report>
+
+</check_type>

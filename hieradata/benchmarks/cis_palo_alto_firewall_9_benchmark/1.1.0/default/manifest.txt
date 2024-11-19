@@ -1,0 +1,71 @@
+1.1.1.1 - Syslog logging should be configured
+1.1.1.2 - SNMPv3 traps should be configured
+1.1.2 - Ensure Login Banner is set - manual
+1.1.3 - Ensure Enable Log on High DP Load is enabled
+1.2.1 - Ensure Permitted IP Addresses is set to those necessary for device management - manual
+1.2.2 - Ensure Permitted IP Addresses is set for all management profiles where SSH HTTPS or SNMP is enabled - manual
+1.2.3 - Ensure HTTP and Telnet options are disabled for the management interface
+1.2.4 - Ensure HTTP and Telnet options are disabled for all management profiles
+1.2.5 - Ensure valid certificate is set for browser-based administrator interface - manual
+1.3.1 - Ensure Minimum Password Complexity is enabled
+1.3.2 - Ensure Minimum Length is greater than or equal to 12
+1.3.3 - Ensure Minimum Uppercase Letters is greater than or equal to 1
+1.3.4 - Ensure Minimum Lowercase Letters is greater than or equal to 1
+1.3.5 - Ensure Minimum Numeric Letters is greater than or equal to 1
+1.3.6 - Ensure Minimum Special Characters is greater than or equal to 1
+1.3.7 - Ensure Required Password Change Period is less than or equal to 90 days - manual
+1.3.8 - Ensure New Password Differs By Characters is greater than or equal to 3
+1.3.9 - Ensure Prevent Password Reuse Limit is set to 24 or more passwords
+1.3.10 - Ensure Password Profiles do not exist - manual
+1.4.1 - Ensure Idle timeout is less than or equal to 10 minutes for device management
+1.4.2 - Ensure Failed Attempts and Lockout Time for Authentication Profile are properly configured - manual
+1.5.1 - Ensure V3 is selected for SNMP polling
+1.6.1 - Ensure Verify Update Server Identity is enabled
+1.6.2 - Ensure redundant NTP servers are configured appropriately - manual
+1.6.3 - Ensure that the Certificate Securing Remote Access VPNs is Valid - manual
+2.1 - Ensure that IP addresses are mapped to usernames
+2.2 - Ensure that WMI probing is disabled - manual
+2.3 - Ensure that User-ID is only enabled for internal trusted interfaces
+2.4 - Ensure that IncludeExclude Networks is used if User-ID is enabled
+2.5 - Ensure that the User-ID Agent has minimal permissions if User-ID is enabled - manual
+2.6 - Ensure that the User-ID service account does not have interactive logon rights - manual
+2.7 - Ensure remote access capabilities for the User-ID service account are forbidden. - manual
+2.8 - Ensure that security policies restrict User-ID Agent traffic from crossing into untrusted zones - manual
+3.1 - Ensure a fully-synchronized High Availability peer is configured - manual
+3.2 - Ensure High Availability requires Link Monitoring andor Path Monitoring - manual
+3.3 - Ensure Passive Link State and Preemptive are configured appropriately - manual
+4.1 - Ensure Antivirus Update Schedule is set to download and install updates hourly - manual
+4.2 - Ensure Applications and Threats Update Schedule is set to download and install updates at daily or shorter intervals - manual
+5.1 - Ensure that WildFire file size upload limits are maximized
+5.2 - Ensure forwarding is enabled for all applications and file types in WildFire file blocking profiles
+5.3 - Ensure a WildFire Analysis profile is enabled for all security policies
+5.4 - Ensure forwarding of decrypted content to WildFire is enabled
+5.5 - Ensure all WildFire session information settings are enabled - manual
+5.6 - Ensure alerts are enabled for malicious files detected  by WildFire - manual
+5.7 - Ensure WildFire Update Schedule is set to download and install updates every minute - manual
+6.1 - Ensure that antivirus profiles are set to block on all decoders except imap and pop3 - manual
+6.2 - Ensure a secure antivirus profile is applied to all relevant security policies - manual
+6.3 - Ensure an anti-spyware profile is configured to block on all spyware severity levels categories and threats - manual
+6.4 - Ensure DNS sinkholing is configured on all anti-spyware profiles in use - manual
+6.5 - Ensure passive DNS monitoring is set to enabled on all anti-spyware profiles in use
+6.6 - Ensure a secure anti-spyware profile is applied to all security policies permitting traffic to the Internet - manual
+6.7 - Ensure a Vulnerability Protection Profile is set to block attacks against critical and high vulnerabilities and set to default on medium low and informational vulnerabilities - manual
+6.8 - Ensure a secure Vulnerability Protection Profile is applied to all security rules allowing traffic - manual
+6.9 - Ensure that PAN-DB URL Filtering is used - manual
+6.10 - Ensure that URL Filtering uses the action of block or override on the enterprise approved value URL categories - manual
+6.11 - Ensure that access to every URL is logged - manual
+6.12 - Ensure all HTTP Header Logging options are enabled - manual
+6.13 - Ensure secure URL filtering is enabled for all security policies allowing traffic to the Internet - manual
+6.14 - Ensure alerting after a threshold of credit card or Social Security numbers is detected is enabled - manual
+6.15 - Ensure a secure Data Filtering profile is applied to all security policies allowing traffic to or from the Internet - manual
+6.16 - Ensure that a Zone Protection Profile with an enabled SYN Flood Action of SYN Cookies is attached to all untrusted zones
+6.17 - Ensure that a Zone Protection Profile with tuned Flood Protection settings enabled for all flood types is attached to all untrusted zones
+6.18 - Ensure that all zones have Zone Protection Profiles with all Reconnaissance Protection settings enabled tuned and set to appropriate actions - manual
+6.19 - Ensure all zones have Zone Protection Profiles that drop specially crafted packets
+6.20 - Ensure that User Credential Submission uses the action of block or continue on the URL categories - manual
+7.1 - Ensure application security policies exist when allowing traffic from an untrusted zone to a more trusted zone - manual
+7.2 - Ensure Service setting of ANY in a security policy allowing traffic does not exist - manual
+7.3 - Ensure Security Policy denying anyall traffic tofrom IP addresses on Trusted Threat Intelligence Sources Exists - manual
+8.1 - Ensure SSL Forward Proxy Policy for traffic destined to the Internet is configured - manual
+8.2 - Ensure SSL Inbound Inspection is required for all untrusted traffic destined for servers using SSL or TLS - manual
+8.3 - Ensure that the Certificate used for Decryption is Trusted - manual

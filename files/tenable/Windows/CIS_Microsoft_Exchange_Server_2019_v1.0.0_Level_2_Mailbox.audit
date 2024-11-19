@@ -1,0 +1,181 @@
+#TRUSTED 6b3b19269ebd569b94bf3f5a0dea571f030aa668875b577550809ac44749ac6879bdc7564e3ad795dc413fa4ab44f3d03508dcf663a64b9d90f3f03435df26284505f4377fdc1616e7a50adc5f7c4fffc153a0fb47caf8bd29c8cec451b8921e3af1b94bf8741f28aba689fead8b60ed1175065aedefbcc432d601ee0a420308e4aaa044561ace4a2c6884a9302c8efe36938924bb8cb01b359ac74004d7bcdab736f803c1fb31db3e9f7cc1e9747a7aae773d19098a2c6e23230c705d7bcb02a7c4def5d7ba0b720b813b3dded7d5cfed1413bb08eae6609c8cabde8cee95b256032ea0189c04d69ccc01da0ecb791c31166e128271b14bf32c3a4c9ef907bbc2f645629fbef72ca10285aa15441323405f0a737628655d7cfb7c00198cd039f41cda133daa5f4c7ae024ec6c856339ffd3bcbcb5c4e9dd668a21a7f32f4204cb8b9b7fa3c080bcafea386eb24c7fa05efddd54a54906bb2475e8617d23638b2f867c9c0857414c180d51c283505a2cafea8b8f8935f959a471fca28672342aba8187c8cdb9c8166f7901f682f11c8ced247067f550a5e16a6ec95dfe7971badc026a857fb2f04fd04ffafdc139add58a86d98f95282d404fe24a0dd43e2de74694a2956fc9bb70a095502fde3eda108becb7282cf82767932580dd2f90560e0a34099afad97adad3d049d7df7a1df3877ac6773abcef41369ff90b98d75234
+#TRUST-RSA-SHA256 6dc65e4620dc5158f2d631a801a9679472f1960c9e16db32e735117b37c4275dac5692b3f08c17877ac7698d95388e1e5a92a3dcad168c53586ce7516b008eb0c77a826ddc01fedccde6b379650dabfbabbd74004f2dd4c55fb9267a22481d545bceef7ca7808d369348b987105c8bd8a9a5141302b64b55d7df8cba92d4742c661bdca800b1d0907f3719c01f5535f0908c7cf118c8641fc140c0ffc6a52e54df7e176ce715755bdddaed6001b0b61edc1aaac3b06bae5faf9b5697b2df2f694f67e4caab326789b7bbcbb2a6b724a09855915624690ca39da7a36e05bc107efb96d23c2f297da5a2c01aaf66537cbd7aa231dd2f4b3aecc321c007a7dda063a7f0064b8ecc946c11ea021e73f02654ee0e994794c55499871740b7ec7d21e2babe34eb6c6c6013a26b8204209b46c27922ad1c419f2d9460914af8065332a7799963634cb8a4f4c5b2e9f6ba03da80d36f5b60cb47be22242d5d8a886bd647a877641d279da5934d68069e0e7682e0a61defd6dec517540cf6d032757e6d96d107883552d48464633ce1751fd4dac2d0adcab048065710318856f095ef4ffdffb65e6709b8aa4b3bbcd188c9280717fb270022db28ef4b84c021b2b37bdaf4e43ace71b5a6b43036eaa9cac2ac6339374540f84561dfad851349fb96342bdf2fe18c04e0dbd20a64ffa00fb56ccb33af62df71cb42f5a802e60f1c93cc3185
+#
+# This script is Copyright (C) 2004-2024 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.1 $
+# $Date: 2024/06/17 $
+#
+# Description : This document implements the security configuration as recommended by the
+#               CIS Microsoft Exchange Server 2019 Benchmark v1.0.0
+#
+#<ui_metadata>
+#<display_name>CIS Microsoft Exchange Server 2019 L2 Mailbox v1.0.0</display_name>
+#<spec>
+#  <type>CIS</type>
+#  <name>Microsoft Exchange Server 2019</name>
+#  <profile>L2 Mailbox</profile>
+#  <version>1.0.0</version>
+#  <link>https://workbench.cisecurity.org/benchmarks/12442</link>
+#</spec>
+#<labels>exchange_server_2019</labels>
+#<benchmark_refs>CCE,CSCv6,CSCv7,CSCv8,LEVEL</benchmark_refs>
+#<variables>
+#  <variable>
+#    <name>SECURE_STRING</name>
+#    <default>none</default>
+#    <description>Secure String for Authentication</description>
+#    <info>Comma separated secure string(s) which will be used to authenticate against the target servers.</info>
+#    <value_type>SECURE_STRING</value_type>
+#  </variable>
+#</variables>
+#</ui_metadata>
+
+<check_type:"Windows" version:"2">
+<group_policy:"Microsoft Exchange Server 2019">
+
+<if>
+  <condition type:"AND">
+    <custom_item>
+      type            : AUDIT_EXCHANGE
+      description     : "Test secure string"
+      value_type      : POLICY_TEXT
+      value_data      : ".*"
+      powershell_args : "hostname"
+      secure_string   : "@SECURE_STRING@"
+      check_type      : CHECK_REGEX
+    </custom_item>
+  </condition>
+
+  <then>
+    <custom_item>
+      type            : AUDIT_EXCHANGE
+      description     : "CIS_Microsoft_Exchange_Server_2019_v1.0.0_Level_2_Mailbox.audit from CIS Microsoft Exchange Server 2019 Benchmark v1.0.0"
+      info            : "NOTE: Nessus has provided the target output to assist in reviewing the benchmark to ensure target compliance."
+      reference       : "800-171|3.14.1,800-53|SI-2c.,800-53r5|SI-2c.,CN-L3|8.1.4.4(e),CN-L3|8.1.10.5(a),CN-L3|8.1.10.5(b),CN-L3|8.5.4.1(b),CN-L3|8.5.4.1(d),CN-L3|8.5.4.1(e),CSF|ID.RA-1,CSF|PR.IP-12,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SI-2,NESA|T7.6.2,NESA|T7.7.1,NIAv2|AM38,NIAv2|AM39,NIAv2|SS14b,PCI-DSSv3.2.1|6.2,PCI-DSSv4.0|6.3,PCI-DSSv4.0|6.3.3,QCSC-v1|11.2,SWIFT-CSCv1|2.2"
+      value_type      : POLICY_TEXT
+      value_data      : "[\s]+15\.2[\s]+.*[\s]+True"
+      powershell_args : "If (Get-ExchangeServer) { Get-ExchangeServer -Identity $ENV:COMPUTERNAME | Format-Table Name, AdminDisplayVersion, IsMailboxServer } Else { 'No Exchange servers found' }"
+      secure_string   : "@SECURE_STRING@"
+      check_type      : CHECK_REGEX
+      severity        : MEDIUM
+    </custom_item>
+
+    <if>
+      <condition type:"AND">
+        <custom_item>
+          type            : AUDIT_EXCHANGE
+          description     : "Platform check"
+          value_type      : POLICY_TEXT
+          value_data      : "[\s]+15\.2[\s]+.*[\s]+True"
+          powershell_args : "If (Get-ExchangeServer) { Get-ExchangeServer -Identity $ENV:COMPUTERNAME | Format-Table Name, AdminDisplayVersion, IsMailboxServer } Else { 'No Exchange servers found' }"
+          secure_string   : "@SECURE_STRING@"
+          check_type      : CHECK_REGEX
+        </custom_item>
+      </condition>
+
+      <then>
+        <custom_item>
+          type            : AUDIT_EXCHANGE
+          description     : "2.3.1 Ensure 'Enable non-delivery reports to remote domains' is set to 'False'"
+          info            : "This policy setting is used to determine if the server sends non-delivery reports (also known as NDRs or bounce messages) to remote domains.
+
+Rationale:
+
+Attackers can use automated messages to determine whether a user is active, in the office, traveling etc. and can use this information to conduct other types of attacks.
+
+Impact:
+
+Remote users will not receive automated non-delivery reports.
+
+Note: If Microsoft Exchange is being used as HUB, this setting is applicable. If not, an exception to this recommendation might be required."
+          solution        : "To implement the recommended state, execute the following PowerShell cmdlet:
+
+Set-RemoteDomain 'RemoteDomain' -NDREnabled $false
+
+Default Value:
+
+True"
+          reference       : "800-171|3.4.2,800-171|3.4.6,800-171|3.4.7,800-53|CM-6,800-53|CM-7,800-53r5|CM-6,800-53r5|CM-7,CSCv8|4.8,CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6,ITSG-33|CM-7,LEVEL|2A,NIAv2|SS15a,PCI-DSSv3.2.1|2.2.2,SWIFT-CSCv1|2.3"
+          see_also        : "https://workbench.cisecurity.org/benchmarks/12442"
+          value_type      : POLICY_TEXT
+          value_data      : "NDREnabled[\s]+:[\s]+False"
+          powershell_args : "Get-RemoteDomain | Format-List -property NDREnabled"
+          secure_string   : "@SECURE_STRING@"
+          check_type      : CHECK_REGEX
+        </custom_item>
+
+        <custom_item>
+          type            : AUDIT_EXCHANGE
+          description     : "2.3.2 Ensure 'Enable OOF messages to remote domains' is set to 'None'"
+          info            : "This policy setting is used to determine if the server automatically forwards out-of-office messages to remote domains.
+
+Rationale:
+
+Attackers can use automated messages to determine whether a user is active, in the office, traveling, and so on. An attacker might use this information to conduct other types of attacks.
+
+Impact:
+
+Remote users will not receive automated out-of-office messages."
+          solution        : "To implement the recommended state, execute the following PowerShell cmdlet:
+
+Set-RemoteDomain 'RemoteDomain' -AllowedOOFType None
+
+Default Value:
+
+External"
+          reference       : "800-171|3.4.2,800-53|CM-6b.,800-53r5|CM-6b.,CN-L3|8.1.10.6(d),CSF|PR.IP-1,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6b.,LEVEL|2A,NESA|T3.2.1,SWIFT-CSCv1|2.3"
+          see_also        : "https://workbench.cisecurity.org/benchmarks/12442"
+          value_type      : POLICY_TEXT
+          value_data      : "AllowedOOFType[\s]+:[\s]+None"
+          powershell_args : "Get-RemoteDomain | Format-List -property AllowedOOFType"
+          secure_string   : "@SECURE_STRING@"
+          check_type      : CHECK_REGEX
+        </custom_item>
+
+        <custom_item>
+          type            : AUDIT_EXCHANGE
+          description     : "2.4.4 Ensure 'Send Exchange Customer Experience reports' is set to 'False'"
+          info            : "This parameter specifies whether the Exchange server is enrolled in the Windows Customer Experience Improvement Program (CEIP). This is a voluntary program that collects information on users and their computers in order to help Microsoft improve features and solve common issues.
+
+Rationale:
+
+The Windows Customer Experience Improvement Program (CEIP) collects information such as user's encounters with Exchange, hardware configurations and usage, and information about configuration settings in general. Although the program claims it does not collect personal information, there is no way to verify what information gets collected.
+
+Impact:
+
+The system will not be enrolled in the Windows Customer Experience Improvement Program (CEIP)."
+          solution        : "To implement the recommended state, execute the following PowerShell cmdlet:
+
+Set-OrganizationConfig -CustomerFeedbackEnabled $false"
+          reference       : "800-171|3.4.2,800-171|3.4.6,800-171|3.4.7,800-53|CM-6,800-53|CM-7,800-53r5|CM-6,800-53r5|CM-7,CSCv8|4.8,CSF|PR.IP-1,CSF|PR.PT-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6,ITSG-33|CM-7,LEVEL|2A,NIAv2|SS15a,PCI-DSSv3.2.1|2.2.2,SWIFT-CSCv1|2.3"
+          see_also        : "https://workbench.cisecurity.org/benchmarks/12442"
+          value_type      : POLICY_TEXT
+          value_data      : "All policies compliant"
+          powershell_args : "$settings = Get-OrganizationConfig ; $settings | Format-List Name, Identity, CustomerFeedbackEnabled; If ($settings | Where {$_.CustomerFeedbackEnabled -ne $false}) { 'Non compliant policies found' } Else { 'All policies compliant' }"
+          secure_string   : "@SECURE_STRING@"
+          check_type      : CHECK_REGEX
+        </custom_item>
+      </then>
+    </if>
+  </then>
+
+  <else>
+    <report type:"FAILED">
+      description : "Authentication Failure"
+      info        : "Secure string passed to powershell was invalid or empty."
+    </report>
+  </else>
+</if>
+
+</group_policy>
+</check_type>

@@ -1,0 +1,555 @@
+#TRUSTED 1ebb0ab72b9c4d8ae773928685146116d67f9a305bfbff144b3e69716e3029d3e10dbe69470a31c6ddf71d38c9a1b3e211dc2e738fa571678ea6613202ed44d10e4a3cbc87f5df8e5e76bbf861f918ea2054de4e661aa59a08956cbe1518c675a847c167f7bf74c6f264fdbc0aa313bf80d45ec5b754d7852ae78dac075bf8d274806e4d22393c7d78e14a5aca3b1a2f5402019bbb2fdbe60f374899bc2e39338b46e7cebe5506cd5a12607556d2a79d8d96d5376b980da9c6b6279c7f2073f8ba9767caf6d1cf6c018d8d981d50b97aa9c64618b93f9188e8e55ce3a6dd09e5d3484142711bc59ea69988b365c27c7847493cdfb2e727d3e77e74c72234fe39dd1583b1cbe2d7c9fc10d990497200c225ef4217a862da3be341dd2999e75aa95d501398048ef4574beec0ceabcb07a75764e91824031f04bfed237372a6c794cadd0ea7a7c1aad044b04f99590020af241dcd30caeb8e13d55381b80e02061e9d4350ff99b5bb0667888c9ada82da8ccc50123977ca6a592f285362deb2138eb75e11d118f81168f752e8471a038a25e14ebc160573b094fd8c73baebc417875f24541bdc329284a1f3770fe8ceb2ba07890ae6acb5b08d828c468676c92e997c552a807c179758cd32319ff6f10ef3610012cf7155550607c7207989e6e86f07a0af4fc5afa086ca902a291169dbbd752b599aac03e783843b99bceebd336c
+#TRUST-RSA-SHA256 42e22d900cedb28de033c42282a4b9afa19b13b1d3a2102f491ee352ab1dc0cc28ac268f6424129cc04f54712398c23b55e25e1380640deb37fb26a21164c4093fd5a2cf17ada9792da48379c620501c070ee125f21d497dfa8417c047b983f8399a430fbd83c9f021080a02205f1aa34073546b5500ec5eba28c25337ec9ae0e793ccd9f360b3190f1c0f6ca7e102bfa4f7440f4a71a9ab44e6deeb84e583b84a1fb5ab71a9011cd49e7123d618a8496a1b268121346418467f95990b7396e0bed993ce4623a0d796c99f2ba8249b4e5db6a18175f6ac774925d68aa79c70b4a0ef256e6975379770adcad1c01acaadbe1e9c1922fe57bba00c2e05a2e20fe296a14906d365d2796ebc0feb590fc15a06095c3b593a3a254dbba3239ac0b3c671e1903bf3044e9dbc97d27be021013f13126c19c3ca45df887d412c8ab010898b3246dc9bf5f822019547e16c3c06d9d591097a9078fbe993e838b7ee19c31bb8016ed3fbc5c8ee88faee40911edbc9da4e6675ed96f9ae645da13eb69145c641dc078ea43bfe7a4c73d4e3fbdc20f04795605418d143f302c7328d96dd1831b457bd13e7f056a1ea079a573f30e6f9cb35d5d3c90b04e11171a218f1ccee571d0c772abe66dc30989db6bdd2afbac34e7b1424ff7966e01dbb8f10a2ec2f019efb5e9863f6d45949a055f2a64f6dc7ce4cb2d769eff2fc2ec8c5cda68d8463
+#
+# This script is Copyright (C) 2004-2024 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.0 $
+# $Date: 2024/06/24 $
+#
+# Description   : This document implements the security configuration as recommended by the
+#                 CIS Microsoft 365 Foundations Benchmark v3.1.0
+#
+#<ui_metadata>
+#<display_name>CIS Microsoft 365 Foundations E5 L1 v3.1.0</display_name>
+#<spec>
+#  <type>CIS</type>
+#  <name>Microsoft 365 Foundations</name>
+#  <profile>L1 E5</profile>
+#  <version>3.1.0</version>
+#  <link>https://workbench.cisecurity.org/benchmarks/15279</link>
+#</spec>
+#<labels>microsoft_365</labels>
+#<benchmark_refs>CCE,CSCv6,CSCv7,CSCv8,LEVEL</benchmark_refs>
+#</ui_metadata>
+
+<check_type:"microsoft_azure">
+
+<report type:"WARNING">
+  description : "2.1.7 Ensure that an anti-phishing policy has been created"
+  info        : "By default, Office 365 includes built-in features that help protect users from phishing attacks. Set up anti-phishing polices to increase this protection, for example by refining settings to better detect and prevent impersonation and spoofing attacks. The default policy applies to all users within the organization and is a single view to fine-tune anti-phishing protection. Custom policies can be created and configured for specific users, groups or domains within the organization and will take precedence over the default policy for the scoped users.
+
+Rationale:
+
+Protects users from phishing attacks (like impersonation and spoofing), and uses safety tips to warn users about potentially harmful messages.
+
+Impact:
+
+Turning on Anti-Phishing should not cause an impact; messages will be displayed when applicable.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+  solution    : "Note: Audit and Remediation guidance may focus on the Default policy however, if a Custom Policy exists in the organization's tenant then ensure the setting is set as outlined in the highest priority policy listed.
+To set the anti-phishing policy
+
+Navigate to Microsoft 365 Defender https://security.microsoft.com.
+
+Click to expand Email & collaboration select Policies & rules
+
+Select Threat policies.
+
+Under Policies select Anti-phishing.
+
+Select the Office365 AntiPhish Default (Default) policy and click Edit protection settings.
+
+Set the Phishing email threshold to at least 2 - Aggressive.
+
+Under Impersonation
+
+Check Enable mailbox intelligence (Recommended)
+
+Check Enable Intelligence for impersonation protection (Recommended).
+
+Under Spoof
+
+Check Enable spoof intelligence (Recommended).
+
+Click Save.
+
+To create an anti-phishing policy using PowerShell:
+
+Connect to Exchange Online service using Connect-ExchangeOnline.
+
+Run the following Exchange Online PowerShell command:
+
+New-AntiPhishPolicy -Name 'Office365 AntiPhish Policy'"
+  reference   : "800-171|3.14.2,800-171|3.14.4,800-171|3.14.5,800-53|SI-3,800-53|SI-8,800-53|SI-16,800-53r5|SI-3,800-53r5|SI-8,800-53r5|SI-16,CN-L3|7.1.3.6(b),CN-L3|8.1.4.5,CN-L3|8.1.9.6(a),CN-L3|8.1.9.6(b),CN-L3|8.1.10.5(b),CN-L3|8.1.10.7(a),CN-L3|8.1.10.7(b),CSCv7|7,CSCv8|9.7,CSF|DE.CM-4,CSF|DE.DP-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ISO/IEC-27001|A.12.2.1,ITSG-33|SI-3,ITSG-33|SI-8,ITSG-33|SI-16,LEVEL|1A,NIAv2|GS8a,PCI-DSSv3.2.1|5.1,PCI-DSSv3.2.1|5.1.1,PCI-DSSv4.0|5.2.1,QCSC-v1|3.2,QCSC-v1|5.2.3,QCSC-v1|8.2.1,TBA-FIISB|49.2.1,TBA-FIISB|49.2.2,TBA-FIISB|49.3.1,TBA-FIISB|49.3.2,TBA-FIISB|50.2.1,TBA-FIISB|51.2.4,TBA-FIISB|51.2.7"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15279"
+</report>
+
+<report type:"WARNING">
+  description : "2.1.11 Ensure the spoofed domains report is reviewed weekly"
+  info        : "Use spoof intelligence in the Security Center on the Anti-spam settings page to review all senders who are spoofing either domains that are part of the organization or spoofing external domains. Spoof intelligence is available as part of Office 365 Enterprise E5 or separately as part of Defender for Office 365 and as of October 2018 Exchange Online Protection (EOP).
+
+Rationale:
+
+Bad actors spoof domains to trick users into conducting actions they normally would not or should not via phishing emails. Running this report will inform the message administrators of current activities, and the phishing techniques used by bad actors. This information can be used to inform end users and plan against future campaigns.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+  solution    : "To review the spoofed domains report:
+
+Navigate to Microsoft 365 Defender https://security.microsoft.com.
+
+Under Email & collaboration click on Policies & rules then select Threat policies.
+
+Under Rules click on Tenant Allow / Block Lists then select Spoofed senders.
+
+Review.
+
+To view spoofed senders that were allowed or blocked by spoof intelligence in the last 7 days:
+
+Connect to Exchange Online using Connect-ExchangeOnline.
+
+Run the following PowerShell command:
+
+Get-SpoofIntelligenceInsight
+
+Review."
+  reference   : "800-171|3.3.1,800-171|3.3.2,800-171|3.3.6,800-53|AU-6,800-53|AU-6(1),800-53|AU-7(1),800-53r5|AU-6,800-53r5|AU-6(1),800-53r5|AU-7(1),CN-L3|7.1.2.3(c),CN-L3|7.1.3.3(d),CSCv7|6.2,CSCv8|8.11,CSF|DE.AE-2,CSF|DE.AE-3,CSF|DE.DP-4,CSF|PR.PT-1,CSF|RS.AN-1,CSF|RS.AN-3,CSF|RS.CO-2,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ITSG-33|AU-6,ITSG-33|AU-6(1),ITSG-33|AU-7(1),LEVEL|1M,NESA|M5.2.5,QCSC-v1|5.2.3,QCSC-v1|8.2.1,QCSC-v1|10.2.1,QCSC-v1|11.2,QCSC-v1|13.2,SWIFT-CSCv1|6.4"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15279"
+</report>
+
+<report type:"WARNING">
+  description : "2.4.1 Ensure Priority account protection is enabled and configured"
+  info        : "Identify priority accounts to utilize Microsoft 365's advanced custom security features. This is an essential tool to bolster protection for users who are frequently targeted due to their critical positions, such as executives, leaders, managers, or others who have access to sensitive, confidential, financial, or high-priority information.
+
+Once these accounts are identified, several services and features can be enabled, including threat policies, enhanced sign-in protection through conditional access policies, and alert policies, enabling faster response times for incident response teams.
+
+Rationale:
+
+Enabling priority account protection for users in Microsoft 365 is necessary to enhance security for accounts with access to sensitive data and high privileges, such as CEOs, CISOs, CFOs, and IT admins. These priority accounts are often targeted by spear phishing or whaling attacks and require stronger protection to prevent account compromise.
+
+To address this, Microsoft 365 and Microsoft Defender for Office 365 offer several key features that provide extra security, including the identification of incidents and alerts involving priority accounts and the use of built-in custom protections designed specifically for them.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+  solution    : "Remediate with a 3-step process
+
+Step 1: Enable Priority account protection in Microsoft 365 Defender:
+
+Navigate to Microsoft 365 Defender https://security.microsoft.com/
+
+Select Settings > E-mail & Collaboration > Priority account protection
+
+Ensure Priority account protection is set to On
+
+Step 2: Tag priority accounts:
+
+Select User tags
+
+Select the PRIORITY ACCOUNT tag and click Edit
+
+Select Add members to add users, or groups. Groups are recommended.
+
+Repeat the previous 2 steps for any additional tags needed, such as Finance or HR.
+
+Next and Submit.
+
+Step 3: Configure E-mail alerts for Priority Accounts:
+
+Expand E-mail & Collaboration on the left column.
+
+Select New Alert Policy
+
+Enter a valid policy Name & Description. Set Severity to High and Category to Threat management.
+
+Set Activity is to Detected malware in an e-mail message
+
+Mail direction is Inbound
+
+Select Add Condition and User: recipient tags are
+
+In the Selection option field add chosen priority tags such as Priority account.
+
+Select Every time an activity matches the rule.
+
+Next and Verify valid recipient(s) are selected.
+
+Next and select Yes, turn it on right away. Click Submit to save the alert.
+
+Repeat steps 10 - 18 for the Activity field Activity is: Phishing email detected at time of delivery
+
+NOTE: Any additional activity types may be added as needed. Above are the minimum recommended.
+
+Default Value:
+
+By default, priority accounts are undefined."
+  reference   : "800-171|3.14.2,800-171|3.14.4,800-171|3.14.5,800-53|SI-3,800-53|SI-8,800-53|SI-16,800-53r5|SI-3,800-53r5|SI-8,800-53r5|SI-16,CN-L3|7.1.3.6(b),CN-L3|8.1.4.5,CN-L3|8.1.9.6(a),CN-L3|8.1.9.6(b),CN-L3|8.1.10.5(b),CN-L3|8.1.10.7(a),CN-L3|8.1.10.7(b),CSCv8|9.7,CSF|DE.CM-4,CSF|DE.DP-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ISO/IEC-27001|A.12.2.1,ITSG-33|SI-3,ITSG-33|SI-8,ITSG-33|SI-16,LEVEL|1M,NIAv2|GS8a,PCI-DSSv3.2.1|5.1,PCI-DSSv3.2.1|5.1.1,PCI-DSSv4.0|5.2.1,QCSC-v1|3.2,QCSC-v1|5.2.3,QCSC-v1|8.2.1,TBA-FIISB|49.2.1,TBA-FIISB|49.2.2,TBA-FIISB|49.3.1,TBA-FIISB|49.3.2,TBA-FIISB|50.2.1,TBA-FIISB|51.2.4,TBA-FIISB|51.2.7"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15279"
+</report>
+
+<report type:"WARNING">
+  description : "2.4.2 Ensure Priority accounts have 'Strict protection' presets applied"
+  info        : "Preset security policies have been established by Microsoft, utilizing observations and experiences within datacenters to strike a balance between the exclusion of malicious content from users and limiting unwarranted disruptions. These policies can apply to all, or select users and encompass recommendations for addressing spam, malware, and phishing threats. The policy parameters are pre-determined and non-adjustable.
+
+Strict protection has the most aggressive protection of the 3 presets.
+
+EOP: Anti-spam, Anti-malware and Anti-phishing
+
+Defender: Spoof protection, Impersonation protection and Advanced phishing
+
+Defender: Safe Links and Safe Attachments
+
+NOTE: The preset security polices cannot target Priority account TAGS currently, groups should be used instead.
+
+Rationale:
+
+Enabling priority account protection for users in Microsoft 365 is necessary to enhance security for accounts with access to sensitive data and high privileges, such as CEOs, CISOs, CFOs, and IT admins. These priority accounts are often targeted by spear phishing or whaling attacks and require stronger protection to prevent account compromise.
+
+The implementation of stringent, pre-defined policies may result in instances of false positive, however, the benefit of requiring the end-user to preview junk email before accessing their inbox outweighs the potential risk of mistakenly perceiving a malicious email as safe due to its placement in the inbox.
+
+Impact:
+
+Strict policies are more likely to cause false positives in anti-spam, phishing, impersonation, spoofing and intelligence responses.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+  solution    : "Enable strict preset security policies for Priority accounts:
+
+Navigate to Microsoft 365 Defender https://security.microsoft.com/
+
+Select to expand E-mail & collaboration.
+
+Select Policies & rules > Threat policies > Preset security policies.
+
+Click to Manage protection settings for Strict protection preset.
+
+For Apply Exchange Online Protection select at minimum Specific recipients and include the Accounts/Groups identified as Priority Accounts.
+
+For Apply Defender for Office 365 Protection select at minimum Specific recipients and include the Accounts/Groups identified as Priority Accounts.
+
+For Impersonation protection click Next and add valid e-mails or priority accounts both internal and external that may be subject to impersonation.
+
+For Protected custom domains add the organization's domain name, along side other key partners.
+
+Click Next and finally Confirm
+
+Default Value:
+
+By default, presets are not applied to any users or groups."
+  reference   : "800-171|3.14.2,800-171|3.14.4,800-171|3.14.5,800-171|3.14.6,800-171|3.14.7,800-53|SI-3,800-53|SI-4,800-53|SI-8,800-53|SI-16,800-53r5|SI-3,800-53r5|SI-4,800-53r5|SI-8,800-53r5|SI-16,CN-L3|7.1.3.5(a),CN-L3|7.1.3.6(b),CN-L3|8.1.4.5,CN-L3|8.1.9.6(a),CN-L3|8.1.9.6(b),CN-L3|8.1.10.5(b),CN-L3|8.1.10.6(f),CN-L3|8.1.10.7(a),CN-L3|8.1.10.7(b),CSCv8|9.7,CSCv8|10.7,CSF|DE.AE-1,CSF|DE.AE-2,CSF|DE.AE-3,CSF|DE.AE-4,CSF|DE.CM-1,CSF|DE.CM-4,CSF|DE.CM-5,CSF|DE.CM-6,CSF|DE.CM-7,CSF|DE.DP-2,CSF|DE.DP-3,CSF|DE.DP-4,CSF|DE.DP-5,CSF|ID.RA-1,CSF|PR.DS-5,CSF|PR.IP-8,CSF|RS.AN-1,CSF|RS.CO-3,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ISO/IEC-27001|A.12.2.1,ITSG-33|SI-3,ITSG-33|SI-4,ITSG-33|SI-8,ITSG-33|SI-16,LEVEL|1M,NESA|M1.2.2,NIAv2|GS8a,PCI-DSSv3.2.1|5.1,PCI-DSSv3.2.1|5.1.1,PCI-DSSv4.0|5.2.1,QCSC-v1|3.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|5.2.3,QCSC-v1|6.2,QCSC-v1|8.2.1,QCSC-v1|10.2.1,QCSC-v1|11.2,TBA-FIISB|49.2.1,TBA-FIISB|49.2.2,TBA-FIISB|49.3.1,TBA-FIISB|49.3.2,TBA-FIISB|50.2.1,TBA-FIISB|51.2.4,TBA-FIISB|51.2.7"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15279"
+</report>
+
+<report type:"WARNING">
+  description : "2.4.4 Ensure Zero-hour auto purge for Microsoft Teams is on"
+  info        : "Zero-hour auto purge (ZAP) is a protection feature that retroactively detects and neutralizes malware and high confidence phishing. When ZAP for Teams protection blocks a message, the message is blocked for everyone in the chat. The initial block happens right after delivery, but ZAP occurs up to 48 hours after delivery.
+
+Rationale:
+
+ZAP is intended to protect users that have received zero-day malware messages or content that is weaponized after being delivered to users. It does this by continually monitoring spam and malware signatures taking automated retroactive action on messages that have already been delivered.
+
+Impact:
+
+As with any anti-malware or anti-phishing product false positives may occur.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+  solution    : "To remediate using the UI:
+
+Navigate to Microsoft Defender https://security.microsoft.com/
+
+Click Settings > Email & collaboration > Microsoft Teams protection.
+
+Set Zero-hour auto purge (ZAP) to On (Default)
+
+To remediate using PowerShell:
+
+Connect to Exchange Online using Connect-ExchangeOnline.
+
+Run the following cmdlet:
+
+Set-TeamsProtectionPolicy -Identity 'Teams Protection Policy' -ZapEnabled $true
+
+Default Value:
+
+On (Default)"
+  reference   : "800-171|3.14.2,800-171|3.14.4,800-171|3.14.5,800-53|SI-3,800-53r5|SI-3,CN-L3|7.1.3.6(b),CN-L3|8.1.4.5,CN-L3|8.1.9.6(a),CN-L3|8.1.9.6(b),CN-L3|8.1.10.5(b),CN-L3|8.1.10.7(a),CN-L3|8.1.10.7(b),CSCv8|10.1,CSF|DE.CM-4,CSF|DE.DP-3,GDPR|32.1.b,HIPAA|164.306(a)(1),ISO/IEC-27001|A.12.2.1,ITSG-33|SI-3,LEVEL|1A,NIAv2|GS8a,PCI-DSSv3.2.1|5.1,PCI-DSSv3.2.1|5.1.1,PCI-DSSv4.0|5.2.1,QCSC-v1|3.2,QCSC-v1|5.2.3,QCSC-v1|8.2.1,TBA-FIISB|49.2.1,TBA-FIISB|49.2.2,TBA-FIISB|49.3.1,TBA-FIISB|49.3.2,TBA-FIISB|50.2.1,TBA-FIISB|51.2.4,TBA-FIISB|51.2.7"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15279"
+</report>
+
+<report type:"WARNING">
+  description : "3.2.2 Ensure DLP policies are enabled for Microsoft Teams"
+  info        : "The default Teams Data Loss Prevention (DLP) policy rule in Microsoft 365 is a preconfigured rule that is automatically applied to all Teams conversations and channels. The default rule helps prevent accidental sharing of sensitive information by detecting and blocking certain types of content that are deemed sensitive or inappropriate by the organization.
+
+By default, the rule includes a check for the sensitive info type Credit Card Number which is pre-defined by Microsoft.
+
+Rationale:
+
+Enabling the default Teams DLP policy rule in Microsoft 365 helps protect an organization's sensitive information by preventing accidental sharing or leakage Credit Card information in Teams conversations and channels.
+
+DLP rules are not one size fits all, but at a minimum something should be defined. The organization should identify sensitive information important to them and seek to intercept it using DLP.
+
+Impact:
+
+End-users may be prevented from sharing certain types of content, which may require them to adjust their behavior or seek permission from administrators to share specific content. Administrators may receive requests from end-users for permission to share certain types of content or to modify the policy to better fit the needs of their teams.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+  solution    : "To remediate using the UI:
+
+Navigate to Microsoft Purview compliance portal https://compliance.microsoft.com.
+
+Under Solutions select Data loss prevention then Policies.
+
+Click Policies tab.
+
+Check Default policy for Teams then click Edit policy.
+
+The edit policy window will appear click Next
+
+At the Choose locations to apply the policy page, turn the status toggle to On for Teams chat and channel messages location and then click Next.
+
+On Customized advanced DLP rules page, ensure the Default Teams DLP policy rule Status is On and click Next.
+
+On the Policy mode page, select the radial for Turn it on right away and click Next.
+
+Review all the settings for the created policy on the Review your policy and create it page, and then click submit.
+
+Once the policy has been successfully submitted click Done.
+
+Note: Some tenants may not have a default policy for teams as Microsoft started creating these by default at a particular point in time. In this case a new policy will have to be created that includes a rule to protect data important to the organization such as credit cards and PII.
+
+Default Value:
+
+Enabled (On)"
+  reference   : "800-53|AU-11,800-53|SI-12,800-53r5|AU-11,800-53r5|SI-12,CSCv7|13,CSCv7|14.7,CSCv8|3.1,CSF|PR.PT-1,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ITSG-33|AU-11,ITSG-33|SI-12,ITSG-33|SI-12a.,LEVEL|1M,NESA|M5.2.3,NESA|M5.2.4,NESA|M5.3.1,NESA|T3.6.2,NIAv2|DR1,NIAv2|DR1a,NIAv2|DR1b,NIAv2|DR1c,NIAv2|DR2,NIAv2|DR3,NIAv2|DR4,NIAv2|DR5,NIAv2|DR6,NIAv2|SM7,PCI-DSSv3.2.1|3.1,PCI-DSSv3.2.1|10.7,PCI-DSSv4.0|3.2.1,PCI-DSSv4.0|10.5.1,QCSC-v1|8.2.1,QCSC-v1|13.2"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15279"
+</report>
+
+<report type:"WARNING">
+  description : "5.2.6.1 Ensure the Azure AD 'Risky sign-ins' report is reviewed at least weekly"
+  info        : "This report contains records of accounts that have had activity that could indicate they are compromised, such as accounts that have:
+
+Successfully signed in after multiple failures, which is an indication that the accounts have cracked passwords.
+
+Signed in to tenant from a client IP address that has been recognized by Microsoft as an anonymous proxy IP address (such as a TOR network).
+
+Successful sign-ins from users where two sign-ins appeared to originate from different regions and the time between sign-ins makes it impossible for the user to have traveled between those regions.
+
+Rationale:
+
+Reviewing this report on a regular basis allows for identification and remediation of compromised accounts.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+  solution    : "To review the 'Risky sign-ins' report:
+
+Navigate to the Microsoft Entra admin center https://entra.microsoft.com.
+
+Click expand Protection select Risky activities.
+
+Under Report click on Risky sign-ins.
+
+Review by Risk level (aggregate)."
+  reference   : "800-171|3.3.1,800-171|3.3.2,800-171|3.3.6,800-53|AU-6,800-53|AU-6(1),800-53|AU-7(1),800-53r5|AU-6,800-53r5|AU-6(1),800-53r5|AU-7(1),CN-L3|7.1.2.3(c),CN-L3|7.1.3.3(d),CSCv7|6.2,CSCv8|8.11,CSF|DE.AE-2,CSF|DE.AE-3,CSF|DE.DP-4,CSF|PR.PT-1,CSF|RS.AN-1,CSF|RS.AN-3,CSF|RS.CO-2,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ITSG-33|AU-6,ITSG-33|AU-6(1),ITSG-33|AU-7(1),LEVEL|1M,NESA|M5.2.5,QCSC-v1|5.2.3,QCSC-v1|8.2.1,QCSC-v1|10.2.1,QCSC-v1|11.2,QCSC-v1|13.2,SWIFT-CSCv1|6.4"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15279"
+</report>
+
+<report type:"WARNING">
+  description : "5.3.2 Ensure 'Access reviews' for Guest Users are configured"
+  info        : "Access reviews enable administrators to establish an efficient automated process for reviewing group memberships, access to enterprise applications, and role assignments. These reviews can be scheduled to recur regularly, with flexible options for delegating the task of reviewing membership to different members of the organization.
+
+Ensure Access reviews for Guest Users are configured to be performed no less frequently than monthly.
+
+Rationale:
+
+Access to groups and applications for guests can change over time. If a guest user's access to a particular folder goes unnoticed, they may unintentionally gain access to sensitive data if a member adds new files or data to the folder or application. Access reviews can help reduce the risks associated with outdated assignments by requiring a member of the organization to conduct the reviews. Furthermore, these reviews can enable a fail-closed mechanism to remove access to the subject if the reviewer does not respond to the review.
+
+Impact:
+
+Access reviews that are ignored may cause guest users to lose access to resources temporarily.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+  solution    : "Create an access review for Guest Users:
+
+Navigate to Microsoft Entra admin center https://entra.microsoft.com/
+
+Click to expand Identity Governance and select Access reviews
+
+Click New access review.
+
+Select what to review choose Teams + Groups.
+
+Review Scope set to All Microsoft 365 groups with guest users, do not exclude groups.
+
+Scope set to Guest users only then click Next: Reviews.
+
+Select reviewers an appropriate user that is NOT the guest user themselves.
+
+Duration (in days) at most 3.
+
+Review recurrence is Monthly or more frequent.
+
+End is set to Never, then click Next: Settings.
+
+Check Auto apply results to resource.
+
+Set If reviewers don't respond to Remove access.
+
+Check the following: Justification required, E-mail notifications, Reminders.
+
+Click Next: Review + Create and finally click Create.
+
+Default Value:
+
+By default access reviews are not configured."
+  reference   : "800-171|3.1.1,800-53|AC-2,800-53|AC-2(3),800-53r5|AC-2,800-53r5|AC-2(3),CN-L3|7.1.3.2(d),CN-L3|7.1.3.2(e),CN-L3|8.1.4.2(c),CSCv8|5.1,CSCv8|5.3,CSF|DE.CM-1,CSF|DE.CM-3,CSF|PR.AC-1,CSF|PR.AC-4,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ISO/IEC-27001|A.9.2.1,ISO/IEC-27001|A.9.2.6,ITSG-33|AC-2,ITSG-33|AC-2(3),LEVEL|1M,NIAv2|AM26,NIAv2|AM28,NIAv2|NS5j,NIAv2|SS14e,QCSC-v1|5.2.2,QCSC-v1|8.2.1,QCSC-v1|13.2,QCSC-v1|15.2,TBA-FIISB|36.2.2"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15279"
+</report>
+
+<report type:"WARNING">
+  description : "5.3.3 Ensure 'Access reviews' for high privileged Azure AD roles are configured"
+  info        : "Access reviews enable administrators to establish an efficient automated process for reviewing group memberships, access to enterprise applications, and role assignments. These reviews can be scheduled to recur regularly, with flexible options for delegating the task of reviewing membership to different members of the organization.
+
+Ensure Access reviews for high privileged Entra ID roles are done no less frequently than weekly. These reviews should include at a minimum the roles listed below:
+
+Global Administrator
+
+Exchange Administrator
+
+SharePoint Administrator
+
+Teams Administrator
+
+Security Administrator
+
+NOTE: An access review is created for each role selected after completing the process.
+
+Rationale:
+
+Regular review of critical high privileged roles in Entra ID will help identify role drift, or potential malicious activity. This will enable the practice and application of 'separation of duties' where even non-privileged users like security auditors can be assigned to review assigned roles in an organization. Furthermore, if configured these reviews can enable a fail-closed mechanism to remove access to the subject if the reviewer does not respond to the review.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+  solution    : "Create an access review for high privileged roles:
+
+Navigate to Microsoft Entra admin center https://entra.microsoft.com/
+
+Click to expand Identity Governance and select Privileged Identity Management
+
+Select Microsoft Entra Roles under Manage
+
+Select Access reviews and click New access review.
+
+Provide a name and description.
+
+Frequency set to Weekly or more frequent.
+
+Duration (in days) is set to at most 3.
+
+End set to Never.
+
+Role select these roles: Global Administrator,Exchange Administrator,SharePoint Administrator,Teams Administrator,Security Administrator
+
+Assignment type set to All active and eligible assignments.
+
+Reviewers set to Selected user(s) or group(s)
+
+Select reviewers are member(s) responsible for this type of review.
+
+Auto apply results to resource set to Enable
+
+If reviewers don't respond is set to No change
+
+Show recommendations set to Enable
+
+Require reason or approval set to Enable
+
+Mail notifications set to Enable
+
+Reminders set to Enable
+
+Click Start to save the review.
+
+NOTE: Reviewers will have the ability to revoke roles should be trusted individuals who understand the impact of the access reviews. The principle of separation of duties should be considered so that no one administrator is reviewing their own access levels.
+
+Default Value:
+
+By default access reviews are not configured."
+  reference   : "800-171|3.1.1,800-53|AC-2,800-53|AC-2(3),800-53r5|AC-2,800-53r5|AC-2(3),CN-L3|7.1.3.2(d),CN-L3|7.1.3.2(e),CN-L3|8.1.4.2(c),CSCv8|5.1,CSCv8|5.3,CSF|DE.CM-1,CSF|DE.CM-3,CSF|PR.AC-1,CSF|PR.AC-4,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ISO/IEC-27001|A.9.2.1,ISO/IEC-27001|A.9.2.6,ITSG-33|AC-2,ITSG-33|AC-2(3),LEVEL|1M,NIAv2|AM26,NIAv2|AM28,NIAv2|NS5j,NIAv2|SS14e,QCSC-v1|5.2.2,QCSC-v1|8.2.1,QCSC-v1|13.2,QCSC-v1|15.2,TBA-FIISB|36.2.2"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15279"
+</report>
+
+<report type:"WARNING">
+  description : "6.1.3 Ensure mailbox auditing for E5 users is Enabled"
+  info        : "Mailbox audit logging is turned on by default in all organizations. This effort started in January 2019, and means that certain actions performed by mailbox owners, delegates, and admins are automatically logged. The corresponding mailbox audit records are available for admins to search in the mailbox audit log.
+
+Mailboxes and shared mailboxes have actions assigned to them individually in order to audit the data the organization determines valuable at the mailbox level.
+
+The recommended state is AuditEnabled to True on all user mailboxes along with additional audit actions beyond the Microsoft defaults.
+
+Note: Due to some differences in defaults for audit actions this recommendation is specific to users assigned an E5 license, or auditing addon license, only.
+
+Rationale:
+
+Whether it is for regulatory compliance or for tracking unauthorized configuration changes in Microsoft 365, enabling mailbox auditing and ensuring the proper mailbox actions are accounted for allows for Microsoft 365 teams to run security operations, forensics or general investigations on mailbox activities.
+
+The following mailbox types ignore the organizational default and must have AuditEnabled set to True at the mailbox level in order to capture relevant audit data.
+
+Resource Mailboxes
+
+Public Folder Mailboxes
+
+DiscoverySearch Mailbox
+
+NOTE: Without advanced auditing (E5 function) the logs are limited to 90 days.
+
+Impact:
+
+None - this is the default behavior.
+
+NOTE: Nessus has not performed this check. Please review the benchmark to ensure target compliance."
+  solution    : "To enable mailbox auditing for all user mailboxes using PowerShell:
+
+Connect to Exchange Online using Connect-ExchangeOnline.
+
+Run the following PowerShell script:
+
+$AuditAdmin = @(
+    'ApplyRecord', 'Copy', 'Create', 'FolderBind', 'HardDelete',
+    'MailItemsAccessed', 'Move', 'MoveToDeletedItems', 'SendAs',
+    'SendOnBehalf', 'Send', 'SoftDelete', 'Update', 'UpdateCalendarDelegation',
+    'UpdateFolderPermissions', 'UpdateInboxRules'
+)
+
+$AuditDelegate = @(
+    'ApplyRecord', 'Create', 'FolderBind', 'HardDelete', 'Move',
+    'MailItemsAccessed', 'MoveToDeletedItems', 'SendAs', 'SendOnBehalf',
+    'SoftDelete', 'Update', 'UpdateFolderPermissions', 'UpdateInboxRules'
+)
+
+$AuditOwner = @(
+    'ApplyRecord', 'Create', 'HardDelete', 'MailboxLogin', 'Move',
+    'MailItemsAccessed', 'MoveToDeletedItems', 'Send', 'SoftDelete', 'Update',
+    'UpdateCalendarDelegation', 'UpdateFolderPermissions', 'UpdateInboxRules'
+)
+
+$MBX = Get-EXOMailbox -ResultSize Unlimited | Where-Object { $_.RecipientTypeDetails -eq 'UserMailbox' }
+$MBX | Set-Mailbox -AuditEnabled $true '
+-AuditLogAgeLimit 180 -AuditAdmin $AuditAdmin -AuditDelegate $AuditDelegate '
+-AuditOwner $AuditOwner
+
+Note: When running this script mailboxes without an E5 or Azure Audit Premium license applied will generate an error as they are not licensed for the additional actions which come default with E5.
+
+Default Value:
+
+AuditEnabled: True for all mailboxes except below:
+
+Resource Mailboxes
+
+Public Folder Mailboxes
+
+DiscoverySearch Mailbox
+
+AuditAdmin: ApplyRecord, Create, HardDelete, MailItemsAccessed, MoveToDeletedItems, Send, SendAs, SendOnBehalf, SoftDelete, Update, UpdateCalendarDelegation, UpdateFolderPermissions, UpdateInboxRules
+
+AuditDelegate: ApplyRecord, Create, HardDelete, MailItemsAccessed, MoveToDeletedItems, SendAs, SendOnBehalf, SoftDelete, Update, UpdateFolderPermissions, UpdateInboxRules
+
+AuditOwner: ApplyRecord, HardDelete, MailItemsAccessed, MoveToDeletedItems, Send, SoftDelete, Update, UpdateCalendarDelegation, UpdateFolderPermissions, UpdateInboxRules"
+  reference   : "800-171|3.3.1,800-171|3.3.2,800-171|3.3.6,800-53|AU-2,800-53|AU-7,800-53|AU-12,800-53r5|AU-2,800-53r5|AU-7,800-53r5|AU-12,CN-L3|7.1.2.3(c),CN-L3|8.1.4.3(a),CSCv7|6.2,CSCv8|8.2,CSF|DE.CM-1,CSF|DE.CM-3,CSF|DE.CM-7,CSF|PR.PT-1,CSF|RS.AN-3,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(b),ITSG-33|AU-2,ITSG-33|AU-7,ITSG-33|AU-12,LEVEL|1A,NESA|M1.2.2,NESA|M5.5.1,NIAv2|AM7,NIAv2|AM11a,NIAv2|AM11b,NIAv2|AM11c,NIAv2|AM11d,NIAv2|AM11e,NIAv2|SS30,NIAv2|VL8,PCI-DSSv3.2.1|10.1,QCSC-v1|3.2,QCSC-v1|6.2,QCSC-v1|8.2.1,QCSC-v1|10.2.1,QCSC-v1|11.2,QCSC-v1|13.2,SWIFT-CSCv1|6.4"
+  see_also    : "https://workbench.cisecurity.org/benchmarks/15279"
+</report>
+
+</check_type>

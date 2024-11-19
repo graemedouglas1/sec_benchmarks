@@ -1,0 +1,2126 @@
+---
+
+inspec_rules:
+  "1.1.1":
+    title: '1.1.1 | Ensure that the API server pod specification file permissions are set to 600 or more restrictive - manual'
+    section: 'Master Node Configuration Files'
+    description: |
+        Ensure that the API server pod specification file has permissions of              600
+         or more restrictive.
+    remediation: |
+        There is no remediation for updating the permissions of                  kube-apiserver-pod.yaml
+        . The file is owned by an OpenShift operator and any changes to the file will result in a degraded cluster state.
+        Please do not attempt to remediate the permissions of this file. Impact: None.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.1.1', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.1.2":
+    title: '1.1.2 | Ensure that the API server pod specification file ownership is set to rootroot - manual'
+    section: 'Master Node Configuration Files'
+    description: |
+        Ensure that the API server pod specification file ownership is set to              rootroot
+        .
+    remediation: |
+        No remediation required; file permissions are managed by the operator. Impact: None
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.1.2', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.1.3":
+    title: '1.1.3 | Ensure that the controller manager pod specification file permissions are set to 600 or more restrictive - manual'
+    section: 'Master Node Configuration Files'
+    description: |
+        Ensure that the controller manager pod specification file has permissions of              600
+         or more restrictive.
+    remediation: |
+        There is no remediation for updating the permissions of                  kube-controller-manager-pod.yaml
+        . The file is owned by an OpenShift operator and any changes to the file will result in a degraded cluster state.
+        Please do not attempt to remediate the permissions of this file. Impact: None.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.1.3', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.1.4":
+    title: '1.1.4 | Ensure that the controller manager pod specification file ownership is set to rootroot - manual'
+    section: 'Master Node Configuration Files'
+    description: |
+        Ensure that the controller manager pod specification file ownership is set to              rootroot
+        .
+    remediation: |
+        No remediation required; file permissions are managed by the operator. Impact: None
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.1.4', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.1.5":
+    title: '1.1.5 | Ensure that the scheduler pod specification file permissions are set to 600 or more restrictive - manual'
+    section: 'Master Node Configuration Files'
+    description: |
+        Ensure that the scheduler pod specification file has permissions of              600
+         or more restrictive.
+    remediation: |
+        There is no remediation for updating the permissions of                  kube-scheduler-pod.yaml
+        . The file is owned by an OpenShift operator and any changes to the file will result in a degraded cluster state.
+        Please do not attempt to remediate the permissions of this file. Impact: None.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.1.5', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.1.6":
+    title: '1.1.6 | Ensure that the scheduler pod specification file ownership is set to rootroot - manual'
+    section: 'Master Node Configuration Files'
+    description: |
+        Ensure that the scheduler pod specification file ownership is set to              rootroot
+        .
+    remediation: |
+        No remediation required; file permissions are managed by the operator. Impact: None
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.1.6', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.1.7":
+    title: '1.1.7 | Ensure that the etcd pod specification file permissions are set to 600 or more restrictive - manual'
+    section: 'Master Node Configuration Files'
+    description: |
+        Ensure that the              /etc/kubernetes/manifests/etcd.yaml
+         file has permissions of              600
+         or more restrictive.
+    remediation: |
+        There is no remediation for updating the permissions of                  etcd-pod.yaml
+        . The file is owned by an OpenShift operator and any changes to the file will result in a degraded cluster state.
+        Please do not attempt to remediate the permissions of this file. Impact: None.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.1.7', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.1.8":
+    title: '1.1.8 | Ensure that the etcd pod specification file ownership is set to rootroot - manual'
+    section: 'Master Node Configuration Files'
+    description: |
+        Ensure that the              /etc/kubernetes/manifests/etcd.yaml
+         file ownership is set to              rootroot
+        .
+    remediation: |
+        No remediation required; file permissions are managed by the operator. Impact: None.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.1.8', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.1.9":
+    title: '1.1.9 | Ensure that the Container Network Interface file permissions are set to 600 or more restrictive - manual'
+    section: 'Master Node Configuration Files'
+    description: |
+        Ensure that the Container Network Interface files have permissions of              600
+         or more restrictive.
+    remediation: |
+        No remediation required; file permissions are managed by the operator. Impact: None
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.1.9', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.1.10":
+    title: '1.1.10 | Ensure that the Container Network Interface file ownership is set to rootroot - manual'
+    section: 'Master Node Configuration Files'
+    description: |
+        Ensure that the Container Network Interface files have ownership set to              rootroot
+        .
+    remediation: |
+        No remediation required; file permissions are managed by the operator. Impact: None.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.1.10', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.1.11":
+    title: '1.1.11 | Ensure that the etcd data directory permissions are set to 700 or more restrictive - manual'
+    section: 'Master Node Configuration Files'
+    description: |
+        Ensure that the etcd data directory has permissions of              700
+         or more restrictive.
+    remediation: |
+        No remediation required. File permissions are managed by the                  etcd
+         operator.               Impact: None
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.1.11', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.1.12":
+    title: '1.1.12 | Ensure that the etcd data directory ownership is set to etcdetcd - manual'
+    section: 'Master Node Configuration Files'
+    description: |
+        Ensure that the              etcd
+         data directory ownership is set to              etcdetcd
+        .
+    remediation: |
+        No remediation required; file ownership is managed by the operator. Impact: None
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.1.12', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.1.13":
+    title: '1.1.13 | Ensure that the kubeconfig file permissions are set to 600 or more restrictive - manual'
+    section: 'Master Node Configuration Files'
+    description: |
+        Ensure that the              kubeconfig
+         file has permissions of              600
+         or more restrictive.
+    remediation: |
+        There is no remediation for updating the permissions of                  kubeconfig
+        . The file is owned by an OpenShift operator and any changes to the file will result in a degraded cluster state.
+        Please do not attempt to remediate the permissions of this file. Impact: None.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.1.13', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.1.14":
+    title: '1.1.14 | Ensure that the kubeconfig file ownership is set to rootroot - manual'
+    section: 'Master Node Configuration Files'
+    description: |
+        Ensure that the              kubeconfig
+         file ownership is set to              rootroot
+        .
+    remediation: |
+        No remediation required; file permissions are managed by the operator. Impact: None.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.1.14', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.1.15":
+    title: '1.1.15 | Ensure that the Scheduler kubeconfig file permissions are set to 600 or more restrictive - manual'
+    section: 'Master Node Configuration Files'
+    description: |
+        Ensure that the Scheduler              kubeconfig
+         file has permissions of              600
+         or more restrictive.
+    remediation: |
+        There is no remediation for updating the permissions of  the                  kubeconfig
+         file. The file is owned by an OpenShift operator and any changes to the file will result in a degraded cluster state.
+        Please do not attempt to remediate the permissions of this file. Impact: None.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.1.15', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.1.16":
+    title: '1.1.16 | Ensure that the Scheduler kubeconfig file ownership is set to rootroot - manual'
+    section: 'Master Node Configuration Files'
+    description: |
+        Ensure that the              kubeconfig
+         file ownership is set to              rootroot
+        .
+    remediation: |
+        No remediation required; file permissions are managed by the operator. Impact: None.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.1.16', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.1.17":
+    title: '1.1.17 | Ensure that the Controller Manager kubeconfig file permissions are set to 600 or more restrictive - manual'
+    section: 'Master Node Configuration Files'
+    description: |
+        Ensure that the              kubeconfig
+         file mounted into the Controller Manager has permissions of              600
+         or more restrictive.
+    remediation: |
+        There is no remediation for updating the permissions of the                  kubeconfig
+         file. The file is owned by an OpenShift operator and any changes to the file will result in a degraded cluster state.
+        Please do not attempt to remediate the permissions of this file. Impact: None.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.1.17', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.1.18":
+    title: '1.1.18 | Ensure that the Controller Manager kubeconfig file ownership is set to rootroot - manual'
+    section: 'Master Node Configuration Files'
+    description: |
+        Ensure that the              kubeconfig
+         file ownership is set to              rootroot
+        .
+    remediation: |
+        No remediation required; file permissions are managed by the operator. Impact: None.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.1.18', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.1.19":
+    title: '1.1.19 | Ensure that the OpenShift PKI directory and file ownership is set to rootroot - manual'
+    section: 'Master Node Configuration Files'
+    description: |
+        Ensure that the OpenShift PKI directory and file ownership is set to              rootroot
+        .
+    remediation: |
+        No remediation required; file permissions are managed by the operator. Impact: None
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.1.19', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.1.20":
+    title: '1.1.20 | Ensure that the OpenShift PKI certificate file permissions are set to 600 or more restrictive - manual'
+    section: 'Master Node Configuration Files'
+    description: |
+        Ensure that OpenShift PKI certificate files have permissions of              644
+         or more restrictive.
+    remediation: |
+        No remediation required; file permissions are managed by the operator. Impact: None
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.1.20', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.1.21":
+    title: '1.1.21 | Ensure that the OpenShift PKI key file permissions are set to 600 - manual'
+    section: 'Master Node Configuration Files'
+    description: |
+        Ensure that the OpenShift PKI key files have permissions of              600
+        .
+    remediation: |
+        No remediation required; file permissions are managed by the operator. Impact: None
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.1.21', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.1":
+    title: '1.2.1 | Ensure that anonymous requests are authorized - manual'
+    section: 'API Server'
+    description: |
+        When anonymous requests to the API server are allowed, they must be authorized.
+    remediation: |
+        None. The default configuration should not be modified. Impact:
+        Anonymous requests are assigned to the                    system:unauthenticated
+         group which allows the system to determine which actions are allowed.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.1', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.2":
+    title: '1.2.2 | Ensure that the --basic-auth-file argument is not set - manual'
+    section: 'API Server'
+    description: |
+        Do not use basic authentication.
+    remediation: |
+        None required.                  --basic-auth-file
+         cannot be configured on OpenShift.               Impact: OpenShift uses tokens and certificates for authentication.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.2', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.3":
+    title: '1.2.3 | Ensure that the --token-auth-file parameter is not set - manual'
+    section: 'API Server'
+    description: |
+        Do not use token based authentication.
+    remediation: |
+        None is required. Impact:
+        OpenShift does not use the                    token-auth-file
+         flag. OpenShift includes a built-in OAuth server rather than relying on a static token file. The OAuth server is
+        integrated with the API server.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.3', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.4":
+    title: '1.2.4 | Use https for kubelet connections - manual'
+    section: 'API Server'
+    description: |
+        Use https for kubelet connections.
+    remediation: |
+        No remediation is required. OpenShift platform components use X.509 certificates for authentication. OpenShift manages
+        the CAs and certificates for platform components. This is not configurable. Impact:
+        You require TLS to be configured on                    apiserver
+         as well as                    kubelets
+        .
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.4', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.5":
+    title: '1.2.5 | Ensure that the kubelet uses certificates to authenticate - manual'
+    section: 'API Server'
+    description: |
+        Enable certificate based kubelet authentication.
+    remediation: |
+        No remediation is required. OpenShift platform components use X.509 certificates for authentication. OpenShift manages
+        the CAs and certificates for platform components. This is not configurable. Impact: Require TLS to be configured on the
+        apiserver as well as kubelets.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.5', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.6":
+    title: '1.2.6 | Verify that the kubelet certificate authority is set as appropriate - manual'
+    section: 'API Server'
+    description: |
+        Verify kubelets certificate before establishing connection.
+    remediation: |
+        No remediation is required. OpenShift platform components use X.509 certificates for authentication. OpenShift manages
+        the CAs and certificates for platform components. This is not configurable. Impact: You require TLS to be configured on
+        apiserver as well as kubelets.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.6', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.7":
+    title: '1.2.7 | Ensure that the --authorization-mode argument is not set to AlwaysAllow - manual'
+    section: 'API Server'
+    description: |
+        Do not always authorize all requests.
+    remediation: |
+        None. RBAC is always on and the OpenShift API server does not use the values assigned to the flag authorization-mode.
+        Impact: Only authorized requests will be served.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.7', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.8":
+    title: '1.2.8 | Verify that RBAC is enabled - manual'
+    section: 'API Server'
+    description: |
+        Turn on Role Based Access Control.
+    remediation: |
+        None. Impact: When RBAC is enabled you will need to ensure that appropriate RBAC settings (including Roles,
+        RoleBindings, ClusterRoles, and ClusterRoleBindings) are configured to allow appropriate access.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.8', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.9":
+    title: '1.2.9 | Ensure that the APIPriorityAndFairness feature gate is enabled - manual'
+    section: 'API Server'
+    description: |
+        Limit the rate at which the API server accepts requests.
+    remediation: |
+        No remediation is required. Impact: None, as the OpenShift kubelet has been fixed to send fewer requests.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.9', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.10":
+    title: '1.2.10 | Ensure that the admission control plugin AlwaysAdmit is not set - manual'
+    section: 'API Server'
+    description: |
+        Do not allow all requests.
+    remediation: |
+        None. Impact: Only requests explicitly allowed by the admissions control plugins would be served.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.10', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.11":
+    title: '1.2.11 | Ensure that the admission control plugin AlwaysPullImages is not set - manual'
+    section: 'API Server'
+    description: |
+        Always pull images.
+    remediation: |
+        None. Impact: Credentials would be required to pull the private images every time. Also, in trusted environments, this
+        might increases load on network, registry, and decreases speed. This setting could impact offline or isolated clusters,
+        which have images pre-loaded and do not have access to a registry to pull in-use images. This setting is not appropriate
+        for clusters which use this configuration.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.11', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.12":
+    title: '1.2.12 | Ensure that the admission control plugin ServiceAccount is set - manual'
+    section: 'API Server'
+    description: |
+        Automate service accounts management.
+    remediation: |
+        None. Impact: None.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.12', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.13":
+    title: '1.2.13 | Ensure that the admission control plugin NamespaceLifecycle is set - manual'
+    section: 'API Server'
+    description: |
+        Reject creating objects in a namespace that is undergoing termination.
+    remediation: |
+        None. Impact: None.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.13', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.14":
+    title: '1.2.14 | Ensure that the admission control plugin SecurityContextConstraint is set - manual'
+    section: 'API Server'
+    description: |
+        Reject creating pods that do not match Pod Security Policies.
+    remediation: |
+        None. Impact: Default Security Context Constraint objects are present on the cluster and granted by default based on
+        roles. Custom SCCs can be created and granted as needed.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.14', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.15":
+    title: '1.2.15 | Ensure that the admission control plugin NodeRestriction is set - manual'
+    section: 'API Server'
+    description: |
+        Limit the              Node
+         and              Pod
+         objects that a kubelet could modify.
+    remediation: |
+        None. Impact: None.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.15', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.16":
+    title: '1.2.16 | Ensure that the --insecure-bind-address argument is not set - manual'
+    section: 'API Server'
+    description: |
+        Do not bind the insecure API service.
+    remediation: |
+        None. Impact: Connections to the API server will require valid authentication credentials.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.16', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.17":
+    title: '1.2.17 | Ensure that the --insecure-port argument is set to 0 - manual'
+    section: 'API Server'
+    description: |
+        Do not bind to insecure port.
+    remediation: |
+        None. Impact: All components that use the API must connect via the secured port, authenticate themselves, and be
+        authorized to use the API. This includes: kube-controller-manager kube-proxy kube-scheduler kubelets
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.17', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.18":
+    title: '1.2.18 | Ensure that the --secure-port argument is not set to 0 - manual'
+    section: 'API Server'
+    description: |
+        Do not disable the secure port.
+    remediation: |
+        None. Impact: You need to set the API Server up with the right TLS certificates.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.18', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.19":
+    title: '1.2.19 | Ensure that the healthz endpoint is protected by RBAC - manual'
+    section: 'API Server'
+    description: |
+        Disable profiling, if not needed.
+    remediation: |
+        None. Impact: Profiling information would not be available.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.19', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.20":
+    title: '1.2.20 | Ensure that the --audit-log-path argument is set - manual'
+    section: 'API Server'
+    description: |
+        Enable auditing on the Kubernetes API Server and set the desired audit log path.
+    remediation: |
+        None required. This is managed by the cluster                  apiserver
+         operator.               Impact: None
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.20', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.21":
+    title: '1.2.21 | Ensure that the audit logs are forwarded off the cluster for retention - manual'
+    section: 'API Server'
+    description: |
+        Retain the logs for at least 30 days or as appropriate.
+    remediation: |
+        Follow the documentation for log forwarding.                  Forwarding logs to third party systems
+        .               Impact: None.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.21', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.22":
+    title: '1.2.22 | Ensure that the maximumRetainedFiles argument is set to 10 or as appropriate - manual'
+    section: 'API Server'
+    description: |
+        Retain 10 or an appropriate number of old log files.
+    remediation: |
+        None. Impact: None.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.22', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.23":
+    title: '1.2.23 | Ensure that the maximumFileSizeMegabytes argument is set to 100 - manual'
+    section: 'API Server'
+    description: |
+        Audit logs are rotated upon reaching a maximum size, which is 100 MB by default.
+    remediation: |
+        None. The                  audit-log-maxsize
+         parameter is by default set to                  100
+         and not supported to change.               maximumFileSizeMegabytes: 100
+         Impact: None
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.23', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.24":
+    title: '1.2.24 | Ensure that the --request-timeout argument is set - manual'
+    section: 'API Server'
+    description: |
+        The API server minimum request timeout defines the minimum number of seconds a handler must keep a request open before
+        timing it out.
+    remediation: |
+        None Impact: None
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.24', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.25":
+    title: '1.2.25 | Ensure that the --service-account-lookup argument is set to true - manual'
+    section: 'API Server'
+    description: |
+        Validate service account before validating token.
+    remediation: |
+        None. Impact: None.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.25', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.26":
+    title: '1.2.26 | Ensure that the --service-account-key-file argument is set as appropriate - manual'
+    section: 'API Server'
+    description: |
+        Explicitly set a service account public key file for service accounts on the apiserver.
+    remediation: |
+        The OpenShift API server does not use the                  service-account-key-file
+         argument. The                  ServiceAccount
+         token                  authenticator
+         is configured with                  serviceAccountConfig.publicKeyFiles
+        . OpenShift does not reuse the apiserver TLS key. This is not configurable.               Impact: The corresponding
+        private key must be provided to the controller manager. You would need to securely maintain the key file and rotate the
+        keys based on your organization's key rotation policy.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.26', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.27":
+    title: '1.2.27 | Ensure that the --etcd-certfile and --etcd-keyfile arguments are set as appropriate - manual'
+    section: 'API Server'
+    description: |
+        etcd
+         should be configured to make use of TLS encryption for client connections.
+    remediation: |
+        OpenShift automatically manages TLS and client certificate authentication for                  etcd
+        . This is not configurable.               Impact:
+        TLS and client certificate authentication are configured by default for                    etcd
+        .
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.27', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.28":
+    title: '1.2.28 | Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate - manual'
+    section: 'API Server'
+    description: |
+        Setup TLS connection on the API server.
+    remediation: |
+        None. Impact: TLS and client certificate authentication must be configured for your Kubernetes cluster deployment. By
+        default, OpenShift uses X.509 certificates to provide secure connections between the API server and node/kubelet.
+        OpenShift Container Platform monitors certificates for proper validity, for the cluster certificates it issues and
+        manages. The OpenShift Container Platform manages certificate rotation and the alerting framework has rules to help
+        identify when a certificate issue is about to occur.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.28', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.29":
+    title: '1.2.29 | Ensure that the --client-ca-file argument is set as appropriate - manual'
+    section: 'API Server'
+    description: |
+        Setup TLS connection on the API server.
+    remediation: |
+        None. Impact: TLS and client certificate authentication must be configured for your Kubernetes cluster deployment. By
+        default, OpenShift uses X.509 certificates to provide secure connections between the API server and node/kubelet.
+        OpenShift Container Platform monitors certificates for proper validity, for the cluster certificates it issues and
+        manages. The OpenShift Container Platform alerting framework has rules to help identify when a certificate issue is
+        about to occur. These rules consist of the following checks: API server client certificate expiration is less than five
+        minutes.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.29', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.30":
+    title: '1.2.30 | Ensure that the --etcd-cafile argument is set as appropriate - manual'
+    section: 'API Server'
+    description: |
+        etcd
+         should be configured to make use of TLS encryption for client connections.
+    remediation: |
+        None. Impact:
+        TLS and client certificate authentication must be configured for                    etcd
+        .
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.30', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.31":
+    title: '1.2.31 | Ensure that encryption providers are appropriately configured - manual'
+    section: 'API Server'
+    description: |
+        Where              etcd
+         encryption is used, appropriate providers should be configured.
+    remediation: |
+        Follow the OpenShift documentation for                  encrypting etcd data
+        .               Impact:
+        When you enable                    etcd
+         encryption, the following OpenShift API server and Kubernetes API server resources are encrypted:
+        Secrets ConfigMaps Routes OAuth access tokens OAuth authorize tokens
+        When you enable                    etcd
+         encryption, encryption keys are created. These keys are rotated on a weekly basis. You must have these keys in order to
+        restore from an                    etcd
+         backup.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.31', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.32":
+    title: '1.2.32 | Ensure that the API Server only makes use of Strong Cryptographic Ciphers - manual'
+    section: 'API Server'
+    description: |
+        Ensure that the API server is configured to only use strong cryptographic ciphers.
+    remediation: |
+        None. Impact: API server clients that cannot support the custom cryptographic ciphers will not be able to make
+        connections to the API server.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.32', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.33":
+    title: '1.2.33 | Ensure unsupported configuration overrides are not used - manual'
+    section: 'API Server'
+    description: |
+        OpenShift supported an option called              unsupportedConfigOverrides
+         that allowed users to opt into unsupported behavior. This option is no longer supported by OpenShift and should not be
+        used.
+    remediation: |
+        None. Impact:
+        None. The feature is set to                    null
+         by default and isn't used by default.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.33', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.3.1":
+    title: '1.3.1 | Ensure that controller manager healthz endpoints are protected by RBAC - manual'
+    section: 'Controller Manager'
+    description: |
+        Disable profiling, if not needed.
+    remediation: |
+        None. Impact: Profiling information would not be available.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.3.1', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.3.2":
+    title: '1.3.2 | Ensure that the --use-service-account-credentials argument is set to true - manual'
+    section: 'Controller Manager'
+    description: |
+        Use individual service account credentials for each controller.
+    remediation: |
+        None. Impact:
+        Whatever authorizer is configured for the cluster, it must grant sufficient permissions to the service accounts to
+        perform their intended tasks. When using the RBAC authorizer, those roles are created and bound to the appropriate
+        service accounts in the                    kube-system
+         namespace automatically with default roles and                    rolebindings
+         that are auto-reconciled on startup.
+        If using other authorization methods (ABAC, Webhook, etc), the cluster deployer is responsible for granting appropriate
+        permissions to the service accounts (the required permissions can be seen by inspecting the
+        controller-roles.yaml
+         and                    controller-role-bindings.yaml
+         files for the RBAC roles.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.3.2', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.3.3":
+    title: '1.3.3 | Ensure that the --service-account-private-key-file argument is set as appropriate - manual'
+    section: 'Controller Manager'
+    description: |
+        Explicitly set a service account private key file for service accounts on the controller manager.
+    remediation: |
+        None. Impact: You would need to securely maintain the key file and rotate the keys based on your organization's key
+        rotation policy.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.3.3', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.3.4":
+    title: '1.3.4 | Ensure that the --root-ca-file argument is set as appropriate - manual'
+    section: 'Controller Manager'
+    description: |
+        Allow pods to verify the API servers serving certificate before establishing connections.
+    remediation: |
+        None. Impact: OpenShift clusters manage and maintain certificate authorities and certificates for cluster components.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.3.4', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.3.5":
+    title: '1.3.5 | Ensure that the --bind-address argument is set to 127.0.0.1 - manual'
+    section: 'Controller Manager'
+    description: |
+        Do not bind the Controller Manager service to nonloopback insecure addresses.
+    remediation: |
+        None. Impact: None.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.3.5', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.4.1":
+    title: '1.4.1 | Ensure that the healthz endpoints for the scheduler are protected by RBAC - manual'
+    section: 'Scheduler'
+    description: |
+        Disable profiling, if not needed.
+    remediation: |
+        None. Impact: Profiling information would not be available.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.4.1', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.4.2":
+    title: '1.4.2 | Verify that the scheduler API service is protected by RBAC - manual'
+    section: 'Scheduler'
+    description: |
+        Do not bind the scheduler service to nonloopback insecure addresses.
+    remediation: |
+        None. Impact: None.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.4.2', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.1":
+    title: '2.1 | Ensure that the --cert-file and --key-file arguments are set as appropriate - manual'
+    section: 'etcd'
+    description: |
+        Configure TLS encryption for the            etcd
+         service.
+    remediation: |
+        OpenShift does not use the                etcd-certfile
+         or                etcd-keyfil
+        e flags. Certificates for                etcd
+         are managed by the                etcd
+         cluster operator.             Impact: Client connections only over TLS would be served.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_2.1', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.2":
+    title: '2.2 | Ensure that the --client-cert-auth argument is set to true - manual'
+    section: 'etcd'
+    description: |
+        Enable client authentication on etcd service.
+    remediation: |
+        This setting is managed by the cluster etcd operator. No remediation required. Impact: All clients attempting to access
+        the etcd server will require a valid client certificate.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_2.2', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.3":
+    title: '2.3 | Ensure that the --auto-tls argument is not set to true - manual'
+    section: 'etcd'
+    description: |
+        Do not use selfsigned certificates for TLS.
+    remediation: |
+        This setting is managed by the cluster etcd operator. No remediation required. Impact: Clients will not be able to use
+        self-signed certificates for TLS.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_2.3', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.4":
+    title: '2.4 | Ensure that the --peer-cert-file and --peer-key-file arguments are set as appropriate - manual'
+    section: 'etcd'
+    description: |
+        etcd should be configured to make use of TLS encryption for peer connections.
+    remediation: |
+        None. This configuration is managed by the etcd operator. Impact: etcd cluster peers are set up TLS for their
+        communication.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_2.4', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.5":
+    title: '2.5 | Ensure that the --peer-client-cert-auth argument is set to true - manual'
+    section: 'etcd'
+    description: |
+        etcd should be configured for peer authentication.
+    remediation: |
+        This setting is managed by the cluster etcd operator. No remediation required. Impact: All peers attempting to
+        communicate with the etcd server require a valid client certificate for authentication.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_2.5', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.6":
+    title: '2.6 | Ensure that the --peer-auto-tls argument is not set to true - manual'
+    section: 'etcd'
+    description: |
+        Do not use automatically generated selfsigned certificates for TLS connections between peers.
+    remediation: |
+        This setting is managed by the cluster etcd operator. No remediation required. Impact: All peers attempting to
+        communicate with the etcd server require a valid client certificate for authentication.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_2.6', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.7":
+    title: '2.7 | Ensure that a unique Certificate Authority is used for etcd - manual'
+    section: 'etcd'
+    description: |
+        Use a different certificate authority for etcd from the one used for Kubernetes.
+    remediation: |
+        None required. Certificates for etcd are managed by the OpenShift cluster etcd operator. Impact: Additional management
+        of the certificates and keys for the dedicated certificate authority will be required.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_2.7', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.1.1":
+    title: '3.1.1 | Client certificate authentication should not be used for users - manual'
+    section: 'Authentication and Authorization'
+    description: |
+        Kubernetes provides the option to use client certificates for user authentication. However as there is no way to revoke
+        these certificates when a user leaves an organization or loses their credential, they are not suitable for this purpose.
+        It is not possible to fully disable client certificate use within a cluster as it is used for component to component
+        authentication.
+    remediation: |
+        Configure an identity provider for the OpenShift cluster following the OpenShift                  documentation
+        . Once an identity provider has been defined, you can use RBAC to define and apply permissions.
+        After you define an identity provider and create a new                  cluster-admin
+         user you can reduce the attack surface by removing the default                  kubeadmin
+         user.               Impact: External mechanisms for authentication generally require additional software to be
+        deployed.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_3.1.1', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.2.1":
+    title: '3.2.1 | Ensure that a minimal audit policy is created - manual'
+    section: 'Logging'
+    description: |
+        Kubernetes can audit the details of requests made to the API server.
+    remediation: |
+        None. Impact: Audit logs will be created on the master nodes, which will consume disk space. Care should be taken to
+        avoid generating too large volumes of log information as this could impact the available of the cluster nodes.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_3.2.1', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.2.2":
+    title: '3.2.2 | Ensure that the audit policy covers key security concerns - manual'
+    section: 'Logging'
+    description: |
+        Ensure that the audit policy created for the cluster covers key security concerns.
+    remediation: |
+        Update the audit log policy profile to use                  WriteRequestBodies
+        .               Impact: Increasing audit logging will consume resources on the nodes or other log destinations.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_3.2.2', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.1.1":
+    title: '4.1.1 | Ensure that the kubelet service file permissions are set to 644 or more restrictive'
+    section: 'Worker Node Configuration Files'
+    description: |
+        Ensure that the kubelet service file has permissions of 644 or more restrictive.
+    remediation: |
+        None. Impact: None
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.1.1', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "4.1.2":
+    title: '4.1.2 | Ensure that the kubelet service file ownership is set to rootroot'
+    section: 'Worker Node Configuration Files'
+    description: |
+        Ensure that the kubelet service file ownership is set to              rootroot
+        .
+    remediation: |
+        None. Impact: None
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.1.2', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == root:root'
+
+  "4.1.3":
+    title: '4.1.3 | If proxy kube proxy configuration file exists ensure permissions are set to 644 or more restrictive - manual'
+    section: 'Worker Node Configuration Files'
+    description: |
+        If              kubeproxy
+         is running, and if it is using a filebased configuration file, ensure that the file has permissions of              644
+         or more restrictive.
+    remediation: |
+        None. Impact: None.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_4.1.3', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.1.4":
+    title: '4.1.4 | If proxy kubeconfig file exists ensure ownership is set to rootroot - manual'
+    section: 'Worker Node Configuration Files'
+    description: |
+        If              kubeproxy
+         is running, ensure that the file ownership of its kubeconfig file is set to              rootroot
+        .
+    remediation: |
+        None required. The configuration is managed by OpenShift operators. Impact: None
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_4.1.4', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.1.5":
+    title: '4.1.5 | Ensure that the --kubeconfig kubelet.conf file permissions are set to 644 or more restrictive'
+    section: 'Worker Node Configuration Files'
+    description: |
+        Ensure that the              kubelet.conf
+         file has permissions of              644
+         or more restrictive.
+    remediation: |
+        None. Impact: None
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.1.5', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "4.1.6":
+    title: '4.1.6 | Ensure that the --kubeconfig kubelet.conf file ownership is set to rootroot'
+    section: 'Worker Node Configuration Files'
+    description: |
+        Ensure that the              kubelet.conf
+         file ownership is set to              rootroot
+        .
+    remediation: |
+        None. Impact: None.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.1.6', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "4.1.7":
+    title: '4.1.7 | Ensure that the certificate authorities file permissions are set to 644 or more restrictive'
+    section: 'Worker Node Configuration Files'
+    description: |
+        Ensure that the certificate authorities file has permissions of              644
+         or more restrictive.
+    remediation: |
+        None. Impact: None
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.1.7', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "4.1.8":
+    title: '4.1.8 | Ensure that the client certificate authorities file ownership is set to rootroot'
+    section: 'Worker Node Configuration Files'
+    description: |
+        Ensure that the certificate authorities file ownership is set to              rootroot
+        .
+    remediation: |
+        None. Impact: None.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.1.8', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "4.1.9":
+    title: '4.1.9 | Ensure that the kubelet --config configuration file has permissions set to 600 or more restrictive'
+    section: 'Worker Node Configuration Files'
+    description: |
+        Ensure that if the kubelet refers to a configuration file with the              config
+         argument, that file has permissions of              600
+         or more restrictive.
+    remediation: |
+        None. Impact: None
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.1.9', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "4.1.10":
+    title: '4.1.10 | Ensure that the kubelet configuration file ownership is set to rootroot'
+    section: 'Worker Node Configuration Files'
+    description: |
+        Ensure that if the kubelet refers to a configuration file with the              config
+         argument, that file is owned by              rootroot
+        .
+    remediation: |
+        None. Impact: None
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.1.10', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "4.2.1":
+    title: '4.2.1 | Activate Garbage collection in OpenShift Container Platform 4 as appropriate - manual'
+    section: 'Kubelet'
+    description: |
+        Configure garbage collection for containers and images as appropriate
+    remediation: |
+        To configure, follow the directions in                  Garbage Collection Remediation
+                              Impact: Incorrect configuration of garbage collection parameters can lead to system instability,
+        degraded performance, and in worst cases, system crashes. Properly set parameters ensure efficient utilization of system
+        resources."
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_4.2.1', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.2.2":
+    title: '4.2.2 | Ensure that the --anonymous-auth argument is set to false'
+    section: 'Kubelet'
+    description: |
+        Disable anonymous requests to the Kubelet server.
+    remediation: |
+        Create a                  kubeletconfig
+         to explicitly disable anonymous authentication. Examples of how to do this can be found in the OpenShift
+        documentation
+        .               Impact: Anonymous requests will be rejected.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.2.2', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "4.2.3":
+    title: '4.2.3 | Ensure that the --authorization-mode argument is not set to AlwaysAllow'
+    section: 'Kubelet'
+    description: |
+        Do not allow all requests. Enable explicit authorization.
+    remediation: |
+        None. Impact: Unauthorized requests will be denied.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.2.3', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "4.2.4":
+    title: '4.2.4 | Ensure that the --client-ca-file argument is set as appropriate'
+    section: 'Kubelet'
+    description: |
+        Enable Kubelet authentication using certificates.
+    remediation: |
+        None. Changing the                  clientCAFile
+         value is unsupported.               Impact: You require TLS to be configured on apiserver as well as kubelets.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.2.4', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "4.2.5":
+    title: '4.2.5 | Verify that the read only port is not used or is set to 0'
+    section: 'Kubelet'
+    description: |
+        Disable the readonly port.
+    remediation: |
+        In earlier versions of OpenShift 4, the                  read-only-port
+         argument is not used.
+        Follow the instructions in the                  documentation
+         to create a                  kubeletconfig
+         CRD and set the                  kubelet-read-only-port
+         is set to                  0
+        .               Impact: Removal of the read-only port will require that any service which made use of it will need to be
+        re-configured to use the main Kubelet API.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.2.5', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "4.2.6":
+    title: '4.2.6 | Ensure that the --streaming-connection-idle-timeout argument is not set to 0'
+    section: 'Kubelet'
+    description: |
+        Do not disable timeouts on streaming connections.
+    remediation: |
+        Follow the instructions in the                  documentation
+         to create a                  kubeletconfig
+         CRD and set the                  streamingConnectionIdleTimeout
+         to the desired value. Do not set the value to                  0
+        .               Impact: Long-lived connections could be interrupted.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.2.6', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "4.2.7":
+    title: '4.2.7 | Ensure that the --make-iptables-util-chains argument is set to true - manual'
+    section: 'Kubelet'
+    description: |
+        Allow Kubelet to manage iptables.
+    remediation: |
+        None. Impact: Kubelet would manage the iptables on the system and keep it in sync. If you are using any other iptables
+        management solution, then there might be some conflicts.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_4.2.7', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.2.8":
+    title: '4.2.8 | Ensure that the kubeAPIQPS --event-qps argument is set to 0 or a level which ensures appropriate event capture - manual'
+    section: 'Kubelet'
+    description: |
+        Security relevant information should be captured.  The              eventqps
+         flag on the Kubelet can be used to limit the rate at which events are gathered.  Setting this too low could result in
+        relevant events not being logged, however the unlimited setting of              0
+         could result in a denial of service on the kubelet.
+    remediation: |
+        None by default.
+        Follow the                  documentation
+         to edit                  kubeletconfig
+         parameters.               Impact:
+        Setting this parameter to                    0
+         could result in a denial of service condition due to excessive events being created.  The cluster's event processing
+        and storage systems should be scaled to handle expected event loads.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_4.2.8', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.2.9":
+    title: '4.2.9 | Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate - manual'
+    section: 'Kubelet'
+    description: |
+        Setup TLS connection on the Kubelets.
+    remediation: |
+        OpenShift automatically manages TLS authentication for the API server communication with the
+        node/kublet
+        . This is not configurable.               Impact: TLS and client certificate authentication must be configured for your
+        Kubernetes cluster deployment.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_4.2.9', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.2.10":
+    title: '4.2.10 | Ensure that the --rotate-certificates argument is not set to false - manual'
+    section: 'Kubelet'
+    description: |
+        Enable kubelet client certificate rotation.
+    remediation: |
+        None. Impact: None.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_4.2.10', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.2.11":
+    title: '4.2.11 | Verify that the RotateKubeletServerCertificate argument is set to true - manual'
+    section: 'Kubelet'
+    description: |
+        Enable kubelet server certificate rotation.
+    remediation: |
+        None. Impact: None.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_4.2.11', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.2.12":
+    title: '4.2.12 | Ensure that the Kubelet only makes use of Strong Cryptographic Ciphers - manual'
+    section: 'Kubelet'
+    description: |
+        Ensure that the Kubelet is configured to only use strong cryptographic ciphers.
+    remediation: |
+        Follow the directions above and in the OpenShift documentation to configure the                  tlsSecurityProfile
+        .                  Configuring Ingress
+        .
+        Please reference the OpenShift TLS security profile                  documentation
+         for more detail on each profile.               Impact: Kubelet clients that cannot support modern cryptographic ciphers
+        will not be able to make connections to the Kubelet API.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_4.2.12', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.1.1":
+    title: '5.1.1 | Ensure that the cluster-admin role is only used where required - manual'
+    section: 'RBAC and Service Accounts'
+    description: |
+        The RBAC role              clusteradmin
+         provides wideranging powers over the environment and should be used only where and when needed.
+    remediation: |
+        Identify all                  clusterrolebindings
+         to the cluster-admin role. Check if they are used and if they need this role or if they could use a role with fewer
+        privileges.
+        Where possible, first bind users to a lower privileged role and then remove the                  clusterrolebinding
+         to the cluster-admin role :               oc delete clusterrolebinding [name]
+         Impact:
+        Care should be taken before removing any                    clusterrolebindings
+         from the environment to ensure they were not required for operation of the cluster. Specifically, modifications should
+        not be made to                    clusterrolebindings
+         with the                    system:
+         prefix as they are required for the operation of system components.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_5.1.1', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.1.2":
+    title: '5.1.2 | Minimize access to secrets - manual'
+    section: 'RBAC and Service Accounts'
+    description: |
+        The Kubernetes API stores secrets, which may be service account tokens for the Kubernetes API or credentials used by
+        workloads in the cluster.  Access to these secrets should be restricted to the smallest possible group of users to
+        reduce the risk of privilege escalation.
+    remediation: |
+        Where possible, remove                  get
+        ,                  list
+         and                  watch
+         access to                  secret
+         objects in the cluster.               Impact: Care should be taken not to remove access to secrets to system components
+        which require this for their operation
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_5.1.2', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.1.3":
+    title: '5.1.3 | Minimize wildcard use in Roles and ClusterRoles - manual'
+    section: 'RBAC and Service Accounts'
+    description: |
+        Kubernetes Roles and ClusterRoles provide access to resources based on sets of objects and actions that can be taken on
+        those objects.  It is possible to set either of these to be the wildcard  which matches all items. Use of wildcards is
+        not optimal from a security perspective as it may allow for inadvertent access to be granted when new resources are
+        added to the Kubernetes API either as CRDs or in later versions of the product.
+    remediation: |
+        Where possible replace any use of wildcards in clusterroles and roles with specific objects or actions.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_5.1.3', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.1.4":
+    title: '5.1.4 | Minimize access to create pods - manual'
+    section: 'RBAC and Service Accounts'
+    description: |
+        The ability to create pods in a namespace can provide a number of opportunities for privilege escalation, such as
+        assigning privileged service accounts to these pods or mounting hostPaths with access to sensitive data unless Pod
+        Security Policies are implemented to restrict this access As such, access to create new pods should be restricted to the
+        smallest possible group of users.
+    remediation: |
+        Where possible, remove                  create
+         access to                  pod
+         objects in the cluster.               Impact: Care should be taken not to remove access to pods to system components
+        which require this for their operation
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_5.1.4', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.1.5":
+    title: '5.1.5 | Ensure that default service accounts are not actively used. - manual'
+    section: 'RBAC and Service Accounts'
+    description: |
+        The              default
+         service account should not be used to ensure that rights granted to applications can be more easily audited and
+        reviewed.
+    remediation: |
+        None required. Impact: All workloads which require access to the Kubernetes API will require an explicit service account
+        to be created.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_5.1.5', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.1.6":
+    title: '5.1.6 | Ensure that Service Account Tokens are only mounted where necessary - manual'
+    section: 'RBAC and Service Accounts'
+    description: |
+        Service accounts tokens should not be mounted in pods except where the workload running in the pod explicitly needs to
+        communicate with the API server
+    remediation: |
+        Modify the definition of pods and service accounts which do not need to mount service account tokens to disable it.
+        Impact: Pods mounted without service account tokens will not be able to communicate with the API server, except where
+        the resource is available to unauthenticated principals.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_5.1.6', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2.1":
+    title: '5.2.1 | Minimize the admission of privileged containers - manual'
+    section: 'Security Context Constraints'
+    description: |
+        Do not generally permit containers to be run with the              securityContext.privileged
+         flag set to              true
+        .
+    remediation: |
+        Create an SCC that sets                  allowPrivilegedContainer
+         to                  false
+         and take it into use by assigning it to applicable users and groups.               Impact:
+        Pods defined with                    spec.containers[].securityContext.privileged: true
+         will not be permitted.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_5.2.1', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2.2":
+    title: '5.2.2 | Minimize the admission of containers wishing to share the host process ID namespace - manual'
+    section: 'Security Context Constraints'
+    description: |
+        Do not generally permit containers to be run with the              hostPID
+         flag set to true.
+    remediation: |
+        Create an SCC that sets                  allowHostPID
+         to                  false
+         and take it into use by assigning it to applicable users and groups.               Impact:
+        Pods defined with                    Allow Host PID:  true
+         will not be permitted unless they are run under a specific SCC.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_5.2.2', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2.3":
+    title: '5.2.3 | Minimize the admission of containers wishing to share the host IPC namespace - manual'
+    section: 'Security Context Constraints'
+    description: |
+        Do not generally permit containers to be run with the              hostIPC
+         flag set to true.
+    remediation: |
+        Create an SCC that sets                  allowHostIPC
+         to                  false
+         and take it into use by assigning it to applicable users and groups.               Impact:
+        Pods defined with                    Allow Host IPC: true
+         will not be permitted unless they are run under a specific SCC.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_5.2.3', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2.4":
+    title: '5.2.4 | Minimize the admission of containers wishing to share the host network namespace - manual'
+    section: 'Security Context Constraints'
+    description: |
+        Do not generally permit containers to be run with the              hostNetwork
+         flag set to true.
+    remediation: |
+        Create an SCC that sets                  allowHostNetwork
+         to                  false
+         and take it into use by assigning it to applicable users and groups.               Impact:
+        Pods defined with                    Allow Host Network: true
+         will not be permitted unless they are run under a specific SCC.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_5.2.4', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2.5":
+    title: '5.2.5 | Minimize the admission of containers with allowPrivilegeEscalation - manual'
+    section: 'Security Context Constraints'
+    description: |
+        Do not generally permit containers to be run with the              allowPrivilegeEscalation
+         flag set to              true
+        .
+    remediation: |
+        Create an SCC that sets                  allowPrivilegeEscalation
+         to                  false
+         and take it into use by assigning it to applicable users and groups.               Impact:
+        Pods defined with                    Allow Privilege Escalation: true
+         will not be permitted unless they are run under a specific SCC.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_5.2.5', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2.6":
+    title: '5.2.6 | Minimize the admission of root containers - manual'
+    section: 'Security Context Constraints'
+    description: |
+        Do not generally permit containers to be run as the root user.
+    remediation: |
+        None required. By default, OpenShift includes the                  nonroot
+         and                  nonroot-v2
+         SCCs that restrict the ability to run as nonroot. If additional SCCs are appropriate, follow the OpenShift
+        documentation to create custom SCCs.               Impact: Pods with containers which run as the root user will not be
+        permitted.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_5.2.6', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2.7":
+    title: '5.2.7 | Minimize the admission of containers with the NET RAW capability - manual'
+    section: 'Security Context Constraints'
+    description: |
+        Do not generally permit containers with the potentially dangerous NETRAW capability.
+    remediation: |
+        Create an SCC that sets                  requiredDropCapabilities
+         to include                  ALL
+         or at least                  NET_RAW
+         and take it into use by assigning it to applicable users and groups.               Impact:
+        Pods with containers which run with the                    NET_RAW
+         capability will not be permitted.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_5.2.7', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2.8":
+    title: '5.2.8 | Minimize the admission of containers with added capabilities - manual'
+    section: 'Security Context Constraints'
+    description: |
+        Do not generally permit containers with capabilities assigned beyond the default set.
+    remediation: |
+        Utilize the restricted-v2 SCC or create an SCC that sets                  allowedCapabilities
+         and                  defaultAddCapabilities
+         to an empty list and take it into use by assigning it to applicable users and groups.               Impact: Pods with
+        containers which require capabilities outside the default set will not be permitted.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_5.2.8', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2.9":
+    title: '5.2.9 | Minimize the admission of containers with capabilities assigned - manual'
+    section: 'Security Context Constraints'
+    description: |
+        Do not generally permit containers with capabilities.
+    remediation: |
+        Review the use of capabilities in applications running on your cluster. Where a namespace contains applications which do
+        not require any Linux capabilities to operate, consider adding a SCC which forbids the admission of containers which do
+        not drop all capabilities. Impact: Pods with containers which require capabilities to operate will not be permitted.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_5.2.9', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.2.10":
+    title: '5.2.10 | Minimize access to privileged Security Context Constraints - manual'
+    section: 'Security Context Constraints'
+    description: |
+        OpenShift has the concept of Security Context Constraints SCCs that supplement the Pod Security Admission controller.
+        SCCs allow you to group elevated container capabilities and assign those capabilities to users and groups. For example,
+        you can have an SCC that restricts the ability to launch privileged containers and assign that SCC to all authenticated
+        users. As a result, users requesting a pod that contains a privileged container will be rejected.
+        You can find more information on SCCs in the OpenShift              documentation
+        .
+    remediation: |
+        Remove any users and groups who do not need access to an SCC, following the principle of least privilege.
+        You can remove users and groups from an SCC using the                  oc edit scc $NAME
+         command.               Additionally, you can create your own SCCs that contain the container functionality you need for
+        a particular use case and assign that SCC to users and groups if the default SCCs are not appropriate for your use case.
+        Impact: Users should only have access to SCCs that allow them to perform functions required by their roles, and no more,
+        following the principle of least privilege.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_5.2.10', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.3.1":
+    title: '5.3.1 | Ensure that the CNI in use supports Network Policies - manual'
+    section: 'Network Policies and CNI'
+    description: |
+        There are a variety of CNI plugins available for Kubernetes. If the CNI in use does not support Network Policies it may
+        not be possible to effectively restrict traffic in the cluster.
+    remediation: |
+        None required. Impact: None
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_5.3.1', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.3.2":
+    title: '5.3.2 | Ensure that all Namespaces have Network Policies defined - manual'
+    section: 'Network Policies and CNI'
+    description: |
+        Use network policies to isolate traffic in your cluster network.
+    remediation: |
+        Follow the documentation and create                  NetworkPolicy
+         objects as you need them.               Impact: Once there is any Network Policy in a namespace selecting a particular
+        pod, that pod will reject any connections that are not allowed by any Network Policy. Other pods in the namespace that
+        are not selected by any Network Policy will continue to accept all traffic"
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_5.3.2', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.4.1":
+    title: '5.4.1 | Prefer using secrets as files over secrets as environment variables - manual'
+    section: 'Secrets Management'
+    description: |
+        Kubernetes supports mounting secrets as data volumes or as environment variables. Minimize the use of environment
+        variable secrets.
+    remediation: |
+        If possible, rewrite application code to read secrets from mounted secret files, rather than from environment variables.
+        Impact: Application code which expects to read secrets in the form of environment variables would need modification
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_5.4.1', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.4.2":
+    title: '5.4.2 | Consider external secret storage - manual'
+    section: 'Secrets Management'
+    description: |
+        Consider the use of an external secrets storage and management system, instead of using Kubernetes Secrets directly, if
+        you have more complex secret management needs. Ensure the solution requires authentication to access secrets, has
+        auditing of access to and use of secrets, and encrypts secrets. Some solutions also make it easier to rotate secrets.
+    remediation: |
+        Refer to the secrets management options offered by your cloud provider or a third-party secrets management solution.
+        Impact: None
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_5.4.2', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.5.1":
+    title: '5.5.1 | Configure Image Provenance using image controller configuration parameters - manual'
+    section: 'Extensible Admission Control'
+    description: |
+        Configure Image Provenance for your deployment.
+    remediation: |
+        Follow the OpenShift documentation:                  Image configuration resources
+                              Impact: You need to regularly maintain your provenance configuration based on container image
+        updates.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_5.5.1', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.7.1":
+    title: '5.7.1 | Create administrative boundaries between resources using namespaces - manual'
+    section: 'General Policies'
+    description: |
+        Use namespaces to isolate your Kubernetes objects.
+    remediation: |
+        Follow the documentation and create namespaces for objects in your deployment as you need them. Impact: You need to
+        switch between namespaces for administration.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_5.7.1', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.7.2":
+    title: '5.7.2 | Ensure that the seccomp profile is set to dockerdefault in your pod definitions - manual'
+    section: 'General Policies'
+    description: |
+        Enable              default
+         seccomp profile in your pod definitions.
+    remediation: |
+        For any non-privileged pods or containers that do not have seccomp profiles, consider using the
+        RuntimeDefault
+         or creating a custom seccomp profile specifically for the workload.
+        Please refer to the OpenShift                  documentation
+         for working with custom seccomp profiles.               Impact:
+        If the                    default
+         seccomp profile is too restrictive for you, you will need to create and manage your own seccomp profiles, which can be
+        done using                    OpenShift Security Context Constraints
+         and                    custom seccomp profiles
+        .
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_5.7.2', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.7.3":
+    title: '5.7.3 | Apply Security Context to Your Pods and Containers - manual'
+    section: 'General Policies'
+    description: |
+        Apply Security Context to Your Pods and Containers
+    remediation: |
+        Follow the Kubernetes documentation and apply security contexts to your pods. For a suggested list of security contexts,
+        you may refer to the CIS Security Benchmark for Docker Containers. Impact: If you incorrectly apply security contexts,
+        you may have trouble running the pods.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_5.7.3', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.7.4":
+    title: '5.7.4 | The default namespace should not be used - manual'
+    section: 'General Policies'
+    description: |
+        Kubernetes provides a default namespace, where objects are placed if no namespace is specified for them. Placing objects
+        in this namespace makes application of RBAC and other controls more difficult.
+    remediation: |
+        Ensure that namespaces are created to allow for appropriate segregation of Kubernetes resources and that all new
+        resources are created in a specific namespace. Impact: None
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_5.7.4', 'cis_red_hat_openshift_container_platform_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:

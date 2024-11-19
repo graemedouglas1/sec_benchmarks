@@ -1,0 +1,881 @@
+---
+
+inspec_rules:
+  "1.2.1":
+    title: '1.2.1 | L1 Ensure Do Not Show Data Extraction Options When Opening Corrupt Workbooks is set to Enabled'
+    section: 'Data Recovery'
+    description: |
+        This policy setting controls whether Excel presents users with a list of data extraction options before beginning an
+        Open and Repair operation when users choose to open a corrupt workbook in repair or extract mode. The recommended state
+        for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting  to
+                                 Enabled
+                                 .
+                              User Configuration\Administrative Templates\Microsoft Excel 2013\Data Recovery\Do Not Show Data
+        Extraction Options When Opening Corrupt Workbooks Impact: Enabling this setting will prevent Excel users from choosing
+        how workbooks are recovered, which could increase desktop support requests.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.2.1', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Oo]ptions'
+        - checks:
+            - rule: 'should have_property "extractdatadisableui"'
+            - name: 'extractdatadisableui'
+              rule: "should have_property_value('extractdatadisableui', :dword, '')"
+
+  "1.4.1.1.2":
+    title: '1.4.1.1.2 | L1 Ensure Load Pictures from Web Pages Not Created in Excel is set to Disabled'
+    section: 'Web Options...'
+    description: |
+        This policy setting controls whether Excel loads graphics when opening Web pages that were not created in Excel.  The
+        recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Advanced\Web Options...\General\Load Pictures
+        from Web Pages Not Created in Excel Impact: If this setting is disabled Excel will not load pictures from Web pages that
+        were not created in Excel. This configuration can cause some disruptions for users who load Web pages in Excel that were
+        created by other applications. Users who do not load Web pages in Excel will not be affected by this setting.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.1.1.2', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ii]nternet'
+        - checks:
+            - rule: 'should have_property "donotloadpictures"'
+            - name: 'donotloadpictures'
+              rule: "should have_property_value('donotloadpictures', :dword, '')"
+
+  "1.4.1.2":
+    title: '1.4.1.2 | L1 Ensure Ask to Update Automatic Links is set to Enabled'
+    section: 'Advanced'
+    description: |
+        This policy setting controls whether Excel prompts users to update automatic links, or whether the updates occur in the
+        background with no prompt. The recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Advanced\Ask to Update Automatic Links Impact:
+        Enabling this setting enforces the default configuration in Excel, and therefore is unlikely to cause usability issues
+        for most users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.1.2', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Oo]ptions\\[Bb]inaryoptions'
+        - checks:
+            - rule: 'should have_property "fupdateext_78_1"'
+            - name: 'fupdateext_78_1'
+              rule: "should have_property_value('fupdateext_78_1', :dword, '')"
+
+  "1.4.5.1.1":
+    title: '1.4.5.1.1 | L1 Ensure Internet and Network Paths as Hyperlinks is set to Disabled'
+    section: 'Autocorrect Options'
+    description: |
+        This policy setting determines whether Excel automatically creates hyperlinks when users enter URL or UNC path
+        information. The recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Proofing\Autocorrect Options\Internet and
+        Network Paths as Hyperlinks Impact: If this setting is disabled, Excel users will still be able to create new hyperlinks
+        manually, so it is unlikely to cause significant disruptions for most users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.5.1.1', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Oo]ptions'
+        - checks:
+            - rule: 'should have_property "autohyperlink"'
+            - name: 'autohyperlink'
+              rule: "should have_property_value('autohyperlink', :dword, '')"
+
+  "1.4.6.1":
+    title: '1.4.6.1 | L1 Ensure Do Not Show AutoRepublish Warning Alert is set to Disabled'
+    section: 'Save'
+    description: |
+        This policy setting controls whether Excel displays an alert before republishing a workbook to the World Wide Web. The
+        recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Save\Do Not Show AutoRepublish Warning Alert
+        Impact: Configuring this setting to "Always show the alert before publishing" reinforces the default functionality in
+        Excel, and is therefore unlikely to cause usability issues for most users
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.6.1', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Oo]ptions'
+        - checks:
+            - rule: 'should have_property "disableautorepublishwarning"'
+            - name: 'disableautorepublishwarning'
+              rule: "should have_property_value('disableautorepublishwarning', :dword, '')"
+
+  "1.4.6.2":
+    title: '1.4.6.2 | L1 Ensure Default File Format is set to Enabled'
+    section: 'Save'
+    description: |
+        This policy setting controls the default file format for saving workbooks in Excel. The recommended state for this
+        setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Save\Default File Format Impact: Enabling this
+        setting does not prevent users from choosing a different file format for a new Excel file, and therefore, it is unlikely
+        to affect usability for most users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.6.2', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Oo]ptions'
+        - checks:
+            - rule: 'should have_property "defaultformat"'
+            - name: 'defaultformat'
+              rule: "should have_property_value('defaultformat', :dword, '')"
+
+  "1.4.6.3":
+    title: '1.4.6.3 | L1 Ensure Disable AutoRepublish is set to Enabled'
+    section: 'Save'
+    description: |
+        This policy setting allows administrators to disable the AutoRepublish feature in Excel. If users choose to publish
+        Excel data to a static Web page and enable the AutoRepublish feature, Excel saves a copy of the data to the Web page
+        every time the user saves the workbook. By default, a message dialog displays every time the user saves a published
+        workbook when AutoRepublish is enabled. From this dialog, the user can disable AutoRepublish temporarily or permanently,
+        or select Do not show this message again to prevent the dialog from appearing after every save. If the user selects Do
+        not show this message again, Excel will continue to automatically republish the data after every save without informing
+        the user. The recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Save\Disable AutoRepublish Impact: If there is
+        a critical business need to use the AutoRepublish feature, it might not be possible to enable this setting. However, in
+        most situations users will be able to publish data to the Web manually.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.6.3', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Oo]ptions'
+        - checks:
+            - rule: 'should have_property "disableautorepublish"'
+            - name: 'disableautorepublish'
+              rule: "should have_property_value('disableautorepublish', :dword, '')"
+
+  "1.4.7.2.1.1":
+    title: '1.4.7.2.1.1 | L1 Ensure Excel 2 Macrosheets and Add-in Files is set to EnabledOpenSave blocked use open policy'
+    section: 'File Block Settings'
+    description: |
+        This policy setting allows you to determine whether users can open, view, edit, or save Excel files with the format
+        specified by the title of this policy setting. The recommended state for this setting is  Enabled .  Open/Save blocked,
+        use open policy
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Trust Center\File Block
+        Settings\Excel 2 Macrosheets and Add-in Files Impact: If your users require open, save, or view ability and you block
+        some or all of these abilities, you could affect the productivity of your organization.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.2.1.1', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity\\[Ff]ileblock'
+        - checks:
+            - rule: 'should have_property "xl2macros"'
+            - name: 'xl2macros'
+              rule: "should have_property_value('xl2macros', :dword, '')"
+
+  "1.4.7.2.1.2":
+    title: '1.4.7.2.1.2 | L1 Ensure Excel 3 Macrosheets and Add-in Files is set to EnabledOpenSave blocked use open policy'
+    section: 'File Block Settings'
+    description: |
+        This policy setting allows you to determine whether users can open, view, edit, or save Excel files with the format
+        specified by the title of this policy setting. The recommended state for this setting is  Enabled .  Open/Save blocked,
+        use open policy
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Trust Center\File Block
+        Settings\Excel 3 Macrosheets and Add-in Files Impact: If your users require open, save, or view ability and you block
+        some or all of these abilities, you could affect the productivity of your organization.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.2.1.2', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity\\[Ff]ileblock'
+        - checks:
+            - rule: 'should have_property "xl3macros"'
+            - name: 'xl3macros'
+              rule: "should have_property_value('xl3macros', :dword, '')"
+
+  "1.4.7.2.1.3":
+    title: '1.4.7.2.1.3 | L1 Ensure Excel 95-97 Workbooks and Templates  is set to EnabledOpenSave Blocked Use Open Policy'
+    section: 'File Block Settings'
+    description: |
+        This policy setting allows you to determine whether users can open, view, edit, or save Excel files with the format
+        specified by the title of this policy setting. The recommended state for this setting is  Enabled . Open/Save Blocked,
+        Use Open Policy
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Trust Center\File Block
+        Settings\Excel 95-97 Workbooks and Templates Impact: If your users require open, save, or view ability and you block
+        some or all of these abilities, you could affect the productivity of your organization.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.2.1.3', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity\\[Ff]ileblock'
+        - checks:
+            - rule: 'should have_property "xl9597workbooksandtemplates"'
+            - name: 'xl9597workbooksandtemplates'
+              rule: "should have_property_value('xl9597workbooksandtemplates', :dword, '')"
+
+  "1.4.7.2.1.4":
+    title: '1.4.7.2.1.4 | L1 Ensure Excel 2 Worksheets is set to EnabledOpenSave blocked use open policy'
+    section: 'File Block Settings'
+    description: |
+        This policy setting allows you to determine whether users can open, view, edit, or save Excel files with the format
+        specified by the title of this policy setting. The recommended state for this setting is  Enabled .  Open/Save blocked,
+        use open policy
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Trust Center\File Block
+        Settings\Excel 2 Worksheets Impact: If your users require open, save, or view ability and you block some or all of these
+        abilities, you could affect the productivity of your organization.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.2.1.4', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity\\[Ff]ileblock'
+        - checks:
+            - rule: 'should have_property "xl2worksheets"'
+            - name: 'xl2worksheets'
+              rule: "should have_property_value('xl2worksheets', :dword, '')"
+
+  "1.4.7.2.1.5":
+    title: '1.4.7.2.1.5 | L1 Ensure Excel 4 Worksheets is set to EnabledOpenSave blocked use open policy'
+    section: 'File Block Settings'
+    description: |
+        This policy setting allows you to determine whether users can open, view, edit, or save Excel files with the format
+        specified by the title of this policy setting. The recommended state for this setting is  Enabled .  Open/Save blocked,
+        use open policy
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Trust Center\File Block
+        Settings\Excel 4 Worksheets Impact: If your users require open, save, or view ability and you block some or all of these
+        abilities, you could affect the productivity of your organization.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.2.1.5', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity\\[Ff]ileblock'
+        - checks:
+            - rule: 'should have_property "xl4worksheets"'
+            - name: 'xl4worksheets'
+              rule: "should have_property_value('xl4worksheets', :dword, '')"
+
+  "1.4.7.2.1.6":
+    title: '1.4.7.2.1.6 | L1 Ensure Excel 3 Worksheets is set to Enabled OpenSave blocked use open policy'
+    section: 'File Block Settings'
+    description: |
+        This policy setting allows you to determine whether users can open, view, edit, or save Excel files with the format
+        specified by the title of this policy setting. The recommended state for this setting is  Enabled .  Open/Save blocked,
+        use open policy
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Trust Center\File Block
+        Settings\Excel 3 Worksheets Impact: If your users require open, save, or view ability and you block some or all of these
+        abilities, you could affect the productivity of your organization.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.2.1.6', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity\\[Ff]ileblock'
+        - checks:
+            - rule: 'should have_property "xl3worksheets"'
+            - name: 'xl3worksheets'
+              rule: "should have_property_value('xl3worksheets', :dword, '')"
+
+  "1.4.7.2.1.7":
+    title: '1.4.7.2.1.7 | L1 Ensure dBase III IV Files is set to Enable OpenSave blocked use open policy'
+    section: 'File Block Settings'
+    description: |
+        This policy setting allows you to determine whether users can open, view, edit, or save Excel files with the format
+        specified by the title of this policy setting. The recommended state for this setting is  Enabled .  Open/Save blocked,
+        use open policy
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Trust Center\File Block
+        Settings\dBase III /IV Files Impact: If your users must work with business-critical files that include these file types,
+        enabling this setting could cause significant disruptions. Users who do not work with dBase III / IV files will likely
+        not be affected by this setting.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.2.1.7', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity\\[Ff]ileblock'
+        - checks:
+            - rule: 'should have_property "dbasefiles"'
+            - name: 'dbasefiles'
+              rule: "should have_property_value('dbasefiles', :dword, '')"
+
+  "1.4.7.2.1.8":
+    title: '1.4.7.2.1.8 | L1 Ensure Web Pages and Excel 2003 XML Spreadsheets is set to Enabled OpenSave blocked use open policy'
+    section: 'File Block Settings'
+    description: |
+        This policy setting allows you to determine whether users can open, view, edit, or save Excel files with the format
+        specified by the title of this policy setting. The recommended state for this setting is  Enabled . Open/Save blocked,
+        use open policy
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Trust Center\File Block Settings\Web
+        Pages and Excel 2003 XML Spreadsheets Impact: Enabling this setting requires the following file types to open in
+        Protected View: #x2022; *.mht #x2022; *.mhtml #x2022; *.htm #x2022; *.html #x2022; *.xml #x2022; *.xlmss Saving and
+        editing these file types is not allowed.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.2.1.8', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity\\[Ff]ileblock'
+        - checks:
+            - rule: 'should have_property "htmlandxmlssfiles"'
+            - name: 'htmlandxmlssfiles'
+              rule: "should have_property_value('htmlandxmlssfiles', :dword, '')"
+
+  "1.4.7.2.1.9":
+    title: '1.4.7.2.1.9 | L1 Ensure Excel 95 Workbooks is set to Enabled OpenSave Blocked Use Open Policy'
+    section: 'File Block Settings'
+    description: |
+        This policy setting allows you to determine whether users can open, view, edit, or save Excel files with the format
+        specified by the title of this policy setting. The recommended state for this setting is  Enabled .  Open/Save Blocked,
+        Use Open Policy
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Trust Center\File Block
+        Settings\Excel 95 Workbooks Impact: If your users require open, save, or view ability and you block some or all of these
+        abilities, you could affect the productivity of your organization.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.2.1.9', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity\\[Ff]ileblock'
+        - checks:
+            - rule: 'should have_property "xl95workbooks"'
+            - name: 'xl95workbooks'
+              rule: "should have_property_value('xl95workbooks', :dword, '')"
+
+  "1.4.7.2.1.10":
+    title: '1.4.7.2.1.10 | L1 Ensure Default File Block Behavior is set to Enabled Blocked files are not opened'
+    section: 'File Block Settings'
+    description: |
+        This policy setting allows you to determine if users can open, view, or edit Excel files. The recommended state for this
+        setting is  Enabled .  Blocked files are not opened
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Trust Center\File Block Settings\Set
+        Default File Block Behavior Impact: Enabling this setting prevents users from opening, viewing, or editing certain types
+        of files in Excel. Productivity in your organization could be affected if users who require access to any of these file
+        types cannot access them.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.2.1.10', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity\\[Ff]ileblock'
+        - checks:
+            - rule: 'should have_property "openinprotectedview"'
+            - name: 'openinprotectedview'
+              rule: "should have_property_value('openinprotectedview', :dword, '')"
+
+  "1.4.7.2.1.11":
+    title: '1.4.7.2.1.11 | L1 Ensure Excel 4 Macrosheets and Add-in Files is set to Enabled Enabled OpenSave blocked use open policy'
+    section: 'File Block Settings'
+    description: |
+        This policy setting allows you to determine whether users can open, view, edit, or save Excel files with the format
+        specified by the title of this policy setting. The recommended state for this setting is  Enabled .  Enabled Open/Save
+        blocked, use open policy
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Trust Center\File Block
+        Settings\Excel 4 Macrosheets and Add-in Files Impact: If your users require open, save, or view ability and you block
+        some or all of these abilities, you could affect the productivity of your organization.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.2.1.11', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity\\[Ff]ileblock'
+        - checks:
+            - rule: 'should have_property "xl4macros"'
+            - name: 'xl4macros'
+              rule: "should have_property_value('xl4macros', :dword, '')"
+
+  "1.4.7.2.1.12":
+    title: '1.4.7.2.1.12 | L1 Ensure Excel 4 Workbooks is set to Enabled Enabled OpenSave blocked use open policy'
+    section: 'File Block Settings'
+    description: |
+        This policy setting allows you to determine whether users can open, view, edit, or save Excel files with the format
+        specified by the title of this policy setting. The recommended state for this setting is  Enabled .  Enabled Open/Save
+        blocked, use open policy
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Trust Center\File Block
+        Settings\Excel 4 Workbooks Impact: If your users require open, save, or view ability and you block some or all of these
+        abilities, you could affect the productivity of your organization.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.2.1.12', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity\\[Ff]ileblock'
+        - checks:
+            - rule: 'should have_property "xl4workbooks"'
+            - name: 'xl4workbooks'
+              rule: "should have_property_value('xl4workbooks', :dword, '')"
+
+  "1.4.7.2.1.13":
+    title: '1.4.7.2.1.13 | L1 Ensure Dif and Sylk Files is set to Enabled OpenSave blocked use open policy'
+    section: 'File Block Settings'
+    description: |
+        This policy setting allows you to determine whether users can open, view, edit, or save Excel files with the format
+        specified by the title of this policy setting. The recommended state for this setting is  Enabled .  Open/Save blocked,
+        use open policy
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Trust Center\File Block Settings\Dif
+        and Sylk Files Impact: Enabling this setting will prevent users from viewing or editing DIF and SYLK files in Excel. If
+        your users must work with business-critical files of these types, enabling this setting could cause significant
+        disruptions. Users who do not work with DIF or SYLK files will likely not be affected by this setting.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.2.1.13', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity\\[Ff]ileblock'
+        - checks:
+            - rule: 'should have_property "difandsylkfiles"'
+            - name: 'difandsylkfiles'
+              rule: "should have_property_value('difandsylkfiles', :dword, '')"
+
+  "1.4.7.2.2.1":
+    title: '1.4.7.2.2.1 | L1 Ensure Turn Off Protected View For Attachments Opened from Outlook is set to Disabled'
+    section: 'Protected View'
+    description: |
+        This policy setting allows you to determine if Excel files in Outlook attachments open in Protected View. The
+        recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Trust Center\Protected View\Turn Off
+        Protected View For Attachments Opened from Outlook Impact: Opening Office files, such as the Office versions of Word,
+        Excel, PowerPoint, and OneNote, is a common action. Users are unlikely to notice much difference when opening and
+        viewing files in Protected View. Users who want to modify these kinds of files must save them to a safe location and
+        then open them. When Office application files open in Protected View, some functionality is unavailable. The process of
+        dragging the file to a new location and then opening it takes more time than simply double-clicking the file to open it,
+        modifying it, and then saving it to the same location. For these reasons, administrators may receive some complaints
+        from users potentially confused about how to modify files originally only available to them in Protected View.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.2.2.1', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity\\[Pp]rotectedview'
+        - checks:
+            - rule: 'should have_property "disableattachmentsinpv"'
+            - name: 'disableattachmentsinpv'
+              rule: "should have_property_value('disableattachmentsinpv', :dword, '')"
+
+  "1.4.7.2.2.2":
+    title: '1.4.7.2.2.2 | L1 Ensure Do Not Open Files From The Internet Zone in Protected View is set to Disabled'
+    section: 'Protected View'
+    description: |
+        This policy setting allows you to determine if files downloaded from the Internet zone open in Protected View. The
+        recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Trust Center\Protected View\Do Not
+        Open Files From The Internet Zone in Protected View Impact: When files open in Protected View, some functionality will
+        be unavailable and productivity in your organization could be affected. When this is undesirable, users will have to add
+        sites to their trusted sites list in Internet Explorer, thus allowing the files to be opened in normal view with all
+        functionality available.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.2.2.2', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity\\[Pp]rotectedview'
+        - checks:
+            - rule: 'should have_property "disableinternetfilesinpv"'
+            - name: 'disableinternetfilesinpv'
+              rule: "should have_property_value('disableinternetfilesinpv', :dword, '')"
+
+  "1.4.7.2.2.3":
+    title: '1.4.7.2.2.3 | L1 Ensure Do Not Open Files in Unsafe Locations in Protected View is set to Disabled'
+    section: 'Protected View'
+    description: |
+        This policy setting lets you determine if files located in unsafe locations will open in Protected View.  If you have
+        not specified unsafe locations, only the Downloaded Program Files and Temporary Internet Files folders are considered
+        unsafe locations. The recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Trust Center\Protected View\Do Not
+        Open Files in Unsafe Locations in Protected View Impact: The Downloaded Program Files folder and the Temporary Internet
+        Files folder are considered unsafe locations. You may specify additional unsafe locations. Some functionality is not
+        available when files are opened in Protected View. In such cases, users must move the files from unsafe locations to
+        save locations in order to access them with full functionality
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.2.2.3', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity\\[Pp]rotectedview'
+        - checks:
+            - rule: 'should have_property "disableunsafelocationsinpv"'
+            - name: 'disableunsafelocationsinpv'
+              rule: "should have_property_value('disableunsafelocationsinpv', :dword, '')"
+
+  "1.4.7.2.2.4":
+    title: '1.4.7.2.2.4 | L1 Ensure Document Behavior if File Validation Fails is set to Enabled Open in Protected View and Unchecked for Do not allow edit'
+    section: 'Protected View'
+    description: |
+        his policy setting controls how Office handles documents when they fail file validation.  The recommended state for this
+        setting is  Enabled .  Open in Protected View and Unchecked for Do not allow edit
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Trust Center\Protected View\Set
+        Document Behavior if File Validation Fails Impact: By default, users can only open files in Protected View after the
+        files fail validation to help prevent malicious code from running on user computers or the network. In this way, the
+        application is protected from attacks attempting to induce unexpected execution paths. You can block files from opening
+        at all, but this also prevents users from accessing any data in the file. Using this setting allows the application to
+        open files, and thus users to view valid data and detect invalid data that is visible. However, users cannot correct
+        invalid data in the file. To do so, users must open such files on another isolated computer where this setting is set to
+        a lower security level.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.2.2.4', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity\\[Ff]ilevalidation'
+        - checks:
+            - rule: 'should have_property "disableeditfrompv"'
+            - name: 'disableeditfrompv'
+              rule: "should have_property_value('disableeditfrompv', :dword, '1')"
+
+  "1.4.7.2.3.1":
+    title: '1.4.7.2.3.1 | L1 Ensure Allow Trusted Locations on The Network to Disabled'
+    section: 'Trusted Locations'
+    description: |
+        This policy setting controls whether trusted locations on the network can be used. The recommended state for this
+        setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Trust Center\Trusted Locations\Allow
+        Trusted Locations on The Network Impact: Disabling this setting will cause disruption for users who add network
+        locations to the Trusted Locations list. However, this practice is discouraged (as the Allow Trusted Locations on my
+        network (not recommended) check box itself states), so in practice it should be possible to disable this setting in most
+        situations without causing significant usability issues for most users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.2.3.1', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity\\[Tt]rusted locations'
+        - checks:
+            - rule: 'should have_property "allownetworklocations"'
+            - name: 'allownetworklocations'
+              rule: "should have_property_value('allownetworklocations', :dword, '')"
+
+  "1.4.7.2.3.2":
+    title: '1.4.7.2.3.2 | L1 Ensure Disabled all Trusted Locations is set to Enabled'
+    section: 'Trusted Locations'
+    description: |
+        This policy setting allows administrators to disable all trusted locations in the specified applications. Trusted
+        locations specified in the Trust Center are used to define file locations that are assumed to be safe. Content, code,
+        and addins are allowed to load from trusted locations with a minimal amount of security, without prompting the users for
+        permission. If a dangerous file is opened from a trusted location, it will not be subject to standard security measures
+        and could harm users computers or data. The recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Trust Center\Trusted
+        Locations\Disabled all Trusted Locations Impact: If there are business-critical reasons to access some files in a more
+        trusted environment, disabling trusted locations could cause usability problems.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.2.3.2', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity\\[Tt]rusted locations'
+        - checks:
+            - rule: 'should have_property "alllocationsdisabled"'
+            - name: 'alllocationsdisabled'
+              rule: "should have_property_value('alllocationsdisabled', :dword, '')"
+
+  "1.4.7.2.4":
+    title: '1.4.7.2.4 | L1 Ensure Trust Access To Visual Basic Project is set to Disabled'
+    section: 'Trust Center'
+    description: |
+        This policy setting controls whether automation clients such as Microsoft Visual Studio 2005 Tools for Microsoft Office
+        VSTO can access the Visual Basic for Applications project system in the specified applications. VSTO projects require
+        access to the Visual Basic for Applications project system in Excel, PowerPoint, and Word, even though the projects do
+        not use Visual Basic for Applications. Designtime support of controls in both Visual Basic and C projects depends on the
+        Visual Basic for Applications project system in Word and Excel. The recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Trust Center\Trust Access To Visual
+        Basic Project Impact: Disabling this setting enforces the default configuration in Excel, Word, and PowerPoint and is
+        therefore unlikely to cause significant usability issues for most users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.2.4', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "accessvbom"'
+            - name: 'accessvbom'
+              rule: "should have_property_value('accessvbom', :dword, '')"
+
+  "1.4.7.2.5":
+    title: '1.4.7.2.5 | L1 Ensure Disable Trust Bar Notification For Unsigned Application Add-ins And Block Them is set to Enabled'
+    section: 'Trust Center'
+    description: |
+        This policy setting controls whether the specified Office applications notify users when unsigned application addins are
+        loaded or silently disable such addins without notification. This policy setting only applies if you enable the Require
+        that application addins are signed by Trusted Publisher policy setting, which prevents users from changing this policy
+        setting.        The recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Trust Center\Disable Trust Bar
+        Notification For Unsigned Application Add-ins And Block Them Impact: This setting only applies if the Office application
+        is configured to require that all add-ins are signed by a trusted publisher. By default, users can configure this
+        requirement themselves in the Add-ins category of the Trust Center for the application. To enforce this requirement, you
+        must enable the Require that application add-ins are signed by Trusted Publisher setting in Group Policy, which prevents
+        users from changing the setting themselves.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.2.5', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "notbpromptunsignedaddin"'
+            - name: 'notbpromptunsignedaddin'
+              rule: "should have_property_value('notbpromptunsignedaddin', :dword, '')"
+
+  "1.4.7.2.6":
+    title: '1.4.7.2.6 | L1 Ensure Require That Application Add-ins are Signed By Trusted Publisher is set to Enabled'
+    section: 'Trust Center'
+    description: |
+        This policy setting controls whether addins for the specified Office applications must be digitally signed by a trusted
+        publisher. The recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Trust Center\Require That Application
+        Add-ins are Signed By Trusted Publisher Impact: Enabling this setting could cause disruptions for users who rely on add-
+        ins that are not signed by trusted publishers. These users will either have to obtain signed versions of such add-ins or
+        stop using them.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.2.6', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "requireaddinsig"'
+            - name: 'requireaddinsig'
+              rule: "should have_property_value('requireaddinsig', :dword, '')"
+
+  "1.4.7.2.7":
+    title: '1.4.7.2.7 | L1 Ensure VBA Macro Notification Settings is set to Enabled Disable all Except Digitally Signed Macros'
+    section: 'Trust Center'
+    description: |
+        This policy setting controls how the specified applications warn users when Visual Basic for Applications VBA macros are
+        present. The recommended state for this setting is  Enabled . Disable all Except Digitally Signed Macros
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Trust Center\VBA Macro Notification
+        Settings Impact: This configuration causes documents and templates that contain unsigned macros to lose any
+        functionality supplied by those macros. To prevent this loss of functionality, users can install the macros in a trusted
+        location, unless the Disable all trusted locations setting is configured to Enabled, which will block them from doing
+        so. If your organization does not use any officially sanctioned macros, consider choosing No Warnings for all macros but
+        disable all macros for even stronger security.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.2.7', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "vbawarnings"'
+            - name: 'vbawarnings'
+              rule: "should have_property_value('vbawarnings', :dword, '')"
+
+  "1.4.7.2.8":
+    title: '1.4.7.2.8 | L1 Ensure Store Macro In Personal Macro Workbook by Default is set to Enabled'
+    section: 'Trust Center'
+    description: |
+        This policy setting controls the default location for storing macros in Excel. The recommended state for this setting is
+        Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Trust Center\Store Macro In Personal
+        Macro Workbook by Default Impact: Enabling this setting does not prevent users from selecting a different location for
+        storing macros, so it is unlikely to cause significant usability issues for most users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.2.8', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Oo]ptions\\[Bb]inaryoptions'
+        - checks:
+            - rule: 'should have_property "fglobalsheet_37_1"'
+            - name: 'fglobalsheet_37_1'
+              rule: "should have_property_value('fglobalsheet_37_1', :dword, '')"
+
+  "1.4.7.3":
+    title: '1.4.7.3 | L1 Ensure Turn Off File Validation is set to Disabled'
+    section: 'Security'
+    description: |
+        This policy setting allows you turn off the file validation feature. The recommended state for this setting is  Disabled
+        .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Turn Off File Validation Impact: If
+        you enable this policy setting, file validation will be turned off. If you disable or do not configure this policy
+        setting, file validation will be turned on.  Office Binary Documents (97-2003) are checked to see if they conform
+        against the file format schema before they are opened.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.3', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity\\[Ff]ilevalidation'
+        - checks:
+            - rule: 'should have_property "enableonload"'
+            - name: 'enableonload'
+              rule: "should have_property_value('enableonload', :dword, '')"
+
+  "1.4.7.4":
+    title: '1.4.7.4 | L1 Ensure Force File Extension to Match File Type is set to EnabledAlways match file type '
+    section: 'Security'
+    description: |
+        This policy setting controls how Excel loads file types that do not match their extension. Excel can load files with
+        extensions that do not match the files type. For example, if a commaseparated values CSV file named example.csv is
+        renamed example.xls or any other file extension supported by Excel 2003 and earlier only, Excel can properly load it as
+        a CSV file. The recommended state for this setting is  Enable
+                              d.  Always match file type
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Force File Extension to Match File
+        Type Impact: Earlier versions of Excel did not enforce file type matching. Enabling this setting and selecting Always
+        match file type might cause disruptions for users who rely on the functionality of earlier versions of Excel, and could
+        interfere with the operation of tools and scripts that rely on it.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.4', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "extensionhardening"'
+            - name: 'extensionhardening'
+              rule: "should have_property_value('extensionhardening', :dword, '')"
+
+  "1.4.7.5":
+    title: '1.4.7.5 | L1 Ensure Scan Encrypted Macros in Excel Open XML Workbooks is set to Enable Scan encrypted macros default'
+    section: 'Security'
+    description: |
+        This policy setting controls whether encrypted macros in Open XML workbooks be are required to be scanned with antivirus
+        software before being opened. The recommended state for this setting is  Enable
+                              d .  Scan encrypted macros default
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Excel 2013\Excel Options\Security\Scan Encrypted Macros in Excel Open
+        XML Workbooks Impact: Disabling this setting enforces the default configuration in Excel, and is therefore unlikely to
+        cause usability issues for most users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_excel_2013_benchmark', 'rule_1.4.7.5', 'cis_microsoft_office_excel_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15.0\\[Ee]xcel\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "excelbypassencryptedmacroscan"'
+            - name: 'excelbypassencryptedmacroscan'
+              rule: "should have_property_value('excelbypassencryptedmacroscan', :dword, '')"

@@ -1,0 +1,572 @@
+1.10 - Ensure updates patches and additional security software are installed
+1.11 - Ensure system-wide crypto policy is not legacy
+1.12 - Ensure system-wide crypto policy is FUTURE or FIPS
+1.13 - Ensure the operating system implements DoD-approved encryption
+1.14 - Ensure the operating system prevents unauthorized modification of all information at rest by using disk encryption
+1.15 - Ensure kernel image loading is disabled
+1.16 - Ensure the operating system is configured to enable DAC on symlinks
+1.17 - Ensure the operating system is configured to enable DAC on hardlinks
+1.18 - Ensure the operating system is configured to restrict access to the kernel message buffer
+1.19 - Ensure the operating system is configured to prevent kernel profiling by unprivileged users
+1.20 - Ensure the operating system has the packages required for multifactor authentication
+1.21 - Ensure the operating system implements certificate status checking for multifactor authentication
+1.22 - Ensure the operating system accepts PIV credentials
+1.23 - Ensure the NX no-execution bit flag is set on the system
+1.24 - Ensure kernel page-table isolation is enabled
+1.25 - Ensure the operating system prevents privilege escalation through the kernel by disabling access to the bpf syscall
+1.26 - Ensure the operating system restricts usage of ptrace to descendant processes
+1.27 - Ensure the operating system restricts exposed kernel pointer addresses access
+1.28 - Ensure the operating system disables the ability to load the firewire-core kernel module
+1.29 - Ensure the operating system disables the ability to load the USB Storage kernel module
+1.30 - Ensure the operating system disables the use of user namespaces
+1.31 - Ensure the system has the packages required to enable the hardware random number generator entropy gatherer service
+1.32 - Ensure the tmux package installed
+1.33 - Ensure the operating system enables hardening for the BPF JIT
+1.34 - Ensure the operating system implements the Endpoint Security for Linux Threat Prevention tool
+1.1.2 - Ensure tmp is configured
+1.1.3 - Ensure nodev option set on tmp partition
+1.1.4 - Ensure nosuid option set on tmp partition
+1.1.5 - Ensure noexec option set on tmp partition
+1.1.6 - Ensure separate partition exists for var
+1.1.7 - Ensure separate partition exists for vartmp
+1.1.8 - Ensure nodev option set on vartmp partition
+1.1.9 - Ensure nosuid option set on vartmp partition
+1.1.10 - Ensure noexec option set on vartmp partition
+1.1.11 - Ensure separate partition exists for varlog
+1.1.12 - Ensure separate partition exists for varlogaudit
+1.1.13 - Ensure separate partition exists for home
+1.1.14 - Ensure nodev option set on home partition
+1.1.15 - Ensure nodev option set on devshm partition
+1.1.16 - Ensure nosuid option set on devshm partition
+1.1.17 - Ensure noexec option set on devshm partition
+1.1.18 - Ensure nodev option set on removable media partitions
+1.1.19 - Ensure nosuid option set on removable media partitions
+1.1.20 - Ensure noexec option set on removable media partitions
+1.1.21 - Ensure sticky bit is set on all world-writable directories
+1.1.22 - Disable Automounting
+1.1.23 - Disable USB Storage
+1.1.24 - Ensure file systems that contain user home directories are mounted with the nosuid option
+1.1.25 - Ensure the boot directory is mounted with the nosuid option
+1.1.26 - Ensure all non-root local partitions are mounted with the nodev option
+1.1.27 - Ensure file systems that are being NFS-imported are mounted with the nodev option
+1.1.28 - Ensure file systems being imported via NFS are mounted with the noexec option
+1.1.29 - Ensure file systems being imported via NFS are mounted with the nosuid option
+1.1.30 - Ensure a separate file systempartition has been created for non-privileged local interactive user home directories
+1.1.31 - Ensure varlog is mounted with the nodev option
+1.1.32 - Ensure varlog is mounted with the nosuid option
+1.1.33 - Ensure varlog is mounted with the noexec option
+1.1.34 - Ensure varlogaudit is mounted with the nodev option
+1.1.35 - Ensure varlogaudit is mounted with the nosuid option
+1.1.36 - Ensure varlogaudit is mounted with the noexec option
+1.1.37 - Ensure the bootefi directory is mounted with the nosuid option
+1.1.38 - Ensure file systems that contain user home directories are mounted with the noexec option
+1.1.1.1 - Ensure mounting of cramfs filesystems is disabled
+1.1.1.2 - Ensure mounting of vFAT filesystems is limited
+1.1.1.3 - Ensure mounting of squashfs filesystems is disabled
+1.1.1.4 - Ensure mounting of udf filesystems is disabled
+1.2.1 - Ensure GPG keys are configured
+1.2.2 - Ensure gpgcheck is globally activated
+1.2.3 - Ensure package manager repositories are configured
+1.2.4 - Ensure DNF is configured to perform a signature check on local packages
+1.3.1 - Ensure sudo is installed
+1.3.2 - Ensure sudo commands use pty
+1.3.3 - Ensure sudo log file exists
+1.3.4 - Ensure the etcsudoers file has no occurrences of NOPASSWD
+1.3.5 - Ensure the etcsudoers file has no occurrences of authenticate
+1.3.6 - Ensure the sudoers file restricts sudo access to authorized personnel
+1.3.7 - Ensure the sudoers security policy is configured to use the invoking users password for privilege escalation
+1.3.8 - Ensure the operating system requires re-authentication when using the sudo command to elevate privileges
+1.4.1 - Ensure AIDE is installed
+1.4.2 - Ensure filesystem integrity is regularly checked
+1.4.3 - Ensure Advanced Intrusion Detection Environment AIDE is properly configured to use cryptographic mechanisms to protect the integrity of audit tools
+1.4.4 - Ensure the file integrity tool is configured to verify extended attributes
+1.4.5 - Ensure the file integrity tool is configured to verify ACLs
+1.5.1 - Ensure permissions on bootloader config are configured
+1.5.2 - Ensure bootloader password is set
+1.5.3 - Ensure authentication required for single user mode
+1.5.4 - Ensure the encrypted grub superusers password is set for systems booted with UEFI
+1.5.5 - Ensure the encrypted grub superusers password is set for system booted with BIOS
+1.5.6 - Ensure the operating system requires authentication for rescue mode
+1.5.7 - Ensure GRUB 2 is configured to enable page poisoning to mitigate use-after-free vulnerabilities
+1.5.8 - Ensure GRUB 2 is configured to disable vsyscalls
+1.5.9 - Ensure GRUB 2 is configured to enable poisoning of SLUBSLAB objects to mitigate use-after-free vulnerabilities
+1.5.10 - Ensure the operating system is configured to boot to the command line
+1.5.11 - Ensure the operating system is not configured to reboot the system when Ctrl-Alt-Delete is pressed
+1.5.12 - Ensure the operating system is not configured to reboot the system when Ctrl-Alt-Delete is pressed seven times within two seconds
+1.5.13 - Ensure a unique name is set as the superusers account UEFI
+1.5.14 - Ensure a unique name is set as the superusers account BIOS
+1.5.15 - Ensure the operating system requires authentication upon booting into emergency mode
+1.6.1 - Ensure core dumps are restricted
+1.6.2 - Ensure address space layout randomization ASLR is enabled
+1.6.3 - Ensure the operating system disables the storing core dumps
+1.6.4 - Ensure the operating system is not configured to acquire save or process core dumps
+1.6.5 - Ensure kernel core dumps are disabled unless needed
+1.6.6 - Ensure the operating system disables core dumps for all users
+1.6.7 - Ensure the operating system disables storing core dumps for all users
+1.6.8 - Ensure the operating system disables core dump backtraces
+1.7.1.1 - Ensure SELinux is installed
+1.7.1.2 - Ensure SELinux is not disabled in bootloader configuration
+1.7.1.3 - Ensure SELinux policy is configured
+1.7.1.4 - Ensure the SELinux state is enforcing
+1.7.1.5 - Ensure no unconfined services exist
+1.7.1.6 - Ensure SETroubleshoot is not installed
+1.7.1.7 - Ensure the MCS Translation Service mcstrans is not installed
+1.7.1.8 - Ensure the operating system has the policycoreutils package installed
+1.8.1 - Ensure the operating system displays the Standard Mandatory DoD Notice and Consent Banner before granting access to the operating system via a command line user logon
+1.8.2 - Ensure message of the day is configured properly
+1.8.3 - Ensure local login warning banner is configured properly
+1.8.4 - Ensure remote login warning banner is configured properly
+1.8.5 - Ensure permissions on etcmotd are configured
+1.8.6 - Ensure permissions on etcissue are configured
+1.8.7 - Ensure permissions on etcissue.net are configured
+1.8.8 - Ensure the Standard Mandatory DoD Notice and Consent Banner is displayed before granting access to the system via SSH logon
+1.8.9 - Ensure the operating system displays a banner before granting access to the operating system via a graphical user logon
+1.9.1 - Ensure the operating system displays the Standard Mandatory DoD Notice and Consent Banner before granting access to the operating system via a graphical user logon
+1.9.2 - Ensure GNOME Display Manager is removed
+1.9.3 - Ensure GDM login banner is configured
+1.9.4 - Ensure last logged in user display is disabled
+1.9.5 - Ensure XDCMP is not enabled
+1.9.6 - Ensure a Standard Mandatory DoD Notice and Consent Banner is displayed via a graphical user logon
+1.9.7 - Ensure the operating system does not allow an unattended or automatic logon to the system via a graphical user interface
+1.9.8 - Ensure the operating system is not configured to reboot the system when Ctrl-Alt-Delete is pressed when using a graphical user interface
+1.9.9 - Ensure the operating system initiates a session lock a for graphical user interfaces when the screensaver is activated
+1.9.10 - Ensure the operating system disables the user logon list for graphical user interfaces
+1.9.11 - Ensure the operating system prevents users from overriding the session idle-delay setting for the graphical user interface
+1.9.12 - Ensure the operating system prevents users from overriding the screensaver lock-enabled setting for the graphical user interface
+2.1.1 - Ensure xinetd is not installed
+2.2.2 - Ensure X Window System is not installed
+2.2.3 - Ensure rsync service is not enabled
+2.2.4 - Ensure Avahi Server is not enabled
+2.2.5 - Ensure SNMP Server is not enabled
+2.2.6 - Ensure HTTP Proxy Server is not enabled
+2.2.7 - Ensure Samba is not enabled
+2.2.8 - Ensure IMAP and POP3 server is not enabled
+2.2.9 - Ensure HTTP server is not enabled
+2.2.10 - Ensure FTP Server is not enabled
+2.2.11 - Ensure DNS Server is not enabled
+2.2.12 - Ensure NFS is not enabled
+2.2.13 - Ensure  RPC is not enabled
+2.2.14 - Ensure LDAP server is not enabled
+2.2.15 - Ensure DHCP Server is not enabled
+2.2.16 - Ensure the telnet-server package is not installed
+2.2.17 - Ensure CUPS is not enabled
+2.2.18 - Ensure NIS Server is not enabled
+2.2.19 - Ensure mail transfer agent is configured for local-only mode
+2.2.20 - Ensure the operating system has enabled the hardware random number generator entropy gatherer service
+2.2.21 - Ensure automated bug reporting tools are not installed
+2.2.22 - Ensure the sendmail package is not installed
+2.2.23 - Ensure the rsh-server package is not installed
+2.2.24 - Ensure a camera is not installed
+2.2.25 - Ensure the operating system is configured to mask the debug-shell systemd service
+2.2.26 - Ensure a TFTP server has not been installed on the system
+2.2.27 - Ensure the operating system is configured to prevent unrestricted mail relaying
+2.2.28 - Ensure the TFTP daemon is configured to operate in secure mode
+2.2.29 - Ensure an FTP server has not been installed on the system
+2.2.30 - Ensure the gssproxy package has not been installed on the system
+2.2.31 - Ensure the iprutils package has not been installed on the system
+2.2.32 - Ensure the tuned package has not been installed on the system
+2.2.33 - Ensure the krb5-server package has not been installed on the system
+2.2.1.1 - Ensure time synchronization is in use
+2.2.1.2 - Ensure chrony is configured
+2.2.1.3 - Ensure the operating system is securely comparing internal information system clocks at least every 24 hours with an NTP server
+2.2.1.4 - Ensure the operating system disables the chrony daemon from acting as a server
+2.2.1.5 - Ensure the operating system disables network management of the chrony daemon
+2.3.1 - Ensure NIS Client is not installed
+2.3.2 - Ensure telnet client is not installed
+2.3.3 - Ensure LDAP client is not installed
+3.5 - Ensure wireless interfaces are disabled
+3.6 - Disable IPv6
+3.7 - Ensure at least two name servers are configured if using DNS resolution
+3.8 - Ensure Bluetooth is disabled
+3.1.1 - Ensure IP forwarding is disabled
+3.1.2 - Ensure packet redirect sending is disabled
+3.1.3 - Ensure the system does not accept router advertisements on IPv6 interfaces unless the system is a router
+3.1.4 - Ensure the system does not accept router advertisements on IPv6 interfaces by default unless the system is a router
+3.2.1 - Ensure source routed packets are not accepted
+3.2.2 - Ensure ICMP redirects are not accepted
+3.2.3 - Ensure secure ICMP redirects are not accepted
+3.2.4 - Ensure suspicious packets are logged
+3.2.5 - Ensure broadcast ICMP requests are ignored
+3.2.6 - Ensure bogus ICMP responses are ignored
+3.2.7 - Ensure Reverse Path Filtering is enabled
+3.2.8 - Ensure TCP SYN Cookies is enabled
+3.2.9 - Ensure IPv6 router advertisements are not accepted
+3.2.10 - Ensure the operating system does not accept IPv6 ICMP redirect messages
+3.2.11 - Ensure the operating system does not accept IPv6 source-routed packets
+3.2.12 - Ensure the operating system does not accept IPv6 source-routed packets by default
+3.2.13 - Ensure the operating system ignores IPv6 ICMP redirect messages
+3.2.14 - Ensure network interfaces are not in promiscuous mode
+3.2.15 - Ensure the operating system does not accept IPv4 ICMP redirect messages
+3.2.16 - Ensure the operating system does not accept IPv4 source-routed packet
+3.2.17 - Ensure the operating system does not accept IPv4 source-routed packets by default
+3.2.18 - Ensure the operating system ignores IPv4 ICMP redirect messages
+3.3.1 - Ensure DCCP is disabled
+3.3.2 - Ensure SCTP is disabled
+3.3.3 - Ensure RDS is disabled
+3.3.4 - Ensure TIPC is disabled
+3.3.5 - Ensure ATM is disabled
+3.3.6 - Ensure CAN is disabled
+3.4.5 - Ensure the firewall is configured to remove unnecessary use of functions ports protocols andor services
+3.4.1.1 - Ensure a Firewall package is installed
+3.4.2.1 - Ensure firewalld service is enabled and running
+3.4.2.2 - Ensure iptables service is not enabled with firewalld
+3.4.2.3 - Ensure nftables is not enabled with firewalld
+3.4.2.4 - Ensure firewalld default zone is set
+3.4.2.5 - Ensure network interfaces are assigned to appropriate zone
+3.4.2.6 - Ensure firewalld drops unnecessary services and ports
+3.4.2.7 - Ensure firewalld is configured to employ a deny-all allow-by-exception policy for allowing connections to other systems
+3.4.2.8 - Ensure firewalld is installed
+3.4.3.1 - Ensure iptables are flushed with nftables
+3.4.3.2 - Ensure an nftables table exists
+3.4.3.3 - Ensure nftables base chains exist
+3.4.3.4 - Ensure nftables loopback traffic is configured
+3.4.3.5 - Ensure nftables outbound and established connections are configured
+3.4.3.6 - Ensure nftables default deny firewall policy
+3.4.3.7 - Ensure nftables service is enabled
+3.4.3.8 - Ensure nftables rules are permanent
+3.4.3.9 - Ensure nftables is configured to allow rate limits on any connection to the system
+3.4.4.1.1 - Ensure iptables loopback traffic is configured
+3.4.4.1.2 - Ensure iptables outbound and established connections are configured
+3.4.4.1.3 - Ensure iptables firewall rules exist for all open ports
+3.4.4.1.4 - Ensure iptables default deny firewall policy
+3.4.4.1.5 - Ensure iptables is enabled and active
+3.4.4.2.1 - Ensure ip6tables loopback traffic is configured
+3.4.4.2.2 - Ensure ip6tables outbound and established connections are configured
+3.4.4.2.3 - Ensure ip6tables firewall rules exist for all open ports
+3.4.4.2.4 - Ensure ip6tables default deny firewall policy
+3.4.4.2.5 - Ensure ip6tables is enabled and active
+4.3 - Ensure logrotate is configured
+4.4 - Ensure administrators are notified if an audit processing failure occurrs by modifying etcaliases
+4.1.3 - Ensure changes to system administration scope sudoers is collected
+4.1.4 - Ensure the SA and ISSO are notified in the event of an audit processing failure
+4.1.5 - Ensure the SA and ISSO are notified when the audit storage volume is full
+4.1.6 - Ensure an audit event is generated for any successfulunsuccessful use of the chage command
+4.1.7 - Ensure the operating system is configured to audit the execution of the fremovexattr system call
+4.1.8 - Ensure the operating system is configured to audit the execution of the fsetxattr system call
+4.1.9 - Ensure the operating system is configured to audit the execution of the lsetxattr system call
+4.1.10 - Ensure the operating system is configured to audit the execution of the removexattr system call
+4.1.11 - Ensure the operating system is configured to audit the execution of the lremovexattr system call
+4.1.12 - Ensure the operating system generates audit records when successfulunsuccessful attempts to use the su command by performing the following command to check the file system rules in etcauditaudit.rules
+4.1.13 - Ensure the operating system generates audit records for all account creations modifications disabling and termination events that affect etcsudoers.d
+4.1.14 - Ensure the operating system generates audit records for all account creations modifications disabling and termination events that affect etcsudoers
+4.1.15 - Ensure the operating system generates audit records for all account creations modifications disabling and termination events that affect etcgshadow
+4.1.16 - Ensure the operating system generates audit records for all account creations modifications disabling and termination events that affect etcsecurityopasswd
+4.1.17 - Ensure the operating system generates audit records for all account creations modifications disabling and termination events that affect etcshadow
+4.1.18 - Ensure the audit system prevents unauthorized changes to logon UIDs
+4.1.19 - Ensure the audit system prevents unauthorized changes
+4.1.20 - Ensure the operating system takes the appropriate action when the audit storage volume is full
+4.1.21 - Ensure the operating system takes the appropriate action when the audit storage volume is full
+4.1.22 - Ensure login and logout events are collected
+4.1.23 - Ensure the operating system takes the appropriate action when an audit processing failure occurs
+4.1.24 - Ensure session initiation information is collected
+4.1.25 - Ensure events that modify date and time information are collected
+4.1.26 - Ensure events that modify the systems Mandatory Access Controls are collected
+4.1.27 - Ensure events that modify the systems network environment are collected
+4.1.28 - Ensure discretionary access control permission modification events are collected
+4.1.29 - Ensure unsuccessful unauthorized file access attempts are collected
+4.1.30 - Ensure events that modify usergroup information are collected
+4.1.31 - Ensure successful file system mounts are collected
+4.1.32 - Ensure use of privileged commands is collected
+4.1.33 - Ensure file deletion events by users are collected
+4.1.34 - Ensure kernel module loading and unloading is collected
+4.1.35 - Ensure system administrator actions sudolog are collected
+4.1.36 - Ensure the audit configuration is immutable
+4.1.37 - Ensure the operating system audits the execution of privileged functions
+4.1.38 - Ensure the operating systems audit daemon is configured to include local events
+4.1.39 - Ensure the operating systems audit daemon is configured to label all off-loaded audit logs
+4.1.40 - Ensure the operating systems audit daemon is configured to resolve audit information before writing to disk
+4.1.41 - Ensure the operating systems audit logs have a mode of 0600 or less permissive
+4.1.42 - Ensure the operating systems  audit logs are owned by root
+4.1.43 - Ensure the audit logs are group-owned by root
+4.1.44 - Ensure the audit log directory is owned by root to prevent unauthorized read access
+4.1.45 - Ensure the audit log directory is group-owned by root to prevent unauthorized read access
+4.1.46 - Ensure the audit log directories have a mode of 0700 or less permissive by first determining where the audit logs are stored
+4.1.47 - Ensure the operating system generates an audit record when there are successfulunsuccessful attempts to use the chcon command
+4.1.48 - Ensure the operating system is configured to audit the execution of the setxattr system call
+4.1.49 - Ensure the operating system generates audit records for all account creations modifications disabling and termination events that affect etcpasswd
+4.1.50 - Ensure the operating system generates audit records for all account creations modifications disabling and termination events that affect etcgroup
+4.1.51 - Ensure the operating system generates an audit record when there are successfulunsuccessful attempts to use the ssh-agent
+4.1.52 - Ensure an audit event is generated for any successfulunsuccessful use of the passwd command
+4.1.53 - Ensure an audit event is generated for any successfulunsuccessful use of the mount command
+4.1.54 - Ensure an audit event is generated for any successfulunsuccessful use of the umount command
+4.1.55 - Ensure an audit event is generated for any successfulunsuccessful use of the mount syscall
+4.1.56 - Ensure an audit event is generated for any successfulunsuccessful use of the unix update
+4.1.57 - Ensure an audit event is generated for any successfulunsuccessful use of postdrop
+4.1.58 - Ensure an audit event is generated for any successfulunsuccessful use of postqueue
+4.1.59 - Ensure an audit event is generated for any successfulunsuccessful use of semanage
+4.1.60 - Ensure an audit event is generated for any successfulunsuccessful use of setfiles
+4.1.61 - Ensure an audit event is generated for any successfulunsuccessful use of userhelper
+4.1.62 - Ensure an audit event is generated for any successfulunsuccessful use of setsebool
+4.1.63 - Ensure an audit event is generated for any successfulunsuccessful use of unix chkpwd
+4.1.64 - Ensure the operating system generates an audit record when there are successfulunsuccessful attempts to use the ssh-keysign
+4.1.65 - Ensure the operating system generates an audit record when there are successfulunsuccessful attempts to use the setfacl command
+4.1.66 - Ensure  an audit event is generated for any successfulunsuccessful use of the pam timestamp check command
+4.1.67 - Ensure the operating system generates an audit record when there are successfulunsuccessful attempts to use the newgrp command
+4.1.68 - Ensure the operating system generates an audit record when there are successfulunsuccessful attempts to use the init module command
+4.1.69 - Ensure the operating system generates an audit record when there are  successfulunsuccessful attempts to use the rename command
+4.1.70 - Ensure the operating system generates an audit record when there are successfulunsuccessful attempts to use the renameat command
+4.1.71 - Ensure the operating system generates an audit record when there are successfulunsuccessful attempts to use the rmdir command
+4.1.72 - Ensure the operating system generates an audit record when there are successfulunsuccessful attempts to use the unlink command
+4.1.73 - Ensure the operating system generates an audit record when there are successfulunsuccessful attempts to use the unlinkat command
+4.1.74 - Ensure an audit event is generated for any successfulunsuccessful use of the gpasswd command
+4.1.75 - Ensure the operating system generates an audit record when there are successfulunsuccessful attempts to use the finit module command
+4.1.76 - Ensure the operating system generates an audit record when there are successfulunsuccessful attempts to use the delete module command
+4.1.77 - Ensure an audit event is generated for any successfulunsuccessful use of the crontab command
+4.1.78 - Ensure the operating system generates an audit record when there are successfulunsuccessful attempts to use the chsh command
+4.1.79 - Ensure the operating system generates an audit record when there are successfulunsuccessful attempts to use the truncate command
+4.1.80 - Ensure the operating system generates an audit record when there are successfulunsuccessful attempts to use the openat command
+4.1.81 - Ensure the operating system generates an audit record when there are successfulunsuccessful attempts to use the open system call
+4.1.82 - Ensure the operating system generates an audit record when there are successfulunsuccessful attempts to use the open by handle at system call
+4.1.83 - Ensure the operating system generates an audit record when there are successfulunsuccessful attempts to use the ftruncate command
+4.1.84 - Ensure the operating system generates an audit record when there are successfulunsuccessful attempts to use the creat system call
+4.1.85 - Ensure the operating system generates an audit record when there are successfulunsuccessful attempts to use the chown command
+4.1.86 - Ensure the operating system generates an audit record when there are successfulunsuccessful attempts to use the chmod command
+4.1.87 - Ensure the operating system generates an audit record when there are successfulunsuccessful attempts to use the lchown system call
+4.1.88 - Ensure the operating system generates an audit record when there are successfulunsuccessful attempts to use the fchownat system call
+4.1.89 - Ensure the operating system generates an audit record when there are  successfulunsuccessful attempts to use the fchown system call
+4.1.90 - Ensure the operating system generates an audit record when there are successfulunsuccessful attempts to use the fchmod system call
+4.1.91 - Ensure the operating system generates an audit record when there are successfulunsuccessful attempts to use the fchmodat system call
+4.1.92 - Ensure an audit event is generated for any successfulunsuccessful use of the sudo command
+4.1.93 - Ensure an audit event is generated for any successfulunsuccessful use of the usermod command
+4.1.94 - Ensure the operating system generates an audit record when there are successfulunsuccessful attempts to use the chacl command
+4.1.95 - Ensure the operating system is configured to audit the execution of the module management program kmod
+4.1.96 - Ensure the operating system generates an audit record when there are successfulunsuccessful modifications to the faillock file occur
+4.1.97 - Ensure the operating system generates an audit record when there are successfulunsuccessful modifications to the lastlog file
+4.1.98 - Ensure the operating system enables auditing of processes that start prior to the audit daemon
+4.1.99 - Ensure the operating system allocates a sufficient audit backlog limit to capture processes that start prior to the audit daemon
+4.1.100 - Ensure the operating system enables Linux audit logging of the USBGuard daemon
+4.1.101 - Ensure the files in directory etcauditrules.d and the etcauditauditd.conf file have a mode of 0640 or less permissive
+4.1.102 - Ensure the audit tools are protected from unauthorized access deletion or modification by checking the permissive mode
+4.1.103 - Ensure the audit tools are owned by root to prevent any unauthorized access deletion or modification
+4.1.104 - Ensure the audit tools are group-owned by root to prevent any unauthorized access deletion or modification
+4.1.105 - Ensure the operating system notifies the SA and ISSO when allocated audit record storage volume reaches 75 percent
+4.1.1.1 - Ensure auditd is installed
+4.1.1.2 - Ensure auditd service is enabled
+4.1.1.3 - Ensure auditing for processes that start prior to auditd is enabled
+4.1.1.4 - Ensure audit backlog limit is sufficient
+4.1.1.5 - Ensure the audit service is configured to produce audit records
+4.1.2.1 - Ensure audit log storage size is configured
+4.1.2.2 - Ensure audit logs are not automatically deleted
+4.1.2.3 - Ensure system is disabled when audit logs are full
+4.1.2.4 - Ensure the operating system allocates audit record storage capacity
+4.1.2.5 - Ensure the operating system has the packages required for offloading audit logs
+4.1.2.6 - Ensure the operating system has the packages required for encrypting offloaded audit logs
+4.1.2.7 - Ensure the audit system off-loads audit records onto a different system or media from the system being audited
+4.1.2.8 - Ensure the audit system is configured to take an appropriate action when the internal event queue is full
+4.1.2.9 - Ensure the operating system encrypts audit records off-loaded onto a different system or media from the system being audited
+4.1.2.10 - Ensure the the operating system authenticates the remote logging server for off-loading audit logs
+4.1.2.11 - Ensure the operating system takes action when allocated audit record storage volume reaches 75 percent of the repository maximum audit record storage capacity
+4.2.3 - Ensure permissions on all logfiles are configured
+4.2.1.1 - Ensure rsyslog is installed
+4.2.1.2 - Ensure the rsyslog service is enabled and active
+4.2.1.3 - Ensure the operating system monitors all remote access methods
+4.2.1.4 - Ensure rsyslog Service is enabled
+4.2.1.5 - Ensure rsyslog default file permissions configured
+4.2.1.6 - Ensure logging is configured
+4.2.1.7 - Ensure rsyslog is configured to send logs to a remote log host
+4.2.1.8 - Ensure remote rsyslog messages are only accepted on designated log hosts.
+4.2.1.9 - Ensure rsyslog is configured to log cron events
+4.2.2.1 - Ensure journald is configured to send logs to rsyslog
+4.2.2.2 - Ensure journald is configured to compress large log files
+4.2.2.3 - Ensure journald is configured to write logfiles to persistent disk
+5.6 - Ensure root login is restricted to system console
+5.7 - Ensure PKI-based authentication has valid certificates
+5.8 - Ensure access to the su command is restricted
+5.9 - Ensure the operating system prevents system daemons from using Kerberos for authentication
+5.10 - Ensure the krb5-workstation package has not been installed on the system
+5.11 - Ensure SSSD prohibits the use of cached authentications after one day
+5.12 - Ensure fapolicyd is installed
+5.13 - Ensure USBGuard has a policy configured
+5.14 - Ensure the OpenSSL library is configured to use only ciphers employing FIPS 140-2-approved algorithms
+5.15 - Ensure the OpenSSL library is configured to use only DoD-approved TLS encryption
+5.16 - Ensure the GnuTLS library is configured to only allow DoD-approved SSLTLS Versions
+5.17 - Ensure fapolicyd is enabled and running
+5.18 - Ensure fapolicyd employs a deny-all permit-by-exception policy
+5.19 - Ensure USBGuard is installed on the operating system
+5.20 - Ensure the operating system has enabled the use of the USBGuard
+5.1.1 - Ensure cron daemon is enabled
+5.1.2 - Ensure permissions on etccrontab are configured
+5.1.3 - Ensure permissions on etccron.hourly are configured
+5.1.4 - Ensure permissions on etccron.daily are configured
+5.1.5 - Ensure permissions on etccron.weekly are configured
+5.1.6 - Ensure permissions on etccron.monthly are configured
+5.1.7 - Ensure permissions on etccron.d are configured
+5.1.8 - Ensure atcron is restricted to authorized users
+5.2.1 - Ensure permissions on etcsshsshd config are configured
+5.2.2 - Ensure SSH private key files have a passcode
+5.2.3 - Ensure SSH access is limited
+5.2.4 - Ensure permissions on SSH private host key files are configured
+5.2.5 - Ensure permissions on SSH public host key files are configured
+5.2.6 - Ensure SSH LogLevel is appropriate
+5.2.7 - Ensure SSH X11 forwarding is disabled
+5.2.8 - Ensure SSH MaxAuthTries is set to 4 or less
+5.2.9 - Ensure SSH IgnoreRhosts is enabled
+5.2.10 - Ensure SSH HostbasedAuthentication is disabled
+5.2.11 - Ensure SSH root login is disabled
+5.2.12 - Ensure SSH PermitEmptyPasswords is disabled
+5.2.13 - Ensure all network connections associated with SSH traffic are automatically terminated at the end of the session or after 10 minutes of inactivity
+5.2.14 - Ensure SSH PermitUserEnvironment is disabled
+5.2.15 - Ensure SSH Idle Timeout Interval is configured
+5.2.16 - Ensure SSH LoginGraceTime is set to one minute or less
+5.2.17 - Ensure SSH warning banner is configured
+5.2.18 - Ensure SSH PAM is enabled
+5.2.19 - Ensure SSH AllowTcpForwarding is disabled
+5.2.20 - Ensure SSH MaxStartups is configured
+5.2.21 - Ensure SSH MaxSessions is set to 4 or less
+5.2.22 - Ensure the SSH server is configured to use only MACs employing FIPS 140-2-approved algorithms
+5.2.23 - Ensure the SSH server is configured to use only ciphers employing FIPS 140-2-approved algorithms
+5.2.24 - Ensure the SSH server uses strong entropy
+5.2.25 - Ensure system-wide crypto policy is not over-ridden
+5.2.26 - Ensure the SSH daemon performs strict mode checking of home directory configuration files
+5.2.27 - Ensure the SSH daemon performs compression after a user successfully authenticates
+5.2.28 - Ensure the SSH daemon does not allow authentication using known hosts authentication
+5.2.29 - Ensure the SSH daemon does not allow Kerberos authentication
+5.2.30 - Ensure null passwords cannot be used
+5.2.31 - Ensure SSH provides users with feedback on when account accesses last occurred
+5.2.32 - Ensure SSH is loaded and active
+5.2.33 - Ensure the SSH server is configured to force frequent session key renegotiation
+5.2.34 - Ensure the SSH daemon prevents remote hosts from connecting to the proxy display
+5.2.35 - Ensure system-wide crypto policies are in effect
+5.2.36 - Ensure the SSH daemon does not allow GSSAPI authentication
+5.2.37 - Ensure SSH is installed
+5.2.38 - Ensure all network connections associated with SSH traffic are automatically terminated at the end of the session or after 10 minutes of inactivity
+5.3.1 - Create custom authselect profile
+5.3.2 - Select authselect profile
+5.3.3 - Ensure authselect includes with-faillock
+5.4.1 - Ensure password creation requirements are configured
+5.4.2 - Ensure the system locks an account after three unsuccessful logon attempts
+5.4.3 - Ensure the etcsecurityfaillock.conf file is configured to lock an account after three unsuccessful logon attempts within 15 minutes
+5.4.4 - Ensure the system locks an account after three unsuccessful logon attempts within a period of 15 minutes
+5.4.5 - Ensure the etcsecurityfaillock.conf file is configured to lock an account after three unsuccessful logon attempts
+5.4.6 - Ensure lockout for failed password attempts is configured
+5.4.7 - Ensure password reuse is limited
+5.4.8 - Ensure password hashing algorithm is SHA-512
+5.4.9 - Ensure a minimum number of hash rounds is configured
+5.4.10 - Ensure the system locks an account after three unsuccessful logon attempts within a period of 15 minutes until released by an administrator
+5.4.11 - Ensure the etcsecurityfaillock.conf file is configured to lock an account until released by an administrator after three unsuccessful logon attempts
+5.4.12 - Ensure the faillock directory contents persist after a reboot
+5.4.13 - Ensure the etcsecurityfaillock.conf file is configured to use a non-default faillock directory to ensure contents persist after reboot
+5.4.14 - Ensure the system prevents informative messages to the user about logon information
+5.4.15 - Ensure the etcsecurityfaillock.conf file is configured to prevent informative messages about logon attempts
+5.4.16 - Ensure the system logs user name information when unsuccessful logon attempts occur
+5.4.17 - Ensure the etcsecurityfaillock.conf file is configured to log user name information when unsuccessful logon attempts occur
+5.4.18 - Ensure the system includes the root account when locking an account after three unsuccessful logon attempts within a period of 15 minutes
+5.4.19 - Ensure the etcsecurityfaillock.conf file is configured to log user name information when unsuccessful logon attempts occur
+5.4.20 - Ensure the operating system prohibits password reuse for a minimum of five generations
+5.4.21 - Ensure the operating system uses multifactor authentication for local access to accounts
+5.4.22 - Ensure the date and time of the last successful account logon upon logon is displayed
+5.4.23 - Ensure the pam unix.so module is configured to use sha512
+5.4.24 - Ensure the pam faillock.so module is present in the etcpam.dsystem-auth file
+5.4.25 - Ensure blank or null passwords in the system-auth file cannot be used
+5.4.26 - Ensure blank or null passwords in the password-auth file cannot be used
+5.4.27 - Ensure the pam faillock.so module is present in the etcpam.dpassword-auth file
+5.5.2 - Ensure system accounts are secured
+5.5.3 - Ensure default user shell timeout is 900 seconds or less
+5.5.4 - Ensure the interactive user account passwords are using a strong password hash
+5.5.5 - Ensure default group for the root account is GID 0
+5.5.6 - Ensure default user umask is 027 or more restrictive
+5.5.7 - Ensure the account identifiers individuals groups roles and devices are disabled after 35 days of inactivity
+5.5.8 - Ensure emergency accounts have been provisioned with an expiration date of 72 hours
+5.5.9 - Ensure the default umask for all local interactive users is 077
+5.5.10 - Ensure the umask default for installed shells is 077
+5.5.11 - Ensure the operating system defines default permissions for all authenticated users in such a way that the user can only read and modify their own files
+5.5.1.1 - Ensure password expiration is 365 days or less
+5.5.1.2 - Ensure the shadow password suite configuration is set to encrypt password with a FIPS 140-2 approved cryptographic hashing algorithm.
+5.5.1.3 - Ensure the value of the maxrepeat option in etcsecuritypwquality.conf is 3
+5.5.1.4 - Ensure the value of the difok option in etcsecuritypwquality.conf is 8
+5.5.1.5 - Ensure the value of the minclass option in etcsecuritypwquality.conf is 4
+5.5.1.6 - Ensure the value of the maxclassrepeat option in etcsecuritypwquality.conf is 4
+5.5.1.7 - Ensure the value for dcredit in etcsecuritypwquality.conf is -1
+5.5.1.8 - Ensure the value for lcredit in etcsecuritypwquality.conf is -1
+5.5.1.9 - Ensure the value for ucredit in etcsecuritypwquality.conf is -1
+5.5.1.10 - Ensure the operating system uses pwquality to enforce the password complexity rules
+5.5.1.11 - Ensure minimum days between password changes is 7 or more
+5.5.1.12 - Ensure password expiration warning days is 7 or more
+5.5.1.13 - Ensure inactive password lock is 30 days or less
+5.5.1.14 - Ensure all users last password change date is in the past
+5.5.1.15 - Ensure the minimum time period between password changes for each user account is one day or greater
+5.5.1.16 - Ensure the operating system enforces 24 hours1 day as the minimum password lifetime for new user accounts
+5.5.1.17 - Ensure the operating system enforces a 60-day maximum password lifetime for new user accounts
+5.5.1.18 - Ensure the maximum time period for existing passwords is restricted to 60 days
+5.5.1.19 - Ensure the operating system enforces a minimum 15-character password length
+5.5.1.20 - Ensure the operating system enforces a minimum 15-character password length for new user accounts
+5.5.1.21 - Ensure the value for ocredit in etcsecuritypwquality.conf is -1
+5.5.1.22 - Ensure the operating system prevents the use of dictionary words for passwords
+5.5.1.23 - Ensure the operating system enforces a delay of at least four seconds between console logon prompts following a failed logon attempt
+6.3 - Ensure the operating system removes all software components after updated versions have been installed
+6.4 - Ensure there are no .shosts files on the operating system
+6.5 - Ensure there are no shosts.equiv files on the operating system
+6.1.1 - Audit system file permissions
+6.1.2 - Ensure permissions on etcpasswd are configured
+6.1.3 - Ensure permissions on etcpasswd- are configured
+6.1.4 - Ensure permissions on etcshadow are configured
+6.1.5 - Ensure permissions on etcshadow- are configured
+6.1.6 - Ensure permissions on etcgshadow are configured
+6.1.7 - Ensure permissions on etcgshadow- are configured
+6.1.8 - Ensure permissions on etcgroup are configured
+6.1.9 - Ensure permissions on etcgroup- are configured
+6.1.10 - Ensure the root account is the only account that has unrestricited access to the operating system
+6.1.11 - Ensure no world writable files exist
+6.1.12 - Ensure no unowned files or directories exist
+6.1.13 - Ensure no ungrouped files or directories exist
+6.1.14 - Ensure all public directories are owned by root or a system account
+6.1.15 - Audit SUID executables
+6.1.16 - Audit SGID executables
+6.1.17 - Ensure the varlogmessages file has mode 0640 or less permissive
+6.1.18 - Ensure the varlogmessages file is owned by root
+6.1.19 - Ensure the varlogmessages file is group-owned by root
+6.1.20 - Ensure the varlog directory has a mode of 0755 or less
+6.1.21 - Ensure the varlog directory is owned by root
+6.1.22 - Ensure the varlog directory is group-owned by root
+6.1.23 - Ensure the system commands contained in the bin sbin usrbin usrsbin usrlocalbin usrlocalsbin directories have mode 0755 or less permissive
+6.1.24 - Ensure the system commands contained in the bin sbin usrbin usrsbin usrlocalbin usrlocalsbin directories are owned by root
+6.1.25 - Ensure the system commands contained in bin sbin usrbin usrsbin usrlocalbin usrlocalsbin directories are group-owned by root
+6.1.26 - Ensure the system-wide shared library files contained in the lib lib64 usrlib usrlib64 directories have mode 0755 or less permissive
+6.1.27 - Ensure the system-wide shared library files are owned by root
+6.1.28 - Ensure the system-wide shared library files are group-owned by root
+6.1.29 - Ensure world-writable directories are owned by root sys bin or an application user
+6.1.30 - Ensure world-writable directories are group-owned by root sys bin or an application group
+6.1.31 - Ensure local initialization files do not execute world-writable programs
+6.1.32 - Ensure the operating systems shell initialization file is configured to start each shell with the tmux terminal multiplexer
+6.1.33 - Ensure the operating system prevents users from disabling the tmux terminal multiplexer
+6.1.34 - Ensure the operating system enables a users session lock until that user re-establishes access
+6.1.35 - Ensure the operating system initiates a session lock after a 15-minute period of inactivity for graphical user interfaces
+6.1.36 - Ensure the operating system initiates a session lock after 15 minutes of inactivity
+6.1.37 - Ensure all accounts on the system are assigned to an active system application or user account
+6.2.1 - Ensure password fields are not empty
+6.2.2 - Ensure no legacy  entries exist in etcpasswd
+6.2.3 - Ensure root PATH Integrity
+6.2.4 - Ensure no legacy  entries exist in etcshadow
+6.2.5 - Ensure no legacy  entries exist in etcgroup
+6.2.6 - Ensure root is the only UID 0 account
+6.2.7 - Ensure users home directories permissions are 750 or more restrictive
+6.2.8 - Ensure emergency accounts have been provisioned with an expiration date of 72 hours
+6.2.9 - Ensure users own their home directories
+6.2.10 - Ensure users dot files are not group or world writable
+6.2.11 - Ensure no users have .forward files
+6.2.12 - Ensure no users have .netrc files
+6.2.13 - Ensure users .netrc Files are not group or world accessible
+6.2.14 - Ensure no users have .rhosts files
+6.2.15 - Ensure all groups in etcpasswd exist in etcgroup
+6.2.16 - Ensure no duplicate UIDs exist
+6.2.17 - Ensure no duplicate GIDs exist
+6.2.18 - Ensure no duplicate user names exist
+6.2.19 - Ensure no duplicate group names exist
+6.2.20 - Ensure shadow group is empty
+6.2.21 - Ensure all users home directories exist
+6.2.22 - Ensure the assigned home directory of all local interactive users is group-owned by that users primary GID
+6.2.23 - Ensure the assigned home directory of all local interactive users exists
+6.2.24 - Ensure all local interactive users are assigned a home directory upon creation
+6.2.25 - Ensure all local initialization files have a mode of 0740 or less permissive
+6.2.26 - Ensure all local files and directories  have a valid owner
+6.2.27 - Ensure all local files and directories have a valid group
+6.2.28 - Ensure the certificate of the user or group is mapped to the corresponding user or group in the sssd.conf file
+6.2.29 - Ensure file executable search path statements do not share sensitive home directory information
+6.2.30 - Ensure local interactive users have a home directory assigned
+6.2.31 - Ensure the operating system limits the number of concurrent sessions to 10 for all accounts andor account types
+6.2.32 - Ensure the operating system enables a users session lock until that user re-establishes access
+6.2.33 - Ensure the operating system enables the user to initiate a session lock
+6.2.34 - Ensure the operating system prevents a user from overriding settings for graphical user interfaces
+6.2.35 - Ensure all files and directories contained in a local interactive user home directory excluding local initialization files have a mode of 0750
+6.2.36 - Ensure all files and directories in the local interactive user home directory are group-owned by a group that the user is a member of
+6.2.37 - Ensure temporary accounts have been provisioned with an expiration date of 72 hours

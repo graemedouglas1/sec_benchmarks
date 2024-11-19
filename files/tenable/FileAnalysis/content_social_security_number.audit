@@ -1,0 +1,49 @@
+#TRUSTED a48d394a70cc5bf36dcc65c7ecba242e580bdc2d0fa70f6106285dff2af7fa0dac1e5e7ad5e8ac59e0bbdf3f39071fb7f1a955fc312d8f51e2f2b87c3251711a4e23f2b485246c17a6c2d3db9b4fb0a5038276037164fe1163429fb4e03f53e9e5b033261f1cc91fba6279e53a04678db5ef3054218c30dbcee2ffb3a79c0227417ccb872d053bb9f85968cada51ec771497f6d2b67faa488bb885c736400c8b5a3b7052ea578c9a62faceae486bcfd30f7a085589dda4e90bbaad69361c146a131d87a672f40a355dd9dd7be00919bf59a1fd824947e42e364f1bea87be5f4f5ab94bdaf1a4d608e8ab930823f80d31e80aec18c48d08125c757caa304b79abe6600fabfb3b9b9f63db9d7cd0d666383be5b299cfc02c845306c75e162d7f20e5c4b33908cf2bf94f99d2a80a66aafbfaa270c947c8b4f542bce716772071eb86b261f0bc2d7479980ff4f5077f9a035d1fd53d5c197fd77bd4a0c2f2ebdddd03c897f00cf9d60deae8f8a3abfabebe22599d906cef31b08df8774fb654a50c5bdaa8a1283416b270706cf198909a8a15c8058ddf4612e7d3afeb24b6b7efb32a1ca32ebddb8d6bc091169a9bcb21a72a2187f2d1f2169c50380535e58af7a8fe6b51b444d64978b28a8e11603bcb2829160eb664b344918496a0decfb90ba0d7a7373047eca1d6d20fdffe352a65d08135b16cdc50177ae83592be8b4f1cff
+#TRUST-RSA-SHA256 84dae49e61edd79bbb28189aa74111c18c86efe148982a8da5adea75717d612239b67b8521597a67c4a7165c439459a3281c73b4dec7e3356a1510b10a56a6751932b9555813dc86c144c4245c674811caeacecf8a4ff6aef269af0bec66032852977a32fe60af26d7461c70ee288999c17c097d5135bee9cc14db13c70652945e24dda04f8c6b6c3c819accd89693fefea8b5b886c072a15b7b6f76dae0c0c6ee0e3c9ba578cd20935be6d25a0c95f2f235feec5a3e47db9ba0d65ee321f4c9194a607336b20a05cfe6ef8df2d9695afa09777a3f3143b302ad1ba3d82858f3b71f3e020738f56a8293c3b5bd2686ddb2842a42421163c8ecc099b6736a57e05919c11c6628f843e49202323cff4be2500a964043eb3465353010eaef096bb00e0faef1633d3c82ee5c0065570282baf7734148751ccad0b4998aacf1837c2141cbdba51906bcaae5f635c4f1541f1000ef99bf7fa051b6a21e58b9f29d776a1aa4a030491bb996c248f02d18ebace5f9682e53e70ae7ffd29467e2920b007f7ed995f052a50f9596aece6ac5059583a56b62416bb8bac888dfa9d9f9a5cae638657c4dda1cab722fbfd7e931e6bed93d87a86a462fc5b12854d9c356389c8136ac55ededc243d2ba35a115f9432231ca64f12c9fa7390dc2a4326d27a83e44e68fc52f1064ec674b7c531e5850d9767a2700f8eba4834f345f826df84a572d
+#
+# This script is Copyright (C) 2004-2023 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.12 $
+# $Date: 2023/05/16 $
+#
+# Description    : This .audit file searches the first 50k bytes of all text, Word, Excel
+#                  and PDF files for evidence of a United States Social Security
+#                  Number (SSN).
+#
+# NOTE           : The "only_show" token is enabled, but can be commented out if you do
+#                  not wish to have any results masked.  In the default example "4" will
+#                  display the first 4 characters (i.e., the first 3 characters and the
+#                  dash, "123-XX-XXXX").
+#
+#<ui_metadata>
+#<display_name>TNS File Analysis - Social Security Number (Generic)</display_name>
+#<spec>
+#  <type>TNS</type>
+#  <name>File Analysis - Social Security Number (Generic)</name>
+#  <version>1.0.0</version>
+#</spec>
+#<labels>filecontent,content,social,security,number,update_20230227</labels>
+#</ui_metadata>
+
+<check_type:"FileContent">
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "PII - File contains a Social Security Number"
+  file_extension : "txt" | "doc" |"docx" | "xls" |"xlsx"| "pdf"
+  regex          : "([^0-9-]|^)([0-9]{3}-[0-9]{2}-[0-9]{4})([^0-9-]|$)"
+  only_show      : "4"
+  expect         : "Social Security Number" | "SSN" | "SOCIAL SECURITY" | "social security" | "SS#" | "Social"
+  max_size       : "50K"
+</item>
+
+</check_type>

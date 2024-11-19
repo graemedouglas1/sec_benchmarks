@@ -1,0 +1,2321 @@
+---
+
+inspec_rules:
+  "1.1.2.3":
+    title: '1.1.2.3 | L1 Ensure Authentication with Exchange server.  is set to  EnabledKerberosNTLM Password Authentication'
+    section: 'Exchange'
+    description: |
+        This policy setting controls which authentication method Outlook uses to authenticate with Microsoft Exchange Server.
+        Note  Exchange Server supports the Kerberos authentication protocol and NTLM for authentication. The Kerberos protocol
+        is the more secure authentication method and is supported on Windows 2000 Server and later versions. NTLM authentication
+        is supported in preWindows 2000 environments.
+                              If you enable this policy setting, you can choose from three different options for controlling how
+        Outlook authenticates with Microsoft Exchange Server  Kerberos/NTLM password authentication. Outlook attempts to
+        authenticate using the Kerberos authentication protocol. If this attempt fails, Outlook attempts to authenticate using
+        NTLM. This option is the default configuration.  Kerberos password authentication. Outlook attempts to authenticate
+        using the Kerberos protocol only.  NTLM password authentication. Outlook attempts to authenticate using NTLM only. If
+        you disable or do not configure this policy setting, Outlook will attempt to authenticate using the Kerberos
+        authentication protocol. If it cannot because no Windows 2000 or later domain controllers are available, it will
+        authenticate using NTLM. The recommended state for this setting is  EnabledKerberos/NTLM Password Authentication .
+        NOTE  When connecting to Office 365, this setting must be set to  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Account Settings\Exchange\Authentication with Exchange
+        Server Then set the  Select the authentication with Exchange server.  option to  Kerberos/NTLM Password Authentication .
+        Impact: The recommended value for this setting in the Microsoft baselines enforces the default configuration, and is
+        therefore unlikely to cause significant usability issues for most users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.1.2.3', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "authenticationservice"'
+            - name: 'authenticationservice'
+              rule: "should have_property_value('authenticationservice', :dword, '')"
+
+  "1.1.2.4":
+    title: '1.1.2.4 | L1 Ensure Automatically configure profile based on Active Directory Primary SMTP address  is set to Enabled'
+    section: 'Exchange'
+    description: |
+        This policy setting controls whether users who are joined to a domain in an Active Directory environment can change the
+        primary SMTP address used when setting up accounts in Outlook.  If you enable this policy setting, users cannot change
+        the SMTP settings Outlook retrieves from Active Directory when setting up a new account.  If you disable or do not
+        configure this policy setting, if a user is joined to a domain in an Active Directory environment and does not have an
+        email account configured, Outlook populates the email address field of the New Account Wizard with the primary SMTP
+        address of the user who is currently logged on to Active Directory. The user can change the address to configure a
+        different account, or click Next to use the default settings from Active Directory. The recommended state for this
+        setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Account Settings\Exchange\Automatically configure profile
+        based on Active Directory Primary SMTP address Impact: Enabling this setting could prevent users from configuring
+        Outlook as desired in some unusual cases (for example, if Active Directory is temporarily inaccessible during setup).
+        However, most users should experience no significant usability issues.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.1.2.4', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Aa]utodiscover'
+        - checks:
+            - rule: 'should have_property "zeroconfigexchange"'
+            - name: 'zeroconfigexchange'
+              rule: "should have_property_value('zeroconfigexchange', :dword, '')"
+
+  "1.1.2.5":
+    title: '1.1.2.5 | L1 Ensure Do not allow users to change permissions on folders is set to Enabled'
+    section: 'Exchange'
+    description: |
+        This policy setting prevents users from changing their mail folder permissions.  If you enable this policy setting,
+        Outlook users cannot change permissions on folders the settings on the Permissions tab are disabled. Enabling this
+        policy setting does not affect existing permissions, and users can still change permissions by sending a sharing
+        message. If you disable or do not configure this policy setting, Outlook users can change the permissions for folders
+        under their control by using the Permissions tab of the Properties dialog box for the folder. The recommended state for
+        this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Account Settings\Exchange\Do not allow users to change
+        permissions on folders Impact: Enabling this setting prevents Outlook users from sharing folders they control with other
+        users. Users who want to share folders will need to ask an administrator to make the necessary change.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.1.2.5', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Oo]ptions\\[Ff]olders'
+        - checks:
+            - rule: 'should have_property "disableeditpermissions"'
+            - name: 'disableeditpermissions'
+              rule: "should have_property_value('disableeditpermissions', :dword, '')"
+
+  "1.1.2.6":
+    title: '1.1.2.6 | L1 Ensure Enable RPC encryption is set to Enabled'
+    section: 'Exchange'
+    description: |
+        This policy setting controls whether Outlook uses remote procedure call RPC encryption to communicate with Microsoft
+        Exchange servers.  If you enable this policy setting, Outlook uses RPC encryption when communicating with an Exchange
+        server. Note  RPC encryption only encrypts the data from the Outlook client computer to the Exchange server. It does not
+        encrypt the messages themselves as they traverse the Internet.  If you disable or do not configure this policy setting,
+        RPC encryption is still used by default. This setting allows you to override the corresponding perprofile setting. The
+        recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Account Settings\Exchange\Enable RPC encryption Impact:
+        Enabling this setting should not have any significant effect on users. However, there is always a trade-off between
+        secure communication and performance, so you should evaluate the performance impact of encrypting every connection from
+        the Outlook client computer and the Exchange server.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.1.2.6', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Rr]pc'
+        - checks:
+            - rule: 'should have_property "enablerpcencryption"'
+            - name: 'enablerpcencryption'
+              rule: "should have_property_value('enablerpcencryption', :dword, '')"
+
+  "1.1.5.1":
+    title: '1.1.5.1 | L1 Ensure Automatically download attachments is set to Disabled'
+    section: 'Internet Calendars'
+    description: |
+        This policy setting controls whether Outlook downloads files attached to Internet Calendar appointments.  If you enable
+        this policy setting, Outlook automatically downloads all Internet Calendar appointment attachments  If you disable or do
+        not configure this policy setting, Outlook does not download attachments when retrieving Internet Calendar appointments.
+        The recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Account Settings\Internet Calendars\Automatically download
+        attachments Impact: Disabling this setting enforces the default configuration in Outlook, and therefore is unlikely to
+        cause usability issues for most users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.1.5.1', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Oo]ptions\\[Ww]ebcal'
+        - checks:
+            - rule: 'should have_property "enableattachments"'
+            - name: 'enableattachments'
+              rule: "should have_property_value('enableattachments', :dword, '')"
+
+  "1.1.5.2":
+    title: '1.1.5.2 | L1 Ensure Do not include Internet Calendar integration in Outlook is set to Enabled'
+    section: 'Internet Calendars'
+    description: |
+        This policy setting allows you to determine whether or not you want to include Internet Calendar integration in Outlook.
+        The Internet Calendar feature in Outlook enables users to publish calendars online using the webcal// protocol and
+        subscribe to calendars that others have published. When users subscribe to an Internet calendar, Outlook queries the
+        calendar at regular intervals and downloads any changes as they are posted.  If you enable this policy setting, all
+        Internet calendar functionality in Outlook is disabled.  If you disable or do not configure this policy setting, Outlook
+        allows users to subscribe to Internet calendars. The recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Account Settings\Internet Calendars\Do not include
+        Internet Calendar integration in Outlook Impact: Enabling this setting can cause disruptions for users who subscribe to
+        Internet calendars from within Outlook. These users will have to use another method to access Internet calendar data.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.1.5.2', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Oo]ptions\\[Ww]ebcal'
+        - checks:
+            - rule: 'should have_property "disable"'
+            - name: 'disable'
+              rule: "should have_property_value('disable', :dword, '')"
+
+  "1.1.6.1":
+    title: '1.1.6.1 | L1 Ensure Download full text of articles as HTML attachments is set to Disabled'
+    section: 'RSS Feeds'
+    description: |
+        This policy setting controls whether Outlook automatically makes an offline copy of the RSS items as HTML attachments.
+        If you enable this policy setting, Outlook automatically makes an offline copy of RSS items as HTML attachments.  If you
+        disable or do not configure this policy setting, Outlook will not automatically make an offline copy of RSS items as
+        HTML attachments. The recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Account Settings\RSS Feeds\Download full text of articles
+        as HTML attachments Impact: This setting enforces the default configuration and therefore should have minimal impact on
+        most users. Disabling this setting could cause minor disruptions for users who are accustomed to reading articles as
+        HTML attachments within Outlook. These users will have to click the View article link to open such articles in the
+        default Web browser.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.1.6.1', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Oo]ptions\\[Rr]ss'
+        - checks:
+            - rule: 'should have_property "enablefulltexthtml"'
+            - name: 'enablefulltexthtml'
+              rule: "should have_property_value('enablefulltexthtml', :dword, '')"
+
+  "1.1.6.2":
+    title: '1.1.6.2 | L1 Ensure Synchronize Outlook RSS Feeds with Common Feed List is set to Disabled'
+    section: 'RSS Feeds'
+    description: |
+        This policy setting controls whether Outlook subscribes to the Common Feed List, which is made available to multiple RSS
+        clients. The Common Feed List is a hierarchical set of RSS Feeds to which clients such as Outlook, the Feeds list in
+        Internet Explorer 7, and the Feed Headlines Sidebar gadget in Windows Vista can subscribe.  If you enable this policy
+        setting, Outlook automatically subscribes to RSS Feeds added in Internet Explorer, and Outlook RSS Feeds are
+        synchronized with the Common Feed List so they are available in Internet Explorer. Be aware that thirdparty applications
+        besides Internet Explorer can add RSS Feeds to the Common Feed List, and if you enable this setting Outlook
+        automatically subscribes to those RSS Feeds as well.  If you disable or do not configure this policy setting, Outlook
+        maintains its own list of RSS Feeds and does not automatically subscribe to RSS Feeds that are added to the Common Feed
+        List. The recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Account Settings\RSS Feeds\Synchronize Outlook RSS Feeds
+        with Common Feed List Impact: Disabling this setting can cause disruptions for users who are accustomed to accessing the
+        Common Feed List in Outlook. Users will still have access to the Common Feed List through Internet Explorer 7 and other
+        client programs. Disabling this setting does not prevent users from maintaining a separate RSS Feeds subscriptions list
+        in Outlook.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.1.6.2', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Oo]ptions\\[Rr]ss'
+        - checks:
+            - rule: 'should have_property "synctosyscfl"'
+            - name: 'synctosyscfl'
+              rule: "should have_property_value('synctosyscfl', :dword, '')"
+
+  "1.1.6.3":
+    title: '1.1.6.3 | L1 Ensure Turn Off RSS Feature is set to Enabled'
+    section: 'RSS Feeds'
+    description: |
+        This policy setting controls whether the RSS aggregation feature in Outlook is enabled.  If you enable this policy
+        setting, the RSS aggregation feature in Outlook is disabled.  If you disable or do not configure this policy setting,
+        users can subscribe to RSS Feeds from within Outlook and read RSS items like email messages.
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Account Settings\RSS Feeds\Turn Off RSS Feature Impact:
+        Enabling this setting might cause some disruptions for users who are accustomed to reading RSS feeds in Outlook. It does
+        not affect the performance of other RSS clients, such as Internet Explorer 7.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.1.6.3', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Oo]ptions\\[Rr]ss'
+        - checks:
+            - rule: 'should have_property "disable"'
+            - name: 'disable'
+              rule: "should have_property_value('disable', :dword, '')"
+
+  "1.6.1":
+    title: '1.6.1 | L1 Ensure Check to disable users from adding entries to server list is set to EnabledPublish default disallow others'
+    section: 'Meeting Workspace'
+    description: |
+        This policy setting controls whether Outlook users can add entries to the list of SharePoint servers when establishing a
+        meeting workspace.  If you enable this policy setting, you can choose between two options to determine whether Outlook
+        users can add entries to the published server list Publish default, allow others. This option is the default
+        configuration in Outlook. Publish default, disallow others. This option prevents users from adding servers to the
+        default published server list.  If you disable or do not configure this policy setting, when users create a meeting
+        workspace, they can choose a server from a default list provided by administrators or manually enter the address of a
+        server that is not listed. This is the equivalent of Enabled  Publish default, allow others. The recommended state for
+        this setting is  EnabledPublish default, disallow others .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Meeting Workspace\Disable user entries to server
+        list\Disable user entries to server list Then set the  Check to disable users from adding entries to server list  option
+        to  Publish default, disallow others . Impact: If you configure this setting to "Publish default, disallow others,"
+        users in your organization who have a legitimate need to use servers other than those in the published server list will
+        need to obtain administrative assistance.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.6.1', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Mm]eetings\\[Pp]rofile'
+        - checks:
+            - rule: 'should have_property "serverui"'
+            - name: 'serverui'
+              rule: "should have_property_value('serverui', :dword, '')"
+
+  "1.8.2.1":
+    title: '1.8.2.1 | L1 Ensure PST Null Data On Delete is set to Enabled'
+    section: 'PST Settings'
+    description: |
+        This policy setting allows you to force Outlook to fully nullify deleted data in users Personal Folder files .pst at the
+        time that the data is deleted.  If you enable this policy setting, data is immediately nullified in PST files when
+        deleted.  If you disable or do not configure this policy setting, data remains in PST files until it is purged or
+        overwritten by the user.  The recommended state for this setting is  Enabled.
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration \Administrative Templates\Microsoft Outlook 2013\Miscellaneous\PST Settings
+                                 Impact: Users may experience a delay in deleting a .pst file as it will take some time to write
+        nulls to every location in the .pst file when deleted.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.8.2.1', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Pp]st'
+        - checks:
+            - rule: 'should have_property "pstnullfreeondelete"'
+            - name: 'pstnullfreeondelete'
+              rule: "should have_property_value('pstnullfreeondelete', :dword, '')"
+
+  "1.9.4.2.2":
+    title: '1.9.4.2.2 | L1 Ensure  Outlook Rich Text Options is set to Enabled'
+    section: 'Internet Formatting'
+    description: |
+        This policy setting controls how Outlook sends Rich Text Format RTF messages to Internet recipients. If you enable this
+        policy setting, you may choose from the following for handling RTF messages addressed to recipients on the Internet
+        Convert to Plain Text format  Outlook converts the message to plain text format in the default character set. Any
+        message formatting will be lost. If you disable or do not configure this policy setting, Outlook automatically converts
+        RTF formatted messages that are sent over the Internet to HTML format, so that the message formatting is maintained and
+        attachments are received. The recommended state for this setting is  Enabled.
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Outlook Options\Mail Format\Internet Formatting\Outlook
+        Rich Text Options Impact: If you configure this setting to "Convert to Plain Text format" Outlook will remove any
+        formatting applied to RTF messages when sent to recipients over the Internet. Users who compose messages in HTML or
+        plain text format will not be affected by this setting.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.9.4.2.2', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Oo]ptions\\[Mm]ail'
+        - checks:
+            - rule: 'should have_property "message rtf format"'
+            - name: 'message rtf format'
+              rule: "should have_property_value('message rtf format', :dword, '')"
+
+  "1.9.4.2.3":
+    title: '1.9.4.2.3 | L1 Ensure Plain Text Options is set to Disabled'
+    section: 'Internet Formatting'
+    description: |
+        This policy setting allows you to control how plain text messages are formatted when they are sent from Outlook.  If you
+        enable this policy setting, text is automatically wrapped in Internet email messages and attachments are encoded in
+        UUENCODE format.  If you disable this policy setting, Outlook uses the standard MIME format to encode attachments in
+        plain text Outlook messages. Users will not be able to change this configuration.  If you do not configure this policy
+        setting, the behavior is the equivalent of setting the policy to Disabled, but users can modify plain text options in
+        Outlook when required by clicking Tools, clicking Options, clicking the Mail Format tab, clicking Internet Format, and
+        changing the values under Plain text options. The recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Outlook Options\Mail Format\Internet Formatting\Plain text
+        options\: Encode attachments in UUENCODE format Impact: If this setting is not configured, users can modify plain text
+        options in Outlook when required by clicking Tools, clicking Options, clicking the Mail Format tab, clicking Internet
+        Format, and changing the values under Plain text options. If you enable this policy setting, text is automatically
+        wrapped in Internet e-mail messages and attachments are encoded in UUENCODE format.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.9.4.2.3', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Oo]ptions\\[Mm]ail'
+        - checks:
+            - rule: 'should have_property "message plain format mime"'
+            - name: 'message plain format mime'
+              rule: "should have_property_value('message plain format mime', :dword, '')"
+
+  "1.9.4.4":
+    title: '1.9.4.4 | L1 Ensure Do not allow signatures for e-mail messages to Disabled'
+    section: 'Mail Format'
+    description: |
+        This policy setting allows you to prevent Outlook users from adding signatures to emails they create, reply to, or
+        forward.  If you enable this policy setting, Outlook users cannot manually add signatures to emails they create, reply
+        to, or forward, nor will they be able to configure automatic signatures. If you disable or do not configure this policy
+        setting, Outlook users can add signatures to email messages either manually or automatically. The recommended state for
+        this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Outlook Options\Mail Format\Do not allow signatures for
+        e-mail messages Impact: The recommended settings do not change the default configuration of Outlook, and therefore
+        should not affect usability.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.9.4.4', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Cc]ommon\\[Mm]ailsettings'
+        - checks:
+            - rule: 'should have_property "disablesignatures"'
+            - name: 'disablesignatures'
+              rule: "should have_property_value('disablesignatures', :dword, '')"
+
+  "1.9.6.1.2":
+    title: '1.9.6.1.2 | L1 Ensure Do not allow folders in non-default stores to be set as folder home pages is set to Enabled'
+    section: 'Advanced'
+    description: |
+        By default, creating folder home pages for folders in nondefault stores is blocked you cannot define a folder home page
+        for a folder that is in a nondefault store. This setting allows you to unblock folder home pages for folders in
+        nondefault stores. Note that other settings might still prevent folder home pages from functioning. The recommended
+        state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Outlook Options\Other\Advanced\Do not allow folders in
+        non-default stores to be set as folder home pages Impact: For more information, see Configure security for Outlook
+        folder home pages.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.9.6.1.2', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "nondefaultstorescript"'
+            - name: 'nondefaultstorescript'
+              rule: "should have_property_value('nondefaultstorescript', :dword, '')"
+
+  "1.9.6.1.3":
+    title: '1.9.6.1.3 | L1 Ensure Do not allow Outlook object model scripts to run for public folders is set to Enabled'
+    section: 'Advanced'
+    description: |
+        This policy setting controls whether Outlook executes scripts that are associated with custom forms or folder home pages
+        for public folders.  If you enable this policy setting, Outlook cannot execute any scripts associated with public
+        folders, overriding any configuration changes on users computers.  If you disable or do not configure this policy
+        setting Outlook will automatically run any scripts associated with custom forms or folder home pages for public folders.
+        The recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Outlook Options\Other\Advanced\Do not allow Outlook object
+        model scripts to run for public folders Impact: If your organization uses custom forms or public folder home pages that
+        contain scripts, enabling this setting can reduce their functionality or render them unusable. Consider surveying your
+        organization's public folders for affected items before you enable this setting.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.9.6.1.3', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "publicfolderscript"'
+            - name: 'publicfolderscript'
+              rule: "should have_property_value('publicfolderscript', :dword, '')"
+
+  "1.9.6.1.4":
+    title: '1.9.6.1.4 | L1 Ensure Do not allow Outlook object model scripts to run for shared folders is set to Enabled'
+    section: 'Advanced'
+    description: |
+        This policy setting controls whether Outlook executes scripts associated with custom forms or folder home pages for
+        shared folders.  If you enable this policy setting, Outlook cannot execute any scripts associated with shared folders,
+        overriding any configuration changes on users computers.  If you disable this policy setting, Outlook will automatically
+        run any scripts associated with custom forms or folder home pages for shared folders.  If you do not configure this
+        policy setting, the behavior is the equivalent of setting the policy to Enabled. The recommended state for this setting
+        is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Outlook Options\Other\Advanced\Do not allow Outlook object
+        model scripts to run for shared folders Impact: Enabling this setting enforces the default configuration in Outlook, and
+        therefore is unlikely to cause usability issues for most users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.9.6.1.4', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "sharedfolderscript"'
+            - name: 'sharedfolderscript'
+              rule: "should have_property_value('sharedfolderscript', :dword, '')"
+
+  "1.9.6.1.5":
+    title: '1.9.6.1.5 | L1 Ensure Use Unicode format when dragging e-mail message to file system is set to Disabled'
+    section: 'Advanced'
+    description: |
+        This policy setting controls whether email messages dragged from Outlook to the file system are saved in Unicode or ANSI
+        format.  If you enable this policy setting, when users drag an email message from Outlook to the file system, Outlook
+        uses the Unicode character encoding standard to create the message file, which preserves special characters in the
+        message.  If you disable or do not configure this policy setting, when users drag an email message from Outlook to the
+        file system, the message file created is in ANSI format. The recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Outlook Options\Other\Advanced\Use Unicode format when
+        dragging e-mail message to file system Impact: Disabling this setting enforces the default configuration in Outlook, and
+        is therefore unlikely to cause significant usability issues for most users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.9.6.1.5', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Oo]ptions\\[Gg]eneral'
+        - checks:
+            - rule: 'should have_property "msgformat"'
+            - name: 'msgformat'
+              rule: "should have_property_value('msgformat', :dword, '')"
+
+  "1.9.6.3":
+    title: '1.9.6.3 | L1 Ensure Make Outlook the default program for E-mail Contacts and Calendar is set to Enabled'
+    section: 'Other'
+    description: |
+        This policy setting controls whether Outlook is the default program for email, contacts, and calendar services. If you
+        enable this policy setting, the Make Outlook the default program for Email, Contacts, and Calendar check box on the
+        General tab of the Office Center is selected and users cannot change it. If you disable this policy setting, users
+        cannot make Outlook the default program for these services. If you do not configure this policy setting, Outlook is made
+        the default program for email, contacts, and calendar services when it is installed, although users can designate other
+        programs as the default programs for these services. The recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Outlook Options\Other\Make Outlook the default program for
+        E-mail, Contacts, and Calendar Impact: In most environments that use the Microsoft Office system, Outlook is often
+        already the default program for e-mail, contacts, and calendaring for most users. Therefore, enabling this setting is
+        unlikely to cause usability issues.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.9.6.3', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Oo]ptions\\[Gg]eneral'
+        - checks:
+            - rule: 'should have_property "check default client"'
+            - name: 'check default client'
+              rule: "should have_property_value('check default client', :dword, '')"
+
+  "1.9.8.1.2.1":
+    title: '1.9.8.1.2.1 | L1 Ensure Access to published calendars is set to Enabled'
+    section: 'Office.com Sharing Service'
+    description: |
+        This policy setting determines what restrictions apply to users who publish their calendars on Office.com or thirdparty
+        World Wide Web Distributed Authoring and Versioning WebDAV servers.  If you enable or disable this policy setting,
+        calendars that are published on Office.com must have restricted access users other than the calendar owner/publisher who
+        wish to view the calendar can only do so if they receive invitations from the calendar owner, and users cannot publish
+        their calendars to thirdparty DAV servers.  If you do not configure this policy setting, users can share their calendars
+        with others by publishing them to the Office.com Calendar Sharing Services and to a server that supports the World Wide
+        Web Distributed Authoring and Versioning WebDAV protocol. Office.com allows users to choose whether to restrict access
+        to their calendars to people they invite, or allow unrestricted access to anyone who knows the URL to reach the
+        calendar. DAV access restrictions can only be achieved through server and folder permissions, and might require the
+        assistance of a server administrator to set up and maintain. The recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Outlook Options\Preferences\Calendar Options\Office.com
+        Sharing Service\Access to published calendars Impact: Most users probably don't want to make their calendars available
+        to every user on Office.com, so the effect will likely be minimal in most environments.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.9.8.1.2.1', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Oo]ptions\\[Pp]ubcal'
+        - checks:
+            - rule: 'should have_property "restrictedaccessonly"'
+            - name: 'restrictedaccessonly'
+              rule: "should have_property_value('restrictedaccessonly', :dword, '')"
+
+  "1.9.8.1.2.2":
+    title: '1.9.8.1.2.2 | L1 Ensure Prevent publishing to a DAV server is set to Enabled'
+    section: 'Office.com Sharing Service'
+    description: |
+        This policy setting controls whether Outlook users can publish their calendars to a DAV server.  If you enable this
+        policy setting, Outlook users cannot publish their calendars to a DAV server.  If you disable or do not configure this
+        policy setting, Outlook users can share their calendars with others by publishing them to a server that supports the
+        World Wide Web Distributed Authoring and Versioning WebDAV protocol. The recommended state for this setting is  Enabled
+        .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Outlook Options\Preferences\Calendar Options\Office.com
+        Sharing Service\Prevent publishing to a DAV server Impact: Enabling this setting will cause disruptions for Outlook
+        users who publish their calendar data to a DAV server. Such users will need to publish their calendar data to a
+        different resource, such as the Microsoft Online Calendar Sharing Service, or stop publishing their calendar data. Users
+        who do not publish calendar data will not be affected by this setting.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.9.8.1.2.2', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Oo]ptions\\[Pp]ubcal'
+        - checks:
+            - rule: 'should have_property "disabledav"'
+            - name: 'disabledav'
+              rule: "should have_property_value('disabledav', :dword, '')"
+
+  "1.9.8.1.2.3":
+    title: '1.9.8.1.2.3 | L1 Ensure Prevent publishing to Office.com is set to Enabled'
+    section: 'Office.com Sharing Service'
+    description: |
+        This policy setting controls whether Outlook users can publish their calendars to the Office.com Calendar Sharing
+        Service.  If you enable this policy setting, Outlook users cannot publish their calendars to Office.com.  If you disable
+        do not configure this policy setting, Outlook users can share their calendars with selected others by publishing them to
+        the Microsoft Outlook Calendar Sharing Service. Users can control who can view their calendar and at what level of
+        detail. The recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Outlook Options\Preferences\Calendar Options\Office.com
+        Sharing Service\Prevent publishing to Office.com Impact: Enabling this setting will cause disruptions for Outlook users
+        who publish their calendar data to Microsoft Office.com. Such users will have to publish their calendar data to a
+        different resource or stop publishing their calendar data. Users who do not publish calendar data will not be affected
+        by this setting.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.9.8.1.2.3', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Oo]ptions\\[Pp]ubcal'
+        - checks:
+            - rule: 'should have_property "disableofficeonline"'
+            - name: 'disableofficeonline'
+              rule: "should have_property_value('disableofficeonline', :dword, '')"
+
+  "1.9.8.1.2.4":
+    title: '1.9.8.1.2.4 | L1 Ensure Restrict level of calendar details users can publish is set to EnabledDisables Full details and Limited details'
+    section: 'Office.com Sharing Service'
+    description: |
+        This policy setting controls the level of calendar details that Outlook users can publish to the Microsoft Outlook
+        Calendar Sharing Service.  If you enable this policy setting, you can choose from three levels of detail   All options
+        are available  This level of detail is the default configuration.   Disables Full details   Disables Full details and
+        Limited details  If you disable or do not configure this policy setting, Outlook users can share their calendars with
+        selected others by publishing them to the Microsoft Outlook Calendar Sharing Service. Users can choose from three levels
+        of detail   Availability only  Authorized visitors will see the users time marked as Free, Busy, Tentative, or Out of
+        Office, but will not be able to see the subjects or details of calendar items.   Limited details  Authorized visitors
+        can see the users availability and the subjects of calendar items only. They will not be able to view the details of
+        calendar items. Optionally, users can allow visitors to see the existence of private items.   Full details  Authorized
+        visitors can see the full details of calendar items. Optionally, users can allow visitors to see the existence of
+        private items.  The recommended state for this setting is
+                                    EnabledDisables Full details and Limited details .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Outlook Options\Preferences\Calendar Options\Office.com
+        Sharing Service\Restrict level of calendar details users can publish Then set the  Restrict level of calendar details
+        users can publish  option to  Disables 'Full details' and 'Limited details' . Impact: Choosing Disables 'Full details'
+        or Disables 'Full details' and 'Limited details' could cause disruptions for Outlook users who rely on the ability to
+        publish details of their appointments to the Microsoft Office Outlook Calendar Sharing Service. These users will have to
+        communicate appointment details to outside parties by other means.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.9.8.1.2.4', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Oo]ptions\\[Pp]ubcal'
+        - checks:
+            - rule: 'should have_property "publishcalendardetailspolicy"'
+            - name: 'publishcalendardetailspolicy'
+              rule: "should have_property_value('publishcalendardetailspolicy', :dword, '')"
+
+  "1.9.8.1.2.5":
+    title: '1.9.8.1.2.5 | L1 Ensure Restrict upload method is set to Enabled'
+    section: 'Office.com Sharing Service'
+    description: |
+        This policy setting controls whether Outlook can automatically upload calendar updates to Office.com.  If you enable
+        this policy setting, Outlook enforces the Single Upload Updates will not be uploaded from the Published Calendar
+        Settings dialog option, and calendar updates are not uploaded. Users will not be able to change this setting. If you
+        disable this policy setting Outlook automatically publishes calendar updates to Office.com at regular intervals and
+        users will not be able to change this.  If you do not configure this policy setting, when users publish their calendar
+        to Office.com using the Microsoft Outlook Calendar Sharing Service, Outlook updates the calendars online at regular
+        intervals unless they click Advanced and select Single Upload Updates will not be uploaded from the Published Calendar
+        Settings dialog. The recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Outlook Options\Preferences\Calendar Options\Office.com
+        Sharing Service\Restrict upload method Impact: Enabling this setting could cause disruptions for users who publish their
+        calendars to the Microsoft Office Outlook Calendar Sharing Service. These users will have to use the Single Upload
+        option to manually update their calendars. If users do not publish regularly, their online calendars could become
+        significantly out of date.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.9.8.1.2.5', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Oo]ptions\\[Pp]ubcal'
+        - checks:
+            - rule: 'should have_property "singleuploadonly"'
+            - name: 'singleuploadonly'
+              rule: "should have_property_value('singleuploadonly', :dword, '')"
+
+  "1.9.8.3.3":
+    title: '1.9.8.3.3 | L1 Ensure Read e-mail as plain text is set to Enabled'
+    section: 'E-mail Options'
+    description: |
+        This policy setting determines whether Outlook renders all email messages in plain text format for reading. Outlook can
+        display email messages and other items in three formats plain text, Rich Text Format RTF, and HTML.  If you enable this
+        policy setting, the Read all standard mail in plain text check box option is selected in the Email Security section of
+        the Trust Center and users cannot change it. This option only changes the way email messages are displayed the original
+        message is not converted to plain text format.  If you disable or do not configure this policy setting, Outlook displays
+        email messages in whatever format they were received in. The recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Outlook Options\Preferences\E-mail Options\Read e-mail as
+        plain text Impact: Enabling this setting forces Outlook to display all messages in plain text, which could cause
+        disruptions for users who receive messages in HTML or RTF formats. Inline graphics in the messages will not display, and
+        the text of formatted messages might become distorted or illegible.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.9.8.3.3', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Oo]ptions\\[Mm]ail'
+        - checks:
+            - rule: 'should have_property "readasplain"'
+            - name: 'readasplain'
+              rule: "should have_property_value('readasplain', :dword, '')"
+
+  "1.9.8.3.4":
+    title: '1.9.8.3.4 | L1 Ensure Read signed e-mail as plain text is set to Enabled'
+    section: 'E-mail Options'
+    description: |
+        This policy setting determines whether Outlook renders all digitally signed email in plain text format for reading.
+        Outlook can display email messages and other items in three formats plain text, Rich Text Format RTF, and HTML.  If you
+        enable this policy setting, the Read all standard mail in plain text check box option is selected in the Email Security
+        section of the Trust Center and users cannot change it. This option only changes the way email messages are displayed
+        the original message is not converted to plain text format.  If you disable or do not configure this policy setting,
+        Outlook displays digitally signed email messages in the format they were received in. The recommended state for this
+        setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Outlook Options\Preferences\E-mail Options\Read signed
+        e-mail as plain text Impact: Enabling this setting forces Outlook to display signed messages in plain text, which could
+        cause disruptions for users who receive signed messages in HTML or RTF formats. Inline graphics in the messages will not
+        display, and the text of formatted messages might become distorted or illegible.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.9.8.3.4', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Oo]ptions\\[Mm]ail'
+        - checks:
+            - rule: 'should have_property "readsignedasplain"'
+            - name: 'readsignedasplain'
+              rule: "should have_property_value('readsignedasplain', :dword, '')"
+
+  "1.9.8.4.1":
+    title: '1.9.8.4.1 | L1 Ensure Add e-mail recipients to users Safe Senders Lists is set to Disabled'
+    section: 'Junk E-mail'
+    description: |
+        This policy setting controls whether recipients email addresses are automatically added to the users Safe Senders List
+        in Microsoft Outlook. Sometimes users will send email messages to request that they be taken off a mailing list. If the
+        email recipient is then automatically added to the Safe Senders List, future email messages from that address will no
+        longer be sent to the users Junk Email folder, even if it would otherwise be considered junk.  If you enable this policy
+        setting, all recipients of outgoing messages are automatically added to users Safe Senders Lists. If users respond to
+        junk email senders while this policy setting is Enabled, all future junk email from the same address will be considered
+        safe.  If you disable this policy setting, recipients of outgoing messages are not automatically added to the Safe
+        Senders List. Users must explicitly add addresses to the list.  If you do not configure this policy setting, recipients
+        of outgoing messages are not added automatically to individual users Safe Senders Lists. However, users can change this
+        configuration in the Outlook user interface. The recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Outlook Options\Preferences\Junk E-mail\Add e-mail
+        recipients to users' Safe Senders Lists Impact: In most situations, modifying this setting will have minimal effect on
+        usability. However, if users send e-mail messages to many recipients, manually adding the recipients to a Safe Senders
+        List might affect productivity. In such situations, you can choose to enable the setting for some groups of users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.9.8.4.1', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Oo]ptions\\[Mm]ail'
+        - checks:
+            - rule: 'should have_property "junkmailtrustoutgoingrecipients"'
+            - name: 'junkmailtrustoutgoingrecipients'
+              rule: "should have_property_value('junkmailtrustoutgoingrecipients', :dword, '')"
+
+  "1.9.8.4.2":
+    title: '1.9.8.4.2 | L1 Ensure Hide Junk Mail UI is set to Disabled'
+    section: 'Junk E-mail'
+    description: |
+        This policy setting controls whether the Junk Email Filter is enabled in Outlook. The Junk Email Filter in Outlook is
+        designed to intercept the most obvious junk email, or spam, and send it to users Junk Email folders. The filter
+        evaluates each incoming message based on several factors, including the time when the message was sent and the content
+        of the message. The filter does not single out any particular sender or message type, but instead analyzes each message
+        based on its content and structure to discover whether or not it is probably spam.
+                                 If you enable this policy setting, junk email filtering in Outlook is turned off entirely, in
+        addition to hiding the filtering controls from users. In addition, you can use the Junk Email Protection level policy
+        setting to preset a filtering level and prevent users from changing it. Note  This policy setting does not affect the
+        configuration of the Microsoft Exchange Server Intelligent Message Filter IMF, which provides serverlevel junk email
+        filtering.  If you disable or do not configure this policy setting, the Junk Email Filter in Outlook is enabled. The
+        recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Outlook Options\Preferences\Junk E-mail\Hide Junk Mail UI
+        Impact: The name of this setting is somewhat misleading, as enabling it turns off junk e-mail filtering in Outlook
+        entirely, in addition to hiding the filtering controls from users. You can use the "Junk E-mail Protection level"
+        setting to preset a filtering level and prevent users from changing it. This setting does not affect the configuration
+        of the Microsoft Exchange Server Intelligent Message Filter (IMF), which provides server-level junk e-mail filtering.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.9.8.4.2', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook'
+        - checks:
+            - rule: 'should have_property "disableantispam"'
+            - name: 'disableantispam'
+              rule: "should have_property_value('disableantispam', :dword, '')"
+
+  "1.9.8.4.3":
+    title: '1.9.8.4.3 | L1 Ensure Junk E-mail protection level Select level is set to EnabledHigh'
+    section: 'Junk E-mail'
+    description: |
+        This policy setting controls your Junk Email protection level. The Junk Email Filter in Outlook helps to prevent junk
+        email messages, also known as spam, from cluttering users Inbox. The filter evaluates each incoming message based on
+        several factors, including the time when the message was sent and the content of the message. The filter does not single
+        out any particular sender or message type, but instead analyzes each message based on its content and structure to
+        discover whether or not it is probably spam. If you enable this policy setting, you can select one of the four listed
+        options available. After you select an option, users will not be able to change it. If you disable this policy setting,
+        Outlook reverts to the userdefined protection level. If you do not configure this policy setting, users can change their
+        junk email filtering options. The recommended state for this setting is  EnabledHigh .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Outlook Options\Preferences\Junk E-mail\Junk E-mail
+        protection level Then set the  Junk E-mail protection level:
+                                       Select level:  option to  High . Impact: Different users might receive different amounts
+        of junk e-mail. Enabling this setting might result in setting the junk e-mail protection level too high for some users
+        and too low for others.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.9.8.4.3', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Oo]ptions\\[Mm]ail'
+        - checks:
+            - rule: 'should have_property "junkmailprotection"'
+            - name: 'junkmailprotection'
+              rule: "should have_property_value('junkmailprotection', :dword, '')"
+
+  "1.9.8.4.4":
+    title: '1.9.8.4.4 | L1 Ensure Trust e-mail from contacts is set to Enabled'
+    section: 'Junk E-mail'
+    description: |
+        This policy setting controls whether Outlook analyzes email from users Contacts when filtering junk email. If you enable
+        this policy setting, the Also trust Email from my Contacts check box is selected in the Safe Senders tab of the Junk
+        Email Options dialog and users cannot change it. Email addresses in users Contacts list are treated as safe senders for
+        purposes of filtering junk email. If you disable this policy setting, email addresses in users Contacts list are not
+        treated as safe senders for purposes of filtering junk email, and users cannot change this configuration. If you do not
+        configure this policy setting, email messages that are received from people who are listed in Contacts are considered
+        safe by the Junk Email Filter, but users can change this configuration. The recommended state for this setting is
+        Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Outlook Options\Preferences\Junk E-mail\Trust e-mail from
+        contacts Impact: Enabling this setting enforces the default configuration in Outlook, and is therefore unlikely to cause
+        any significant usability issues for most users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.9.8.4.4', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Oo]ptions\\[Mm]ail'
+        - checks:
+            - rule: 'should have_property "junkmailtrustcontacts"'
+            - name: 'junkmailtrustcontacts'
+              rule: "should have_property_value('junkmailtrustcontacts', :dword, '')"
+
+  "1.9.11":
+    title: '1.9.11 | L1 Ensure Internet and Network Paths into Hyperlinks is set to Disabled'
+    section: 'Outlook Options'
+    description: |
+        This policy setting specifies whether Outlook automatically turns text that represents Internet and network paths into
+        hyperlinks. This option can also be configured by selecting the Internet and network paths with hyperlinks check box
+        that is available on the Outlook  File  Options  Mail  Editor Options....  Proofing  AutoCorrect Optionsx2026
+        AutoFormat tab on the user interface UI. If you enable or do not configure this policy setting, text in Outlook that
+        represents internet and network paths are automatically turned into hyperlinks. This is the default behavior of Outlook.
+        If you disable this policy setting, text in Outlook that represents internet and network paths are not automatically
+        turned into hyperlinks.  The recommended state for this setting is  Disabled.
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Outlook Options\Internet and Network Paths into Hyperlinks
+        Impact: Users will not be able to click on hyperlinks for Internet and network paths. Instead they will need to manually
+        copy and paste the paths (if desired).
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.9.11', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Oo]ptions\\[Aa]utoformat'
+        - checks:
+            - rule: 'should have_property "pgrfafo_25_1"'
+            - name: 'pgrfafo_25_1'
+              rule: "should have_property_value('pgrfafo_25_1', :dword, '')"
+
+  "1.10.1":
+    title: '1.10.1 | L1 Ensure Do Not Download Photos from Active Directory is set to Enabled'
+    section: 'Outlook Social Connector'
+    description: |
+        This policy setting controls whether contact photos are downloaded from the Active Directory. If you enable this policy
+        setting, contact photos are not downloaded.  If you disable or you do not configure this policy setting, contact photos
+        are downloaded.  The recommended state for this setting is
+                           Enabled
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Outlook Social Connector\Do Not Download Photos from
+        Active Directory Impact: Enable this setting to prevent Outlook from downloading photos stored in Active Directory.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.10.1', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\[Oo]utlook\\[Ss]ocialconnector'
+        - checks:
+            - rule: 'should have_property "downloaddetailsfromad"'
+            - name: 'downloaddetailsfromad'
+              rule: "should have_property_value('downloaddetailsfromad', :dword, '')"
+
+  "1.10.2":
+    title: '1.10.2 | L1 Ensure Turn Off Outlook Social Connector is set to Enabled'
+    section: 'Outlook Social Connector'
+    description: |
+        This policy setting allows you to turn off the Outlook Social Connector. If you enable this policy setting, the Outlook
+        Social Connector is turned off. If you disable or you do not configure this policy setting, the Outlook Social Connector
+        is turned on. The recommended state for this setting is  Enabled
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Outlook Social Connector\Turn Off Outlook Social Connector
+        Impact: Enabling this setting will disable the Outlook Social Connector, preventing users from synchronizing any data in
+        Outlook with their social networks.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.10.2', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\[Oo]utlook\\[Ss]ocialconnector'
+        - checks:
+            - rule: 'should have_property "runosc"'
+            - name: 'runosc'
+              rule: "should have_property_value('runosc', :dword, '')"
+
+  "1.13.1.1":
+    title: '1.13.1.1 | L1 Ensure Automatically download content for e-mail from people in Safe Senders and Safe Recipients Lists is set to Disabled'
+    section: 'Automatic Picture Download Settings'
+    description: |
+        This policy setting controls whether Outlook automatically downloads external content in email from senders in the Safe
+        Senders List or Safe Recipients List.  If you enable this policy setting, Outlook automatically downloads content for
+        email from people in Safe Senders and Safe Recipients lists.  If you disable this policy setting, Outlook will not
+        automatically download content from external servers for messages sent by people listed in users Safe Senders Lists or
+        Safe Recipients Lists. Recipients can choose to download external content on a messagebymessage basis.  If you do not
+        configure this policy setting, downloads are permitted when users receive email from people listed in the users Safe
+        Senders List or Safe Recipients List. The recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Automatic Picture Download Settings\Automatically
+        download content for e-mail from people in Safe Senders and Safe Recipients Lists Impact: Disabling this setting means
+        that Outlook does not automatically download external content for messages sent by people listed in users' Safe Senders
+        Lists or Safe Recipients Lists. This configuration can cause some disruption for users who regularly receive HTML e-mail
+        messages that contain graphics and other external content, because they will need to download content for each message
+        individually.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.1.1', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Oo]ptions\\[Mm]ail'
+        - checks:
+            - rule: 'should have_property "unblockspecificsenders"'
+            - name: 'unblockspecificsenders'
+              rule: "should have_property_value('unblockspecificsenders', :dword, '')"
+
+  "1.13.1.2":
+    title: '1.13.1.2 | L1 Ensure Block Trusted Zones is set to Enabled'
+    section: 'Automatic Picture Download Settings'
+    description: |
+        This policy setting controls whether pictures from sites in the Trusted Sites security zone are automatically downloaded
+        in Outlook email messages and other items.  If you enable this policy setting, Outlook does not automatically download
+        content from Web sites in the Trusted sites zone in Internet Explorer. Recipients can choose to download external
+        content on a messagebymessage basis.  If you disable or do not configure this policy setting, Outlook automatically
+        downloads content from Web sites in the Trusted sites zone in Internet Explorer. The recommended state for this setting
+        is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Automatic Picture Download Settings\Block Trusted
+        Zones Impact: Enabling this setting means that Outlook does not automatically download external content from Web sites
+        in the Trusted sites zone. This configuration can cause some disruption for users who regularly receive HTML e-mail
+        messages that contain graphics and other external content from sites in this zone, because they will need to download
+        content for each message individually.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.1.2', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Oo]ptions\\[Mm]ail'
+        - checks:
+            - rule: 'should have_property "trustedzone"'
+            - name: 'trustedzone'
+              rule: "should have_property_value('trustedzone', :dword, '')"
+
+  "1.13.1.3":
+    title: '1.13.1.3 | L1 Ensure Display pictures and external content in HTML e-mail is set to Enabled'
+    section: 'Automatic Picture Download Settings'
+    description: |
+        This policy setting controls whether Outlook downloads untrusted pictures and external content located in HTML email
+        messages without users explicitly choosing to download them.  If you enable this policy setting, Outlook will not
+        automatically download content from external servers unless the sender is included in the Safe Senders list. Recipients
+        can choose to download external content from untrusted senders on a messagebymessage basis.  If you disable this policy
+        setting, Outlook does not display pictures and external content in HTML email.  If you do not configure this policy
+        setting, Outlook does not download external content in HTML email and RSS items unless the content is considered safe.
+        Content that Outlook can be configured to consider safe includes Content in email messages from senders and to
+        recipients defined in the Safe Senders and Safe Recipients lists. Content from Web sites in Internet Explorers Trusted
+        Sites security zone. Content in RSS items. Content from SharePoint Discussion Boards. Users can control what content is
+        considered safe by changing the options in the Automatic Download section of the Trust Center. If Outlooks default
+        blocking configuration is overridden, in the Trust Center or by some other method, Outlook will display external content
+        in all HTML email messages, including any that include Web beacons. The recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Automatic Picture Download Settings\Display
+        pictures and external content in HTML e-mail Impact: Enabling this setting enforces the default configuration in
+        Outlook, and therefore is unlikely to cause usability issues for most users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.1.3', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Oo]ptions\\[Mm]ail'
+        - checks:
+            - rule: 'should have_property "blockextcontent"'
+            - name: 'blockextcontent'
+              rule: "should have_property_value('blockextcontent', :dword, '')"
+
+  "1.13.1.4":
+    title: '1.13.1.4 | L1 Ensure Do not permit download of content from safe zones is set to Disabled'
+    section: 'Automatic Picture Download Settings'
+    description: |
+        This policy setting controls whether Outlook automatically downloads content from safe zones when displaying messages.
+        If you enable this policy setting, Outlook will not automatically download content from safe zones. Recipients can
+        choose to download external content from untrusted senders on a messagebymessage basis.  If you disable this policy
+        setting, content from safe zones will be downloaded automatically.  If you do not configure this policy setting, Outlook
+        automatically downloads content from sites that are considered safe, as defined in the Security tab of the Internet
+        Options dialog box in Internet Explorer.  Important  Note that this policy setting is backward. Despite the name,
+        disabling the policy setting prevents the download of content from safe zones and enabling the policy setting allows it.
+        The recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Automatic Picture Download Settings\Do not permit
+        download of content from safe zones Impact: Disabling this setting can cause some disruptions for Outlook users who
+        receive many e-mail messages that include content from safe zones, because they will be required to download content for
+        each message individually.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.1.4', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Oo]ptions\\[Mm]ail'
+        - checks:
+            - rule: 'should have_property "unblocksafezone"'
+            - name: 'unblocksafezone'
+              rule: "should have_property_value('unblocksafezone', :dword, '')"
+
+  "1.13.2.1.1":
+    title: '1.13.2.1.1 | L1 Ensure Attachment Secure Temporary Folder is set to Disabled'
+    section: 'Signature Status Dialog Box'
+    description: |
+        This policy setting allows you to specify a folder path for the Secure Temporary Files folder rather than using the one
+        that is randomly generated by Outlook.  If you enable this policy setting, you can specify a folder path for the
+        Security Temporary Files folder rather than using the one that is randomly generated by Outlook.  If you disable or do
+        not configure this policy setting, Outlook will assign the Secure Temporary Files folder a different random name for
+        each user.  Important  If you must use a specific folder for Outlook attachments, it is recommended that you use a local
+        directory for best performance, that you place the folder under the Temporary Internet Files folder to benefit from the
+        enhanced security on that folder, and that the folder name is unique and difficult to guess. The recommended state for
+        this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Cryptography\Signature Status dialog
+        box\Attachment Secure Temporary Folder Impact: Disabling this setting enforces the default configuration of Outlook, and
+        therefore is unlikely to cause usability issues for most users. Important If you must use a specific folder for Outlook
+        attachments, it is recommended that you use a local directory (for best performance), that you place the folder under
+        the Temporary Internet Files folder (to benefit from the enhanced security on that folder), and that the folder name is
+        unique and difficult to guess.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.2.1.1', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should_not have_property "outlooksecuretempfolder"'
+
+  "1.13.2.1.2":
+    title: '1.13.2.1.2 | L1 Ensure Missing CRLs is set to EnabledError'
+    section: 'Signature Status Dialog Box'
+    description: |
+        This policy setting controls whether Outlook considers a missing certificate revocation list CRL a warning or an error.
+        Digital certificates contain an attribute that shows where the corresponding CRL is located. CRLs contain lists of
+        digital certificates that have been revoked by their controlling certification authorities CAs, typically because the
+        certificates were issued improperly or their associated private keys were compromised. If a CRL is missing or
+        unavailable, Outlook cannot determine whether a certificate has been revoked. Therefore, an improperly issued
+        certificate or one that has been compromised might be used to gain access to data.  If you enable this policy setting,
+        you can choose between two options that determine how Outlook functions when a CRL is missing Warning. This option is
+        the default configuration in Outlook and ensures that Outlook displays a warning message when a CRL is missing. Error.
+        This option ensures that Outlook displays an error message when a CRL is missing.  If you disable or do not configure
+        this policy setting, Outlook displays a warning message when a CRL is not available. The recommended state for this
+        setting is  EnabledError .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Cryptography\Signature Status dialog box\Missing
+        CRLs Then set the  Indicate a missing CRL as a(n):  option to  Error . Impact: Enabling this setting and choosing
+        "Error" from the drop-down list will prevent Outlook users from using certificates when the appropriate CRL is not
+        available to verify them, which could increase desktop support requests.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.2.1.2', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "sigstatusnocrl"'
+            - name: 'sigstatusnocrl'
+              rule: "should have_property_value('sigstatusnocrl', :dword, '')"
+
+  "1.13.2.1.3":
+    title: '1.13.2.1.3 | L1 Ensure Missing Root Certificates is set to EnabledWarning'
+    section: 'Signature Status Dialog Box'
+    description: |
+        This policy setting controls how Outlook functions when a root certificate is missing.  If you enable this policy
+        setting, you can choose from three options that determine how Outlook functions when a CRL is missing.   Neither Error
+        nor Warning. This option displays neither an error nor a warning, and enforces the default configuration in Outlook.
+        Warning. This option ensures that Outlook displays a warning message when a CRL is missing.   Error. This option ensures
+        that Outlook displays an error message when a CRL is missing.  If you disable or do not configure this policy setting,
+        users are not prompted with a warning or an error when a root certificate cannot be located. The recommended state for
+        this setting is  EnabledWarning .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Cryptography\Signature Status dialog box\Missing
+        root certificates Then set the  Indicate a missing root certificate as a(n):  option to  Warning . Impact: Enabling this
+        setting will prevent Outlook users from using certificates when the appropriate root certificate is not available to
+        verify them, which could increase desktop support requests.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.2.1.3', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "sigstatusnotrustdecision"'
+            - name: 'sigstatusnotrustdecision'
+              rule: "should have_property_value('sigstatusnotrustdecision', :dword, '')"
+
+  "1.13.2.1.4":
+    title: '1.13.2.1.4 | L1 Ensure Promote Level 2 errors as errors not warnings is set to Disabled'
+    section: 'Signature Status Dialog Box'
+    description: |
+        This policy setting allows you to treat Level 2 errors as warnings instead of errors. Level 2 errors occur when the
+        message signature appears to be valid, but there are other issues with the signature.  If you enable this policy
+        setting, Level 2 errors will be treated as warnings. If you disable or do not configure this policy setting, Level 2
+        errors will be treated as errors When you specify a value for PromoteErrorsAsWarnings, note that potential Level 2 error
+        conditions include the following Unknown Signature Algorithm No Signing Certification Found Bad Attribute Sets No Issuer
+        Certificate found No CRL Found Outofdate CRL Root Trust Problem Outofdate CTL  The recommended state for this setting is
+        Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Cryptography\Signature Status dialog box\Promote
+        Level 2 errors as errors, not warnings Impact: Disabling this setting can cause disruptions for users who work with
+        digital certificates in Outlook. These users may experience an increased number of errors that prevent them from working
+        effectively with e-mail, which could increase desktop support requests.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.2.1.4', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "promoteerrorsaswarnings"'
+            - name: 'promoteerrorsaswarnings'
+              rule: "should have_property_value('promoteerrorsaswarnings', :dword, '')"
+
+  "1.13.2.1.5":
+    title: '1.13.2.1.5 | L1 Ensure Retrieving CRLs Certificate Revocation Lists is set to EnabledWhen online always retrieve the CRL'
+    section: 'Signature Status Dialog Box'
+    description: |
+        This policy setting controls how Outlook retrieves Certificate Revocation Lists to verify the validity of certificates.
+        Certificate revocation lists CRLs are lists of digital certificates that have been revoked by their controlling
+        certificate authorities CAs, typically because the certificates were issued improperly or their associated private keys
+        were compromised.  If you enable this policy setting, you can choose from three options to govern how Outlook uses CRLs
+        Use system Default. Outlook relies on the CRL download schedule that is configured for the operating system. When online
+        always retrieve the CRL. This option is the default configuration in Outlook. Never retrieve the CRL. Outlook will not
+        attempt to download the CRL for a certificate, even if it is online. This option can reduce security. If you disable or
+        do not configure this policy setting, when Outlook handles a certificate that includes a URL from which a CRL can be
+        downloaded, Outlook will retrieve the CRL from the provided URL if Outlook is online. The recommended state for this
+        setting is  EnabledWhen online always retrieve the CRL .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Cryptography\Signature Status dialog
+        box\Retrieving CRLs (Certificate Revocation Lists) Then set the  . . .  option to  When online always retrieve the CRL .
+        Impact: The recommended setting enforces the default configuration in Outlook, and therefore is unlikely to cause
+        significant usability issues for most users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.2.1.5', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "usecrlchasing"'
+            - name: 'usecrlchasing'
+              rule: "should have_property_value('usecrlchasing', :dword, '')"
+
+  "1.13.2.2":
+    title: '1.13.2.2 | L1 Ensure Do not display Publish to GAL button is set to Enabled'
+    section: 'Cryptography'
+    description: |
+        This policy setting controls whether Outlook users can publish email certificates to the Global Address List GAL.  If
+        you enable this policy setting, the Publish to GAL button does not display in the Email Security section of the Trust
+        Center.  If you disable or do not configure this policy setting, Outlook users can publish their email certificates to
+        the GAL through the Email Security section of the Trust Center. The recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Cryptography\Do not display 'Publish to GAL'
+        button Impact: Enabling this setting prevents Outlook users from publishing their e-mail certificates to the GAL. Users
+        who need to publish a new or updated certificate will have to contact an administrator.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.2.2', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "publishtogaldisabled"'
+            - name: 'publishtogaldisabled'
+              rule: "should have_property_value('publishtogaldisabled', :dword, '')"
+
+  "1.13.2.3":
+    title: '1.13.2.3 | L1 Ensure Do not provide Continue option on Encryption warning dialog boxes is set to Enabled'
+    section: 'Cryptography'
+    description: |
+        This setting controls whether Outlook users are allowed to send email messages after they see an encryption warning.  If
+        you enable this policy setting, encryption warning dialog boxes do not contain a Continue button, which means that users
+        must cancel the sending operation entirely.  If you disable or do not configure this policy setting, if Outlook users
+        see an encryptionrelated dialog box when attempting to send a message, they can choose to dismiss the warning and send
+        the message anyway. The recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Cryptography\Do not provide Continue option on
+        Encryption warning dialog boxes Impact: Enabling this setting can cause disruptions if Outlook users attempt to send
+        messages with encryption errors, although the errors themselves would likely cause disruptions in most cases if the
+        messages were allowed to be sent.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.2.3', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "disablecontinueencryption"'
+            - name: 'disablecontinueencryption'
+              rule: "should have_property_value('disablecontinueencryption', :dword, '')"
+
+  "1.13.2.4":
+    title: '1.13.2.4 | L1 Ensure Message Formats is set to EnabledSMIME and Fortezza'
+    section: 'Cryptography'
+    description: |
+        This policy setting controls which message encryption formats Outlook can use. Outlook supports three formats for
+        encrypting and signing messages S/MIME, Exchange, and Fortezza. If you enable this policy setting, you can specify
+        whether Outlook can use S/MIME the default, Exchange, or Fortezza encryption, or any combination of any of these
+        options. Users will not be able to change this configuration. If you disable or do not configure this policy setting,
+        Outlook only uses S/MIME to encrypt and sign messages. If you disable this policy setting, users will not be able to
+        change this configuration. The recommended state for this setting is  EnabledS/MIME and Fortezza .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Cryptography\Message Formats Then set the
+        Support the following message formats:  option to  S/MIME and Fortezza . Impact: Enabling this setting and selecting
+        "S/MIME, Exchange, and Fortezza" from the drop-down list adds support for Fortezza, a hardware based encryption standard
+        created by the National Security Agency (NSA), a division of the United States Department of Defense. If your
+        organization uses Fortezza, you will have to use this setting to add support for Fortezza to Outlook. The recommended
+        SSLF configuration does not eliminate support for S/MIME, so implementing this recommendation should not affect users
+        who need access to the S/MIME encryption and signing functionality in Outlook.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.2.4', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "msgformats"'
+            - name: 'msgformats'
+              rule: "should have_property_value('msgformats', :dword, '')"
+
+  "1.13.2.5":
+    title: '1.13.2.5 | L1 Ensure Minimum Encryption Settings is set to Enabled168'
+    section: 'Cryptography'
+    description: |
+        This policy setting allows you to set the minimum key length for an encrypted email message. If you enable this policy
+        setting, you may set the minimum key length for an encrypted email message. Outlook will display a warning dialog if the
+        user tries to send a message using an encryption key that is below the minimum encryption key value set. The user can
+        still choose to ignore the warning and send using the encryption key originally chosen. If you disable or do not
+        configure this policy setting, a dialog warning will be shown to the user if the user attempts to send a message using
+        encryption. The user can still choose to ignore the warning and send using the encryption key originally chosen. The
+        recommended state for this setting is  Enabled168 .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Cryptography\Minimum encryption settings Then set
+        the  Minimum key size (in bits):  option to  168 . Impact: Users who see the minimum encryption warning display can
+        still choose to send the message with the selected key, so enabling this setting is unlikely to cause significant
+        disruptions. 128-bit encryption has been widely implemented for several years. Therefore, enabling this setting is
+        unlikely to cause any usability issues for users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.2.5', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "minenckey"'
+            - name: 'minenckey'
+              rule: "should have_property_value('minenckey', :dword, '')"
+
+  "1.13.2.6":
+    title: '1.13.2.6 | L1 Ensure SMIME interoperability with external clients is set to EnabledHandle internally'
+    section: 'Cryptography'
+    description: |
+        This policy setting controls whether Outlook decodes encrypted messages itself or passes them to an external program for
+        processing. If you enable this policy setting, you can choose from three options for configuring external S/MIME clients
+        Handle internally. Outlook decrypts all S/MIME messages itself.  Handle externally. Outlook hands all S/MIME messages
+        off to the configured external program.  Handle if possible. Outlook attempts to decrypt all S/MIME messages itself. If
+        it cannot decrypt a message, Outlook hands the message off to the configured external program. This option is the
+        default configuration. If you disable or do not configure this policy setting, the behavior is the equivalent of
+        selecting Enabled Handle if possible. The recommended state for this setting is  EnabledHandle internally .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Cryptography\S/MIME interoperability with
+        external clients Then set the  Behavior for handling S/MIME messages:  option to  Handle internally . Impact: The
+        recommended configuration for this setting is "Handle internally," which enforces the default configuration in Outlook
+        and is therefore unlikely to cause usability issues for most users. If you have a designated external program that you
+        would like to use for handling S/MIME messages, you will need to select one of the other two options from the drop-down
+        menu.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.2.6', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "externalsmime"'
+            - name: 'externalsmime'
+              rule: "should have_property_value('externalsmime', :dword, '')"
+
+  "1.13.2.7":
+    title: '1.13.2.7 | L1 Ensure SMIME receipt requests behavior is set to EnabledNever send SMIME receipts'
+    section: 'Cryptography'
+    description: |
+        This policy setting controls how Outlook handles S/MIME receipt requests. If you enable this policy setting, you can
+        choose from four options for handling S/MIME receipt requests in Outlook  Open message if receipt cant be sent  Dont
+        open message if receipt cant be sent  Always prompt before sending receipt  Never send S/MIME receipts If you disable or
+        do not configure this policy setting, when users open messages with attached receipt requests, Outlook prompts them to
+        decide whether to send a receipt to the sender with information about the identity of the user who opened the message
+        and the time it was opened. If Outlook cannot send the receipt, the user is still allowed to open the message. The
+        recommended state for this setting is  EnabledNever send S/MIME receipts .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Cryptography\S/MIME receipt requests behavior
+        Then set the  Handle messages with S/MIME receipt requests in the following manner:  option to  Never send S/MIME
+        receipts . Impact: Configuring this setting to "Never send S/MIME receipts" does not affect users' ability to open and
+        read e-mail messages. However, people who send messages with attached receipt requests to users affected by this setting
+        will not receive the requested S/MIME receipts, which could cause confusion. Consider educating users about this setting
+        so that they can advise e-mail correspondents to not expect any receipts they request.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.2.7', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "respondtoreceiptrequests"'
+            - name: 'respondtoreceiptrequests'
+              rule: "should have_property_value('respondtoreceiptrequests', :dword, '')"
+
+  "1.13.2.8":
+    title: '1.13.2.8 | L1 Ensure Send all signed messages as clear signed messages is set to Enabled'
+    section: 'Cryptography'
+    description: |
+        This policy setting controls whether Outlook sends signed messages as clear text signed messages. If you enable this
+        policy setting, the Send clear text signed message when sending signed messages option is selected in the Email Security
+        section of the Trust Center. If you disable or do not configure this policy setting, when users sign email messages with
+        their digital signature and send them, Outlook uses the signatures private key to encrypt the digital signature but
+        sends the messages as clear text, unless they are encrypted separately. The recommended state for this setting is
+        Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Cryptography\Send all signed messages as clear
+        signed messages Impact: Enabling this setting enforces the default configuration in Outlook, and is therefore unlikely
+        to cause usability issues for most users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.2.8', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "clearsign"'
+            - name: 'clearsign'
+              rule: "should have_property_value('clearsign', :dword, '')"
+
+  "1.13.2.9":
+    title: '1.13.2.9 | L1 Ensure Signature Warning is set to EnabledAlways warn about invalid signatures'
+    section: 'Cryptography'
+    description: |
+        This policy setting controls how Outlook warns users about messages with invalid digital signatures. If you enable this
+        policy setting, you can choose from three options for controlling how Outlook users are warned about invalid signatures
+        Let user decide if they want to be warned. This option enforces the default configuration.  Always warn about invalid
+        signatures.  Never warn about invalid signatures. If you disable or do not configure this policy setting, if users open
+        email messages that include invalid digital signatures, Outlook displays a warning dialog. Users can decide whether they
+        want to be warned about invalid signatures in the future. The recommended state for this setting is  EnabledAlways warn
+        about invalid signatures .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Cryptography\Signature Warning Then set the
+        Signature Warning  option to  Always warn about invalid signatures . Impact: Enabling this setting could cause some
+        disruptions for Outlook users who receive a lot of messages signed with invalid signatures. These users will see a
+        warning dialog box every time they open such a message.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.2.9', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "warnaboutinvalid"'
+            - name: 'warnaboutinvalid'
+              rule: "should have_property_value('warnaboutinvalid', :dword, '')"
+
+  "1.13.3.1.1":
+    title: '1.13.3.1.1 | L1 Ensure Allow users to demote attachments to Level 2 is set to Disabled'
+    section: 'Attachment Security'
+    description: |
+        This policy setting controls whether Outlook users can demote attachments to Level 2 by using a registry key, which will
+        allow them to save files to disk and open them from that location. Outlook uses two levels of security to restrict
+        access to files attached to email messages or other items. Files with specific extensions can be categorized as Level 1
+        users cannot view the file or Level 2 users can open the file after saving it to disk. Users can freely open files of
+        types that are not categorized as Level 1 or Level 2.  If you enable this policy setting, users can create a list of
+        Level 1 file types to demote to Level 2 by adding the file types to the following registry key
+        HKEYCURRENTUSER\Software\Microsoft\Office\15.0\Outlook\Security\Level1Remove.  If you disable or do not configure this
+        policy setting, users cannot demote level 1 attachments to level 2, and the
+        HKEYCURRENTUSER\Software\Microsoft\Office\15.0\Outlook\Security\Level1Remove registry key has no effect. The recommended
+        state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Security Form Settings\Attachment Security\Allow
+        users to demote attachments to Level 2 Impact: Allowing users to demote attachments to Level 2 can pose a significant
+        risk. Unless your users have a legitimate business need for such functionality, this setting should be disabled.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.3.1.1', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "allowuserstolowerattachments"'
+            - name: 'allowuserstolowerattachments'
+              rule: "should have_property_value('allowuserstolowerattachments', :dword, '')"
+
+  "1.13.3.1.2":
+    title: '1.13.3.1.2 | L1 Ensure Display Level 1 attachments is set to Disabled'
+    section: 'Attachment Security'
+    description: |
+        This policy setting controls whether Outlook blocks potentially dangerous attachments designated Level 1. To protect
+        users from viruses and other harmful files, Outlook uses two levels of security, designated Level 1 and Level 2, to
+        restrict access to files attached to email messages or other items. Potentially harmful files can be classified into
+        these two levels by file type extension, with all other file types considered safe.  The recommended state for this
+        setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Security Form Settings\Attachment
+        Security\Display Level 1 attachments Impact: See Attachment file types restricted by Office for the full list of file
+        types classified Level 1 by default. Important For this setting to apply, you must also enable the "Outlook Security
+        Mode" setting in User Configuration\Administrative Templates\Classic Administrative Templates (ADM)\Microsoft Office
+        Outlook <version>\Security\Security Form Settings\Microsoft Office Outlook Security and select Use Outlook Security
+        Group Policy from the drop-down list.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.3.1.2', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "showlevel1attach"'
+            - name: 'showlevel1attach'
+              rule: "should have_property_value('showlevel1attach', :dword, '')"
+
+  "1.13.3.1.3":
+    title: '1.13.3.1.3 | L1 Ensure Do not prompt about Level 1 attachments when closing an item is set to Disabled'
+    section: 'Attachment Security'
+    description: |
+        This policy setting controls whether Outlook displays a warning before closing an item that contains an unsafe
+        attachment that will be blocked when the item is reopened. To protect users from viruses and other harmful files,
+        Outlook uses two levels of security, designated Level 1 and Level 2, to restrict users access to files attached to email
+        messages or other items. Outlook completely blocks access to Level 1 files by default, and requires users to save Level
+        2 files to disk before opening them. Potentially harmful files can be classified into these two levels by file type
+        extension, with all other file types considered safe.  If you enable this policy setting, Outlook will not display a
+        warning when users close items with Level 1 attachments, which could cause data loss.  If you disable or do not
+        configure this policy setting, when a user closes an item to which a level 1 file has been attached, Outlook warns the
+        user that the message contains a potentially unsafe attachment and that the user might not be able to access the
+        attachment when opening the item later. Such a sequence of events might occur when a user closes a draft message that
+        they intend to resume editing at some future time.  The recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Security Form Settings\Attachment Security\Do not
+        prompt about Level 1 attachments when closing an item Impact: Disabling this setting enforces the default configuration
+        in Outlook, and therefore is unlikely to cause usability issues for most users. Important For this setting to apply, you
+        must also enable the "Outlook Security Mode" setting in User Configuration\Administrative Templates\Classic
+        Administrative Templates (ADM)\Microsoft Office Outlook <version>\Security\Security Form Settings\Microsoft Office
+        Outlook Security and select Use Outlook Security Group Policy from the drop-down list.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.3.1.3', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "dontpromptlevel1attachclose"'
+            - name: 'dontpromptlevel1attachclose'
+              rule: "should have_property_value('dontpromptlevel1attachclose', :dword, '')"
+
+  "1.13.3.1.4":
+    title: '1.13.3.1.4 | L1 Ensure Do not prompt about Level 1 attachments when sending an item is set to Disabled'
+    section: 'Attachment Security'
+    description: |
+        This policy setting controls whether Outlook displays a warning before sending an item that contains an unsafe
+        attachment that will be blocked when the item is opened by a recipient. To protect users from viruses and other harmful
+        files, Outlook uses two levels of security, designated Level 1 and Level 2, to restrict access to files attached to
+        email messages or other items. Outlook completely blocks access to Level 1 files by default, and requires users to save
+        Level 2 files to disk before opening them. Potentially harmful files can be classified into these two levels by file
+        type extension, with all other file types considered safe.  If you enable this policy setting, Outlook will not display
+        a warning when a user sends an item with a Level 1 attachment, which can cause users data to be at risk. If you disable
+        or do not configure this policy setting, when users attempt to send an item to which a level 1 file has been attached,
+        Outlook warns them that the message contains a potentially unsafe attachment and that the recipient might not be able to
+        access it.  The recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Security Form Settings\Attachment Security\Do not
+        prompt about Level 1 attachments when sending an item Impact: Disabling this setting enforces the default configuration
+        in Outlook, and therefore is unlikely to cause usability issues for most users. Important For this setting to apply, you
+        must also enable the "Outlook Security Mode" setting in User Configuration\Administrative Templates\Classic
+        Administrative Templates (ADM)\Microsoft Office Outlook <version>\Security\Security Form Settings\Microsoft Office
+        Outlook Security and select Use Outlook Security Group Policy from the drop-down list.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.3.1.4', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "dontpromptlevel1attachsend"'
+            - name: 'dontpromptlevel1attachsend'
+              rule: "should have_property_value('dontpromptlevel1attachsend', :dword, '')"
+
+  "1.13.3.1.5":
+    title: '1.13.3.1.5 | L1 Ensure Remove file extensions blocked as Level 1 is set to Disabled'
+    section: 'Attachment Security'
+    description: |
+        This policy setting controls which types of attachments determined by file extension Outlook prevents from being
+        delivered.  Outlook uses two levels of security to restrict users access to files attached to email messages or other
+        items. Files with specific extensions can be categorized as Level 1 users cannot view the file or Level 2 users can open
+        the file after saving it to disk. Users can freely open files of types that are not categorized as Level 1 or Level 2.
+        If you enable this policy setting, you can specify the removal of file type extensions as that Outlook classifies as
+        Level 1that is, to be blocked from deliveryby entering them in the text field provided separated by semicolons.  If you
+        disable or do not configure this policy setting, Outlook classifies a number of potentially harmful file types such as
+        those with .exe, .reg, and .vbs extensions as Level 1 and blocks files with those extensions from being delivered.  The
+        recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Security Form Settings\Attachment Security\Remove
+        file extensions blocked as Level 1\: Removed Extensions: Impact: Disabling this setting will cause any extensions that
+        are already on the list will be ignored, which means that Outlook will block access to them again. This configuration
+        could cause disruptions for users who are accustomed to sending and receiving such files.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.3.1.5', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should_not have_property "FileExtensionsAddLevel1"'
+
+  "1.13.3.1.6":
+    title: '1.13.3.1.6 | L1 Ensure Remove file extensions blocked as Level 2 is set to Disabled'
+    section: 'Attachment Security'
+    description: |
+        This policy setting controls which types of attachments determined by file extension must be saved to disk before users
+        can open them. Files with specific extensions can be categorized as Level 1 users cannot view the file or Level 2 users
+        can open the file after saving it to disk. Users can freely open files of types that are not categorized as Level 1 or
+        Level 2.  If you enable this policy setting, you can specify a list of attachment file types to classify as Level 2,
+        which forces users to actively decide to download the attachment to view it.  If you disable or do not configure this
+        policy setting, Outlook does not classify any file type extensions as Level 2.  Important This policy setting only
+        applies if the Outlook Security Mode policy setting under Microsoft Outlook version\Security\Security Form Settings is
+        configured to Use Outlook Security Group Policy. The recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Security Form Settings\Attachment Security\Remove
+        file extensions blocked as Level 2\: Removed Extensions: Impact: Disabling this setting enforces the default
+        configuration, and is therefore unlikely to cause usability issues for most users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.3.1.6', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should_not have_property "FileExtensionsRemoveLevel2"'
+
+  "1.13.3.2.1":
+    title: '1.13.3.2.1 | L1 Ensure Allow scripts in one-off Outlook forms is set to Disabled'
+    section: 'Custom Form Security'
+    description: |
+        This policy setting controls whether scripts can run in Outlook forms in which the script and layout are contained
+        within the message.  If you enable this policy setting, scripts can run in oneoff Outlook forms.  If you disable or do
+        not configure this policy setting, Outlook does not run scripts in forms in which the script and the layout are
+        contained within the message.  Important This policy setting only applies if the Outlook Security Mode policy setting
+        under Microsoft Outlook version\Security\Security Form Settings is configured to Use Outlook Security Group Policy. The
+        recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Security Form Settings\Custom Form Security\Allow
+        scripts in one-off Outlook forms Impact: Disabling this setting enforces the default configuration in Outlook, and is
+        therefore unlikely to cause significant usability issues for most users.  Allowing scripts to run in one-off Outlook
+        forms can pose a significant risk. Unless your users have a legitimate business need for such functionality, this
+        setting should be disabled. If your organization uses forms with scripts, consider redesigning these forms.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.3.2.1', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "enableoneoffformscripts"'
+            - name: 'enableoneoffformscripts'
+              rule: "should have_property_value('enableoneoffformscripts', :dword, '')"
+
+  "1.13.3.2.2":
+    title: '1.13.3.2.2 | L1 Ensure Outlook Object Model Custom Actions Execution Prompt is set to EnabledAutomatically Deny'
+    section: 'Custom Form Security'
+    description: |
+        This policy setting controls whether Outlook prompts users before executing a custom action. Custom actions add
+        functionality to Outlook that can be triggered as part of a rule. Among other possible features, custom actions can be
+        created that reply to messages in ways that circumvent the Outlook models programmatic send protections.  If you enable
+        this policy setting, you can choose from four options to control how Outlook functions when a custom action is executed
+        that uses the Outlook object model Prompt User Automatically Approve Automatically Deny Prompt user based on computer
+        security. This option enforces the default configuration in Outlook. If you disable or do not configure this policy
+        setting, when Outlook or another program initiates a custom action using the Outlook object model, users are prompted to
+        allow or reject the action. If this configuration is changed, malicious code can use the Outlook object model to
+        compromise sensitive information or otherwise cause data and computing resources to be at risk. This is the equivalent
+        of choosing Enabled  Prompt user based on computer security. The recommended state for this setting is
+        EnabledAutomatically Deny .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Security Form Settings\Custom Form Security\Set
+        Outlook object model custom actions execution prompt\Set Outlook object model custom actions execution prompt Then set
+        the  When executing a custom action:  option to  Automatically Deny . Impact: Configuring this setting to "Automatically
+        Deny" prevents Outlook from executing any custom actions that use the Outlook object model. If your users rely on any
+        such actions, you may have to find alternate methods for providing this functionality.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.3.2.2', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "promptoomcustomaction"'
+            - name: 'promptoomcustomaction'
+              rule: "should have_property_value('promptoomcustomaction', :dword, '')"
+
+  "1.13.3.3.1.1":
+    title: '1.13.3.3.1.1 | L1 Ensure Configure Trusted Add-ins to Disabled - manual'
+    section: 'Trusted Add-ins'
+    description: |
+        This policy setting can be used to specify a list of trusted addins that can be run without being restricted by the
+        security measures in Outlook. If you enable this policy setting, a list of trusted addins and hashes is made available
+        that you can modify by adding and removing entries. The list is empty by default. To create a new entry, enter a DLL
+        file name in the Value Name column and the hash result in the Value column.  If you disable or do not configure this
+        policy setting, the list of trusted addins is empty and unused, so the recommended EC and SSLF settings do not create
+        any usability issues. However, users who rely on addins that access the Outlook object model might be repeatedly
+        prompted unless administrators enable this setting and add the addins to the list. Note  You can also configure Exchange
+        Security Form settings by enabling the Outlook Security Mode setting in User Configuration\Administrative
+        Templates\Microsoft Outlook version\Security\Security Form Settings\Microsoft Outlook Security and selecting Use Outlook
+        Security Group Policy from the dropdown list. The recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Security Form Settings\Programmatic
+        Security\Trusted Add-ins\Configure trusted add-ins Impact: By default, the list of trusted add-ins is empty and unused,
+        so configuring this setting does not create any usability issues. However, users who rely on add-ins that access the
+        Outlook object model might be repeatedly prompted unless administrators enable this setting and add the add-ins to the
+        list. Note You can also configure Exchange Security Form settings by enabling the "Outlook Security Mode" setting in
+        User Configuration\Administrative Templates\Classic Administrative Templates (ADM)\Microsoft Office Outlook
+        <version>\Security\Security Form Settings\Microsoft Office Outlook Security and selecting Use Outlook Security Group
+        Policy from the drop-down list. For more information about the Object Model Guard, see Security Behavior of the Outlook
+        Object Model in the MSDN Outlook Developer Reference.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.3.3.1.1', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.13.3.3.2":
+    title: '1.13.3.3.2 | L1 Ensure Configure Outlook object model prompt when accessing an address book Guard behavior is set to EnabledAutomatically Deny'
+    section: 'Programmatic Security'
+    description: |
+        This policy setting controls what happens when an untrusted program attempts to gain access to an Address Book using the
+        Outlook object model.  If you enable this policy setting, you can choose from four different options when an untrusted
+        program attempts to programmatically access an Address Book using the Outlook object model  Prompt user  Users are
+        prompted to approve every access attempt.   Automatically approve  Outlook will automatically grant programmatic access
+        requests from any program. This option can create a significant vulnerability, and is not recommended.   Automatically
+        deny  Outlook will automatically deny programmatic access requests from any program.  Prompt user based on computer
+        security  Outlook will rely on the setting in the Programmatic Access section of the Trust Center. This is the default
+        behavior. If you disable or do not configure this policy setting, when an untrusted application attempts to access the
+        address book programmatically, Outlook relies on the setting configured in the Programmatic Access section of the Trust
+        Center. The recommended state for this setting is  EnabledAutomatically Deny .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Security Form Settings\Programmatic
+        Security\Configure Outlook object model prompt when accessing an address book Then set the  Configure Outlook object
+        model prompt when accessing an address book:
+                                       Guard behavior:  option to  Automatically Deny . Impact: Enabling this setting and
+        selecting Prompt user based on computer security enforces the default configuration in Outlook, and therefore is
+        unlikely to cause usability issues for most users. Important For this setting to apply, you must also enable the
+        "Outlook Security Mode" setting in User Configuration\Administrative Templates\Classic Administrative Templates
+        (ADM)\Microsoft Office Outlook <version>\Security\Security Form Settings\Microsoft Office Outlook Security and select
+        Use Outlook Security Group Policy from the drop-down list. For more information about the Object Model Guard, see
+        Security Behavior of the Outlook Object Model in the MSDN Outlook Developer Reference.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.3.3.2', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "promptoomaddressbookaccess"'
+            - name: 'promptoomaddressbookaccess'
+              rule: "should have_property_value('promptoomaddressbookaccess', :dword, '')"
+
+  "1.13.3.3.3":
+    title: '1.13.3.3.3 | L1 Ensure Configure Outlook object model prompt When accessing the Formula property of a UserProperty object Guard behavior is set to EnabledAutomatically Deny'
+    section: 'Programmatic Security'
+    description: |
+        This policy setting controls what happens when a user designs a custom form in Outlook and attempts to bind an Address
+        Information field to a combination or formula custom field. If you enable this policy setting, you can choose from four
+        different options when an untrusted program attempts to access address information using the UserProperties. Find method
+        of the Outlook object model   Prompt user. The user will be prompted to approve every access attempt.   Automatically
+        approve. Outlook will automatically grant programmatic access requests from any program. This option can create a
+        significant vulnerability, and is not recommended.   Automatically deny. Outlook will automatically deny programmatic
+        access requests from any program.   Prompt user based on computer security. Outlook will only prompt users when
+        antivirus software is out of date or not running.  If you disable or do not configure this policy setting, when a user
+        tries to bind an address information field to a combination or formula custom field in a custom form, Outlook relies on
+        the setting configured in the Programmatic Access section of the Trust Center.The recommended state for this setting is
+        EnabledAutomatically Deny .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Security Form Settings\Programmatic
+        Security\Configure Outlook object model prompt When accessing the Formula property of a UserProperty object Then set the
+        Configure Outlook object model prompt When accessing the Formula property of a UserProperty object:
+                                       Guard behavior:  option to  Automatically Deny . Impact: Enabling this setting and
+        selecting Prompt user based on computer security enforces the default configuration in Outlook, and therefore is
+        unlikely to cause usability issues for most users. Important For this setting to apply, you must also enable the
+        "Outlook Security Mode" setting in User Configuration\Administrative Templates\Classic Administrative Templates
+        (ADM)\Microsoft Office Outlook <version>\Security\Security Form Settings\Microsoft Office Outlook Security and select
+        Use Outlook Security Group Policy from the drop-down list. For more information about the Object Model Guard, see
+        Security Behavior of the Outlook Object Model in the MSDN Outlook Developer Reference.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.3.3.3', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "promptoomformulaaccess"'
+            - name: 'promptoomformulaaccess'
+              rule: "should have_property_value('promptoomformulaaccess', :dword, '')"
+
+  "1.13.3.3.4":
+    title: '1.13.3.3.4 | L1 Ensure Configure Outlook object model prompt when executing Save As Guard behavior is set to EnabledAutomatically Deny'
+    section: 'Programmatic Security'
+    description: |
+        This policy setting controls what happens when an untrusted program attempts to use the Save As command to
+        programmatically save an item.  If you enable this policy setting, you can choose from four different options when an
+        untrusted program attempts to use the Save As command to programmatically save an item  Prompt user. The user will be
+        prompted to approve every access attempt.   Automatically approve. Outlook will automatically grant programmatic access
+        requests from any program. This option can create a significant vulnerability, and is not recommended.   Automatically
+        deny. Outlook will automatically deny programmatic access requests from any program.  Prompt user based on computer
+        security. Outlook will only prompt users when antivirus software is out of date or not running. This is the default
+        configuration. If you disable or do not configure this policy setting, when an untrusted application attempts to use the
+        Save As command, Outlook relies on the setting configured in the Programmatic Access section of the Trust Center. The
+        recommended state for this setting is  EnabledAutomatically Deny .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Security Form Settings\Programmatic
+        Security\Configure Outlook object model prompt when executing Save As Then set the  Configure Outlook object model
+        prompt when executing Save As:
+                                       Guard behavior:  option to  Automatically Deny . Impact: Enabling this setting and
+        selecting Prompt user based on computer security enforces the default configuration in Outlook, and therefore is
+        unlikely to cause usability issues for most users. Important For this setting to apply, you must also enable the
+        "Outlook Security Mode" setting in User Configuration\Administrative Templates\Classic Administrative Templates
+        (ADM)\Microsoft Office Outlook <version>\Security\Security Form Settings\Microsoft Office Outlook Security and select
+        Use Outlook Security Group Policy from the drop-down list. For more information about the Object Model Guard, see
+        Security Behavior of the Outlook Object Model in the MSDN Outlook Developer Reference.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.3.3.4', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "promptoomsaveas"'
+            - name: 'promptoomsaveas'
+              rule: "should have_property_value('promptoomsaveas', :dword, '')"
+
+  "1.13.3.3.5":
+    title: '1.13.3.3.5 | L1 Ensure Configure Outlook object model prompt when reading address information Guard behavior is set to EnabledAutomatically Deny'
+    section: 'Programmatic Security'
+    description: |
+        This policy setting controls what happens when an untrusted program attempts to gain access to a recipient field, such
+        as the To field, using the Outlook object model. If you enable this policy setting, you can choose from four different
+        options when an untrusted program attempts to access a recipient field using the Outlook object model  Prompt user. The
+        user will be prompted to approve every access attempt.  Automatically approve. Outlook will automatically grant
+        programmatic access requests from any program. This option can create a significant vulnerability, and is not
+        recommended.  Automatically deny. Outlook will automatically deny programmatic access requests from any program.  Prompt
+        user based on computer security. Outlook will only prompt users when antivirus software is out of date or not running.
+        This is the default configuration. If you disable or do not configure this policy setting, when an untrusted application
+        attempts to access recipient fields, Outlook relies on the setting configured in the Programmatic Access section of the
+        Trust Center. The recommended state for this setting is  EnabledAutomatically Deny .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Security Form Settings\Programmatic
+        Security\Configure Outlook object model prompt when reading address information Then set the  Configure Outlook object
+        model prompt when reading address information: Guard behavior:  option to  Automatically Deny . Impact: Enabling this
+        setting and selecting Prompt user based on computer security enforces the default configuration in Outlook, and
+        therefore is unlikely to cause usability issues for most users. Important: For this setting to apply, you must also
+        enable the "Outlook Security Mode" setting in User Configuration\Administrative Templates\Classic Administrative
+        Templates (ADM)\Microsoft Office Outlook <version>\Security\Security Form Settings\Microsoft Office Outlook Security and
+        select Use Outlook Security Group Policy from the drop-down list.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.3.3.5', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "promptoomaddressinformationaccess"'
+            - name: 'promptoomaddressinformationaccess'
+              rule: "should have_property_value('promptoomaddressinformationaccess', :dword, '')"
+
+  "1.13.3.3.6":
+    title: '1.13.3.3.6 | L1 Ensure Configure Outlook object model prompt when responding to meeting and task requests Guard behavior is set to EnabledAutomatically Deny'
+    section: 'Programmatic Security'
+    description: |
+        This policy setting controls what happens when an untrusted program attempts to programmatically send email in Outlook
+        using the Response method of a task or meeting request.  If you enable this policy setting, you can choose from four
+        different options when an untrusted program attempts to programmatically send email using the Response method of a task
+        or meeting request  Prompt user. The user will be prompted to approve every access attempt.  Automatically approve.
+        Outlook will automatically grant programmatic access requests from any program. This option can create a significant
+        vulnerability, and is not recommended.  Automatically deny. Outlook will automatically deny programmatic access requests
+        from any program.   Prompt user based on computer security. Outlook only prompts users when antivirus software is out of
+        date or not running. This is the default configuration.  If you disable or do not configure this policy setting, when an
+        untrusted application attempts to respond to tasks or meeting requests programmatically, Outlook relies on the setting
+        configured in the Programmatic Access section of the Trust Center. The recommended state for this setting is
+        EnabledAutomatically Deny .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Security Form Settings\Programmatic
+        Security\Configure Outlook object model prompt when responding to meeting and task requests\Configure Outlook object
+        model prompt when responding to meeting and task requests Then set the  Configure Outlook object model prompt when
+        responding to meeting and task requests:
+                                       Guard behavior:  option to  Automatically Deny . Impact: Enabling this setting and
+        selecting Prompt user based on computer security enforces the default configuration in Outlook, and therefore is
+        unlikely to cause usability issues for most users. Note: For this setting to apply, you must also enable the "Outlook
+        Security Mode" setting in User Configuration\Administrative Templates\Classic Administrative Templates (ADM)\Microsoft
+        Office Outlook <version>\Security\Security Form Settings\Microsoft Office Outlook Security and select Use Outlook
+        Security Group Policy from the drop-down list.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.3.3.6', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "promptoommeetingtaskrequestresponse"'
+            - name: 'promptoommeetingtaskrequestresponse'
+              rule: "should have_property_value('promptoommeetingtaskrequestresponse', :dword, '')"
+
+  "1.13.3.3.7":
+    title: '1.13.3.3.7 | L1 Ensure Configure Outlook object model prompt when sending mail Guard behavior is set to EnabledAutomatically Deny'
+    section: 'Programmatic Security'
+    description: |
+        This policy setting controls what happens when an untrusted program attempts to send email programmatically using the
+        Outlook object model.  If you enable this policy setting, you can choose from four different options when an untrusted
+        program attempts to send email programmatically using the Outlook object model   Prompt user  The user will be prompted
+        to approve every access attempt.  Automatically approve  Outlook will automatically grant programmatic access requests
+        from any program. This option can create a significant vulnerability, and is not recommended.   Automatically deny
+        Outlook will automatically deny programmatic access requests from any program.   Prompt user based on computer security.
+        Outlook will only prompt users when antivirus software is out of date or not running.  Important This policy setting
+        only applies if the Outlook Security Mode policy setting under Microsoft Outlook version\Security\Security Form Settings
+        is configured to Use Outlook Security Group Policy. If you disable or do not configure this policy setting, when an
+        untrusted application attempts to send mail programmatically, Outlook relies on the setting configured in the
+        Programmatic Access section of the Trust Center. The recommended state for this setting is  EnabledAutomatically Deny .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Security Form Settings\Programmatic
+        Security\Configure Outlook object model prompt when sending mail Then set the  Configure Outlook object model prompt
+        when sending mail:
+                                       Guard behavior:  option to  Automatically Deny . Impact: Enabling this setting and
+        selecting Prompt user based on computer security enforces the default configuration in Outlook, and therefore is
+        unlikely to cause usability issues for most users. Important: If this setting is enabled, you must also enable the
+        "Outlook Security Mode" setting in User Configuration\Administrative Templates\Classic Administrative Templates
+        (ADM)\Microsoft Office Outlook <version>\Security\Security Form Settings\Microsoft Office Outlook Security and select
+        Use Outlook Security Group Policy from the drop-down list.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.3.3.7', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "promptoomsend"'
+            - name: 'promptoomsend'
+              rule: "should have_property_value('promptoomsend', :dword, '')"
+
+  "1.13.3.4":
+    title: '1.13.3.4 | L1 Ensure Outlook Security Mode is set to Enabled'
+    section: 'Security Form Settings'
+    description: |
+        This policy setting controls which set of security settings are enforced in Outlook.  If you enable this policy setting,
+        you can choose from four options for enforcing Outlook security settings   Outlook Default Security  This option is the
+        default configuration in Outlook. Users can configure security themselves, and Outlook ignores any securityrelated
+        settings configured in Group Policy.   Use Security Form from Outlook Security Settings Public Folder  Outlook uses the
+        settings from the security form published in the designated public folder.   Use Security Form from Outlook 10 Security
+        Settings Public Folder  Outlook uses the settings from the security form published in the designated public folder.
+        Use Outlook Security Group Policy  Outlook uses security settings from Group Policy.  Important  You must enable this
+        policy setting if you want to apply the other Outlook security policy settings mentioned in this guide.  If you disable
+        or do not configure this policy setting, Outlook users can configure security for themselves, and Outlook ignores any
+        securityrelated settings that are configured in Group Policy.  Note  In previous versions of Outlook, when security
+        settings were published in a form in Exchange Server public folders, users who needed these settings required the
+        HKEYCURRENTUSER\Software\Policies\Microsoft\Security\CheckAdminSettings registry key to be set on their computers for
+        the settings to apply. In Outlook, the CheckAdminSettings registry key is no longer used to determine users security
+        settings. Instead, the Outlook Security Mode setting can be used to determine whether Outlook security should be
+        controlled directly by Group Policy, by the security form from the Outlook Security Settings Public Folder, or by the
+        settings on users own computers The recommended state for this setting is  EnabledUse Outlook Security Group Policy .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Security Form Settings\Outlook Security Mode Then
+        set the  Outlook Security Policy:  option to  Use Outlook Security Group Policy . Impact: Enabling this setting prevents
+        users from modifying their own security settings, so it might cause an increase in support calls. However, this setting
+        is essential for ensuring that the other Outlook security settings mentioned in this baseline are applied as suggested.
+        Note In previous versions of Outlook, when security settings were published in a form in Exchange Server public folders,
+        users who needed these settings required the HKEY_CURRENT_USER\Software\Policies\Microsoft\Security\CheckAdminSettings
+        registry key to be set on their computers for the settings to apply. In Outlook, the CheckAdminSettings registry key is
+        no longer used to determine users' security settings. Instead, the Outlook Security Mode setting can be used to
+        determine whether Outlook security should be controlled directly by Group Policy, by the security form from the Outlook
+        Security Settings Public Folder, or by the settings on users' own computers.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.3.4', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "adminsecuritymode"'
+            - name: 'adminsecuritymode'
+              rule: "should have_property_value('adminsecuritymode', :dword, '')"
+
+  "1.13.4.1":
+    title: '1.13.4.1 | L1 Ensure Allow hyperlinks in suspected phishing e-mail messages is set to Disabled'
+    section: 'Trust Center'
+    description: |
+        This policy setting controls whether hyperlinks in suspected phishing email messages in Outlook are allowed.  If you
+        enable this policy setting, Outlook will allow hyperlinks in suspected phishing messages that are not also classified as
+        junk email.  If you disable or do not configure this policy setting, Outlook will not allow hyperlinks in suspected
+        phishing messages, even if they are not classified as junk email. The recommended state for this setting is  Disabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Trust Center\Allow hyperlinks in suspected
+        phishing e-mail messages Impact: Disabling this setting enforces the default configuration in Outlook, and is therefore
+        unlikely to cause significant usability issues for most users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.4.1', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Oo]ptions\\[Mm]ail'
+        - checks:
+            - rule: 'should have_property "junkmailenablelinks"'
+            - name: 'junkmailenablelinks'
+              rule: "should have_property_value('junkmailenablelinks', :dword, '')"
+
+  "1.13.4.2":
+    title: '1.13.4.2 | L1 Ensure Apply macro security settings to macros add-ins and additional actions is set to Enabled'
+    section: 'Trust Center'
+    description: |
+        This policy setting controls whether Outlook also applies the macro security settings to installed COM addins and
+        additional actions.  If you enable this policy setting, the macro security settings will also be applied to addins and
+        additional actions.  If you disable or do not configure this policy setting, Outlook does not use the macro security
+        settings to determine whether to run macros, installed COM addins, and additional actions. The recommended state for
+        this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Trust Center\Apply macro security settings to
+        macros, add-ins and additional actions Impact: When this setting is Enabled and a strong security level is chosen for
+        macros, add-ins and smart tags will run under greater security restrictions. This configuration might have an impact on
+        users that use add-ins and smart tags.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.4.2', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "donttrustinstalledfiles"'
+            - name: 'donttrustinstalledfiles'
+              rule: "should have_property_value('donttrustinstalledfiles', :dword, '')"
+
+  "1.13.4.3":
+    title: '1.13.4.3 | L1 Ensure Security Ensureting for Macros is set to EnabledNever warn disable all'
+    section: 'Trust Center'
+    description: |
+        This policy setting controls the security level for macros in Outlook.  If you enable this policy setting, you can
+        choose from four options for handling macros in Outlook Always warn. This option corresponds to the Warnings for all
+        macros option in the Macro Security section of the Outlook Trust Center. Outlook disables all macros that are not opened
+        from a trusted location, even if the macros are signed by a trusted publisher. For each disabled macro, Outlook displays
+        a security alert dialog box with information about the macro and its digital signature if present, and allows users to
+        enable the macro or leave it disabled. Never warn, disable all. This option corresponds to the No warnings and disable
+        all macros option in the Trust Center. Outlook disables all macros that are not opened from trusted locations, and does
+        not notify users.  Warning for signed, disable unsigned. This option corresponds to the Warnings for signed macros all
+        unsigned macros are disabled option in the Trust Center. Outlook handles macros as follows  If a macro is digitally
+        signed by a trusted publisher, the macro can run if the user has already trusted the publisher.  If a macro has a valid
+        signature from a publisher that the user has not trusted, the security alert dialog box for the macro lets the user
+        choose whether to enable the macro for the current session, disable the macro for the current session, or to add the
+        publisher to the Trusted Publishers list so that it will run without prompting the user in the future.  If a macro does
+        not have a valid signature, Outlook disables it without prompting the user, unless it is opened from a trusted location.
+                              This option is the default configuration in Outlook. No security check. This option corresponds to
+        the No security check for macros Not recommended option in the Trust Center. Outlook runs all macros without prompting
+        users. This configuration makes users computers vulnerable to potentially malicious code and is not recommended. If you
+        disable or do not configure this policy setting, the behavior is the equivalent of Enabled  Warning for signed, disable
+        unsigned. The recommended state for this setting is  EnabledNever warn, disable all .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Trust Center\Security setting for macros Then set
+        the  Security Level  option to  Never warn, disable all . Impact: Configuring this setting to "Never warn, disable all"
+        will cause Outlook users to lose the benefits of any functionality provided by macros. Users who wish to benefit from
+        macros can install the macros in a trusted location, unless Disable all trusted locations is set to Enabled.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.4.3', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "level"'
+            - name: 'level'
+              rule: "should have_property_value('level', :dword, '')"
+
+  "1.13.5":
+    title: '1.13.5 | L1 Ensure Allow Active X One Off Forms is set to EnabledLoad only Outlook Controls'
+    section: 'Security'
+    description: |
+        By default, thirdparty ActiveX controls are not allowed to run in oneoff forms in Outlook. You can change this behavior
+        so that Safe Controls Microsoft Forms 2.0 controls and the Outlook Recipient and Body controls are allowed in oneoff
+        forms, or so that all ActiveX controls are allowed to run. The recommended state for this setting is  EnabledLoad only
+        Outlook Controls .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Allow Active X One Off Forms Then set the  Allow
+        Active X One Off Forms  option to  Load only Outlook Controls . Impact: This setting enforces the default configuration
+        and therefore should not have any effect on usability.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.5', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "allowactivexoneoffforms"'
+            - name: 'allowactivexoneoffforms'
+              rule: "should have_property_value('allowactivexoneoffforms', :dword, '')"
+
+  "1.13.6":
+    title: '1.13.6 | L1 Ensure Configure Add-In Trust Level is set to EnabledTrust all loaded and installed COM addins'
+    section: 'Security'
+    description: |
+        All installed trusted COM addins can be trusted. Exchange Settings for the addins still override if present and this
+        option is selected. The recommended state for this setting is  EnabledTrust all loaded and installed COM addins .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Configure Add-In Trust Level Then set the
+        Configure Add-In Trust Level  option to  Trust all loaded and installed COM addins . Impact: This setting enforces the
+        default configuration, and therefore is unlikely to cause significant usability issues for most users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.6', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "addintrust"'
+            - name: 'addintrust'
+              rule: "should have_property_value('addintrust', :dword, '')"
+
+  "1.13.7":
+    title: '1.13.7 | L1 Ensure Disable Remember password for Internet e-mail accounts is set to Enabled'
+    section: 'Security'
+    description: |
+        Use this option to hide your users ability to cache passwords locally in the computers registry. When configured, this
+        policy will hide the Remember Password checkbox and not allow users to have Outlook remember their password.  Note that
+        POP3, IMAP, and HTTP email accounts are all considered Internet email accounts in Outlook. Email account options are
+        listed on the Server Type dialog box when users choose New under Tools  Account Settings. The recommended state for this
+        setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Disable 'Remember password' for Internet e-mail
+        accounts Impact: Enabling this setting can cause users to be frustrated because they will have to repeatedly enter their
+        email account passwords for any email services that do not accept their Windows credentials. For Exchange servers that
+        are members of the same Active Directory domain enabling this setting should not cause users to be prompted for their
+        credentials since Exchange will accept their domain credentials, but for Exchange servers in untrusted domains and other
+        types of email accounts the users might be forced to reenter their password frequently.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.7', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "enablerememberpwd"'
+            - name: 'enablerememberpwd'
+              rule: "should have_property_value('enablerememberpwd', :dword, '')"
+
+  "1.13.8":
+    title: '1.13.8 | L1 Ensure Do not automatically sign replies is set to Enabled'
+    section: 'Security'
+    description: |
+        This policy setting allows you to specify whether replies will be automatically signed. If you enable this policy
+        setting, the option to respond automatically to a signed message with a signed response will be overridden, and an
+        unsigned response will be the default reply to a signed message. If you disable or do not configure this policy setting,
+        a signed response will be the default reply to a signed message. The recommended state for this setting is  Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Do not automatically sign replies Impact: This
+        setting enforces the default configuration, and therefore is unlikely to cause significant usability issues for most
+        users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.8', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "nosignonreply"'
+            - name: 'nosignonreply'
+              rule: "should have_property_value('nosignonreply', :dword, '')"
+
+  "1.13.9":
+    title: '1.13.9 | L1 Ensure Prevent users from customizing attachment security settings is set to Enabled'
+    section: 'Security'
+    description: |
+        This policy setting prevents users from overriding the set of attachments blocked by Outlook. If you enable this policy
+        setting users will be prevented from overriding the set of attachments blocked by Outlook. Outlook also checks the
+        Level1Remove registry key when this setting is specified.  If you disable or do not configure this policy setting, users
+        will be allowed to override the set of attachments blocked by Outlook. The recommended state for this setting is
+        Enabled .
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Enabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Prevent users from customizing attachment
+        security settings Impact: Enabling this setting cause some users to be frustrated that they cannot customize the
+        attachment security settings, but in most environments this should not be a significant issue.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.9', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook'
+        - checks:
+            - rule: 'should have_property "disallowattachmentcustomization"'
+            - name: 'disallowattachmentcustomization'
+              rule: "should have_property_value('disallowattachmentcustomization', :dword, '')"
+
+  "1.13.10":
+    title: '1.13.10 | L1 Ensure Prompt User To Choose Security Settings If Default settings Fail is set to Disabled'
+    section: 'Security'
+    description: |
+        Check to prompt the user to choose security settings if default settings fail uncheck to automatically select. The
+        recommended state for this setting is  Disabled.
+    remediation: |
+        To implement the recommended configuration state, set the following Group Policy setting to  Disabled . User
+        Configuration\Administrative Templates\Microsoft Outlook 2013\Security\Prompt User To Choose Security Settings If
+        Default Settings Fail Impact: Enabling this setting will prevent a prompt from appearing when the default security
+        settings fail. This should rarely be an issue since the settings are unlikely to fail in the first place.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_microsoft_office_outlook_2013_benchmark', 'rule_1.13.10', 'cis_microsoft_office_outlook_2013_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_USERS\^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]{4,}\\[Ss][Oo][Ff][Tt][Ww][Aa][Rr][Ee]\\[Pp]olicies\\[Mm]icrosoft\\[Oo]ffice\\15\.0\\[Oo]utlook\\[Ss]ecurity'
+        - checks:
+            - rule: 'should have_property "forcedefaultprofile"'
+            - name: 'forcedefaultprofile'
+              rule: "should have_property_value('forcedefaultprofile', :dword, '')"

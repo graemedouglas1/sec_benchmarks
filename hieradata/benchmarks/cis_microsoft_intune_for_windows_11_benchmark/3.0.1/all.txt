@@ -1,0 +1,420 @@
+1.1 - L1 Ensure Allow Cortana Above Lock is set to Block
+3.1.3.1 - L1 Ensure Enable screen saver User is set to Enabled
+3.1.3.2 - L1 Ensure Prevent enabling lock screen camera is set to Enabled
+3.1.3.3 - L1 Ensure Prevent enabling lock screen slide show is set to Enabled
+3.4.1 - L1 Ensure Apply UAC restrictions to local accounts on network logons is set to Enabled
+3.4.2 - L1 Ensure Configure SMB v1 client driver is set to Enabled Disable driver recommended
+3.4.3 - L1 Ensure Configure SMB v1 server is set to Disabled
+3.4.4 - L1 Ensure Enable Structured Exception Handling Overwrite Protection SEHOP is set to Enabled
+3.4.5 - L1 Ensure WDigest Authentication is set to Disabled
+3.5.1 - L1 Ensure MSS AutoAdminLogon Enable Automatic Logon not recommended is set to Disabled
+3.5.2 - L1 Ensure MSS DisableIPSourceRouting IPv6 IP source routing protection level protects against packet spoofing is set to Enabled Highest protection source routing is completely disabled
+3.5.3 - L1 Ensure MSS DisableIPSourceRouting IP source routing protection level protects against packet spoofing is set to Enabled Highest protection source routing is completely disabled
+3.5.4 - L2 Ensure MSS DisableSavePassword Prevent the dial-up password from being saved recommended is set to Enabled
+3.5.5 - L1 Ensure MSS EnableICMPRedirect Allow ICMP redirects to override OSPF generated routes is set to Disabled
+3.5.6 - L2 Ensure MSS KeepAliveTime How often keep-alive packets are sent in milliseconds is set to Enabled 300000 or 5 minutes recommended
+3.5.7 - L1 Ensure MSS NoNameReleaseOnDemand Allow the computer to ignore NetBIOS name release requests except from WINS servers is set to Enabled
+3.5.8 - L2 Ensure MSS PerformRouterDiscovery Allow IRDP to detect and configure Default Gateway addresses could lead to DoS is set to Disabled
+3.5.9 - L1 Ensure MSS SafeDllSearchMode Enable Safe DLL search mode recommended is set to Enabled
+3.5.10 - L1 Ensure MSS ScreenSaverGracePeriod The time in seconds before the screen saver grace period expires 0 recommended is set to Enabled 5 or fewer seconds
+3.5.11 - L2 Ensure MSS TcpMaxDataRetransmissions IPv6 How many times unacknowledged data is retransmitted is set to Enabled 3
+3.5.12 - L2 Ensure MSS TcpMaxDataRetransmissions How many times unacknowledged data is retransmitted is set to Enabled 3
+3.5.13 - L1 Ensure MSS WarningLevel Percentage threshold for the security event log at which the system will generate a warning is set to Enabled 90 or less
+3.6.4.1 - L1 Ensure Turn off multicast name resolution is set to Enabled
+3.6.8.1 - L2 Ensure Turn on Mapper IO LLTDIO driver is set to Disabled
+3.6.8.2 - L2 Ensure Turn on Responder RSPNDR driver is set to Disabled
+3.6.9.1 - L1 Ensure Prohibit installation and configuration of Network Bridge on your DNS domain network is set to Enabled
+3.6.9.2 - L1 Ensure Prohibit use of Internet Connection Sharing on your DNS domain network is set to Enabled
+3.6.9.3 - L1 Ensure Require domain users to elevate when setting a networks location is set to Enabled
+3.6.11.1 - L1 Ensure Hardened UNC Paths is set to Enabled with Require Mutual Authentication and Require Integrity set for all NETLOGON and SYSVOL shares
+3.6.17.1 - L2 Ensure Configuration of wireless settings using Windows Connect Now is set to Disabled
+3.6.17.2 - L2 Ensure Prohibit access of the Windows Connect Now wizards is set to Enabled
+3.6.18.1 - L1 Ensure Minimize the number of simultaneous connections to the Internet or a Windows Domain is set to Enabled 3  Prevent Wi-Fi when on Ethernet
+3.6.18.2 - L1 Ensure Prohibit connection to non-domain networks when connected to domain authenticated network is set to Enabled
+3.6.19.1 - L1 Ensure Require PIN pairing is set to Enabled
+3.7.1 - L1 Ensure Allow Print Spooler to accept client connections is set to Disabled
+3.7.2 - L1 Ensure Point and Print Restrictions When installing drivers for a new connection is set to Enabled Show warning and elevation prompt
+3.7.3 - L1 Ensure Point and Print Restrictions When updating drivers for an existing connection is set to Enabled Show warning and elevation prompt
+3.9.1.1 - L1 Ensure Turn off toast notifications on the lock screen User is set to Enabled
+3.10.4.1 - L1 Ensure Include command line in process creation events is set to Enabled
+3.10.5.1 - L1 Ensure Encryption Oracle Remediation is set to Enabled Force Updated Clients
+3.10.5.2 - L1 Ensure Remote host allows delegation of non-exportable credentials is set to Enabled
+3.10.9.2 - L1 Ensure Prevent device metadata retrieval from the Internet is set to Enabled
+3.10.9.1.1 - BL Ensure Prevent installation of devices that match any of these device IDs is set to Enabled
+3.10.9.1.2 - BL Ensure Prevent installation of devices that match any of these device IDs Also apply to matching devices that are already installed. is set to True checked
+3.10.9.1.3 - BL Ensure Prevent installation of devices that match any of these device IDs Prevent installation of devices that match any of these device IDs is set to PCICC 0C0A
+3.10.9.1.4 - BL Ensure Prevent installation of devices using drivers that match these device setup classes is set to Enabled
+3.10.9.1.5 - BL Ensure Prevent installation of devices using drivers that match these device setup classes Also apply to matching devices that are already installed. is set to True checked
+3.10.9.1.6 - BL Ensure Prevent installation of devices using drivers that match these device setup classes Prevent installation of devices using drivers for these device setup is set to IEEE 1394 device setup classes
+3.10.13.1 - L1 Ensure Boot-Start Driver Initialization Policy is set to Enabled Good unknown and bad but critical
+3.10.19.1 - L1 Ensure Configure registry policy processing Do not apply during periodic background processing is set to Enabled FALSE
+3.10.19.2 - L1 Ensure Configure registry policy processing Process even if the Group Policy objects have not changed is set to Enabled TRUE
+3.10.19.3 - L1 Ensure Configure security policy processing Do not apply during periodic background processing is set to Enabled FALSE
+3.10.19.4 - L1 Ensure Configure security policy processing Process even if the Group Policy objects have not changed is set to Enabled TRUE
+3.10.19.5 - L1 Ensure Continue experiences on this device is set to Disabled
+3.10.19.6 - L1 Ensure Turn off background refresh of Group Policy is set to Disabled
+3.10.20.1.1 - L2 Ensure Turn off access to the Store is set to Enabled
+3.10.20.1.2 - L1 Ensure Turn off downloading of print drivers over HTTP is set to Enabled
+3.10.20.1.3 - L2 Ensure Turn off Help Experience Improvement Program User is set to Enabled
+3.10.20.1.4 - L2 Ensure Turn off Internet Connection Wizard if URL connection is referring to Microsoft.com is set to Enabled
+3.10.20.1.5 - L1 Ensure Turn off Internet download for Web publishing and online ordering wizards is set to Enabled
+3.10.20.1.6 - L2 Ensure Turn off printing over HTTP is set to Enabled
+3.10.20.1.7 - L2 Ensure Turn off Registration if URL connection is referring to Microsoft.com is set to Enabled
+3.10.20.1.8 - L2 Ensure Turn off Search Companion content file updates is set to Enabled
+3.10.20.1.9 - L2 Ensure Turn off the Order Prints picture task is set to Enabled
+3.10.20.1.10 - L2 Ensure Turn off the Publish to Web task for files and folders is set to Enabled
+3.10.20.1.11 - L2 Ensure Turn off the Windows Messenger Customer Experience Improvement Program is set to Enabled
+3.10.20.1.12 - L2 Ensure Turn off Windows Customer Experience Improvement Program is set to Enabled
+3.10.20.1.13 - L2 Ensure Turn off Windows Error Reporting is set to Enabled
+3.10.23.1 - L2 Ensure Support device authentication using certificate is set to Enabled Automatic
+3.10.24.1 - L2 Ensure Disallow copying of user input methods to the system account for sign-in is set to Enabled
+3.10.25.1 - L1 Ensure Block user from showing account details on sign-in is set to Enabled
+3.10.25.2 - L1 Ensure Do not display network selection UI is set to Enabled
+3.10.25.3 - L1 Ensure Do not enumerate connected users on domain-joined computers is set to Enabled
+3.10.25.4 - L1 Ensure Enumerate local users on domain-joined computers is set to Disabled
+3.10.25.5 - L1 Ensure Turn off app notifications on the lock screen is set to Enabled
+3.10.25.6 - L1 Ensure Turn off picture password sign-in is set to Enabled
+3.10.25.7 - L1 Ensure Turn on convenience PIN sign-in is set to Disabled
+3.10.28.5.1 - L1 Ensure Allow network connectivity during connected-standby on battery is set to Disabled
+3.10.28.5.2 - L1 Ensure Allow network connectivity during connected-standby plugged in is set to Disabled
+3.10.28.5.3 - BL Ensure Allow standby states S1-S3 when sleeping on battery is set to Disabled
+3.10.28.5.4 - BL Ensure Allow standby states S1-S3 when sleeping plugged in is set to Disabled
+3.10.28.5.5 - L1 Ensure Require a password when a computer wakes on battery is set to Enabled
+3.10.28.5.6 - L1 Ensure Require a password when a computer wakes plugged in is set to Enabled
+3.10.29.1 - L1 Ensure Configure Offer Remote Assistance is set to Disabled
+3.10.29.2 - L1 Ensure Configure Solicited Remote Assistance is set to Disabled
+3.10.30.1 - L1 Ensure Enable RPC Endpoint Mapper Client Authentication is set to Enabled
+3.10.30.2 - L1 Ensure Restrict Unauthenticated RPC clients is set to Enabled Authenticated
+3.10.38.5.1 - L2 Ensure Microsoft Support Diagnostic Tool Turn on MSDT interactive communication with support provider is set to Disabled
+3.10.42.1.1 - L1 Ensure Enable Windows NTP Client is set to Enabled
+3.10.42.1.2 - L1 Ensure Enable Windows NTP Server is set to Disabled
+3.11.3.1 - L1 Ensure Allow Microsoft accounts to be optional is set to Enabled
+3.11.3.2 - L2 Ensure Block launching Universal Windows apps with Windows Runtime API access from hosted content. is set to Enabled
+3.11.5.1 - L1 Ensure Do not preserve zone information in file attachments User is set to Disabled
+3.11.5.2 - L1 Ensure Notify antivirus programs when opening attachments User is set to Enabled
+3.11.6.1 - L1 Ensure Disallow Autoplay for non-volume devices is set to Enabled
+3.11.6.2 - L1 Ensure Set the default behavior for AutoRun is set to Enabled Do not execute any autorun commands
+3.11.6.3 - L1 Ensure Turn off Autoplay is set to Enabled All drives
+3.11.7.1.1 - BL Ensure Choose how BitLocker-protected fixed drives can be recovered is set to Enabled
+3.11.7.1.2 - BL Ensure Choose how BitLocker-protected fixed drives can be recovered Recovery Key is set to Enabled Allow 256-bit recovery key
+3.11.7.1.3 - BL Ensure Choose how BitLocker-protected fixed drives can be recovered Recovery Password is set to Enabled Allow 48-digit recovery password
+3.11.7.1.4 - BL Ensure Choose how BitLocker-protected fixed drives can be recovered Allow data recovery agent is set to Enabled True
+3.11.7.1.5 - BL Ensure Choose how BitLocker-protected fixed drives can be recovered Configure storage of BitLocker recovery information to AD DS is set to Enabled Backup recovery passwords and key packages
+3.11.7.1.6 - BL Ensure Choose how BitLocker-protected fixed drives can be recovered Do not enable BitLocker until recovery information is stored to AD DS for fixed data drives is set to Enabled False
+3.11.7.1.7 - BL Ensure Choose how BitLocker-protected fixed drives can be recovered Omit recovery options from the BitLocker setup wizard is set to Enabled True
+3.11.7.1.8 - BL Ensure Choose how BitLocker-protected fixed drives can be recovered Save BitLocker recovery information to AD DS for fixed data drives is set to Enabled False
+3.11.7.2.1 - BL Ensure Allow enhanced PINs for startup is set to Enabled
+3.11.7.2.2 - BL Ensure Choose how BitLocker-protected operating system drives can be recovered is set to Enabled
+3.11.7.2.3 - BL Ensure Choose how BitLocker-protected operating system drives can be recovered Recovery Key is set to Enabled Do not allow 256-bit recovery key
+3.11.7.2.4 - BL Ensure Choose how BitLocker-protected operating system drives can be recovered Recovery Password is set to Enabled Require 48-digit recovery password
+3.11.7.2.5 - BL Ensure Choose how BitLocker-protected operating system drives can be recovered Allow data recovery agent is set to Enabled False
+3.11.7.2.6 - BL Ensure Choose how BitLocker-protected operating system drives can be recovered Configure storage of BitLocker recovery information to AD DS is set to Enabled Store recovery passwords and key packages
+3.11.7.2.7 - BL Ensure Choose how BitLocker-protected operating system drives can be recovered Do not enable BitLocker until recovery information is stored to AD DS for operating system drives is set to Enabled True
+3.11.7.2.8 - BL Ensure Choose how BitLocker-protected operating system drives can be recovered Omit recovery options from the BitLocker setup wizard is set to Enabled True
+3.11.7.2.9 - BL Ensure Choose how BitLocker-protected operating system drives can be recovered Save BitLocker recovery information to AD DS for operating system drives is set to Enabled True
+3.11.7.2.10 - BL Ensure Require additional authentication at startup is set to Enabled
+3.11.7.2.11 - BL Ensure Require additional authentication at startup Allow BitLocker without a compatible TPM is set to Enabled False
+3.11.7.2.12 - BL Ensure Require additional authentication at startup Configure TPM startup key and PIN is set to Enabled Do not allow startup key and PIN with TPM
+3.11.7.2.13 - BL Ensure Require additional authentication at startup Configure TPM startup key is set to Enabled Do not allow startup key with TPM
+3.11.7.2.14 - BL Ensure Require additional authentication at startup Configure TPM startup PIN is set to Enabled Require startup PIN with TPM
+3.11.7.2.15 - BL Ensure Require additional authentication at startup Configure TPM startup is set to Enabled Do not allow TPM
+3.11.7.3.1 - BL Ensure Deny write access to removable drives not protected by BitLocker is set to Enabled
+3.11.7.3.2 - BL Ensure Deny write access to removable drives not protected by BitLocker Do not allow write access to devices configured in another organization is set to Enabled False
+3.11.8.1 - L1 Ensure Do not display the password reveal button is set to Enabled
+3.11.8.2 - L1 Ensure Enumerate administrator accounts on elevation is set to Disabled
+3.11.8.3 - L1 Ensure Prevent the use of security questions for local accounts is set to Enabled
+3.11.15.1.1 - L1 Ensure Control Event Log behavior when the log file reaches its maximum size is set to Disabled
+3.11.15.1.2 - L1 Ensure Specify the maximum log file size KB is set to Enabled 32768 or greater
+3.11.15.2.1 - L1 Ensure Control Event Log behavior when the log file reaches its maximum size is set to Disabled
+3.11.15.2.2 - L1 Ensure Specify the maximum log file size KB is set to Enabled 196608 or greater
+3.11.15.3.1 - L1 Ensure Control Event Log behavior when the log file reaches its maximum size is set to Disabled
+3.11.15.3.2 - L1 Ensure Specify the maximum log file size KB is set to Enabled 32768 or greater
+3.11.15.4.1 - L1 Ensure Control Event Log behavior when the log file reaches its maximum size is set to Disabled
+3.11.15.4.2 - L1 Ensure Specify the maximum log file size KB is set to Enabled 32768 or greater
+3.11.18.1 - L1 Ensure Configure Windows Defender SmartScreen is set to Enabled Warn and prevent bypass
+3.11.18.2 - L1 Ensure Turn off Data Execution Prevention for Explorer is set to Disabled
+3.11.18.3 - L1 Ensure Turn off heap termination on corruption is set to Disabled
+3.11.18.4 - L1 Ensure Turn off shell protocol protected mode is set to Disabled
+3.11.20.1 - L1 Ensure Prevent the computer from joining a homegroup is set to Enabled
+3.11.27.1 - L1 Ensure Block all consumer Microsoft account user authentication is set to Enabled
+3.11.28.11 - L1 Ensure Turn off Microsoft Defender Antivirus is set to Disabled
+3.11.28.3.1 - L1 Ensure Configure local setting override for reporting to Microsoft MAPS is set to Disabled
+3.11.28.3.2 - L2 Ensure Join Microsoft MAPS is set to Disabled
+3.11.28.10.1 - L2 Ensure Configure Watson events is set to Disabled
+3.11.31.1 - L1 Ensure Prevent users from sharing files within their profile. User is set to Enabled
+3.11.35.1 - L2 Ensure Turn off Push To Install service is set to Enabled
+3.11.36.3.2 - L1 Ensure Do not allow passwords to be saved is set to Enabled
+3.11.36.4.2.1 - L2 Ensure Allow users to connect remotely by using Remote Desktop Services is set to Disabled
+3.11.36.4.3.1 - L2 Ensure Do not allow COM port redirection is set to Enabled
+3.11.36.4.3.2 - L1 Ensure Do not allow drive redirection is set to Enabled
+3.11.36.4.3.3 - L2 Ensure Do not allow LPT port redirection is set to Enabled
+3.11.36.4.3.4 - L2 Ensure Do not allow supported Plug and Play device redirection is set to Enabled
+3.11.36.4.9.1 - L1 Ensure Always prompt for password upon connection is set to Enabled
+3.11.36.4.9.2 - L1 Ensure Require secure RPC communication is set to Enabled
+3.11.36.4.9.3 - L1 Ensure Require use of specific security layer for remote RDP connections is set to Enabled SSL
+3.11.36.4.9.4 - L1 Ensure Require user authentication for remote connections by using Network Level Authentication is set to Enabled
+3.11.36.4.9.5 - L1 Ensure Set client connection encryption level is set to Enabled High Level
+3.11.36.4.10.1 - L2 Ensure Set time limit for active but idle Remote Desktop Services sessions is set to Enabled 15 minutes or less but not Never 0
+3.11.36.4.10.2 - L2 Ensure Set time limit for disconnected sessions is set to Enabled 1 minute
+3.11.36.4.11.1 - L1 Ensure Do not delete temp folders upon exit is set to Disabled
+3.11.37.1 - L1 Ensure Prevent downloading of enclosures is set to Enabled
+3.11.42.1 - L1 Ensure Turn off the offer to update to the latest version of Windows is set to Enabled
+3.11.42.2 - L2 Ensure Turn off the Store application is set to Enabled
+3.11.49.1 - L2 Ensure Prevent Internet Explorer security prompt for Windows Installer scripts is set to Disabled
+3.11.50.1 - L1 Ensure Sign-in and lock last interactive user automatically after a restart is set to Disabled
+3.11.52.1.1 - L2 Ensure Prevent Codec Download User is set to Enabled
+3.11.54.1 - L1 Ensure Turn on PowerShell Script Block Logging is set to Enabled
+3.11.54.2 - L1 Ensure Turn on PowerShell Transcription is set to Enabled
+3.11.55.1.1 - L1 Ensure Allow Basic authentication is set to Disabled
+3.11.55.1.2 - L1 Ensure Allow unencrypted traffic is set to Disabled
+3.11.55.1.3 - L1 Ensure Disallow Digest authentication is set to Enabled
+3.11.55.2.1 - L1 Ensure Allow Basic authentication is set to Disabled
+3.11.55.2.2 - L2 Ensure Allow remote server management through WinRM is set to Disabled
+3.11.55.2.3 - L1 Ensure Allow unencrypted traffic is set to Disabled
+3.11.55.2.4 - L1 Ensure Disallow WinRM from storing RunAs credentials is set to Enabled
+3.11.56.1 - L2 Ensure Allow Remote Shell Access is set to Disabled
+5.1 - L1 Ensure Account Logon Audit Credential Validation is set to Success and Failure
+5.2 - L1 Ensure Account Logon Logoff Audit Account Lockout is set to include Failure
+5.3 - L1 Ensure Account Logon Logoff Audit Group Membership is set to include Success
+5.4 - L1 Ensure Account Logon Logoff Audit Logoff is set to include Success
+5.5 - L1 Ensure Account Logon Logoff Audit Logon is set to Success and Failure
+5.6 - L1 Ensure Account Management Audit Application Group Management is set to Success and Failure
+5.7 - L1 Ensure Audit Authentication Policy Change is set to include Success
+5.8 - L1 Ensure Audit Authorization Policy Change is set to include Success
+5.9 - L1 Ensure Audit Changes to Audit Policy is set to include Success
+5.10 - L1 Ensure Audit File Share Access is set to Success and Failure
+5.11 - L1 Ensure Audit Other Logon Logoff Events is set to Success and Failure
+5.12 - L1 Ensure Audit Security Group Management is set to include Success
+5.13 - L1 Ensure Audit Security System Extension is set to include Success
+5.14 - L1 Ensure Audit Special Logon is set to include Success
+5.15 - L1 Ensure Audit User Account Management is set to Success and Failure
+5.16 - L1 Ensure Detailed Tracking Audit PNP Activity is set to include Success
+5.17 - L1 Ensure Detailed Tracking Audit Process Creation is set to include Success
+5.18 - L1 Ensure Object Access Audit Detailed File Share is set to include Failure
+5.19 - L1 Ensure Object Access Audit Other Object Access Events is set to Success and Failure
+5.20 - L1 Ensure Object Access Audit Removable Storage is set to Success and Failure
+5.21 - L1 Ensure Policy Change Audit MPSSVC Rule Level Policy Change is set to Success and Failure
+5.22 - L1 Ensure Policy Change Audit Other Policy Change Events is set to include Failure
+5.23 - L1 Ensure Privilege Use Audit Sensitive Privilege Use is set to Success and Failure
+5.24 - L1 Ensure System Audit I Psec Driver is set to Success and Failure
+5.25 - L1 Ensure System Audit Other System Events is set to Success and Failure
+5.26 - L1 Ensure System Audit Security State Change is set to include Success
+5.27 - L1 Ensure System Audit System Integrity is set to Success and Failure
+11.1 - L2 Ensure Allow Camera is set to Not allowed
+21.1 - L1 Ensure Allow Behavior Monitoring is set to Allowed
+21.2 - L1 Ensure Allow Email Scanning is set to Allowed
+21.3 - L1 Ensure Allow Full Scan Removable Drive Scanning is set to Allowed
+21.4 - L1 Ensure Allow Realtime Monitoring is set to Allowed
+21.5 - L1 Ensure Allow scanning of all downloaded files and attachments is set to Allowed
+21.6 - L1 Ensure Allow Script Scanning is set to Allowed
+21.7 - L1 Ensure Attack Surface Reduction rules are configured
+21.8 - L2 Ensure Enable File Hash Computation is set to Enable
+21.9 - L1 Ensure Enable Network Protection is set to Enabled block mode
+21.10 - L1 Ensure PUA Protection is set to PUA Protection on
+22.1 - L1 Ensure DO Download Mode is NOT set to HTTP blended with Internet Peering
+23.1 - L1 Ensure Enable Virtualization Based Security is set to Enable virtualization based security
+23.2 - L1 Ensure Configure System Guard Launch is set to Unmanaged Enables Secure Launch if supported by hardware
+23.3 - L1 Ensure Require Platform Security Features is set to Turns on VBS with Secure Boot or higher
+23.4 - L1 Ensure Credential Guard is set to Enabled with UEFI lock
+24.1 - L1 Ensure Alphanumeric Device Password Required is set to Password Numeric PIN or Alphanumeric PIN required
+24.2 - L1 Ensure Device Password Expiration is set to 365 or fewer days but not 0
+24.3 - L1 Ensure Device Password History is set to 24 or more passwords
+24.4 - L1 Ensure Min Device Password Complex Characters is set to Digits lowercase letters and uppercase letters are required
+24.5 - L1 Ensure Min Device Password Length is set to 14 or more characters
+24.6 - L1 Ensure Minimum Password Age is set to 1 or more days
+30.1 - L1 Ensure Allow Cortana is set to Block
+30.2 - L1 Ensure Allow Spotlight Collection User is set to 0
+30.3 - L2 Ensure Allow Windows Spotlight User is set to Block
+30.4 - L1 Ensure Disable Consumer Account State Content is set to Enabled
+30.5 - L1 Ensure Do not show feedback notifications is set to Feedback notifications are disabled
+35.1 - L1 Ensure Enable Domain Network Firewall is set to True
+35.2 - L1 Ensure Enable Domain Network Firewall Default Inbound Action for Domain Profile is set to Block
+35.3 - L1 Ensure Enable Domain Network Firewall Disable Inbound Notifications is set to True
+35.4 - L1 Ensure Enable Domain Network Firewall Enable Log Dropped Packets is set to Yes Enable Logging Of Dropped Packets
+35.5 - L1 Ensure Enable Domain Network Firewall Enable Log Success Connections is set to Enable Logging Of Successful Connections
+35.6 - L1 Ensure Enable Domain Network Firewall Log File Path is set to SystemRootSystem32logfilesfirewalldomainfw.log
+35.7 - L1 Ensure Enable Domain Network Firewall Log Max File Size is set to 16384 KB or greater
+35.8 - L1 Ensure Enable Private Network Firewall is set to True
+35.9 - L1 Ensure Enable Private Network Firewall Default Inbound Action for Private Profile is set to Block
+35.10 - L1 Ensure Enable Private Network Firewall Disable Inbound Notifications is set to True
+35.11 - L1 Ensure Enable Private Network Firewall Enable Log Success Connections is set to Enable Logging Of Successful Connections
+35.12 - L1 Ensure Enable Private Network Firewall Enable Log Dropped Packets is set to Yes Enable Logging Of Dropped Packets
+35.13 - L1 Ensure Enable Private Network Firewall Log File Path is set to SystemRootSystem32logfilesfirewallprivatefw.log
+35.14 - L1 Ensure Enable Private Network Firewall Log Max File Size is set to 16384 KB or greater
+35.15 - L1 Ensure Enable Public Network Firewall is set to True
+35.16 - L1 Ensure Enable Public Network Firewall Allow Local Ipsec Policy Merge is set to False
+35.17 - L1 Ensure Enable Public Network Firewall Allow Local Policy Merge is set to False
+35.18 - L1 Ensure Enable Public Network Firewall Default Inbound Action for Public Profile is set to Block
+35.19 - L1 Ensure Enable Public Network Firewall Disable Inbound Notifications is set to True
+35.20 - L1 Ensure Enable Public Network Firewall Enable Log Dropped Packets is set to Yes Enable Logging Of Dropped Packets
+35.21 - L1 Ensure Enable Public Network Firewall Enable Log Success Connections is set to Enable Logging Of Successful Connections
+35.22 - L1 Ensure Enable Public Network Firewall Log File Path is set to SystemRootSystem32logfilesfirewallpublicfw.log
+35.23 - L1 Ensure Enable Public Network Firewall Log Max File Size is set to 16384 KB or greater
+42.1 - L1 Ensure Enable insecure guest logons is set to Disabled
+43.1 - L2 Ensure Disallow KMS Client Online AVS Validation is set to Allow
+45.1 - L1 Ensure Accounts Block Microsoft accounts is set to Users cant add or log on with Microsoft accounts
+45.2 - L1 Ensure Accounts Enable Guest account status is set to Disabled
+45.3 - L1 Ensure Accounts Limit local account use of blank passwords to console logon only is set to Enabled
+45.4 - L1 Configure Accounts Rename administrator account
+45.5 - L1 Configure Accounts Rename guest account
+45.6 - L2 Ensure Devices Prevent users from installing printer drivers when connecting to shared printers is set to Enable
+45.7 - L1 Ensure Interactive logon Do not display last signed-in is set to Enabled
+45.8 - L1 Ensure Interactive logon Do not require CTRLALTDEL is set to Disabled
+45.9 - L1 Ensure Interactive logon Machine inactivity limit is set to 900 or fewer seconds but not 0
+45.10 - L1 Configure Interactive logon Message text for users attempting to log on
+45.11 - L1 Configure Interactive logon Message title for users attempting to log on
+45.12 - L1 Ensure Interactive logon Smart card removal behavior is set to Lock Workstation or higher
+45.13 - L1 Ensure Microsoft network client Digitally sign communications always is set to Enabled
+45.14 - L1 Ensure Microsoft network client Digitally sign communications if server agrees is set to Enabled
+45.15 - L1 Ensure Microsoft network client Send unencrypted password to third-party SMB servers is set to Disabled
+45.16 - L1 Ensure Microsoft network server Digitally sign communications always is set to Enabled
+45.17 - L1 Ensure Microsoft network server Digitally sign communications if client agrees is set to Enabled
+45.18 - L1 Ensure Network access Do not allow anonymous enumeration of SAM accounts is set to Enabled
+45.19 - L1 Ensure Network access Do not allow anonymous enumeration of SAM accounts and shares is set to Enabled
+45.20 - L1 Ensure Network access Restrict anonymous access to Named Pipes and Shares is set to Enabled
+45.21 - L1 Ensure Network access Restrict clients allowed to make remote calls to SAM is set to Administrators Remote Access Allow
+45.22 - L1 Ensure Network security Allow Local System to use computer identity for NTLM is set to Allow
+45.23 - L1 Ensure Network Security Allow PKU2U authentication requests is set to Block
+45.24 - L1 Ensure Network security Do not store LAN Manager hash value on next password change is set to Enabled
+45.25 - L1 Ensure Network security LAN Manager authentication level is set to Send LM and NTLMv2 responses only. Refuse LM and NTLM
+45.26 - L1 Ensure Network security Minimum session security for NTLM SSP based including secure RPC clients is set to Require NTLM and 128-bit encryption
+45.27 - L1 Ensure Network security Minimum session security for NTLM SSP based including secure RPC servers is set to Require NTLM and 128-bit encryption
+45.28 - L1 Ensure Network security Restrict NTLM Audit Incoming NTLM Traffic is set to Enable auditing for all accounts
+45.29 - L1 Ensure User Account Control Behavior of the elevation prompt for administrators is set to Prompt for consent on the secure desktop or higher
+45.30 - L1 Ensure User Account Control Behavior of the elevation prompt for standard users is set to Automatically deny elevation requests
+45.31 - L1 Ensure User Account Control Detect application installations and prompt for elevation is set to Enabled
+45.32 - L1 Ensure User Account Control Only elevate UIAccess applications that are installed in secure locations is set to Enabled
+45.33 - L1 Ensure User Account Control Use Admin Approval Mode is set to Enabled
+45.34 - L1 Ensure User Account Control Switch to the secure desktop when prompting for elevation is set to Enabled
+45.35 - L1 Ensure User Account Control Run all administrators in Admin Approval Mode is set to Enabled
+45.36 - L1 Ensure User Account Control Virtualize file and registry write failures to per-user locations is set to Enabled
+48.1 - L1 Ensure Allow apps from the Microsoft app store to auto update is set to Allowed
+48.2 - L1 Ensure Allow Game DVR is set to Block
+48.3 - L2 Ensure Disable Store Originated Apps is set to Enabled
+48.4 - L1 Ensure MSI Allow user control over installs is set to Disabled
+48.5 - L1 Ensure MSI Always install with elevated privileges is set to Disabled
+48.6 - L1 Ensure MSI Always install with elevated privileges User is set to Disabled
+48.7 - L1 Ensure Require Private Store Only is set to Only Private store is enabled
+58.1 - L2 Ensure Allow Cross Device Clipboard is set to Block
+58.2 - L1 Ensure Allow Input Personalization is set to Block
+58.3 - L2 Ensure Disable Advertising ID is set to Enabled
+58.4 - L1 Ensure Let Apps Activate With Voice Above Lock is set to Enabled Force Deny
+58.5 - L2 Ensure Upload User Activities is set to Disabled
+60.1 - L2 Ensure Allow Cloud Search is set to Not allowed
+60.2 - L1 Ensure Allow Indexing Encrypted Stores Or Items is set to Block
+60.3 - L1 Ensure Allow Search To Use Location is set to Block
+60.4 - L2 Ensure Allow search highlights is set to 0
+62.1 - L2 Ensure Allow Online Tips is set to Block
+64.1.1 - L1 Ensure Notify Malicious is set to Enabled
+64.1.2 - L1 Ensure Notify Password Reuse is set to Enabled
+64.1.3 - L1 Ensure Notify Unsafe App is set to Enabled
+64.1.4 - L1 Ensure Service Enabled is set to Enabled
+67.1 - L1 Ensure Allow Telemetry is set to Basic
+67.2 - L2 Ensure Allow Font Providers is set to Not allowed
+67.3 - L2 Ensure Disable One Drive File Sync is set to Sync Disabled
+67.4 - L1 Ensure Enable OneSettings Auditing is set to Enabled
+67.5 - L1 Ensure Limit Diagnostic Log Collection is set to Enabled
+67.6 - L1 Ensure Limit Dump Collection is set to Enabled
+69.1 - L2 Ensure Bluetooth Audio Gateway Service BTAGService is set to Disabled
+69.2 - L2 Ensure Bluetooth Support Service bthserv is set to Disabled
+69.3 - L1 Ensure Computer Browser Browser is set to Disabled or Not Installed
+69.4 - L2 Ensure Downloaded Maps Manager MapsBroker is set to Disabled
+69.5 - L2 Ensure Geolocation Service lfsvc is set to Disabled
+69.6 - L1 Ensure IIS Admin Service IISADMIN is set to Disabled or Not Installed
+69.7 - L1 Ensure Infrared monitor service irmon is set to Disabled or Not Installed
+69.8 - L1 Ensure Internet Connection Sharing ICS SharedAccess is set to Disabled
+69.9 - L2 Ensure Link-Layer Topology Discovery Mapper lltdsvc is set to Disabled
+69.10 - L1 Ensure LxssManager LxssManager is set to Disabled or Not Installed
+69.11 - L1 Ensure Microsoft FTP Service FTPSVC is set to Disabled or Not Installed
+69.12 - L2 Ensure Microsoft iSCSI Initiator Service MSiSCSI is set to Disabled
+69.13 - L1 Ensure OpenSSH SSH Server sshd is set to Disabled or Not Installed
+69.14 - L2 Ensure Peer Name Resolution Protocol PNRPsvc is set to Disabled
+69.15 - L2 Ensure Peer Networking Grouping p2psvc is set to Disabled
+69.16 - L2 Ensure Peer Networking Identity Manager p2pimsvc is set to Disabled
+69.17 - L2 Ensure PNRP Machine Name Publication Service PNRPAutoReg is set to Disabled
+69.18 - L2 Ensure Print Spooler Spooler is set to Disabled
+69.19 - L2 Ensure Problem Reports and Solutions Control Panel Support wercplsupport is set to Disabled
+69.20 - L2 Ensure Remote Access Auto Connection Manager RasAuto is set to Disabled
+69.21 - L2 Ensure Remote Desktop Configuration SessionEnv is set to Disabled
+69.22 - L2 Ensure Remote Desktop Services TermService is set to Disabled
+69.23 - L2 Ensure Remote Desktop Services UserMode Port Redirector UmRdpService is set to Disabled
+69.24 - L1 Ensure Remote Procedure Call RPC Locator RpcLocator is set to Disabled
+69.25 - L2 Ensure Remote Registry RemoteRegistry is set to Disabled
+69.26 - L1 Ensure Routing and Remote Access RemoteAccess is set to Disabled
+69.27 - L2 Ensure Server LanmanServer is set to Disabled
+69.28 - L1 Ensure Simple TCPIP Services simptcp is set to Disabled or Not Installed
+69.29 - L2 Ensure SNMP Service SNMP is set to Disabled or Not Installed
+69.30 - L1 Ensure Special Administration Console Helper sacsvr is set to Disabled or Not Installed
+69.31 - L1 Ensure SSDP Discovery SSDPSRV is set to Disabled
+69.32 - L1 Ensure UPnP Device Host upnphost is set to Disabled
+69.33 - L1 Ensure Web Management Service WMSvc is set to Disabled or Not Installed
+69.34 - L2 Ensure Windows Error Reporting Service WerSvc is set to Disabled
+69.35 - L2 Ensure Windows Event Collector Wecsvc is set to Disabled
+69.36 - L1 Ensure Windows Media Player Network Sharing Service WMPNetworkSvc is set to Disabled or Not Installed
+69.37 - L1 Ensure Windows Mobile Hotspot Service icssvc is set to Disabled
+69.38 - L2 Ensure Windows Push Notifications System Service WpnService is set to Disabled
+69.39 - L2 Ensure Windows PushToInstall Service PushToInstall is set to Disabled
+69.40 - L2 Ensure Windows Remote Management WS-Management WinRM is set to Disabled
+69.41 - L1 Ensure World Wide Web Publishing Service W3SVC is set to Disabled or Not Installed
+69.42 - L1 Ensure Xbox Accessory Management Service XboxGipSvc is set to Disabled
+69.43 - L1 Ensure Xbox Live Auth Manager XblAuthManager is set to Disabled
+69.44 - L1 Ensure Xbox Live Game Save XblGameSave is set to Disabled
+69.45 - L1 Ensure Xbox Live Networking Service XboxNetApiSvc is set to Disabled
+74.1 - L1 Ensure Access Credential Manager As Trusted Caller is set to No One
+74.2 - L1 Ensure Access From Network is set to Administrators Remote Desktop Users
+74.3 - L1 Ensure Act As Part Of The Operating System is set to No One
+74.4 - L1 Ensure Allow Local Log On is set to Administrators Users
+74.5 - L1 Ensure Backup Files And Directories is set to Administrators
+74.6 - L1 Ensure Change System Time is set to Administrators LOCAL SERVICE
+74.7 - L1 Ensure Create Global Objects is set to Administrators LOCAL SERVICE NETWORK SERVICE SERVICE
+74.8 - L1 Ensure Create Page File is set to Administrators
+74.9 - L1 Ensure Create Permanent Shared Objects is set to No One
+74.10 - L1 Configure Create Symbolic Links
+74.11 - L1 Ensure Create Token is set to No One
+74.12 - L1 Ensure Debug Programs is set to Administrators
+74.13 - L1 Ensure Deny Access From Network to include Guests Local account
+74.14 - L1 Ensure Deny Local Log On to include Guests
+74.15 - L1 Ensure Deny Remote Desktop Services Log On to include Guests Local account
+74.16 - L1 Ensure Enable Delegation is set to No One
+74.17 - L1 Ensure Generate Security Audits is set to LOCAL SERVICE NETWORK SERVICE
+74.18 - L1 Ensure Impersonate Client is set to Administrators LOCAL SERVICE NETWORK SERVICE SERVICE
+74.19 - L1 Ensure Increase Scheduling Priority is set to Administrators Window ManagerWindow Manager Group
+74.20 - L1 Ensure Load Unload Device Drivers is set to Administrators
+74.21 - L1 Ensure Lock Memory is set to No One
+74.22 - L1 Ensure Manage auditing and security log is set to Administrators
+74.23 - L1 Ensure Manage Volume is set to Administrators
+74.24 - L1 Ensure Modify Firmware Environment is set to Administrators
+74.25 - L1 Ensure Modify Object Label is set to No One
+74.26 - L1 Ensure Profile Single Process is set to Administrators
+74.27 - L1 Ensure Remote Shutdown is set to Administrators
+74.28 - L1 Ensure Restore Files And Directories is set to Administrators
+74.29 - L1 Ensure Take Ownership is set to Administrators
+75.1 - L1 Ensure Hypervisor Enforced Code Integrity is set to Enabled with UEFI lock
+75.2 - L1 Ensure Require UEFI Memory Attributes Table is set to Require UEFI Memory Attributes Table
+77.1 - L1 Ensure Allow widgets is set to Not allowed
+78.1 - L1 Ensure Disallow Exploit Protection Override is set to Enable
+79.1 - L1 Ensure Facial Features Use Enhanced Anti Spoofing is set to true
+79.2 - L1 Ensure Minimum PIN Length is set to 6 more characters
+79.3 - L1 Ensure Require Security Device is set to true
+80.1 - L2 Ensure Allow suggested apps in Windows Ink Workspace is set to Block
+80.2 - L1 Ensure Allow Windows Ink Workspace is set to Enabled but the user cant access it above the lock screen OR Disabled
+83.1 - L1 Ensure Allow Auto Update is set to Enabled
+83.2 - L1 Ensure Defer Feature Updates Period in Days is set to Enabled 180 or more days
+83.3 - L1 Ensure Defer Quality Updates Period Days is set to Enabled 0 days
+83.4 - L1 Ensure Manage preview builds is set to Disable Preview builds
+83.5 - L1 Ensure Scheduled Install Day is set to Every day
+83.6 - L1 Ensure Block Pause Updates ability is set to Block
+85.1 - L1 Ensure Backup Directory is set to Backup the password to Azure AD only
+85.2 - L1 Ensure Password Age Days is set to Configured 30 or fewer
+85.3 - L1 Ensure Password Complexity is set to Large letters  small letters  numbers  special characters
+85.4 - L1 Ensure Password Length is set to Configured 15 or more
+85.5 - L1 Ensure Post-authentication actions is set to Reset the password and logoff the managed account or higher
+85.6 - L1 Ensure Post Authentication Reset Delay is set to Configured 8 or fewer hours but not 0
+86.1.1 - L2 Ensure Allow a Windows app to share application data between users is set to Disabled
+86.1.2 - L1 Ensure Allow Windows to automatically connect to suggested open hotspots to networks shared by contacts and to hotspots offering paid services is set to Disabled
+86.1.3 - L2 Ensure Configure Authenticated Proxy usage for the Connected User Experience and Telemetry service is set to Enabled Disable Authenticated Proxy usage
+86.1.4 - BL Ensure Enumeration policy for external devices incompatible with Kernel DMA Protection is set to Enabled Block All
+86.1.5 - L1 Ensure Prevent non-admin users from installing packaged Windows apps is set to Enabled
+86.1.6 - L2 Ensure Turn off location is set to Enabled
+86.1.7 - L1 Ensure Turn off Microsoft consumer experiences is set to Enabled
+86.1.8 - L2 Ensure Turn off notifications network usage is set to Enabled

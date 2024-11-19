@@ -1,0 +1,65 @@
+1.1 - Secure the KDC daemon krb5kdc
+1.2 - Secure the Kerberos administration server daemon kadmind
+1.3 - Secure the Kerberos database administration utility kadmin.local
+1.4 - Secure the Kerberos LDAP configuration utility kdb5 ldap util
+1.5 - Secure the Kerberos configuration utility kdb5 util
+1.6 - Secure the Kerberos propagation utility kprop
+1.7 - Secure the Kerberos slave KDC update daemon kpropd
+1.8 - Secure the Kerberos propagation log utility kproplog
+1.9 - Secure the Kerberos problem report utility krb5-send-pr
+1.10 - Secure the Kerberos host key table manipulation utility k5srvutil
+1.11 - Secure the Kerberos database administration utility kadmin
+1.12 - Secure the kdestroy utility
+1.13 - Secure the kinit utility
+1.14 - Secure the klist utility
+1.15 - Secure the kpasswd utility
+1.16 - Secure the krb5-config utility
+1.17 - Secure the ksu utility
+1.18 - Secure the kswitch utility
+1.19 - Secure the ktutil utility
+2.5 - Secure the KDC configuration file kdc.conf
+2.1.1 - Ensure restrict anonymous to tgt is set to true
+2.2.1 - Secure the Kerberos database access control file  acl file
+2.2.2 - Secure the kadmin keytab  admin keytab
+2.2.3 - Secure the KDC database file database name
+2.2.4 - Ensure that pwservice is not in the default principal flags
+2.2.5 - Secure the dictionary file dict file
+2.2.6 - Secure KDC key stash file key stash file
+2.2.7 - Ensure the master key name is set to KM
+2.2.8 - Ensure master key type is using a strong encryption algorithm
+2.2.9 - Ensure max life is 24 hours or less
+2.2.10 - Ensure max renewable life is less than 14 days
+2.2.11 - Ensure only strong encryption types are supported supported enctypes
+2.2.12 - Ensure reject bad transit is set to true
+2.3.1 - Secure the Kerberos database file database name
+2.3.2 - Ensure Last successful authentication field is updated disable last success
+2.3.3 - Ensure account lockouts are not disabled  disable lockout
+2.3.4 - Secure the LDAP server password file ldap service password file
+2.3.5 - Ensure kadmin and KDC run as different LDAP users
+2.4.1 - Secure the default location default
+2.4.2 - Secure the kdc log location kdc
+2.4.3 - Secure the administrative server log location admin server
+2.4.4 - Ensure a persistent log sink is configured for default log location
+2.4.5 - Ensure a persistent log sink is configured for kdc logging
+2.4.6 - Ensure a persistent log sink is configured for administrative server logging
+3.3 - Secure the Kerberos configuration file krb5.conf
+3.1.1 - Secure the default keytab default keytab name
+3.1.2 - Ensure AES256 is the preferred encryption type for TGS default tgs enctypes
+3.1.3 - Ensure single DES-based encryption types are disallowed for TGS default tgs enctypes
+3.1.4 - Ensure AES256 is the preferred encryption type for TKT default tkt enctypes
+3.1.5 - Ensure single DES-based encryption types are disallowed for TKT default tkt enctypes
+3.1.6 - Ensure single DES-based encryption types are not permitted permitted enctypes
+3.1.7 - Disallow weak encryption types allow weak crypto
+3.1.8 - Ensure clockskew tolerance is minimized clockskew
+3.1.9 - Ensure ignore acceptor hostname is not set to true  
+3.2.1 - Prevent blank password creation pwqualempty
+3.2.2 - Prevent dictionary word password creation pwqualdict
+3.2.3 - Prevent creation of passwords derived from the principals name pwqualprinc
+4.1 - Ensure kiprop principles are only allowed propagation permission
+4.2 - Ensure kadminchangepw principle does not have multiple key versions
+4.3 - Ensure krbtgtREALM principle does not allow duplicate session keys
+4.4 - Ensure krbtgtREALM principle does not have multiple key versions
+4.5 - Secure the Kerberos Access Control List kadm5.acl
+5.1 - Restrict KDC write access to all attributes other than counters and timers
+5.2 - Ensure only KDC and kadmin can read attributes
+5.3 - Ensure only kadmind ldap kadmind dn can write to all attributes

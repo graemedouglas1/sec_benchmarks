@@ -1,0 +1,62 @@
+#TRUSTED 2ecd6594d386b47f3c7cf60a79ee97b569ba68bf9e1a3f2c7b169b0196d25bc7a9c0130a47f71a7acd1740b2e6f8659d3f3680b34e5538e2133fb498e9f578ccdf6da0f6f180301d29a31e57cbecb518dbdc49eddce9cdb6be37a7c4ea5c2dd3d0dec9a41d9625d9784f8c874e3edbfd15d6ea22fec358c03fa110b20ecd3c8b3fba2c1ee710ee06f42ef7f12b609ff4c59c43813f9d0685cc7684c8729d32caf39d1e282e2583e9d81df45df55c0d2b8350ebdf937cfaa4aa8125a5dd5f53209c13815bd2a7cef9dea489237ed8acd2338b7dcd866c6520d9942fc9a7befe2633f47fe235d77acc168f389a2d94fda57e92ba9eaf1c5344d87525bf3fc0ec2aedf4b91165c095c8b9094b4cd43c4934c15b7e568c869983afb37af2eae17c12cba276ddc2d788cdf15248ca865de84e2d7b573776fb2563752d0ee189d38627dc5863fe588952e678013f44e9ad941541e1b6af1b4bb2b8915fcc4b0246d586fccf6f899706212035799bf0f6f5dc0b4e09ab3c230fb82df56b59723f87e8aca39cd03d75fbdb7b7e71d3a94e1c7be6aea0125466d4a76a88d54b64a1618098ae81a10dfc01eb782020516652fd1af24acd5c7a81144715c20d3e5e61ea6eda9ce990fa5ee45fd574ea7e8d6075a35dc25afa21298a8366daf04fe9671a3d8fe5e7039f0e37e3ee0b3f3da02f141c6e78078753e396d017d809f76c2f9edf02
+#TRUST-RSA-SHA256 7407dab82f916d0804320abc677c29e68698ebccbd73637b7df2b3c4c5be38eb5f6c6e00d38004e830dfb212125b5e3c3935348f924cd6e710609547a4372573d6d82ceee00c3a4b312d65da00acdd032a60cbac1627550950a52fa0e14fc20a4b0c13e906807881c800ec636e9abbef4bbdfaa385ae5e82756c4f60a5d672b6eef57b7a1ff2e40a4fbc5c75ea9f81210f2c7c99394113c51f80e974b760a97472f4e75d66a14122548183ce00c62044c297824c46e66f81abd0d9672227dd55c41ce04e8d3c9e26e93c1926287c0a98886a97abc053be0e571ec0061d3f6cfb705922ccfbd5324159304c1c876348839f4125959790e33436291b2851fd4cbd85ef098b6782f10dacd0073a9f7edd00ebf696a4a4e98b3807167ff599a54980d56372b6149250c7c9fb6aa4ada63d926edcab4fea670ef7a64a762fffeb69fcee258f6b3db7ae648698a6b2fcf544664ce6c026ec2bd57defdacedae8456ee32dcdaf9fdf5532f76111d30c44e428eae3663078143fb3e7d1fc8826a250bc4874cd9b713219bdb785c0480b255720e8890c3cca688281dba5873683e70e8faff549d521d00f3b8e7698c1788cf00f38cc24ef361b67b72740449d91fb4242c926b2139ec1d2bedd77ba02a458c08619e0dfe53be5def1377ba5a6498bfde3a2dd28034f7b3a172af7b6db285faa6dba34f72533b16540082ad8b8e6037ac985
+#
+# This script is Copyright (C) 2004-2023 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.10 $
+# $Date: 2023/03/07 $
+#
+# This .audit file looks for source code.
+#
+# The first rule searches C, C++ and header files that have
+# certain words in them such as your company's copyright, a
+# project name or even a developer's name. The second rule
+# is an example of how to search for a certain specific line
+# of source code.
+#
+# Note that neither of these rules makes use of a regex and
+# rely totally on basic pattern matching. Also note that since
+# the second example is searching a majority of the data, it
+# has a max_size value of 1M.
+#
+# This file should be customized for your local environment
+# with keywords that identify your source code.
+#
+#<ui_metadata>
+#<display_name>TNS File Analysis - Source Code Leakage</display_name>
+#<spec>
+#  <type>TNS</type>
+#  <name>File Analysis - Source Code Leakage</name>
+#  <version>1.0.0</version>
+#</spec>
+#<labels>filecontent,content,source,code,update_20230227</labels>
+#</ui_metadata>
+
+<check_type:"FileContent">
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "DLP - Determine if a file is company source code by metadata"
+  file_extension : "h" | "c" | "cpp" | "cs" | "sql" | "xlst" | "inc"
+  expect         : "Copyright YourCompany" | "Project X" | "By John Doe"
+  max_size       : "500K"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "DLP - Determine if a file is company source code by code"
+  file_extension : "c" | "cpp"
+  expect         : "data->temperature = (u_short *) (fdb + 44);" | "cName = CompanyDBLookup(iUserID);"
+  max_size       : "1M"
+</item>
+
+</check_type>

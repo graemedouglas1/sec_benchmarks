@@ -1,0 +1,59 @@
+#TRUSTED 2163475cbf304e2c65c477777113102fa32f707f3c5fd1e6dd71a66ab2648e9fa7d14cdfae4761876ea20c6237b8ed3d3ea74a8ae292515214b25ab40ac9f56fe364ba7f40bd447e013adaa8e58bea9416fd265b90349b4374e0a39fb1a89e9f240b1e1f04bc4003bf3d4fb4d8f11294478616f96eed562bc80abfbbafe1bb41fda957bb4f210b785eb6eed7cac49d265c0a6df1f6f82cbc01d9819b072eaa4a4a17315b49357ce25e96f001a824980e893ce886bc6c681f5978832e69be95629b275c135ec7137225131894937c69f0ad341bdf16bb5b1432405b08bb8c85f4b76ac255f939741ad80bd62d9983342c0c7ffdb915880e2a91096e3c2e5ad2705cd6edfc559a35179a5ca4f54f85da57300310b938a92d2fdb52b74b73628e686420e36e0cf2bd2fe810b71fca63354bcc08f663c9159d3ad7635c2270e9ee3577eee7df0d00b40a6921dfd9bbe8a4dfb1393d4102024e977ed08acd88d5abec9cc1a3794cd6de7a656c02b79676d7010d6102e2f2e070c48c062ec98cb5260514abdc82b587984c7f9fb1d391777014654f8a9bbe378a48deff3eff291c65b543c6c26b05817bf8e9851f33f027022795997b031ea7567c0b2c3e293c57b6e74134cadbab73c1b8d6db16c9d7538c1b59bfdd0e9f2547c2a23fd9bbbd7f048479dcbce556919a6d2464ea1987962606d290a87562448184303bfeb24c78d0d0
+#TRUST-RSA-SHA256 a780d73571e7f5a4b80b8975ef810610b87507aa1da07a946eafa09c1dcf480362345730deda3b1c55db9f2af54831fd26ff2ea45cef2a4cea02abfab0caae429bc33bca4592666a075fee4eff80f07a2bcc431ecf4c01ed0f241ae25f17558509871ac6a358d6827334543b09b2220843b01be1ebb7fedb88fc3dde15974095bef506f23e9c81797752e2d5eaf1041f4653381ce0224539bbaa932c62f12e50bf3564023a12e32f7ac019583226a17a9ef97bec7578215bfdf99cedf6deb1ffa72af7d0d10ef9537d31ebd9764d7305b99b88cb556c7d083e0f7ad8b2607a1d0afdbcac26b85c7ee65c305bdb6875b27b9e20c7b787a7ebf656526e15e4c6ab4500c90e4c688e5b1a254d837f1604e396c60b5e8b53daeae6163d990d8b02b6fc8f276d006030b8a0d06f10495ad1c843f58112e8e25401de1956884e7436b9fd94719d7339eea67982b08e1038b0f64ffb71386a6a49d68f00fabdb63443894a067bda042e935c9ee6d3fa4cedf3014bbf7c2247b4489b80a398a60c257ae149015b3997605b1784a68c36dfdb2e5f347aea8d4de40606813309f1fcf6bf3122a5917b203a184209e64aec51e8b9e32d37d80ae1b0700059b37ed5ff2f0e03a9874c483b1388b97b23f4a8441a84817c926ba3e95c268e7c2432fbc968ad9521788d09cfd1b408e9dc520060289f897ef5465401623eaf375a77ae687e16ae
+#
+# This script is Copyright (C) 2004-2023 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.4 $
+# $Date: 2023/12/22 $
+#
+# Description    : This .audit file searches the first 50k bytes of all text, Word, Excel
+#                  and PDF files for evidence of an IDC-10 Medical Code.
+#
+# NOTE           : References:
+#                   - https://www.cms.gov/Medicare/Coding/ICD10/2016-ICD-10-CM-and-GEMs.html
+#                   - https://www.cms.gov/Medicare/Coding/ICD10/2016-ICD-10-PCS-and-GEMs.html
+#
+#<ui_metadata>
+#<display_name>TNS File Analysis - ICD-10 Medical Coding</display_name>
+#<spec>
+#  <type>TNS</type>
+#  <name>File Analysis - ICD-10 Medical Coding</name>
+#  <version>1.0.0</version>
+#</spec>
+#<labels>filecontent,content,icd10,medical,coding,update_20230227</labels>
+#</ui_metadata>
+
+<check_type:"FileContent">
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "File contains a ICD-10-CM Diagnostic Codes"
+  file_extension : "txt" | "doc" | "xls" | "pdf"
+  regex          : "([^0-9A-Z\.]|^)([A-TV-Z][0-9][0-9AB]\.([0-9A-CZ]|[0-9A-KXZ][0-9A]|[0-9A-CX][0-9X-Z][0-9]|[0-9ABXZ][0-9X][0-9X][0-59A-HJKMNP-S]))([^0-9A-Z\.]|$)"
+ #only_show      : "4"
+ #expect         : "ICD-10" || "ICD10"
+ #include_paths  : "/home"
+  max_size       : "50K"
+</item>
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "File contains a ICD-10-PCS Procedural Codes"
+  file_extension : "txt" | "doc" | "xls" | "pdf"
+  regex          : "([^0-9A-Z]|^)([0-68B-DF-H][02-9A-HL-NP-Z][0-9A-HJMNP-Y][0-9A-HJ-NP-Z][0-8CDFHJKX-Z][0-9B-HJ-NQS-WYZ][0-9A-DF-HJ-MQTWXZ])([^0-9A-Z]|$)"
+ #only_show      : "4"
+ #expect         : "ICD-10" || "ICD10"
+ #include_paths  : "/home"
+  max_size       : "50K"
+</item>
+
+</check_type>

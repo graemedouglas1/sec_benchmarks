@@ -1,0 +1,3366 @@
+---
+
+inspec_rules:
+  "1.1.1":
+    title: '1.1.1 | L1 Ensure Cross-origin HTTP Authentication prompts is set to Disabled'
+    section: 'HTTP authentication'
+    description: |
+        This setting controls whether thirdparty subcontent can open a HTTP Basic Auth dialog and is typically disabled.
+        The recommended state for this setting is              Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Disabled
+        :               Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\HTTP authentication\Cross-
+        origin HTTP Authentication prompts
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.1', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "AllowCrossOriginAuthPrompt"'
+            - name: 'AllowCrossOriginAuthPrompt'
+              rule: "should have_property_value('AllowCrossOriginAuthPrompt', :dword, '0')"
+
+  "1.2.1":
+    title: '1.2.1 | L1 Ensure Configure the list of domains on which Safe Browsing will not trigger warnings is set to Disabled'
+    section: 'Safe Browsing settings'
+    description: |
+        The setting determines the functionality of Safe Browsing. Disabled
+         0 Safe Browsing protection applies to all resources             Enabled
+         1, with a list of 1 or more sites Means Safe Browsing will trust the domains you designate. It wont check them for
+        dangerous resources such as phishing, malware, or unwanted software.
+        The recommended state for this setting is              Disabled
+         0           NOTE
+         Safe Browsings download protection service wont check downloads hosted on these domains, and its password protection
+        service wont check for password reuse.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Disabled
+        :               Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Safe Browsing
+        settings\Configure the list of domains on which Safe Browsing will not trigger warnings.
+         Impact: None - This is the default behavior. NOTE:
+         The only real impact is possible user annoyance if they are going to a legitimate site that is falsely considered
+        fraudulent (a rare occurrence). This can be handled by adding the site to the allowlist and/or notifying Google of the
+        false finding.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.2.1', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome\SafeBrowsingAllowlistDomains'
+        - checks:
+            - rule: 'should_not have_property "\d+"'
+
+  "1.2.2":
+    title: '1.2.2 | L1 Ensure Safe Browsing Protection Level is set to Enabled Safe Browsing is active in the standard mode. or higher'
+    section: 'Safe Browsing settings'
+    description: |
+        Control whether Google Chromes Safe Browsing feature is enabled and the mode in which it operates. If you set this
+        setting as mandatory, users cannot change or override the Safe Browsing setting in Google Chrome. If this setting is
+        left not set, Safe Browsing will operate in Standard Protection mode but users can change this setting. No Protection
+         0 Safe Browsing is never active.             Standard Protection
+         1 Safe Browsing is active in the standard mode.             Enhanced Protection
+         2 Safe Browsing is active in the enhanced mode. This mode provides better security, but requires sharing more browsing
+        information with Google.
+        The recommended state for this setting is              Safe Browsing is active in the standard mode.
+         1 or higher
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled: Safe
+        Browsing is active in the standard mode.
+        :               Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Safe Browsing
+        settings\Safe Browsing Protection Level
+         Impact: None - This is the default behavior (Standard Protection).
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.2.2', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "SafeBrowsingProtectionLevel"'
+            - name: 'SafeBrowsingProtectionLevel'
+              rule: "should have_property_value('SafeBrowsingProtectionLevel', :dword, '1')"
+
+  "1.3":
+    title: '1.3 | L1 Ensure Allow Google Cast to connect to Cast devices on all IP addresses is set to Disabled'
+    section: 'Enforced Defaults'
+    description: |
+        This setting controls whether Google Cast is able to connect to all IP Addresses or only private IP Addresses as defined
+        in RFC1918 IPv4 and RFC4193 IPv6. Note that if the            EnabledMediaRouter
+         setting is set to            Disabled
+         there is no positive or negative effect for this setting.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Google Cast\Allow Google
+        Cast to connect to Cast devices on all IP addresses.
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.3', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "MediaRouterCastAllowAllIPs"'
+            - name: 'MediaRouterCastAllowAllIPs'
+              rule: "should have_property_value('MediaRouterCastAllowAllIPs', :dword, '0')"
+
+  "1.4":
+    title: '1.4 | L1 Ensure Allow queries to a Google time service is set to Enabled'
+    section: 'Enforced Defaults'
+    description: |
+        This setting controls whether Google Chrome can send queries to a Google time service for accurate timestamps. This
+        check helps in validation of certificates.
+        The recommended state for this setting is            Enabled
+        1
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Allow queries to a Google
+        time service
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.4', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "BrowserNetworkTimeQueriesEnabled"'
+            - name: 'BrowserNetworkTimeQueriesEnabled'
+              rule: "should have_property_value('BrowserNetworkTimeQueriesEnabled', :dword, '1')"
+
+  "1.5":
+    title: '1.5 | L1 Ensure Allow the audio sandbox to run is set to Enabled'
+    section: 'Enforced Defaults'
+    description: |
+        This setting controls whether audio processes in Google Chrome run in a sandbox. NOTE
+         Security software setups within your environment might interfere with the sandbox.
+        The recommended state for this setting is            Enabled
+         1
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Allow the audio sandbox to
+        run
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.5', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "AudioSandboxEnabled"'
+            - name: 'AudioSandboxEnabled'
+              rule: "should have_property_value('AudioSandboxEnabled', :dword, '1')"
+
+  "1.6":
+    title: '1.6 | L1 Ensure Ask where to save each file before downloading is set to Enabled'
+    section: 'Enforced Defaults'
+    description: |
+        Google Chrome offers to download files automatically to the default download directory without prompting. If this
+        setting is enabled, users are always asked where to save each file before downloading.
+        The recommended state for this setting is            Enabled
+         1
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the
+        following UI path to                Enabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Ask where to save each file
+        before downloading
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.6', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "PromptForDownloadLocation"'
+            - name: 'PromptForDownloadLocation'
+              rule: "should have_property_value('PromptForDownloadLocation', :dword, '1')"
+
+  "1.7":
+    title: '1.7 | L1 Ensure Continue running background apps when Google Chrome is closed is set to Disabled'
+    section: 'Enforced Defaults'
+    description: |
+        Chrome allows for processes started while the browser is open to remain running once the browser has been closed. It
+        also allows for background apps and the current browsing session to remain active after the browser has been closed.
+        With this setting Disabled, the browser will close its processes and will stop running background apps.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Continue running background
+        apps when Google Chrome is closed
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.7', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "BackgroundModeEnabled"'
+            - name: 'BackgroundModeEnabled'
+              rule: "should have_property_value('BackgroundModeEnabled', :dword, '0')"
+
+  "1.8":
+    title: '1.8 | L2 Ensure Control SafeSites adult content filtering is set to Enabled Filter top level sites but not embedded iframes for adult content'
+    section: 'Enforced Defaults'
+    description: |
+        Google Chrome can use the Google Safe Search API to classify URLs as pornographic or not.
+        The recommended state for this setting is            Enabled
+         with a value of            Filter top level sites but not embedded iframes for adult content
+         1
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled: Do not
+        filter sites for adult content
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Control SafeSites adult
+        content filtering.
+         Impact: Users' search results will be filtered and content such as adult text, videos, and images will not be shown.
+        NOTE:
+         Using Googles Safe Search API may leak information which is typed/pasted by mistake into the omnibox, e.g. passwords,
+        internal webservices, folder structures, etc.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_1.8', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "SafeSitesFilterBehavior"'
+            - name: 'SafeSitesFilterBehavior'
+              rule: "should have_property_value('SafeSitesFilterBehavior', :dword, '1')"
+
+  "1.9":
+    title: '1.9 | L1 Ensure Determine the availability of variations is set to Enable all variations'
+    section: 'Enforced Defaults'
+    description: |
+        Configuring this setting allows specifying which variations are allowed to be applied in Google Chrome.
+        Variations provide a means for Google to offer modifications to Google Chrome without shipping a new version of the
+        browser by selectively enabling or disabling already existing features. Enable all variations
+         0 Allows all variations to be applied to the browser Default value.           Enable variations concerning critical
+        fixes only
+         1 Allows only variations considered critical security or stability fixes to be applied to Google Chrome.
+        Disable all variations
+         2 Prevent all variations from being applied to the browser. Please note that this mode can potentially prevent the
+        Google Chrome developers from providing critical security fixes in a timely manner and is thus not recommended.
+        The recommended state for this setting is            Enable all variations
+         0         NOTE
+         Google strongly believes there is no added security benefit for turning this to critical fixes as leaving it on
+        increases the stability of the browser. Disabling variations can also prevent getting critical security updates in a
+        timely manner.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled: Enable
+        all variations
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Determine the availability
+        of variations
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.9', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "ChromeVariations"'
+            - name: 'ChromeVariations'
+              rule: "should have_property_value('ChromeVariations', :dword, '0')"
+
+  "1.10":
+    title: '1.10 | L1 Ensure Disable Certificate Transparency enforcement for a list of Legacy Certificate Authorities is set to Disabled'
+    section: 'Enforced Defaults'
+    description: |
+        Google Chrome can disable the enforcing of Certificate Transparency requirements for a list of Legacy Certificate
+        Authorities. If this setting is disabled, certificates not properly publicly disclosed as required by Certificate
+        Transparency are untrusted.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Disable Certificate
+        Transparency enforcement for a list of Legacy Certificate Authorities
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.10', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome\CertificateTransparencyEnforcementDisabledForLegacyCas'
+        - checks:
+            - rule: 'should_not have_property "\d+"'
+
+  "1.11":
+    title: '1.11 | L1 Ensure Disable Certificate Transparency enforcement for a list of subjectPublicKeyInfo hashes is set to Disabled'
+    section: 'Enforced Defaults'
+    description: |
+        Google Chrome can exclude certificates by their subjectPublicKeyInfo hashes from enforcing Certificate Transparency
+        requirements. If this setting is disabled, no certificates are excluded from Certificate Transparency requirements.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Disable Certificate
+        Transparency enforcement for a list of subjectPublicKeyInfo hashes
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.11', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome\CertificateTransparencyEnforcementDisabledForCas'
+        - checks:
+            - rule: 'should_not have_property "\d+"'
+
+  "1.12":
+    title: '1.12 | L1 Ensure Disable Certificate Transparency enforcement for a list of URLs is set to Disabled'
+    section: 'Enforced Defaults'
+    description: |
+        Google Chrome can specify URLs/hostnames for which Certificate Transparency will not be enforced. If this setting is
+        disabled, no URLs are excluded from Certificate Transparency requirements.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Disable Certificate
+        Transparency enforcement for a list of URLs
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.12', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome\CertificateTransparencyEnforcementDisabledForUrls'
+        - checks:
+            - rule: 'should_not have_property "\d+"'
+
+  "1.13":
+    title: '1.13 | L1 Ensure Disable saving browser history is set to Disabled'
+    section: 'Enforced Defaults'
+    description: |
+        Google Chrome is configured to save the browser history.
+        The recommended state for this setting is            Disabled
+         0         NOTE
+         This setting will preserve browsing history that could contain a users personal browsing history. Please make sure that
+        this setting is in compliance with organizational policies.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Disable saving browser
+        history
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.13', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "SavingBrowserHistoryDisabled"'
+            - name: 'SavingBrowserHistoryDisabled'
+              rule: "should have_property_value('SavingBrowserHistoryDisabled', :dword, '0')"
+
+  "1.14":
+    title: '1.14 | L1 Ensure DNS interception checks enabled is set to Enabled'
+    section: 'Enforced Defaults'
+    description: |
+        This setting determines whether a local switch is configured for DNS interception checks. These checks attempt to
+        discover if the browser is behind a proxy that redirects unknown host names.
+        The recommended state for this setting is            Enabled
+         1         NOTE
+         This detection might not be necessary in an enterprise environment where the network configuration is known. It can be
+        disabled to avoid additional DNS and HTTP traffic on startup and each DNS configuration change.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\DNS interception checks
+        enabled
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.14', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "DNSInterceptionChecksEnabled"'
+            - name: 'DNSInterceptionChecksEnabled'
+              rule: "should have_property_value('DNSInterceptionChecksEnabled', :dword, '1')"
+
+  "1.15":
+    title: '1.15 | L1 Ensure Enable component updates in Google Chrome is set to Enabled'
+    section: 'Enforced Defaults'
+    description: |
+        Google Chromes Component Updater updates several components of Google Chrome on a regular basis applies only to Chrome
+        browser components.
+        The recommended state for this setting is            Enabled
+         1         NOTE
+         Updates to any component that does not contain executable code, does not significantly alter the behavior of the
+        browser, or is critical for its security will not be disabled E.g. certificate revocation lists and Safe Browsing data
+        is updated regardless of this setting. FYI            chrome//components
+         lists all components, but not if they are affected by this setting.         NOTE
+         Google provided the following list of            some of the components
+         controlled by this setting         Recovery component Pnacl Floc Optimization hints SSL error assistant CRL set Origin
+        trials SW reporter PKI metadata
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Enable component updates in
+        Google Chrome
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.15', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "ComponentUpdatesEnabled"'
+            - name: 'ComponentUpdatesEnabled'
+              rule: "should have_property_value('ComponentUpdatesEnabled', :dword, '1')"
+
+  "1.16":
+    title: '1.16 | L1 Ensure Enable globally scoped HTTP auth cache is set to Disabled'
+    section: 'Enforced Defaults'
+    description: |
+        This setting controls whether HTTP auth credentials may be automatically used in the context of another web site visited
+        in Google Chrome.
+        The recommended state for this setting is            Disabled
+         0         NOTE
+         This setting is intended to give enterprises depending on the legacy behavior a chance to update their login procedures
+        and will be removed in the future.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Enable globally scoped HTTP
+        auth cache
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.16', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "GloballyScopeHTTPAuthCacheEnabled"'
+            - name: 'GloballyScopeHTTPAuthCacheEnabled'
+              rule: "should have_property_value('GloballyScopeHTTPAuthCacheEnabled', :dword, '0')"
+
+  "1.17":
+    title: '1.17 | L1 Ensure Enable online OCSPCRL checks is set to Disabled'
+    section: 'Enforced Defaults'
+    description: |
+        Google Chrome can reactivate softfail, online revocation checks although they can provide some benefit in most cases. If
+        this setting is disabled, unsecure online OCSP/CRL checks are no longer performed.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Enable online OCSP/CRL
+        checks
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.17', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "EnableOnlineRevocationChecks"'
+            - name: 'EnableOnlineRevocationChecks'
+              rule: "should have_property_value('EnableOnlineRevocationChecks', :dword, '0')"
+
+  "1.18":
+    title: '1.18 | L1 Ensure Enable security warnings for command-line flags is set to Enabled'
+    section: 'Enforced Defaults'
+    description: |
+        This setting prevents Google Chrome from showing security warnings that potentially dangerous commandline flags are in
+        use at its launch.
+        The recommended state of this setting is            Enabled
+        0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Enable security warnings for
+        command-line flags
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.18', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "CommandLineFlagSecurityWarningsEnabled"'
+            - name: 'CommandLineFlagSecurityWarningsEnabled'
+              rule: "should have_property_value('CommandLineFlagSecurityWarningsEnabled', :dword, '1')"
+
+  "1.19":
+    title: '1.19 | L1 Ensure Enable third party software injection blocking is set to Enabled'
+    section: 'Enforced Defaults'
+    description: |
+        Google Chrome can prevent third party software from injecting executable code into Chromes processes.
+        The recommended state for this setting is            Enabled
+         1
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Enable third party software
+        injection blocking
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.19', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "ThirdPartyBlockingEnabled"'
+            - name: 'ThirdPartyBlockingEnabled'
+              rule: "should have_property_value('ThirdPartyBlockingEnabled', :dword, '1')"
+
+  "1.20":
+    title: '1.20 | L1 Ensure Enables managed extensions to use the Enterprise Hardware Platform API is set to Disabled'
+    section: 'Enforced Defaults'
+    description: |
+        This setting allows extensions installed by enterprise policies to be allowed to use the Enterprise Hardware Platform
+        API.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Enables managed extensions
+        to use the Enterprise Hardware Platform API
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.20', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "EnterpriseHardwarePlatformAPIEnabled"'
+            - name: 'EnterpriseHardwarePlatformAPIEnabled'
+              rule: "should have_property_value('EnterpriseHardwarePlatformAPIEnabled', :dword, '0')"
+
+  "1.21":
+    title: '1.21 | L1 Ensure Ephemeral profile is set to Disabled'
+    section: 'Enforced Defaults'
+    description: |
+        This setting controls whether user profiles are switched to ephemeral mode. In ephemeral mode, profile data is saved on
+        disk for the length of the session and then the data is deleted after the session is over. Therefore, no data is saved
+        to the device.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Ephemeral profile
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.21', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "ForceEphemeralProfiles"'
+            - name: 'ForceEphemeralProfiles'
+              rule: "should have_property_value('ForceEphemeralProfiles', :dword, '0')"
+
+  "1.22":
+    title: '1.22 | L1 Ensure Import autofill form data from default browser on first run is set to Disabled'
+    section: 'Enforced Defaults'
+    description: |
+        This setting controls whether users are allowed to import autofill data from other browsers into Google Chrome.
+        If you set this setting to            Disabled
+        , users will be unable to perform an import of autofill data during Google Chrome run. This will also prevent users from
+        importing data after Google Chrome has been set up.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Import autofill form data
+        from default browser on first run
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.22', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "ImportAutofillFormData"'
+            - name: 'ImportAutofillFormData'
+              rule: "should have_property_value('ImportAutofillFormData', :dword, '0')"
+
+  "1.23":
+    title: '1.23 | L1 Ensure Import of homepage from default browser on first run is set to Disabled'
+    section: 'Enforced Defaults'
+    description: |
+        This setting controls whether users are able to import homepage settings from another browser into Google Chrome as well
+        as whether homepage settings are imported on first use.
+        If you set this setting to            Disabled
+         users will be unable to perform an import homepage settings from other browsers into Google Chrome.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Import of homepage from
+        default browser on first run
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.23', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "ImportHomepage"'
+            - name: 'ImportHomepage'
+              rule: "should have_property_value('ImportHomepage', :dword, '0')"
+
+  "1.24":
+    title: '1.24 | L1 Ensure Import search engines from default browser on first run is set to Disabled'
+    section: 'Enforced Defaults'
+    description: |
+        This setting controls whether users are able to import search engine settings from another browser into Google Chrome as
+        well as whether said setting is imported on first use.
+        If you set this setting to            Disabled
+         users will be unable to perform an import of their search engine settings from other browsers into Google Chrome.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Import search engines from
+        default browser on first run
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.24', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "ImportSearchEngine"'
+            - name: 'ImportSearchEngine'
+              rule: "should have_property_value('ImportSearchEngine', :dword, '0')"
+
+  "1.25":
+    title: '1.25 | L1 Ensure List of names that will bypass the HSTS policy check is set to Disabled'
+    section: 'Enforced Defaults'
+    description: |
+        This setting allows a list of names to be specified that will be exempt from HTTP Strict Transport Security HSTS policy
+        checks, then potentially upgraded from http// to https//.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\List of names that will
+        bypass the HSTS policy check
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.25', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome\HSTSPolicyBypassList'
+        - checks:
+            - rule: 'should_not have_property "\d+"'
+
+  "1.26":
+    title: '1.26 | L1 Ensure Origins or hostname patterns for which restrictions on insecure origins should not apply is set to Disabled'
+    section: 'Enforced Defaults'
+    description: |
+        Google Chrome can use a list of origins URLs or hostname patterns such as .example.com for which security restrictions
+        on insecure origins will not apply and are prevented from being labeled as Not Secure in the omnibox.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :
+        Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Origins or hostname patterns for which
+        restrictions on
+        insecure origins should not apply
+                     Note:
+         The UI path defined in the                chrome.adml
+         includes a line break between the                on
+         and the                insecure
+        . In some views, the line break is correctly rendered, in others not.             Impact: None - This is the default
+        behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.26', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome\OverrideSecurityRestrictionsOnInsecureOrigin'
+        - checks:
+            - rule: 'should_not have_property "\d+"'
+
+  "1.27":
+    title: '1.27 | L1 Ensure Suppress lookalike domain warnings on domains is set to Disabled'
+    section: 'Enforced Defaults'
+    description: |
+        This setting prevents the display of lookalike URL warnings on the sites listed. These warnings are typically shown on
+        sites that Google Chrome believes might be trying to spoof another site with which the user is familiar. Disabled
+         0 or set to an empty list Warnings may appear on any site the user visits.           Enabled
+         1 and set to one or more domains No lookalike warnings pages will be shown when the user visits pages on that domain.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Suppress lookalike domain
+        warnings on domains
+         Impact: None - This is the default behavior. NOTE:
+         The only real impact is possible user annoyance if they are going to a legitimate site that is falsely considered
+        fraudulent (a rare occurrence). This can be handled by adding the site to the allowlist and/or notifying Google of the
+        false finding.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.27', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome\LookalikeWarningAllowlistDomains'
+        - checks:
+            - rule: 'should_not have_property "\d+"'
+
+  "1.28":
+    title: '1.28 | L1 Ensure Suppress the unsupported OS warning is set to Disabled'
+    section: 'Enforced Defaults'
+    description: |
+        Google Chrome will show a warning that appears when Google Chrome is running on a computer or operating system that is
+        no longer supported.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Polices\Administrative Templates\Google\Google Chrome\Suppress the unsupported OS
+        warning
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.28', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "SuppressUnsupportedOSWarning"'
+            - name: 'SuppressUnsupportedOSWarning'
+              rule: "should have_property_value('SuppressUnsupportedOSWarning', :dword, '0')"
+
+  "1.29":
+    title: '1.29 | L1 Ensure URLs for which local IPs are exposed in WebRTC ICE candidates is set to Disabled'
+    section: 'Enforced Defaults'
+    description: |
+        This setting specifies a list of URLs or patterns for which local IP addresses will be exposed by WebRTC.
+        The recommended state for this setting is            Disabled
+         0         NOTE
+         This setting, if Enabled, weakens the protection of local IPs if needed by administrators.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\URLs for which local IPs are
+        exposed in WebRTC ICE candidates
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.29', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome\WebRtcLocalIpsAllowedUrls'
+        - checks:
+            - rule: 'should_not have_property "\d+"'
+
+  "2.1.1":
+    title: '2.1.1 | L1 Ensure Update policy override is set to Enabled with Always allow updates recommended or Automatic silent updates specified'
+    section: 'Update settings (Google section of GPO)'
+    description: |
+        Google Update manages installation of available Google Chrome updates from Google. This setting allows users to define
+        whether updates are to be applied automatically. Depending on the business scenario, updates shall be applied
+        periodically or also if the user seeks for updates. Updates disabled
+         Never apply updates 0             Always allow updates
+         Updates are always applied when found, either by periodic update check or by a manual update check 1             Manual
+        updates only
+         Updates are only applied when the user does a manual update check 2             Automatic silent updates only
+         Updates are only applied when they are found via the periodic update check 3             Disabled
+         0 Google Update handles available updates as specified by Update policy override default.
+        The recommended state for this setting is              Enabled
+         with a value of              Always allow updates
+         1 or              Automatic silent updates
+         3           NOTE
+         This policy is available only on Windows instances that are joined to a Microsoft Active Directory domain.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled:
+        Always allow updates (recommended)
+        :               Computer Configuration\Polices\Administrative Templates\Google\Google Update\Applications\Google
+        Chrome\Update policy override
+         Impact: Latest updates are automatically applied at least periodically.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.1.1', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Update'
+        - checks:
+            - rule: 'should have_property "Update{8A69D345-D564-463C-AFF1-A69D9E530F96}"'
+            - name: 'Update{8A69D345-D564-463C-AFF1-A69D9E530F96}'
+              rule: "should have_property_value('Update{8A69D345-D564-463C-AFF1-A69D9E530F96}', :dword, '3')"
+
+  "2.2.1":
+    title: '2.2.1 | L1 Ensure Control use of insecure content exceptions is set to Enabled Do not allow any site to load mixed content'
+    section: 'Content settings'
+    description: |
+        Setting controls whether users can add exceptions to allow mixed content for specific sites. Do not allow any site to
+        load mixed content
+         2             Allow users to add exceptions to allow mixed content
+         3
+        The recommended state for this setting is              Enabled
+         with the value of              Do not allow any site to load mixed content
+         2           NOTE
+         This policy can be overridden for specific URL patterns using the              InsecureContentAllowedForUrls
+         and              InsecureContentBlockedForUrls
+         policies.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled: Do
+        not allow any site to load mixed content
+        :               Computer Configuration\Polices\Administrative Templates\Google\Google Chrome\Content Settings\Control
+        use of insecure content exceptions
+         Impact: Users will not be able to mix content.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.1', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome\'
+        - checks:
+            - rule: 'should have_property "DefaultInsecureContentSetting"'
+            - name: 'DefaultInsecureContentSetting'
+              rule: "should have_property_value('DefaultInsecureContentSetting', :dword, '2')"
+
+  "2.2.2":
+    title: '2.2.2 | L2 Ensure Control use of the Web Bluetooth API is set to Enabled Do not allow any site to request access to Bluetooth devices via the Web Bluetooth API'
+    section: 'Content settings'
+    description: |
+        Google Chrome has an API which allows the access to nearby Bluetooth devices from the browser with users consent. Do not
+        allow any site to request access to Bluetooth devices via the Web Bluetooth API
+         2             Allow sites to ask the user to grant access to a nearby Bluetooth device
+         3
+        The recommended state for this setting is              Enabled
+         with a value of              Do not allow any site to request access to Bluetooth devices via the Web Bluetooth API
+         2
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled: Do
+        not allow any site to request access to Bluetooth devices via the Web Bluetooth API
+        :               Computer Configuration\Polices\Administrative Templates\Google\Google Chrome\Content Settings\Control
+        use of the Web Bluetooth API
+         Impact: If this setting is configured, websites can no longer access nearby Bluetooth devices via the API (this
+        includes web cameras, headphones, and other Bluetooth devices) and the user will never be asked.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_2.2.2', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "DefaultWebBluetoothGuardSetting"'
+            - name: 'DefaultWebBluetoothGuardSetting'
+              rule: "should have_property_value('DefaultWebBluetoothGuardSetting', :dword, '2')"
+
+  "2.2.3":
+    title: '2.2.3 | L2 Ensure Control use of the WebUSB API is set to Enabled Do not allow any site to request access to USB devices via the WebUSB API'
+    section: 'Content settings'
+    description: |
+        Google Chrome has an API which allows access to connected USB devices from the browser Do not allow any site to request
+        access to USB devices via the WebUSB API
+         2             Allow sites to ask the user to grant access to a connected USB device
+         3
+        The recommended state for this setting is              Enabled
+         with a value of              Do not allow any site to request access to USB devices via the WebUSB API
+         2
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled: Do
+        not allow any site to request access to USB devices via the WebUSB API
+        :               Computer Configuration\Polices\Administrative Templates\Google\Google Chrome\Content Settings\Control
+        use of the WebUSB API
+         Impact: If this setting is configured, websites can no longer access connected USB devices via the API (this includes
+        web cameras, headphones, and other USB devices) which could also prevent some two factor authentication (2FA) USB
+        devices from working properly.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_2.2.3', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "DefaultWebUsbGuardSetting"'
+            - name: 'DefaultWebUsbGuardSetting'
+              rule: "should have_property_value('DefaultWebUsbGuardSetting', :dword, '2')"
+
+  "2.2.4":
+    title: '2.2.4 | L2 Ensure Default notification setting is set to Enabled Do not allow any site to show desktop notifications'
+    section: 'Content settings'
+    description: |
+        Google Chrome offers websites the ability to display desktop notifications. These are push messages which are sent from
+        the website operator through Google infrastructure to Chrome. Allow sites to show desktop notifications
+         1             Do not allow any site to show desktop notifications
+         2             Ask every time a site wants to show desktop notifications
+         3
+        The recommended state for this setting is              Enabled
+         with a value of              Do not allow any site to show desktop notifications
+         2
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled: Do
+        not allow any site to show desktop notifications
+        :               Computer Configuration\Polices\Administrative Templates\Google\Google Chrome\Content Settings\Default
+        notification setting
+         Impact:
+        If this setting is enabled and set to                    Do not allow any site to show desktop notifications
+        , notifications will not be displayed for any sites and the user will not be asked.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_2.2.4', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "DefaultNotificationsSetting"'
+            - name: 'DefaultNotificationsSetting'
+              rule: "should have_property_value('DefaultNotificationsSetting', :dword, '2')"
+
+  "2.2.5":
+    title: '2.2.5 | L1 Ensure Allow local file access to file URLs on these sites in the PDF Viewer Is Disabled'
+    section: 'Content settings'
+    description: |
+        This setting will allow specified URLs to access              file//
+         URLs in the PDF Viewer. By default all domains are blocked from accessing              file//
+         URLs in the PDF Viewer
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Disabled
+        :               Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Content settings\Allow
+        local file access to file:// URLs on these sites in the PDF Viewer
+         Impact: Users will be required to open PDF files manually in the PDF Viewer or in the organization's PDF viewing
+        application.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.2.5', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome\PdfLocalFileAccessAllowedForDomains'
+        - checks:
+            - rule: 'should_not have_property "\d+"'
+
+  "2.3.1":
+    title: '2.3.1 | L1 Ensure Blocks external extensions from being installed is set to Enabled'
+    section: 'Extensions'
+    description: |
+        Enabling this setting blocks external extensions an extension that is not installed from the Chrome Web Store from being
+        installed.
+        The recommended state for this setting is              Enabled
+         1
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled
+        :               Computer Configuration\Polices\Administrative Templates\Google\Google Chrome\Extensions\Blocks external
+        extensions from being installed
+         Impact: User will only be allowed to install extension for the Chrome web store.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.3.1', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "BlockExternalExtensions"'
+            - name: 'BlockExternalExtensions'
+              rule: "should have_property_value('BlockExternalExtensions', :dword, '1')"
+
+  "2.3.2":
+    title: '2.3.2 | L1 Ensure Configure allowed appextension types is set to Enabled extension hosted app platform app theme'
+    section: 'Extensions'
+    description: |
+        Enabling this setting allows you to specify which app/extension types are allowed. Disabled
+         0 Results in no restrictions on the acceptable extension and app types.
+        The recommended state for this setting is              Enabled
+         with the values of              extension
+        ,              hostedapp
+        ,              platformapp
+        ,              theme
+        .
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled:
+        extension, hosted_app, platform_app, theme
+        :               Computer Configuration\Polices\Administrative Templates\Google\Google Chrome\Extensions\Configure
+        allowed app/extension types
+         Impact: Extensions already installed will be removed if its type is denylisted and the extension itself is not
+        allowlisted.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.3.2', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome\ExtensionAllowedTypes'
+        - checks:
+            - rule: 'should have_property "\d+"'
+            - name: '\d+'
+              rule: "should have_property_value('\d+', :string, 'theme')"
+
+  "2.3.3":
+    title: '2.3.3 | L1 Ensure Configure extension installation blocklist is set to Enabled '
+    section: 'Extensions'
+    description: |
+        Enabling this setting allows you to specify which extensions the users can NOT install. Extensions already installed
+        will be removed if blocklisted. Disabled
+         0 then the user can install any extension in Google Chrome.
+        The recommended state for this setting is              Enabled
+         with a value of
+                        NOTE
+         Chrome does offer a more granular permissionbased configuration called              Extension management settings
+         if blocklisting all extensions is too aggressive, which allows an organization to drill down to the exact permissions
+        that they want to lock down.  The extensions management settings require more coordination and effort to understand what
+        the security requirements are to block site and device permissions globally as well as more IT management to deploy. The
+        benefit would be allowing access to more extensions to their endusers.  See link in reference section           NOTE
+         If Chrome Cleanup is Disabled, users may want to configure the extension blocklist instead of using the Extension
+        Management option. Chrome Cleanup can help protect against malicious extensions when paired with the Extension
+        Management setting.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled
+         and a value of                  *
+         for Extension IDs the user should be prevented from installing:               Computer
+        Configuration\Polices\Administrative Templates\Google\Google Chrome\Extensions\Configure extension installation
+        blocklist
+         Impact: Any installed extension will be removed unless it is specified on the extension allowlist. If an organization
+        is using any approved password managers, ensure that the extension is added to the allowlist.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.3.3', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome\ExtensionInstallBlocklist'
+        - checks:
+            - rule: 'should have_property "1"'
+            - name: '1'
+              rule: "should have_property_value('1', :string, '*')"
+
+  "2.3.4":
+    title: '2.3.4 | L2 Ensure Default third-party storage partitioning setting Is Enabled and Blocked'
+    section: 'Extensions'
+    description: |
+        This setting will block any site from accessing the storage session from any other site. This will block third party
+        trackers that are embedded on multiple sites from tracking a user across the sites they visit. Blocking third party
+        access to the user agent will not allow sites to infer data about the user from the data from another site. It can be
+        configured to either
+        Enabled 1                Allow thirdparty storage partitioning to be enabled.
+
+        Disabled 2                Block thirdparty storage partitioning from being enabled.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled:
+        Block third-party storage partitioning from being enabled.
+        :               Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Content settings\Default
+        third-party storage partitioning setting
+         Impact: Enforcing this may cause users to experience issues with sites they regularly visit that already grant access
+        to third-parties.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_2.3.4', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "DefaultThirdPartyStoragePartitioningSetting"'
+            - name: 'DefaultThirdPartyStoragePartitioningSetting'
+              rule: "should have_property_value('DefaultThirdPartyStoragePartitioningSetting', :dword, '2')"
+
+  "2.3.5":
+    title: '2.3.5 | L1 Ensure Block third-party storage partitioning for these origins Is Configured - manual'
+    section: 'Extensions'
+    description: |
+        This setting will block specific sites your organization selects from accessing the storage session from any other site.
+        This will allow an organization to block third party trackers that are embedded on multiple sites from tracking a user
+        across the sites they visit. It will also allow blocking third party access to the user agent and to infer data about
+        the user from the data from another site.
+        Setting the Level 2 recommendation              DefaultThirdPartyStoragePartitioningSetting
+         will block all sites, not just this set list in              ThirdPartyStoragePartitioningBlockedForOrigins
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled
+         and set                  Show
+         to the approved URLs:               Computer Configuration\Policies\Administrative Templates\Google\Google
+        Chrome\Content settings\Block third-party storage partitioning for these origins
+         Impact: This might cause the user experience to vary from allowed sites to blocked sites.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_2.3.5', 'cis_google_chrome_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.3.6":
+    title: '2.3.6 | L2 Ensure Control Manifest v2 extension availability Is Set to Forced Only'
+    section: 'Extensions'
+    description: |
+        This policy setting controls extension management settings for Google Chrome, specifically v2 extensions. This policy
+        setting is being sunsetted as Google develops the Manifest v3, but that rollout is currently postponed. The policy can
+        be configured to
+        Default 0                Default browser behavior
+
+        Disabled 1                Manifest v2 is disabled
+
+        Enabled 2                Manifest v2 is enabled
+
+        Forced Only 3                Manifest v2 is enabled for forced extensions only
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled:
+        Manifest v2 is enabled for forced extensions only
+        :               Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Extensions\Control
+        Manifest v2 extension availability
+         Impact: Users that use extensions regularly will have a set of them blocked, which will change their user experience.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_2.3.6', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "ExtensionManifestV2Availability"'
+            - name: 'ExtensionManifestV2Availability'
+              rule: "should have_property_value('ExtensionManifestV2Availability', :dword, '3')"
+
+  "2.3.7":
+    title: '2.3.7 | L1 Ensure Control availability of extensions unpublished on the Chrome Web Store Is Disabled'
+    section: 'Extensions'
+    description: |
+        This policy disables any extensions in Google Chrome that were downloaded from the Chrome Web Store and are now
+        unpublished. The policy can be configured to either
+        Enabled 0                Allow unpublished extensions
+
+        Disabled 1                Disable unpublished extensions
+
+        If the value for              ExtensionUnpublishedAvailability
+         is not changed from the default, it will behave as it is enabled.           Note
+         Offstore extensions such as unpacked extensions installed using developer mode and extensions installed using the
+        commandline switch are ignored. Forceinstalled extensions that are selfhosted are ignored. All versionpinned extensions
+        are also ignored.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled:
+        Disable unpublished extensions
+        :               Computer Configuration\Policies\Administrative Templates\Google Chrome\Extensions\Control availability
+        of extensions unpublished on the Chrome Web Store.
+         Impact: This may disable extensions commonly used by users in your organization.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.3.7', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "ExtensionUnpublishedAvailability"'
+            - name: 'ExtensionUnpublishedAvailability'
+              rule: "should have_property_value('ExtensionUnpublishedAvailability', :dword, '1')"
+
+  "2.4.1":
+    title: '2.4.1 | L2 Ensure Supported authentication schemes is set to Enabled ntlm negotiate'
+    section: 'HTTP authentication'
+    description: |
+        Specifies which HTTP authentication schemes are supported by Google Chrome. Disabled
+         0 Allows all supported authentication schemes.
+        The recommended state for this setting is              Enabled
+         with the value of              ntlm, negotiate
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled:
+        ntlm, negotiate
+        :               Computer Configuration\Polices\Administrative Templates\Google\Google Chrome\HTTP
+        Authentication\Supported authentication schemes
+         Impact: If some legacy application(s) or website(s) required insecure authentication mechanisms they will not work
+        correctly.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_2.4.1', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "AuthSchemes"'
+            - name: 'AuthSchemes'
+              rule: "should have_property_value('AuthSchemes', :string, 'ntlm, negotiate')"
+
+  "2.5.1":
+    title: '2.5.1 | L2 Ensure Configure native messaging blocklist is set to Enabled '
+    section: 'Native Messaging'
+    description: |
+        Allows you to specify which native messaging hosts that should not be loaded. Disabled
+         0 Google Chrome will load all installed native messaging hosts.
+        The recommended state for this setting is              Enabled
+         with a value of
+                        NOTE
+         This needs to be handled carefully. If an extension is enabled, yet cant communicate with its backend code, it could
+        behave in strange ways which results in helpdesk tickets  support load.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled
+         and the value of                  *
+         set to Names of the forbidden native messaging hosts.               Computer Configuration\Polices\Administrative
+        Templates\Google Chrome\Native Messaging\Configure native messaging blocklist
+         Impact: A blocklist value of '*' means all native messaging hosts are blocklisted unless they are explicitly listed in
+        the allowlist.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_2.5.1', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome\NativeMessagingBlocklist'
+        - checks:
+            - rule: 'should have_property "1"'
+            - name: '1'
+              rule: "should have_property_value('1', :string, '*')"
+
+  "2.6.1":
+    title: '2.6.1 | L1 Ensure Enable saving passwords to the password manager is Explicitly Configured'
+    section: 'Password manager'
+    description: |
+        Google Chrome has a builtin password manager to store passwords for users. Chrome will use local authentication to allow
+        users to gain access to these passwords.
+        The recommended state for this setting is Explicitly set to              Enabled
+         1 or              Disabled
+         0 based on the organizations needs.           NOTE
+         If you choose to Enable this setting, please review              Disable synchronization of data with Google
+         and ensure this setting is configured to meet organizational requirements.
+    remediation: |
+        To establish the recommended configuration via Group Policy, configure the following setting to meet organizational
+        requirements: Computer Configuration\Polices\Administrative Templates\Google\Google Chrome\Password manager\Enable
+        saving passwords to the password manager
+         Impact: Organizationally dependent.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_2.6.1', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "PasswordManagerEnabled"'
+            - name: 'PasswordManagerEnabled'
+              rule: "should have_property_value('PasswordManagerEnabled', :dword, '0')"
+
+  "2.7.1":
+    title: '2.7.1 | L1 Ensure Enable Google Cloud Print Proxy is set to Disabled'
+    section: 'Printing'
+    description: |
+        This setting enables Google Chrome to act as a proxy between Google Cloud Print and legacy printers connected to the
+        machine.
+        The recommended state for this setting is              Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Disabled
+        :               Computer Configuration\Polices\Administrative Templates\Google\Google Chrome\Printing\Enable Google
+        Cloud Print Proxy
+         Impact: If this setting is disabled, users cannot enable the proxy, and the machine will not be allowed to share its
+        local printers with Google Cloud Print.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.7.1', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "CloudPrintProxyEnabled"'
+            - name: 'CloudPrintProxyEnabled'
+              rule: "should have_property_value('CloudPrintProxyEnabled', :dword, '0')"
+
+  "2.8.1":
+    title: '2.8.1 | Ensure Allow remote access connections to this machine is set to Disabled'
+    section: 'Remote access (Chrome Remote Desktop)'
+    description: |
+        This is a setting for Chrome Remote desktop. If this setting is Disabled, the remote access host service cannot be
+        started or configured to accept incoming connections. Disabled
+         0 Prevent remote access connections to this machine             Enabled
+         1 Allow remote access connections to this machine
+        The recommended state for this setting is              Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Disabled
+        :               Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Remote Access\Allow remote
+        access connections to this machine
+         Impact: This setting will disable Chrome Remote Desktop. In general, Chrome Remote Desktop is not used by most
+        businesses, so disabling it should have no impact.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_2.8.1', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "RemoteAccessHostAllowRemoteAccessConnections"'
+            - name: 'RemoteAccessHostAllowRemoteAccessConnections'
+              rule: "should have_property_value('RemoteAccessHostAllowRemoteAccessConnections', :dword, '0')"
+
+  "2.8.2":
+    title: '2.8.2 | L1 Ensure Allow remote users to interact with elevated windows in remote assistance sessions is set to Disabled'
+    section: 'Remote access (Chrome Remote Desktop)'
+    description: |
+        Google Chrome can be set to run the remote assistance host in a process with uiAccess permissions. This allows remote
+        users to interact with elevated windows on the local users desktop. If this setting is disabled, the remote assistance
+        host will run in the users context. Furthermore, remote users cannot interact with elevated windows on the desktop.
+        The recommended state for this setting is              Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Disabled
+        :               Computer Configuration\Polices\Administrative Templates\Google\Google Chrome\Remote access\Allow remote
+        users to interact with elevated windows in remote assistance sessions
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.8.2', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "RemoteAccessHostAllowUiAccessForRemoteAssistance"'
+            - name: 'RemoteAccessHostAllowUiAccessForRemoteAssistance'
+              rule: "should have_property_value('RemoteAccessHostAllowUiAccessForRemoteAssistance', :dword, '0')"
+
+  "2.8.3":
+    title: '2.8.3 | L1 Ensure Configure the required domain names for remote access clients is set to Enabled  with a domain defined'
+    section: 'Remote access (Chrome Remote Desktop)'
+    description: |
+        Chrome allows the configuration of a list of domains that are allowed to access the users system. When enabled, remote
+        systems can only connect if they are one of the specified domains listed. Setting this to an empty list Disabled allows
+        remote systems from any domain to connect to this users system.
+        The recommended state for this setting is              Enabled
+         1 and at least one domain set           NOTE
+         The list of domains is organization specific.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled
+         and enter an organizational specific domain(s) (e.g.                  nodomain.local
+        ):               Computer Configuration\Polices\Administrative Templates\Google\Google Chrome\Remote access\Configure
+        the required domain names for remote access clients
+         Impact: If this setting is enabled, only systems from the specified domains can connect to the user's system.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_2.8.3', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome\RemoteAccessHostClientDomainList'
+        - checks:
+            - rule: 'should have_property "\d+"'
+            - name: '\d+'
+              rule: "should have_property_value('\d+', :string, '.*')"
+
+  "2.8.4":
+    title: '2.8.4 | L1 Ensure Enable curtaining of remote access hosts is set to Disabled'
+    section: 'Remote access (Chrome Remote Desktop)'
+    description: |
+        This setting allows someone physically present at the host machine to see what a user is doing while a remote connection
+        is in progress. If this setting is disabled, a hosts physical input and output devices are enabled while a remote
+        connection is in progress.
+        The recommended state for this setting is              Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Disabled
+        :               Computer Configuration\Polices\Administrative Templates\Google\Google Chrome\Remote access\Enable
+        curtaining of remote access hosts
+         Impact: None - This is the default behavior.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.8.4', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "RemoteAccessHostRequireCurtain"'
+            - name: 'RemoteAccessHostRequireCurtain'
+              rule: "should have_property_value('RemoteAccessHostRequireCurtain', :dword, '0')"
+
+  "2.8.5":
+    title: '2.8.5 | L1 Ensure Enable firewall traversal from remote access host is set to Disabled'
+    section: 'Remote access (Chrome Remote Desktop)'
+    description: |
+        Chrome enables the usage of STUN servers which allows remote clients to discover and connect to a machine even if they
+        are separated by a firewall. By disabling this feature, in conjunction with filtering outgoing UDP connections, the
+        machine will only allow connections from machines within the local network.
+        The recommended state for this setting is              Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Disabled
+        :               Computer Configuration\Polices\Administrative Templates\Google\Google Chrome\Remote access\Enable
+        firewall traversal from remote access host
+         Impact: If this setting is disabled and outgoing UDP connections are filtered by the firewall, this machine will only
+        allow connections from client machines within the local network.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.8.5', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "RemoteAccessHostFirewallTraversal"'
+            - name: 'RemoteAccessHostFirewallTraversal'
+              rule: "should have_property_value('RemoteAccessHostFirewallTraversal', :dword, '0')"
+
+  "2.8.6":
+    title: '2.8.6 | L1 Ensure Enable or disable PIN-less authentication for remote access hosts is set to Disabled'
+    section: 'Remote access (Chrome Remote Desktop)'
+    description: |
+        Chrome allows a user to optout of using userspecified PIN authentication and instead pair clients and hosts during
+        connection time.
+        The recommended state for this setting is              Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Disabled
+        :               Computer Configuration\Polices\Administrative Templates\Google\Google Chrome\Remote access\Enable or
+        disable PIN-less authentication for remote access hosts
+         Impact: If this setting is disabled, users will be required to enter PIN every time.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.8.6', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "RemoteAccessHostAllowClientPairing"'
+            - name: 'RemoteAccessHostAllowClientPairing'
+              rule: "should have_property_value('RemoteAccessHostAllowClientPairing', :dword, '0')"
+
+  "2.8.7":
+    title: '2.8.7 | L1 Ensure Enable the use of relay servers by the remote access host is set to Disabled.'
+    section: 'Remote access (Chrome Remote Desktop)'
+    description: |
+        Google Chrome allows the use of relay servers when clients are trying to connect to this machine and a direct connection
+        is not available. Disable
+         0 The use of relay servers by the remote access host is not allowed             Enabled
+         1 The use of relay servers by the remote access host is allowed
+        The recommended state for this setting is              Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Disabled
+        :               Computer Configuration\Polices\Administrative Templates\Google\Google Chrome\Remote access\Enable the
+        use of relay servers by the remote access host
+         Impact: If this setting is disabled, remote clients can not use relay servers to connect to this machine. NOTE:
+         Setting this to Disabled doesn't turn remote access off, but only allows connections from the same network (not NAT
+        traversal or relay).
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.8.7', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "RemoteAccessHostAllowRelayedConnection"'
+            - name: 'RemoteAccessHostAllowRelayedConnection'
+              rule: "should have_property_value('RemoteAccessHostAllowRelayedConnection', :dword, '0')"
+
+  "2.9.1":
+    title: '2.9.1 | L1 Ensure Enable First-Party Sets Is Disabled'
+    section: 'First-Party Sets Settings'
+    description: |
+        This policy controls access to the FirstParty Sets. Firstparty Sets are a way for sites to declare relationships with
+        each other and enable limited crosssite cookie access for specific, userfacing purposes. It can configured to either
+        Disabled 0 Disable FirstParty Sets for all affected users Enabled 1 Enable FirstParty Sets for all affected users
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                  Disabled
+        :               Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Content settings\Enable
+        Firty-Party Sets
+         Impact: This may cause unexpected behavior as a user moves between affiliated sites.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_2.9.1', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "FirstPartySetsEnabled"'
+            - name: 'FirstPartySetsEnabled'
+              rule: "should have_property_value('FirstPartySetsEnabled', :dword, '0')"
+
+  "2.10.1":
+    title: '2.10.1 | L1 Ensure Allow automatic sign-in to Microsoft cloud identity providers Is Enabled'
+    section: 'Microsoft Active Directory Management Settings'
+    description: |
+        This policy setting allows accounts backed by a Microsoft cloud identity provider i.e., Microsoft Azure Active Directory
+        or the consumer Microsoft account identity provider can be signed into web properties using that identity automatically.
+        It can be configured to either
+        Disabled 0                Disable Microsoft cloud authentication
+
+        Enabled 1                Enable Microsoft cloud authentication
+
+        If the value for              CloudAPAuthEnabled
+         is not changed from the default, it will behave as it is disabled.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled:
+        Enable Microsoft® cloud authentication
+        :               Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Microsoft® Active
+        Directory® management settings\Allow automatic sign-in to Microsoft® cloud identity providers
+         Impact: There should be no impact to the user.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_2.10.1', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "CloudAPAuthEnabled"'
+            - name: 'CloudAPAuthEnabled'
+              rule: "should have_property_value('CloudAPAuthEnabled', :dword, '1')"
+
+  "2.11":
+    title: '2.11 | L1 Ensure Allow download restrictions is set to Enabled Block malicious downloads'
+    section: 'Attack Surface Reduction'
+    description: |
+        Google Chrome can block certain types of downloads, and wont let users bypass the security warnings, depending on the
+        classification of Safe Browsing. No special restrictions. Default.
+         0,              Disabled
+         Default           Block malicious downloads and dangerous file types.
+         1           Block malicious downloads, uncommon or unwanted downloads and dangerous file types.
+         2           Block all downloads.
+         3           Block malicious downloads. Recommended.
+         4
+        The recommended state for this setting is            Enabled
+         with a value of            Block malicious downloads. Recommended.
+         4         NOTE
+         These restrictions apply to downloads triggered from webpage content, as well as the Download link... menu option. They
+        dont apply to the download of the currently displayed page or to saving as PDF from the printing options.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled: Block
+        malicious downloads. Recommended.
+        :             Computer Configuration\Polices\Administrative Templates\Google\Google Chrome\Allow download restrictions
+         Impact:
+        If this setting is enabled, all downloads are allowed, except for those that carry Safe Browsing warnings. These are
+        downloads that have been identified as risky or from a risky source by the                  Google Safe Browsing Global
+        intelligence engine
+        .
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.11', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "DownloadRestrictions"'
+            - name: 'DownloadRestrictions'
+              rule: "should have_property_value('DownloadRestrictions', :dword, '1')"
+
+  "2.12":
+    title: '2.12 | L2 Ensure Allow proceeding from the SSL warning page is set to Disabled'
+    section: 'Attack Surface Reduction'
+    description: |
+        This setting controls whether a user is able to proceed to a webpage when an invalid SSL certificate warning has
+        occurred.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Allow proceeding from the
+        SSL warning page
+         Impact: Users will not be able to click past the invalid certificate error to view the website.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_2.12', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "SSLErrorOverrideAllowed"'
+            - name: 'SSLErrorOverrideAllowed'
+              rule: "should have_property_value('SSLErrorOverrideAllowed', :dword, '0')"
+
+  "2.13":
+    title: '2.13 | L1 Ensure Disable proceeding from the Safe Browsing warning page is set to Enabled'
+    section: 'Attack Surface Reduction'
+    description: |
+        Google provides the Safe Browsing service. It shows a warning page when users navigate to sites that are flagged as
+        potentially malicious. Disabled
+         0 Users can choose to proceed to the flagged site after the warning appears.
+        The recommended state for this setting is            Enabled
+         1
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled
+        :             Computer Configuration\Polices\Administrative Templates\Google\Google Chrome\Safe Browsing
+        settings\Disable proceeding from the Safe Browsing warning page
+         Impact: Enabling this setting prevents users from proceeding anyway from the warning page to the malicious site. In
+        some cases legitimate sites could be blocked and users would be prevented from accessing.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.13', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "DisableSafeBrowsingProceedAnyway"'
+            - name: 'DisableSafeBrowsingProceedAnyway'
+              rule: "should have_property_value('DisableSafeBrowsingProceedAnyway', :dword, '1')"
+
+  "2.14":
+    title: '2.14 | L1 Ensure Require Site Isolation for every site is set to Enabled'
+    section: 'Attack Surface Reduction'
+    description: |
+        This setting controls if every website will load into its own process. Disabled
+         0 Doesnt turn off site isolation, but it lets users opt out.
+        The recommended state for this setting is            Enabled
+         1
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled
+        :             Computer Configuration\Polices\Administrative Templates\Google\Google Chrome\Require Site Isolation for
+        every site
+         Impact:
+        If the policy is enabled, each site will run in its own process which will cause the system to use more memory. You
+        might want to look at the                  Enable Site Isolation for specified origins
+         policy setting to get the best of both worlds – isolation and limited impact for users – by using
+        Enable Site Isolation for specified origins
+         with a list of the sites you want to isolate.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.14', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "SitePerProcess"'
+            - name: 'SitePerProcess'
+              rule: "should have_property_value('SitePerProcess', :dword, '1')"
+
+  "2.15":
+    title: '2.15 | L2 Ensure Force Google SafeSearch is set to Enabled'
+    section: 'Attack Surface Reduction'
+    description: |
+        This setting ensures that web search results with Google are performed with SafeSearch set to always active. Disabled
+        means SafeSearch in Google Search is not enforced.
+        The recommended state for this setting is            Enabled
+         1
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                Enabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Force Google SafeSearch
+         Impact: Users search results will be filtered and content such as adult text, videos and images will not be shown.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_2.15', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "ForceGoogleSafeSearch"'
+            - name: 'ForceGoogleSafeSearch'
+              rule: "should have_property_value('ForceGoogleSafeSearch', :dword, '1')"
+
+  "2.16":
+    title: '2.16 | L1 Ensure Notify a user that a browser relaunch or device restart is recommended or required is set to Enabled Show a recurring prompt to the user indication that a relaunch is required'
+    section: 'Attack Surface Reduction'
+    description: |
+        Google Chrome can notify users that it must be restarted to apply a pending update once the notification period defined
+        by the recommendation            Set the time period for update notifications
+         is passed.         Show a recurring prompt to the user indicating that a relaunch is recommended
+         1           Show a recurring prompt to the user indicating that a relaunch is required
+         2           Disabled
+         Google Chrome indicates to the user that a relaunch is needed via subtle changes to its menu.
+        The recommended state for this setting is            Enabled
+         with a value of            Show a recurring prompt to the user indicating that a relaunch is required
+         2
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled: Show a
+        recurring prompt to the user indicating that a relaunch is required
+        :             Computer Configuration\Polices\Administrative Templates\Google\Google Chrome\Notify a user that a browser
+        relaunch or device restart is recommended or required
+         Impact: A recurring warning will be shown to the user indicating that a browser relaunch will be forced once the
+        notification period passes. The user's session is restored after the relaunch of Google Chrome.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.16', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "RelaunchNotification"'
+            - name: 'RelaunchNotification'
+              rule: "should have_property_value('RelaunchNotification', :dword, '2')"
+
+  "2.17":
+    title: '2.17 | L1 Ensure Proxy settings is set to Enabled and does not contain ProxyMode auto detect'
+    section: 'Attack Surface Reduction'
+    description: |
+        Google Chrome offers the functionality to configure the proxy settings by automatic discovery using WPAD Web Proxy
+        AutoDiscovery Protocol. Setting this configures the proxy settings for Chrome and ARCapps, which ignore all proxyrelated
+        options specified from the command line. Disabled
+         0 Lets users choose their proxy settings.
+        The recommended state for this setting is            Enabled
+         and the value of            ProxyMode
+         is not set to            autodetect
+    remediation: |
+        To establish the recommended configuration via Group Policy, make sure the following UI path is set to 'Enabled' and the
+        value of                ProxyMode
+         is not set to                auto_detect
+        :             Computer Configuration\Polices\Administrative Templates\Google\Google Chrome\Proxy settings
+         Impact: If the policy is enabled, the proxy configuration will no longer be discovered using WPAD.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.17', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "ProxySettings"'
+            - name: 'ProxySettings'
+              rule: "should have_property_value('ProxySettings', :string, '(?i)(auto_detect).')"
+
+  "2.18":
+    title: '2.18 | L2 Ensure Require online OCSPCRL checks for local trust anchors is set to Enabled'
+    section: 'Attack Surface Reduction'
+    description: |
+        Google Chrome performs revocation checking for server certificates that successfully validate and are signed by
+        locallyinstalled CA certificates. If Google Chrome is unable to obtain revocation status information, such certificates
+        will be treated as revoked hardfail. Disabled
+         Google Chrome uses existing online revocationchecking settings.
+        The recommended state for this setting is            Enabled
+         1
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the
+        following UI path to                Enabled
+        :             Computer Configuration\Polices\Administrative Templates\Google\Google Chrome\Require online OCSP/CRL
+        checks for local trust anchors
+         Impact: A revocation check will be performed for server certificates that successfully validate and are signed by
+        locally-installed CA certificates. if the OCSP server goes down, then this will hard-fail and prevent browsing to those
+        sites.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_2.18', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "RequireOnlineRevocationChecksForLocalAnchors"'
+            - name: 'RequireOnlineRevocationChecksForLocalAnchors'
+              rule: "should have_property_value('RequireOnlineRevocationChecksForLocalAnchors', :dword, '1')"
+
+  "2.19":
+    title: '2.19 | L1 Ensure Set the time period for update notifications is set to Enabled 86400000'
+    section: 'Attack Surface Reduction'
+    description: |
+        Google Chrome allows to set the time period, in milliseconds, over which users are notified that it must be relaunched
+        to apply a pending update.
+        If not set, or            Disabled
+        , the default period of 604800000 milliseconds 7 days is used.
+        The recommended state for this setting is            Enabled
+         with value            86400000
+         1 day
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled:
+        5265C00
+         (86400000 in Hexadecimal):             Computer Configuration\Polices\Administrative Templates\Google\Google Chrome\Set
+        the time period for update notifications
+         Impact: After this time period, the user will be repeatedly informed of the need for an update until a Browser restart
+        is completed.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.19', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "RelaunchNotificationPeriod"'
+            - name: 'RelaunchNotificationPeriod'
+              rule: "should have_property_value('RelaunchNotificationPeriod', :dword, '86400000')"
+
+  "2.20":
+    title: '2.20 | L1 Ensure Allow Web Authentication requests on sites with broken TLS certificates Is Disabled'
+    section: 'Attack Surface Reduction'
+    description: |
+        This policy setting controls the WebAuthn API and its interaction with sites that have a broken TLS certificate. It can
+        be configured to either
+        Disabled 0              Do not allow WebAuthn API requests on sites with broken TLS certificates.
+
+        Enabled 1              Allow WebAuthn API requests on sites with broken TLS certificates.
+
+        If the value for            AllowWebAuthnWithBrokenTlsCerts
+         is not changed from the default, it will behave as it is disabled.xempt.
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Allow Web Authentication
+        requests on sites with broken TLS certificates.
+         Impact: There should be no user impact.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.20', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "AllowWebAuthnWithBrokenTlsCerts"'
+            - name: 'AllowWebAuthnWithBrokenTlsCerts'
+              rule: "should have_property_value('AllowWebAuthnWithBrokenTlsCerts', :dword, '0')"
+
+  "2.21":
+    title: '2.21 | L1 Ensure Allow reporting of domain reliability related data Is Disabled'
+    section: 'Attack Surface Reduction'
+    description: |
+        This setting controls the defaults for clipboard permission access from sites. It can be configured to either
+        Disabled 0              Never send domain reliability data to Google
+
+        Enabled 1              Domain Reliability data may be sent to Google depending on Chrome User Metrics UMA policy
+
+        If the value for            DomainReliabilityAllowed
+         is not changed from the default, it will behave as it is enabled.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google Chrome\Allow reporting of domain
+        reliability related data
+         Impact: There should be no impact on the user.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.21', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "DomainReliabilityAllowed"'
+            - name: 'DomainReliabilityAllowed'
+              rule: "should have_property_value('DomainReliabilityAllowed', :dword, '0')"
+
+  "2.22":
+    title: '2.22 | L1 Ensure Enable TLS Encrypted ClientHello Is Enabled'
+    section: 'Attack Surface Reduction'
+    description: |
+        This setting controls the defaults for using Encrypted ClientHello ECH. ECH is an extension to TLS and encrypts the
+        initial handshake with a website that can only be decrypted by that website. Google Chrome may, or may not, use ECH
+        based on 3 factors sever support, HTTPS DNS record availability, or rollout status. It can be configured to either
+        Disabled 0              Disable the TLS Encrypted ClientHello experiment
+
+        Enabled 1              Enable the TLS Encrypted ClientHello experiment
+
+        If the value for            EncryptedClientHelloEnabled
+         is not changed from the default, it will behave as it is enabled.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Enable TLS Encrypted
+        ClientHello
+         Impact: There should be no impact on the user.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.22', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "EncryptedClientHelloEnabled"'
+            - name: 'EncryptedClientHelloEnabled'
+              rule: "should have_property_value('EncryptedClientHelloEnabled', :dword, '1')"
+
+  "2.23":
+    title: '2.23 | L2 Ensure Determines whether the built-in certificate verifier will enforce constraints encoded into trust anchors loaded from the platform trust store Is Enabled'
+    section: 'Attack Surface Reduction'
+    description: |
+        This setting controls constraints encoded into trust anchors loaded from the platform trust store. It can be configured
+        to either
+        Disabled 0              Do not enforce constraints in locally added trust anchors
+
+        Enabled 1              Enforce constraints in locally added trust anchors
+
+        If the value for            EnforceLocalAnchorConstraintsEnabled
+         is not changed from the default, it will behave as if it is enabled.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Determines whether the
+        built-in certificate verifier will enforce constraints encoded into trust anchors loaded from the platform trust store.
+         Impact: Enabling this might cause certain internal sites to not properly load until they are updated.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_2.23', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "EnforceLocalAnchorConstraintsEnabled"'
+            - name: 'EnforceLocalAnchorConstraintsEnabled'
+              rule: "should have_property_value('EnforceLocalAnchorConstraintsEnabled', :dword, '1')"
+
+  "2.24":
+    title: '2.24 | L1 Ensure Keep browsing data when creating enterprise profile by default Is Enabled'
+    section: 'Attack Surface Reduction'
+    description: |
+        This setting controls keeping existing browser data when an enterprise profile is created. It can be configured to
+        either
+        Disabled 0              Do not check the option to keep existing browsing data by default
+
+        Enabled 1               Check the option to keep existing browsing data by default
+
+        If the value for            EnterpriseProfileCreationKeepBrowsingData
+         is not changed from the default, it will behave as if it is enabled.         Note
+         Unlike other policy settings, the user does get to decide whether or not to keep any existing browsing data when
+        creating an enterprise profile.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Keep browsing data when
+        creating enterprise profile by default
+         Impact: This should have no effect on the user.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.24', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "EnterpriseProfileCreationKeepBrowsingData"'
+            - name: 'EnterpriseProfileCreationKeepBrowsingData'
+              rule: "should have_property_value('EnterpriseProfileCreationKeepBrowsingData', :dword, '1')"
+
+  "2.25":
+    title: '2.25 | L1 Ensure Allow file or directory picker APIs to be called without prior user gesture Is Disabled'
+    section: 'Attack Surface Reduction'
+    description: |
+        This setting controls the ability for            showOpenFilePicker
+        ,            showSaveFilePicker
+        , and            showDirectoryPicker
+         web APIs to be called without user interaction.
+        If the value for            FileOrDirectoryPickerWithoutGestureAllowedForOrigins
+         is not changed from the default, it will behave as if it is disabled.
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Allow file or directory
+        picker APIs to be called without prior user gesture
+         Impact: Disabling this policy should have no impact on the user.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.25', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome\FileOrDirectoryPickerWithoutGestureAllowedForOrigins'
+        - checks:
+            - rule: 'should_not have_property "\d+"'
+
+  "2.26":
+    title: '2.26 | L1 Ensure Enable Google Search Side Panel Is Disabled'
+    section: 'Attack Surface Reduction'
+    description: |
+        This setting controls the Google Search Side Panel. It can be configured to either
+        Disabled 0              Disable Google Search Side Panel on all web pages
+
+        Enabled 1              Enable Google Search Side Panel on all web pages
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Enable Google Search Side
+        Panel
+         Impact: This should have no user impact.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.26', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "GoogleSearchSidePanelEnabled"'
+            - name: 'GoogleSearchSidePanelEnabled'
+              rule: "should have_property_value('GoogleSearchSidePanelEnabled', :dword, '0')"
+
+  "2.27":
+    title: '2.27 | L1 Ensure Http Allowlist Is Properly Configured - manual'
+    section: 'Attack Surface Reduction'
+    description: |
+        This setting allows administrators to list specific sites that will not be upgraded to HTTPS and will not show an error
+        interstitial if            HTTPSFirst Mode
+         is enabled.         Note
+         Wildcards
+        ,
+        , etc. are not allowed in the URL listings.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled
+         and set                Show
+         to the approved URLs:             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\HTTP
+        Allowlist
+         Impact: This should not have an impact on the user.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_2.27', 'cis_google_chrome_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.28":
+    title: '2.28 | L1 Ensure Enable automatic HTTPS upgrades Is Enabled'
+    section: 'Attack Surface Reduction'
+    description: |
+        This setting controls the ability for Google Chrome to upgrade to HTTPS from HTTP while navigating to certain sites. It
+        can be configured to either
+        Disabled 0              Disable HTTPS Upgrades
+
+        Enabled 1              HTTPS Upgrades may be applied depending on feature launch status
+
+        If the value for            HttpsUpgradesEnabled
+         is not changed from the default, it will behave as if it is enabled.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Enable automatic HTTPS
+        upgrades
+         Impact: This should have no impact on the user. Note:
+         If there are internal sites/servers that use HTTP only, set those in the policy                  HttpAllowlist
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.28', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "HttpsUpgradesEnabled"'
+            - name: 'HttpsUpgradesEnabled'
+              rule: "should have_property_value('HttpsUpgradesEnabled', :dword, '1')"
+
+  "2.29":
+    title: '2.29 | L1 Ensure Insecure Hashes in TLS Handshakes Enabled Is Disabled'
+    section: 'Attack Surface Reduction'
+    description: |
+        This setting controls the ability for Google Chrome to allow legacy or insecure hashes during the TLS handshake. It can
+        be configured to either
+        Disabled 0              Do Not Allow Insecure Hashes in TLS Handshakes
+
+        Enabled 1              Allow Insecure Hashes in TLS Handshakes
+
+        If the value for            InsecureHashesInTLSHandshakesEnabled
+         is not changed from the default, it will behave as if it is enabled.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Insecure Hashes in TLS
+        Handshakes Enabled
+         Impact: Users would be blocked from visiting sites that do not support more secure hashes.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.29', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "InsecureHashesInTLSHandshakesEnabled"'
+            - name: 'InsecureHashesInTLSHandshakesEnabled'
+              rule: "should have_property_value('InsecureHashesInTLSHandshakesEnabled', :dword, '0')"
+
+  "2.30":
+    title: '2.30 | L1 Ensure Enable Renderer App Container Is Enabled'
+    section: 'Attack Surface Reduction'
+    description: |
+        This setting controls the ability for Google Chrome to allow the Render App Container sandbox to be used while
+        navigating to certain sites. It can be configured to either
+        Disabled 0              Disable the Renderer App Container sandbox
+
+        Enabled 1              Enable the Renderer App Container sandbox
+
+        If the value for            RendererAppContainerEnabled
+         is not changed from the default, it will behave as if it is enabled.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Enable Renderer App
+        Container
+         Impact: This would only impact users if there is third-party software that must run inside renderer processes.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.30', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "RendererAppContainerEnabled"'
+            - name: 'RendererAppContainerEnabled'
+              rule: "should have_property_value('RendererAppContainerEnabled', :dword, '1')"
+
+  "2.31":
+    title: '2.31 | L1 Ensure Enable strict MIME type checking for worker scripts Is Enabled'
+    section: 'Attack Surface Reduction'
+    description: |
+        This setting controls the ability for Google Chrome to upgrade to HTTPS from HTTP while navigating to certain sites. It
+        can be configured to either
+        Disabled 0              Scripts for workers Web Workers, Service Workers, etc. use lax MIME type checking. Worker
+        scripts with legacy MIME types, like text/ascii, will work.
+
+        Enabled 1              Scripts for workers Web Workers, Service Workers, etc. require a JavaScript MIME type, like
+        text/javascript. Worker scripts with legacy MIME types, like text/ascii, will be rejected.
+
+        If the value for            StrictMimetypeCheckForWorkerScriptsEnabled
+         is not changed from the default, it will behave as if it is enabled.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Enable strict MIME type
+        checking for worker scripts
+         Impact: This should have no impact on users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.31', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "StrictMimetypeCheckForWorkerScriptsEnabled"'
+            - name: 'StrictMimetypeCheckForWorkerScriptsEnabled'
+              rule: "should have_property_value('StrictMimetypeCheckForWorkerScriptsEnabled', :dword, '1')"
+
+  "2.32":
+    title: '2.32 | Ensure Allow remote debugging is set to Disabled'
+    section: 'Attack Surface Reduction'
+    description: |
+        This policy setting controls whether users may use remote debugging. This feature allows remote debugging of live
+        content on a Windows 10 or later device from a Windows or macOS computer.
+        The recommended state for this setting is            Disabled
+        .
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Allow remote debugging
+         Note:
+         This Group Policy path may not exist by default. It is provided by the Group Policy template
+        google.admx/adml
+         that can be downloaded from:                Download Chrome Browser for Your Business - Chrome Enterprise
+        .             Impact: Users will not be able access the remote debugging feature in Google Chrome.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.32', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\Software\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "RemoteDebuggingAllowed"'
+            - name: 'RemoteDebuggingAllowed'
+              rule: "should have_property_value('RemoteDebuggingAllowed', :dword, '0')"
+
+  "3.1.1":
+    title: '3.1.1 | L2 Ensure Default cookies setting is set to Enabled Keep cookies for the duration of the session'
+    section: 'Content settings'
+    description: |
+        When leaving the setting RestoreOnStartup unset results in the use of DefaultCookiesSetting for all sites, if its set.
+        If DefaultCookiesSetting is not set, the users personal setting applies. Disabled
+         0, users personal setting applies             Allow all sites to set local data
+         1             Do not allow any site to set local data
+         2             Keep cookies for the duration of the session
+         4
+        The recommended state for this setting is              Enabled
+         with a value of              Keep cookies for the duration of the session
+         4           NOTE
+         If the              RestoreOnStartup
+         setting is set to restore URLs from previous sessions this setting will not be respected and cookies will be stored
+        permanently for those sites. An example of those URLs are SSO or intranet sites.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled: Keep
+        cookies for the duration of the session
+        :               Computer Configuration\Administrative Templates\Google\Google Chrome\Content Settings\Default cookies
+        setting
+         Impact: If this setting is enabled, cookies will be cleared when the session closes.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_3.1.1', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "DefaultCookiesSetting"'
+            - name: 'DefaultCookiesSetting'
+              rule: "should have_property_value('DefaultCookiesSetting', :dword, '4')"
+
+  "3.1.2":
+    title: '3.1.2 | L1 Ensure Default geolocation setting is set to Enabled Do not allow any site to track the users physical location'
+    section: 'Content settings'
+    description: |
+        Google Chrome supports tracking a users physical location using GPS, data about nearby WiFi access points or cellular
+        signal sites/towers even if youre not using them, and your computers IP. Disabled
+         0, same as 3             Allow sites to track the users physical location
+         1             Do not allow any site to track the users physical location
+         2             Ask whenever a site wants to track the users physical location
+         3
+        The recommended state for this setting is              Enabled
+         with a value              Do not allow any site to track the users physical location
+         2
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled: Do
+        not allow any site to track the users' physical location
+        :               Computer Configuration\Administrative Templates\Google\Google Chrome\Content Settings\Default
+        geolocation setting
+         Impact: If this setting is disabled, chrome will no longer send data about nearby Wi-Fi access points or cellular
+        signal sites/towers (even if you’re not using them), and your computer’s IP address to Google.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.1.2', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "DefaultGeolocationSetting"'
+            - name: 'DefaultGeolocationSetting'
+              rule: "should have_property_value('DefaultGeolocationSetting', :dword, '2')"
+
+  "3.2.1":
+    title: '3.2.1 | L1 Ensure Enable Google Cast is set to Disabled'
+    section: 'Google Cast'
+    description: |
+        Google Cast can send the contents of tabs, sites, or the desktop from the browser to a remote display and sound system.
+        The recommended state for this setting is              Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Disabled
+        :               Computer Configuration\Administrative Templates\Google\Google Chrome\Google Cast\Enable Google Cast
+         Impact: If this is disabled, Google Cast is not activated and the toolbar icon is not shown.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.2.1', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "EnableMediaRouter"'
+            - name: 'EnableMediaRouter'
+              rule: "should have_property_value('EnableMediaRouter', :dword, '0')"
+
+  "3.3":
+    title: '3.3 | L1 Ensure Allow websites to query for available payment methods is set to Disabled'
+    section: 'Privacy'
+    description: |
+        This setting allows you to set whether a website can check to see if the user has payment methods saved.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Allow websites to query for
+        available payment methods.
+         Impact: Websites will be unable to query whether payment information within Google Chrome is available.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.3', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "PaymentMethodQueryEnabled"'
+            - name: 'PaymentMethodQueryEnabled'
+              rule: "should have_property_value('PaymentMethodQueryEnabled', :dword, '0')"
+
+  "3.4":
+    title: '3.4 | L1 Ensure Block third party cookies is set to Enabled'
+    section: 'Privacy'
+    description: |
+        Chrome allows cookies to be set by web page elements that are not from the domain in the users address bar. Enabling
+        this feature prevents third party cookies from being set.
+        The recommended state for this setting is            Enabled
+         1
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled
+        :             Computer Configuration\Administrative Templates\Google\Google Chrome\Block third party cookies
+         Impact: Enabling this setting prevents cookies from being set by web page elements that are not from the domain that is
+        in the browser's address bar. NOTE
+        : Third Party Cookies and Tracking Protection are required for many business critical websites, including Microsoft 365
+        web apps (Office 365), SalesForce, and SAP Analytics Cloud. If these, or similar services, are needed by the
+        organization, then this setting can be Disabled.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.4', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "BlockThirdPartyCookies"'
+            - name: 'BlockThirdPartyCookies'
+              rule: "should have_property_value('BlockThirdPartyCookies', :dword, '1')"
+
+  "3.5":
+    title: '3.5 | L2 Ensure Browser sign in settings is set to Enabled Disabled browser sign-in'
+    section: 'Privacy'
+    description: |
+        Google Chrome offers to sign in with your Google account and use accountrelated services like Chrome sync. It is
+        possible to sign in to Google Chrome with a Google account to use services like synchronization, and can also be used
+        for configuration and management of the browser. Disable browser signin
+         0           Enable browser signin
+         1           Force users to signin to use the browser
+         2
+        The recommended state for this setting is            Enabled
+         with a value of            Disable browser signin
+         0         NOTE
+         If an organization is a Google Workspace Enterprise customer, they will want to leave this setting enabled so that
+        users can sign in with Google accounts.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled:
+        Disable browser sign-in
+                           Computer Configuration\Administrative Templates\Google\Google Chrome\Browser sign in settings
+         Impact: If this setting is configured, the user cannot sign in to the browser and use Google account-based services
+        like Chrome sync.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_3.5', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "BrowserSignin"'
+            - name: 'BrowserSignin'
+              rule: "should have_property_value('BrowserSignin', :dword, '0')"
+
+  "3.6":
+    title: '3.6 | L1 Ensure Control how Chrome Cleanup reports data to Google is set to Disabled'
+    section: 'Privacy'
+    description: |
+        Chrome provides a Cleanup feature to detect unwanted software. If this setting is            Enabled
+        , the results of the cleanup may be shared with Google based on the setting of
+        SafeBrowsingExtendedReportingEnabled
+         to assist with future unwanted software detection. These results will contain file metadata, automatically installed
+        extensions, and registry keys.
+        If the setting is            Disabled
+        , the results of the cleanup will not be shared with Google regardless of the value of
+        SafeBrowsingExtendedReportingEnabled
+        .
+        The recommended state for this setting is            Disabled
+         0         NOTE
+         This setting is not available on Windows instances that are not joined to a Microsoft Active Directory domain.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the
+        following UI path to                Disabled
+        :             Computer Configuration\Administrative Templates\Google\Google Chrome\Control how Chrome Cleanup reports
+        data to Google
+         Impact: Chrome Cleanup detected unwanted software and will no longer report metadata about the scan to Google.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.6', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "ChromeCleanupReportingEnabled"'
+            - name: 'ChromeCleanupReportingEnabled'
+              rule: "should have_property_value('ChromeCleanupReportingEnabled', :dword, '0')"
+
+  "3.7":
+    title: '3.7 | L1 Ensure Disable synchronization of data with Google is set to Enabled'
+    section: 'Privacy'
+    description: |
+        Google Chrome can synchronize browser data using Googlehosted synchronization services. Examples of synced data include,
+        but are not limited to, history and favorites.
+        The recommended state for this setting is            Enabled
+         1         NOTE
+         if your organization allows synchronization of data with Google, then disabling this setting will synchronize saved
+        passwords with Google.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled
+        :             Computer Configuration\Administrative Templates\Google\Google Chrome\Disable synchronization of data with
+        Google
+         Impact: If this setting is enabled, browser data will no longer sync with Google across devices/platforms, allowing
+        users to pick up where they left off.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.7', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "SyncDisabled"'
+            - name: 'SyncDisabled'
+              rule: "should have_property_value('SyncDisabled', :dword, '1')"
+
+  "3.8":
+    title: '3.8 | L1 Ensure Enable alternate error pages is set to Disabled'
+    section: 'Privacy'
+    description: |
+        Google Chrome offers to show suggestions for the page you were trying to reach when it is unable to connect to a web
+        address such as Page Not Found.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Administrative Templates\Google\Google Chrome\Enable alternate error pages
+         Impact: If this setting is disabled, Chrome will no longer use a web service to help resolve navigation errors.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.8', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "AlternateErrorPagesEnabled"'
+            - name: 'AlternateErrorPagesEnabled'
+              rule: "should have_property_value('AlternateErrorPagesEnabled', :dword, '0')"
+
+  "3.9":
+    title: '3.9 | L1 Ensure Enable deleting browser and download history is set to Disabled'
+    section: 'Privacy'
+    description: |
+        Google Chrome can delete the browser and download history using the clear browsing data menu.
+        The recommended state for this setting is            Disabled
+         0         NOTE
+         Even when this setting is disabled, the browsing and download history arent guaranteed to be retained. Users can edit
+        or delete the history database files directly, and the browser itself may remove based on expiration period or archive
+        any or all history items at any time
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Administrative Templates\Google\Google Chrome\Enable deleting browser and download
+        history
+         Impact: If this setting is disabled, browsing and download history cannot be deleted by using the clear browsing data
+        menu.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.9', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "AllowDeletingBrowserHistory"'
+            - name: 'AllowDeletingBrowserHistory'
+              rule: "should have_property_value('AllowDeletingBrowserHistory', :dword, '0')"
+
+  "3.10":
+    title: '3.10 | L1 Ensure Enable predict network actions is set to Enabled Do not predict actions on any network connection'
+    section: 'Privacy'
+    description: |
+        Google Chrome comes with the network prediction feature which provides DNS prefetching, TCP and SSL preconnection, and
+        prerendering of web pages. Predict network actions on any network connection
+         0 or 1           Do not predict network actions on any network connection
+         2
+        The recommended state for this setting is            Enabled
+         with a value of            Do not predict network actions on any network connection
+         2
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled: Do not
+        predict network actions on any network connection
+        :             Computer Configuration\Administrative Templates\Google\Google Chrome\Enable network prediction
+         Impact: Users will not be presented with web page predictions.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.10', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "NetworkPredictionOptions"'
+            - name: 'NetworkPredictionOptions'
+              rule: "should have_property_value('NetworkPredictionOptions', :dword, '2')"
+
+  "3.11":
+    title: '3.11 | L1 Ensure Enable or disable spell checking web service is set to Disabled'
+    section: 'Privacy'
+    description: |
+        Google Chrome can use Google web service to help resolve spelling errors.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Administrative Templates\Google\Google Chrome\Enable or disable spell checking web
+        service
+         Impact: After disabling this feature, Chrome no longer sends the entire contents of text fields to Google as you type
+        them. Spell checking can still be performed using a downloaded dictionary. This setting only controls the usage of the
+        online service.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.11', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "SpellCheckServiceEnabled"'
+            - name: 'SpellCheckServiceEnabled'
+              rule: "should have_property_value('SpellCheckServiceEnabled', :dword, '0')"
+
+  "3.12":
+    title: '3.12 | L1 Ensure Enable reporting of usage and crash-related data is set to Disabled'
+    section: 'Privacy'
+    description: |
+        This setting controls anonymous reporting of usage and crashrelated data about Google Chrome to Google.
+        The recommended state for this setting is            Disabled
+         0         NOTE
+         This setting is not available on Windows instances that are not joined to a Microsoft Active Directory domain.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Administrative Templates\Google\Google Chrome\Enable reporting of usage and crash-
+        related data
+         Impact: If this setting is disabled, this information is not sent to Google.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.12', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "MetricsReportingEnabled"'
+            - name: 'MetricsReportingEnabled'
+              rule: "should have_property_value('MetricsReportingEnabled', :dword, '0')"
+
+  "3.13":
+    title: '3.13 | L1 Ensure Enable Safe Browsing for trusted sources is set to Disabled'
+    section: 'Privacy'
+    description: |
+        Google Chrome can be adjusted to allow downloads without Safe Browsing checks when the requested file is from a trusted
+        source. Trusted sources can be defined using recommendation Configure the list of domains on which Safe Browsing will
+        not trigger warnings.
+        The recommended state for this setting is            Disabled
+         0         NOTE
+         On Microsoft Windows, this functionality is only available on instances that are joined to a Microsoft Active Directory
+        domain, running on Windows 10 Pro, or enrolled in Chrome Browser Cloud Management.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Administrative Templates\Google\Google Chrome\Enable Safe Browsing for trusted
+        sources
+         Impact: If this setting is disabled, files downloaded from intranet resources will not be checked by Google Services.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.13', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "SafeBrowsingForTrustedSourcesEnabled"'
+            - name: 'SafeBrowsingForTrustedSourcesEnabled'
+              rule: "should have_property_value('SafeBrowsingForTrustedSourcesEnabled', :dword, '0')"
+
+  "3.14":
+    title: '3.14 | L2 Ensure Enable search suggestions is set to Disabled'
+    section: 'Privacy'
+    description: |
+        Google Chrome offers suggestions in Google Chromes omnibox while a user is typing.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Administrative Templates\Google\Google Chrome\Enable search suggestions
+         Impact: The user has to send the search request actively by using the search button or hitting "Enter".
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_3.14', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "SearchSuggestEnabled"'
+            - name: 'SearchSuggestEnabled'
+              rule: "should have_property_value('SearchSuggestEnabled', :dword, '0')"
+
+  "3.15":
+    title: '3.15 | L2 Ensure Enable Translate is set to Disabled'
+    section: 'Privacy'
+    description: |
+        This setting enables Google translation services on Google Chrome.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Administrative Templates\Google\Google Chrome\Enable Translate
+         Impact: After disabling this feature, the contents of a web page are no longer sent to Google for translation.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_3.15', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "TranslateEnabled"'
+            - name: 'TranslateEnabled'
+              rule: "should have_property_value('TranslateEnabled', :dword, '0')"
+
+  "3.16":
+    title: '3.16 | L1 Ensure Enable URL-keyed anonymized data collection is set to Disabled'
+    section: 'Privacy'
+    description: |
+        Google Chrome offers the feature URLkeyed anonymized data collection. This sends URLs of pages the user visits to Google
+        to optimize its services.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Administrative Templates\Google\Google Chrome\Enable URL-keyed anonymized data
+        collection
+         Impact: Anonymized data will not be sent to Google to help optimize its services
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.16', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "UrlKeyedAnonymizedDataCollectionEnabled"'
+            - name: 'UrlKeyedAnonymizedDataCollectionEnabled'
+              rule: "should have_property_value('UrlKeyedAnonymizedDataCollectionEnabled', :dword, '0')"
+
+  "4.1.1":
+    title: '4.1.1 | L2 Ensure Allow or deny screen capture is set to Disabled'
+    section: 'Allow or deny screen capture'
+    description: |
+        This setting controls whether Google Chrome can use screenshare APIs including webbased online meetings, video, or
+        screen sharing.
+        The recommended state for this setting is              Disabled
+         0           NOTE
+         This setting is not considered and a site will be allowed to use screenshare APIs if the site matches an origin pattern
+        in any of the following other settings              ScreenCaptureAllowedByOrigins
+        ,              WindowCaptureAllowedByOrigins
+        ,              TabCaptureAllowedByOrigins
+        ,              SameOriginTabCaptureAllowedByOrigins
+        .
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Disabled
+        :               Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Allow or deny screen
+        capture\Allow or deny screen capture
+         Impact: Users will be unable to utilize APIs which support web-based meetings (video conferencing screen sharing),
+        video, and screen capture.  This could potentially cause disruption to users who may have utilized these abilities in
+        the past.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_4.1.1', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "ScreenCaptureAllowed"'
+            - name: 'ScreenCaptureAllowed'
+              rule: "should have_property_value('ScreenCaptureAllowed', :dword, '0')"
+
+  "4.2.1":
+    title: '4.2.1 | L2 Ensure Control use of the Serial API is set to Enabled Do not allow any site to request access to serial ports via the Serial API'
+    section: 'Content settings'
+    description: |
+        This setting controls website access and use of the system serial port. Do not allow any site to request access to
+        serial ports via the Serial API
+         2             Allow sites to ask the user to grant access to a serial port
+         3
+        The recommended state for this setting is              Do not allow any site to request access to serial ports via the
+        Serial API
+         2           NOTE
+         If more granular control is needed per website then this setting can be used in combination with the
+        SerialAllowAllPortsForUrls
+        ,              SerialAskForUrls
+         and              SerialBlockedForUrls
+         settings. For example,              SerialAllowAllPortsForUrls
+         can be used to allow serial port access to specific sites. Please see the references below for more information.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled: Do
+        not allow any site to request access to serial ports via the Serial API
+        :               Computer Configuration\Administrative Templates\Google\Google Chrome\Content settings\Control use of the
+        Serial API
+         Impact: This setting would also prevent legitimate sites from accessing it as well.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_4.2.1', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "DefaultSerialGuardSetting"'
+            - name: 'DefaultSerialGuardSetting'
+              rule: "should have_property_value('DefaultSerialGuardSetting', :dword, '2')"
+
+  "4.2.2":
+    title: '4.2.2 | L2 Ensure Default Sensors Setting is set to Enabled Do not allow any site to access sensors'
+    section: 'Content settings'
+    description: |
+        This setting controls website access and use of system sensors such as motion and light. Allow sites to access sensors
+         1             Do not allow any site to access sensors
+         2
+        The recommended state for this setting is              Do not allow any site to access sensors
+         2
+        The recommended state for this setting is              Enabled
+         with a value of              Do not allow any site to access sensors
+                        NOTE
+         If more granular control is needed per website then this setting can be used in combination with the
+        SensorsAllowedForUrls
+         and              SensorsBlockedForUrls
+         settings. For example,              SensorsAllowedForUrls
+         can be used to allow sensor access to specific sites. Please see the references below for more information.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled: Do
+        not allow any site to access sensors
+        :               Computer Configuration\Administrative Templates\Google\Google Chrome\Content settings\Default sensors
+        setting
+         Impact: This setting would also prevent legitimate sites from accessing it as well.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_4.2.2', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "DefaultSensorsSetting"'
+            - name: 'DefaultSensorsSetting'
+              rule: "should have_property_value('DefaultSensorsSetting', :dword, '2')"
+
+  "4.2.3":
+    title: '4.2.3 | L1 Ensure Allow clipboard for these sites Is Configured - manual'
+    section: 'Content settings'
+    description: |
+        This setting allows administrators to list specific sites that have access to the clipboard site permissions. Note
+         This does not include using keyboard shortcuts. Those are not gated by the clipboard site permission.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled
+         and set                  Show
+         to the approved URLs:               Computer Configuration\Policies\Administrative Templates\Google\Google
+        Chrome\Content settings\Allow clipboard on these sites
+         Impact: Enforcing this recommendation can cause the clipboard functionality to not work identically for every site.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_4.2.3', 'cis_google_chrome_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.2.4":
+    title: '4.2.4 | L1 Ensure Block clipboard on these sites Is Configured - manual'
+    section: 'Content settings'
+    description: |
+        This setting allows administrators to list specific sites that do not have access to the clipboard site permissions.
+        Note
+         This does not include using keyboard shortcuts. Those are not gated by the clipboard site permission.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled
+         and set                  Show
+         to the blocked URLs:               Computer Configuration\Policies\Administrative Templates\Google\Google
+        Chrome\Content settings\Block clipboard on these sites
+         Impact: Enforcing this recommendation can cause the clipboard functionality to not work identically for every site.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_4.2.4', 'cis_google_chrome_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.2.5":
+    title: '4.2.5 | L1 Ensure Default clipboard setting Is Enabled to Deny Permissions'
+    section: 'Content settings'
+    description: |
+        This setting controls the defaults for clipboard permission access from sites. It can be configured to either Disabled 2
+        Does not allow access to the clipboard site permission by any site Enabled 3 Sites ask the user to allow access to the
+        clipboard site permission
+        If the value for              DefaultClipboardSetting
+         is not changed from the default, it will behave as if it is enabled.              ClipboardAllowedForUrls
+         or              ClipboardBlockedForUrls
+         will override this setting for any site that matches the configured URL patterns.
+        With the setting disabled, organizations will need to set              ClipboardAllowedForUrls
+         for any URLs they want to make exempt.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled: Do
+        not allow any site to use the clipboard site permission
+        :               Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Content settings\Default
+        clipboard setting
+         Impact: Not allowing sites to have access to the clipboard permission can cause issues with formatting or access to
+        needed images on the clipboard.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.2.5', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "DefaultClipboardSetting"'
+            - name: 'DefaultClipboardSetting'
+              rule: "should have_property_value('DefaultClipboardSetting', :dword, '2')"
+
+  "4.2.6":
+    title: '4.2.6 | L2 Ensure Default Window Management permissions setting Is Enabled to Deny Permission'
+    section: 'Content settings'
+    description: |
+        This setting can automatically deny access to the window management permissions by sites. It can be configured to either
+        Disabled 2 Does not allow access to the Window Management permission by any site Enabled 3 A site must ask the user any
+        time it wants to access the Window Management permission.
+        If the value for              DefaultWindowManagementSetting
+         is not changed from the default, it will behave as if it is enabled.              WindowManagementAllowedForUrls
+         or              WindowManagementBlockedForUrls
+         will override this setting for any site that matches the configured URL patterns.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled
+         and                  Denies the Window Management permission on all sites by default
+        :               Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Content settings\Default
+        Window Management permission setting
+         Impact: Disabling this would take away the functionality of the user to decide what sites get access to the Window
+        Management permission and could impact organizational required URLs.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_4.2.6', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "DefaultWindowManagementSetting"'
+            - name: 'DefaultWindowManagementSetting'
+              rule: "should have_property_value('DefaultWindowManagementSetting', :dword, '2')"
+
+  "4.2.7":
+    title: '4.2.7 | L2 Ensure Allow Window Management permission on these sites Is Configured - manual'
+    section: 'Content settings'
+    description: |
+        This setting can automatically allow access to the window management permissions for specific sites.
+        If the value for              WindowManagementAllowedForUrls
+         is not changed from the default, it will follow the configuration of              DefaultWindowManagementSetting
+        .
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled
+         and set                  Show
+         to the approved URLs:               Computer Configuration\Policies\Administrative Templates\Google\Google
+        Chrome\Content settings\Allow Window Management permission on these sites
+         Impact: Enforcing this recommendation can cause visited sites to not display as intended.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_4.2.7', 'cis_google_chrome_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.2.8":
+    title: '4.2.8 | L2 Ensure Block Window Management permission on these sites Is Configured - manual'
+    section: 'Content settings'
+    description: |
+        This setting can automatically deny access to the window management permissions for specific sites. It can be configured
+        to either
+        If the value for              WindowManagementBlockedForUrls
+         is not changed from the default, it will follow the configuration of              DefaultWindowManagementSetting
+        .
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                  Enabled
+         and set                  Show
+         to the blocked URLs:               Computer Configuration\Policies\Administrative Templates\Google\Google
+        Chrome\Content settings\Block Window Management permission on these sites
+         Impact: Enforcing this recommendation can cause visited sites to not display as intended.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_4.2.8', 'cis_google_chrome_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "4.3":
+    title: '4.3 | L2 Ensure Allow invocation of file selection dialogs is set to Disabled'
+    section: 'Data Loss Prevention'
+    description: |
+        This setting allows access to local files by allowing file selection dialogs in Google Chrome.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via GP, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Allow invocation of file
+        selection dialogs
+         Impact: If you disable this setting, users will no longer be prompted when performing actions which would trigger a
+        file selection dialog. Instead, the file selection dialog box assumes the user clicked "Cancel". Being as this is not
+        the default behavior, impact to the user will be noticeable, and the user will not be able to upload and download files.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_4.3', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "AllowFileSelectionDialogs"'
+            - name: 'AllowFileSelectionDialogs'
+              rule: "should have_property_value('AllowFileSelectionDialogs', :dword, '0')"
+
+  "4.4":
+    title: '4.4 | L2 Ensure Allow or deny audio capture is set to Disabled'
+    section: 'Data Loss Prevention'
+    description: |
+        This setting allows administrators to set whether the enduser is prompted for access to audio capture devices. Disabled
+         0 Turns off prompts and audio capture will only work for URLs configured in the              AudioCaptureAllowedUrls
+         list.           Enabled
+         1 With the exception of URLs set in the              AudioCaptureAllowedUrls
+         list, users get prompted for audio capture access.           NOTE
+         The setting affects all audio input not just the builtin microphone.
+        The recommended state for this setting is            Disabled
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Administrative Templates\Google\Google Chrome\Allow or deny audio capture
+         Impact:
+        If you disable this setting, users will not be prompted for audio devices when using websites which may need this
+        access, such as a web-based conferencing system. If there are sites which access will be allowed, configuration of the
+        AudioCaptureAllowedUrls
+         setting will be necessary.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_4.4', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "AudioCaptureAllowed"'
+            - name: 'AudioCaptureAllowed'
+              rule: "should have_property_value('AudioCaptureAllowed', :dword, '0')"
+
+  "4.5":
+    title: '4.5 | L2 Ensure Allow or deny video capture is set to Disabled'
+    section: 'Data Loss Prevention'
+    description: |
+        This setting allows administrators to set whether the enduser is prompted for access to video capture devices. Disabled
+         0 Turns off prompts and video capture will only work for URLs configured in the              VideoCaptureAllowedUrls
+         list.           Enabled
+         1 With the exception of URLs set in the              VideoCaptureAllowedUrls
+         list, users get prompted for video capture access.           NOTE
+         The setting affects all video input not just the builtin camera.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Administrative Templates\Google\Google Chrome\Allow or deny video capture
+         Impact:
+        If you disable this setting, users will not be prompted for video devices when using websites which may need this
+        access, such as a web-based conferencing system. If there are sites which access will be allowed, configuration of the
+        VideoCaptureAllowedUrls
+         setting will be necessary.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_4.5', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "VideoCaptureAllowed"'
+            - name: 'VideoCaptureAllowed'
+              rule: "should have_property_value('VideoCaptureAllowed', :dword, '0')"
+
+  "4.6":
+    title: '4.6 | L1 Ensure Allow user feedback is set to Disabled'
+    section: 'Data Loss Prevention'
+    description: |
+        This setting controls whether users are able to utilize the Chrome feedback feature to send feedback, suggestions, and
+        surveys to Google, as well as issue reports.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Allow user feedback
+         Impact: Users will not be able to send feedback to Google.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.6', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "UserFeedbackAllowed"'
+            - name: 'UserFeedbackAllowed'
+              rule: "should have_property_value('UserFeedbackAllowed', :dword, '0')"
+
+  "4.7":
+    title: '4.7 | L2 Ensure Controls the mode of DNS-over-HTTPS is set to Enabled DNS-over-HTTPS without insecure fallback'
+    section: 'Data Loss Prevention'
+    description: |
+        This controls the mode of the DNSoverHTTPS resolver. Please note that this setting will only set the default mode for
+        each query. The mode may be overridden for special types of queries, such as requests to resolve a DNSoverHTTPS server
+        hostname. Disable DNSoverHTTPS
+         off           Enable DNSoverHTTPS with insecure fallback
+         automatic  Enable DNSoverHTTPS queries first if a DNSoverHTTPS server is available and may fallback to sending insecure
+        queries on error.           Enable DNSoverHTTPS without insecure fallback
+         secure  Only send DNSoverHTTPS queries and will fail to resolve on error.
+        The recommended state for this setting is            Enabled
+         with a value of            Enable DNSoverHTTPS without insecure fallback
+         secure         Note
+         When enabling this policy, it is recommended to also configure the            DnsOverHttpsTemplates
+         policy so that the URI templates are set. You can find out more information on the            DnsOverHttpsTemplates
+         enterprise policy site
+        .
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled: Enable
+        DNS-over-HTTPS without insecure fallback
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Controls the mode of DNS-
+        over-HTTPS
+         Impact: Not all DNS providers support DOH, so choice is limited. Also, Enterprises sometimes monitor DNS requests to
+        block access to malicious or inappropriate sites. DNS monitoring can also sometimes be used to detect malware attempting
+        to "phone home." Because DoH encrypts name resolution requests, it can create a security monitoring blind spot.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_4.7', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "DnsOverHttpsMode"'
+            - name: 'DnsOverHttpsMode'
+              rule: "should have_property_value('DnsOverHttpsMode', :string, 'secure')"
+
+  "4.8":
+    title: '4.8 | L2 Ensure Enable AutoFill for addresses is set to Disabled'
+    section: 'Data Loss Prevention'
+    description: |
+        Chrome allows users to autocomplete web forms with saved information such as address or phone number. Disabling this
+        feature will prompt a user to enter all information manually.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Administrative Templates\Google\Google Chrome\Enable AutoFill for addresses
+         Impact: If this setting is disabled, AutoFill will be inaccessible to users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_4.8', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "AutofillAddressEnabled"'
+            - name: 'AutofillAddressEnabled'
+              rule: "should have_property_value('AutofillAddressEnabled', :dword, '0')"
+
+  "4.9":
+    title: '4.9 | L1 Ensure Enable AutoFill for credit cards is set to Disabled'
+    section: 'Data Loss Prevention'
+    description: |
+        Chrome allows users to autocomplete web forms with saved credit card information. Disabling this feature will prompt a
+        user to enter all information manually.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Administrative Templates\Google\Google Chrome\Enable AutoFill for credit cards
+         Impact: If this setting is disabled, credit card AutoFill will be inaccessible to users.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.9', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "AutofillCreditCardEnabled"'
+            - name: 'AutofillCreditCardEnabled'
+              rule: "should have_property_value('AutofillCreditCardEnabled', :dword, '0')"
+
+  "4.10":
+    title: '4.10 | L1 Ensure Import saved passwords from default browser on first run is set to Disabled'
+    section: 'Data Loss Prevention'
+    description: |
+        This setting controls if saved passwords from the default browser can be imported on first run and later manually.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Administrative Templates\Google\Google Chrome\Import saved passwords from default
+        browser on first run
+         Impact: If this setting is disabled, saved passwords from other browsers are not imported.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.10', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "ImportSavedPasswords"'
+            - name: 'ImportSavedPasswords'
+              rule: "should have_property_value('ImportSavedPasswords', :dword, '0')"
+
+  "4.11":
+    title: '4.11 | L1 Ensure List of types that should be excluded from synchronization is set to Enabled passwords'
+    section: 'Data Loss Prevention'
+    description: |
+        This setting allows you to specify data types that will be limited/excluded from uploading data to the Google Chrome
+        synchronization service.
+        The recommended state for this setting is            Enabled
+         with the following text value            passwords
+         Case Sensitive         NOTE
+         Other settings in addition to            passwords
+         can be included based on organizational needs.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled:
+        passwords
+         (Case Sensitive):             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\List of
+        types that should be excluded from synchronization
+         Impact: Password data will not be synchronized with the Google Chrome synchronization service.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.11', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome\SyncTypesListDisabled'
+        - checks:
+            - rule: 'should have_property "1"'
+            - name: '1'
+              rule: "should have_property_value('1', :string, 'passwords')"
+
+  "4.12":
+    title: '4.12 | L2 Ensure Allow or deny screen capture is set to Disabled'
+    section: 'Data Loss Prevention'
+    description: |
+        If enabled or not configured default, a Web page can use screenshare APIs e.g., getDisplayMedia or the Desktop Capture
+        extension API to prompt the user to select a tab, window, or desktop to capture.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Allow or deny screen
+        capture\Allow or deny screen capture
+         Impact: When this policy is disabled, any calls to screen-share APIs will fail with an error. This policy is not
+        considered (and a site will be allowed to use screen-share APIs) if the site matches an origin pattern in any of the
+        following policies: ScreenCaptureAllowedByOrigins, WindowCaptureAllowedByOrigins, TabCaptureAllowedByOrigins,
+        SameOriginTabCaptureAllowedByOrigins.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_4.12', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "ScreenCaptureAllowed"'
+            - name: 'ScreenCaptureAllowed'
+              rule: "should have_property_value('ScreenCaptureAllowed', :dword, '0')"
+
+  "5.1":
+    title: '5.1 | L2 Ensure Enable guest mode in browser is set to Disabled'
+    section: 'Forensics (Post Incident)'
+    description: |
+        This setting controls whether a user may utilize guest profiles in Google Chrome.
+        The recommended state for this setting is            Disabled
+         0
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Enable guest mode in browser
+         Impact: Users will not be able to initiate Guest mode for Google Chrome.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_5.1', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "BrowserGuestModeEnabled"'
+            - name: 'BrowserGuestModeEnabled'
+              rule: "should have_property_value('BrowserGuestModeEnabled', :dword, '0')"
+
+  "5.2":
+    title: '5.2 | L2 Ensure Incognito mode availability is set to Enabled Incognito mode disabled'
+    section: 'Forensics (Post Incident)'
+    description: |
+        Specifies whether the user may open pages in Incognito mode in Google Chrome. The possible values are Incognito mode
+        available
+         0  Same as              Disabled
+                   Incognito mode disabled
+         1           Incognito mode forced
+         2
+        The recommended state for this setting is            Enabled Incognito mode disabled
+         1
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled:
+        Incognito mode disabled
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Incognito mode availability
+         Impact: Users will not be able to initiate Incognito mode for Google Chrome.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_5.2', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "IncognitoModeAvailability"'
+            - name: 'IncognitoModeAvailability'
+              rule: "should have_property_value('IncognitoModeAvailability', :dword, '1')"
+
+  "5.3":
+    title: '5.3 | L1 Ensure Set disk cache size in bytes is set to Enabled 250609664'
+    section: 'Forensics (Post Incident)'
+    description: |
+        This setting controls the size of the cache, in bytes, used to store files on the disk.
+        The recommended state for this setting is            Enabled 250609664
+         or greater         NOTE
+         The value specified in this setting isnt a hard boundary but rather a suggestion to the caching system any value below
+        a few megabytes is too small and will be rounded up to a reasonable minimum.
+    remediation: |
+        To establish the recommended configuration via Group Policy, set the following UI path to                Enabled:
+        250609664
+        :             Computer Configuration\Policies\Administrative Templates\Google\Google Chrome\Set disk cache size in bytes
+         Impact: Browser cache will take up to 250MB in disk space.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.3', 'cis_google_chrome_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome'
+        - checks:
+            - rule: 'should have_property "DiskCacheSize"'
+            - name: 'DiskCacheSize'
+              rule: "should have_property_value('DiskCacheSize', :dword, '250609664')"

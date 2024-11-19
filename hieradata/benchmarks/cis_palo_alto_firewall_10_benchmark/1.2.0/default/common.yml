@@ -1,0 +1,2216 @@
+---
+
+inspec_rules:
+  "1.1.1.1":
+    title: '1.1.1.1 | Syslog logging should be configured'
+    section: 'Ensure System Logging to a Remote Host'
+    description: |
+        Syslog logging is a standard logging protocol that is widely supported.  It is recommended for a level 1 deployment
+        only, as syslog does not support encryption.
+    remediation: |
+        Navigate to                    Device > Server Profiles > Syslog
+
+        Choose                    Add
+
+        Assign a Name to the Profile.  Choose                    Add
+        , and assign a server name in the Name field, add an IP address or FQDN in the                    Syslog Server
+         field.  Edit other fields as appropriate for your server.
+        Repeat if multiple Syslog destinations are required.
+        Navigate to                    Device > Log Settings
+
+        Under                    System
+        , add an entry.  Define a                    Name
+         and a                    Filter setting
+        .  Under                    Forward Methods
+        , add a                    Syslog Profile
+         in the                    Syslog
+         section.  Ensure that at least one of the Log Settings Configuration entries has it's                    Filter
+         setting at                    All Logs
+
+        Under                    Configuration
+        , add an entry.  Define a                    Name
+         and a                    Filter setting
+        .  Under                    Forward Methods
+        , add a                    Syslog Profile
+         in the                    Syslog
+         section.  Ensure that at least one of the Log Settings Configuration entries has it's                    Filter
+         setting at                    All Logs
+
+        Under                    User-ID
+        , add an entry.  Define a                    Name
+         and a                    Filter setting
+        .  Under                    Forward Methods
+        , add a                    Syslog Profile
+         in the                    Syslog
+         section.  Ensure that at least one of the Log Settings Configuration entries has it's                    Filter
+         setting at                    All Logs
+
+        Under                    HIP Match
+         (Host Information Profile), add an entry.  Define a                    Name
+         and a                    Filter setting
+        .  Under                    Forward Methods
+        , add a                    Syslog Profile
+         in the                    Syslog
+         section.  Ensure that at least one of the Log Settings Configuration entries has it's                    Filter
+         setting at                    All Logs
+
+        Under                    IP-Tag
+        , add an entry.  Define a                    Name
+         and a                    Filter setting
+        .  Under                    Forward Methods
+        , add a                    Syslog Profile
+         in the                    Syslog
+         section.  Ensure that at least one of the Log Settings Configuration entries has it's                    Filter
+         setting at                    All Logs
+                                 Impact: Failure to properly store and archive logs for critical infrastructure leaves an
+        organization without the tools required to establish trends in events or activity, or to retrospectively analyze
+        security or operational events beyond the log timespan stored on the firewall.
+        Not having remote logs also puts many organizations outside of compliance with many regulatory frameworks.  Finally, not
+        logging to a remote host leaves organizations without recourse in the event of a compromise of logs on the primary
+        device.
+        It is imperative that organizations log critical infrastructure appropriately, store and archive these logs in a central
+        location, and have a robust set of tools to analyze logs both in real time and after the fact.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.1.1', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.1.1.2":
+    title: '1.1.1.2 | SNMPv3 traps should be configured'
+    section: 'Ensure System Logging to a Remote Host'
+    description: |
+        SNMP v3 can be used for remote logging, and is the recommended protocol in higher security situations as it fully
+        supports encryption of logs.
+    remediation: |
+        Navigate to                    Device > Server Profiles > SNMP Trap
+
+        Choose                    Add
+
+        Assign a                    Name
+         to the Profile, and specify                    version
+         V3.  Choose                    Add
+        , and assign a server name in the                    Name
+         field, add an IP address or FQDN in the                    SNMP Manager
+         field.  Edit the                    Password
+         fields as appropriate for your server.
+        Repeat if multiple Syslog destinations are required.
+        Navigate to                    Device > Log Settings
+
+        Under                    System
+        , add an entry.  Define a                    Name
+         and a                    Filter setting
+        .  Under                    Forward Methods
+        , add a                    SNMP Profile
+         in the                    SNMP
+         section.  Ensure that at least one of the Log Settings Configuration entries has its                    Filter
+         setting at                    All Logs
+
+        Under                    Configuration
+        , add an entry.  Define a                    Name
+         and a                    Filter setting
+        .  Under                    Forward Methods
+        , add a                    SNMP Profile
+         in the                    SNMP
+         section.  Ensure that at least one of the Log Settings Configuration entries has its                    Filter
+         setting at                    All Logs
+
+        Under                    User-ID
+        , add an entry.  Define a                    Name
+         and a                    Filter setting
+        .  Under                    Forward Methods
+        , add a                    SNMP Profile
+         in the                    SNMP
+         section.  Ensure that at least one of the Log Settings Configuration entries has its                    Filter
+         setting at                    All Logs
+
+        Under                    HIP Match
+         (Host Information Profile), add an entry.  Define a                    Name
+         and a                    Filter setting
+        .  Under                    Forward Methods
+        , add a                    SNMP Profile
+         in the                    SNMP
+         section.  Ensure that at least one of the Log Settings Configuration entries has its                    Filter
+         setting at                    All Logs
+
+        Under                    IP-Tag
+        , add an entry.  Define a                    Name
+         and a                    Filter setting
+        .  Under                    Forward Methods
+        , add a                    SNMP Profile
+         in the                    SNMP
+         section.  Ensure that at least one of the Log Settings Configuration entries has its                    Filter
+         setting at                    All Logs
+                                 Impact: Failure to properly store and archive logs for critical infrastructure leaves an
+        organization without the tools required to establish trends in events or activity, or to retrospectively analyze
+        security or operational events beyond the log timespan stored on the firewall.
+        Not having remote logs also puts many organizations outside of compliance with many regulatory frameworks.  Finally, not
+        logging to a remote host leaves organizations without recourse in the event of a compromise of logs on the primary
+        device.
+        It is imperative that organizations log critical infrastructure appropriately, store and archive these logs in a central
+        location, and have a robust set of tools to analyze logs both in real time and after the fact.
+        Not encrypting log data as it transits the network allows an attacker to mount a "MiTM" (Monkey in the Middle) attack,
+        which allows them to intercept and/or modify logs as they transit from the source to the destination.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_1.1.1.2', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.1.2":
+    title: '1.1.2 | Ensure Login Banner is set'
+    section: 'General Settings'
+    description: |
+        Configure a login banner, ideally approved by the organizations legal team. This banner should, at minimum, prohibit
+        unauthorized access, provide notice of logging or monitoring, and avoid using the word welcome or similar words of
+        invitation.
+    remediation: |
+        Navigate to                  Device > Setup > Management > General Settings
+        .
+        Set                  Login Banner
+         as appropriate for your organization.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.2', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.1.3":
+    title: '1.1.3 | Ensure Enable Log on High DP Load is enabled'
+    section: 'General Settings'
+    description: |
+        Enable the option Enable Log on High DP Load feature. When this option is selected, a system log entry is created when
+        the devices packet processing load reaches 100 utilization.
+    remediation: |
+        Navigate to                  Device > Setup > Management > Logging and Reporting Settings > Log Export and Reporting
+        .
+        Set the                  Enable Log on High DP Load
+         box to                  checked
+        .               Impact: Sustained attacks, especially volumetric DOS and DDOS attacks will often affect CPU utilization.
+        This setting will generate an event that is easily monitored for and alerted on.  While setting CPU utilization
+        watermarks in a Network Management System is a standard practice, this setting does not depend on even having an NMS, it
+        doesn't require anything other than standard logging to implement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.1.3', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.2.1":
+    title: '1.2.1 | Ensure Permitted IP Addresses is set to those necessary for device management - manual'
+    section: 'Management Interface Settings'
+    description: |
+        Permit only the necessary IP addresses to be used to manage the device.
+    remediation: |
+        Navigate to                  Device > Setup > Interfaces > Management
+        .
+        Set                  Permitted IP Addresses
+         to only those necessary for device management for the SSH and HTTPS protocols.  If no profile exists, create one that
+        has these addresses set.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.2.1', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.2":
+    title: '1.2.2 | Ensure Permitted IP Addresses is set for all management profiles where SSH HTTPS or SNMP is enabled - manual'
+    section: 'Management Interface Settings'
+    description: |
+        For all management profiles, only the IP addresses required for device management should be specified.
+    remediation: |
+        Navigate to                  Network > Network Profiles > Interface Management
+        .
+        In each profile, for each of the target protocols (SNMP, HTTPS, SSH), set                  Permitted IP Addresses
+         to only include those necessary for device management.  If no profile exists, create one that has these options set.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.2.2', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.2.3":
+    title: '1.2.3 | Ensure HTTP and Telnet options are disabled for the management interface'
+    section: 'Management Interface Settings'
+    description: |
+        HTTP and Telnet options should not be enabled for device management.
+    remediation: |
+        Navigate to                  Device > Setup > Interfaces > Management
+        .
+        Set the                  HTTP
+         and                  Telnet
+         boxes to unchecked.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.2.3', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.2.4":
+    title: '1.2.4 | Ensure HTTP and Telnet options are disabled for all management profiles'
+    section: 'Management Interface Settings'
+    description: |
+        HTTP and Telnet options should not be enabled for device management.
+    remediation: |
+        Navigate to                  Network > Network Profiles > Interface Management
+        .
+        For each Profile, set the                  HTTP
+         and                  Telnet
+         boxes to unchecked.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.2.4', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.2.5":
+    title: '1.2.5 | Ensure valid certificate is set for browser-based administrator interface - manual'
+    section: 'Management Interface Settings'
+    description: |
+        In most cases, a browser HTTPS interface is used to administer the Palo Alto appliance. The certificate used to secure
+        this session should satisfy the following criteria A valid certificate from a trusted source should be used. While a
+        certificate from a trusted Public Certificate Authority is certainly valid, one from a trusted Private Certificate
+        Authority is absolutely acceptable for this purpose. The certificate should have a valid date. It should not have a to
+        date in the past it should not be expired, and should not have a from date in the future. The certificate should use an
+        acceptable cipher and encryption level.
+    remediation: |
+        Create or acquire a certificate that meets the stated criteria and set it:
+        Navigate to                  Device > Certificate Management > Certificates
+                              Import an appropriate Certificate for your administrative session, from a trusted Certificate
+        Authority.
+        Navigate to                  Device > Certificate Management > SSL/TLS Service Profile
+                              Choose or import the certificate you want to use for the web based administrative session.
+        Navigate to                  Device > Setup > Management > General Settings > SSL/TLS Service Profile
+                              Choose the Service Profile that you have configured Impact: If the default self-signed certificate
+        is used, an administrator will not be able to clearly tell if their HTTPS session is being hijacked or not.  Using a
+        trusted certificate ensures that the session is both encrypted and trusted.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_1.2.5', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.3.1":
+    title: '1.3.1 | Ensure Minimum Password Complexity is enabled'
+    section: 'Minimum Password Requirements'
+    description: |
+        This checks all new passwords to ensure that they meet basic requirements for strong passwords.
+    remediation: |
+        Navigate to                  Device > Setup > Management > Minimum Password Complexity
+        .
+        Set                  Enabled
+         to be checked               Set that the various password settings to values that are appropriate to your organization.
+        It is suggested that there at least be some special characters enforced, and that a minimum length be set.  Ensure that
+        non-zero values are set for Minimum Uppercase, Lowercase and Special Characters.  "Block Username Inclusion" should be
+        enabled. Operationally, dictionary words should be avoided for all passwords - passphrases are a much better
+        alternative. Impact: Simple passwords make an attacker's job very easy.  There is a reasonably short list of commonly
+        used admin passwords for network infrastructure, not enforcing password lengths and complexity can lend itself to making
+        an attacker's brute force attack successful.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.3.1', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.3.2":
+    title: '1.3.2 | Ensure Minimum Length is greater than or equal to 12'
+    section: 'Minimum Password Requirements'
+    description: |
+        This determines the least number of characters that make up a password for a user account.
+    remediation: |
+        Navigate to                  Device > Setup > Management > Minimum Password Complexity
+        .
+        Set                  Minimum Length
+         to greater than or equal to                  12
+                              Impact: Longer passwords are much more difficult to attack.  This is true of attacks against the
+        administrative interfaces themselves, or of decryption attacks against captured hashes.
+        A longer password will almost always have a more positive impact than a shorter but more complex password.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.3.2', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.3.3":
+    title: '1.3.3 | Ensure Minimum Uppercase Letters is greater than or equal to 1'
+    section: 'Minimum Password Requirements'
+    description: |
+        This checks all new passwords to ensure that they contain at least one English uppercase character A through Z.
+    remediation: |
+        Navigate to                  Device > Setup > Management > Minimum Password Complexity
+
+        Set                  Minimum Uppercase Letters
+         to greater than or equal to                  1
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.3.3', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.3.4":
+    title: '1.3.4 | Ensure Minimum Lowercase Letters is greater than or equal to 1'
+    section: 'Minimum Password Requirements'
+    description: |
+        This checks all new passwords to ensure that they contain at least one English lowercase character a through z.
+    remediation: |
+        Navigate to                  Device > Setup > Management > Minimum Password Complexity
+
+        Set                  Minimum Lowercase Letters
+         to greater than or equal to                  1
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.3.4', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.3.5":
+    title: '1.3.5 | Ensure Minimum Numeric Letters is greater than or equal to 1'
+    section: 'Minimum Password Requirements'
+    description: |
+        This checks all new passwords to ensure that they contain at least one base 10 digit 0 through 9.
+    remediation: |
+        Navigate to                  Device > Setup > Management > Minimum Password Complexity
+
+        Set                  Minimum Numeric Letters
+         to greater than or equal to                  1
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.3.5', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.3.6":
+    title: '1.3.6 | Ensure Minimum Special Characters is greater than or equal to 1'
+    section: 'Minimum Password Requirements'
+    description: |
+        This checks all new passwords to ensure that they contain at least one nonalphabetic character for example, !, , , .
+    remediation: |
+        Navigate to                  Device > Setup > Management > Minimum Password Complexity
+
+        Set                  Minimum Special Characters
+         to greater than or equal to                  1
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.3.6', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.3.7":
+    title: '1.3.7 | Ensure Required Password Change Period is less than or equal to 90 days'
+    section: 'Minimum Password Requirements'
+    description: |
+        This defines how long a user can use a password before it expires.
+    remediation: |
+        Navigate to                  Device > Setup > Management > Minimum Password Complexity
+        .
+        Set                  Required Password Change Period (days)
+         to less than or equal to                  90
+                              Impact: Failure to change administrative passwords can result in a slow "creep" of people who have
+        access.  Especially in a situation with high staff turnover (for instance, in a NOC or SOC situation), administrative
+        passwords need to be changed frequently. Administrative credentials should not be shared across multiple devices.  In a
+        NOC/SOC situation, it's important to not share administrative credentials between operators (names accounts should be
+        used), and in particular administrative credentials should never be shared across different customer infrastructures.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.3.7', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.3.8":
+    title: '1.3.8 | Ensure New Password Differs By Characters is greater than or equal to 3'
+    section: 'Minimum Password Requirements'
+    description: |
+        This checks all new passwords to ensure that they differ by at least three characters from the previous password.
+    remediation: |
+        Navigate to                  Device > Setup > Management > Minimum Password Complexity
+
+        Set                  New Password Differs By Characters
+         to                  3
+         or more               Impact: This prevents the use of passwords that fall into a predictable pattern.  Especially in
+        situations that involve staff turnover, having a pattern to password changes should be avoided.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.3.8', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.3.9":
+    title: '1.3.9 | Ensure Prevent Password Reuse Limit is set to 24 or more passwords'
+    section: 'Minimum Password Requirements'
+    description: |
+        This determines the number of unique passwords that have to be most recently used for a user account before a previous
+        password can be reused.
+    remediation: |
+        Navigate to                  Device > Setup > Management > Minimum Password Complexity
+        .
+        Set                  Prevent Password Reuse Limit
+         to greater than or equal to                  24
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.3.9', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.3.10":
+    title: '1.3.10 | Ensure Password Profiles do not exist - manual'
+    section: 'Minimum Password Requirements'
+    description: |
+        Password profiles that are weaker than the recommended minimum password complexity settings must not exist.
+    remediation: |
+        Navigate to                  Device > Password Profiles
+        .               Ensure Password Profiles weaker than the recommended minimum password complexity settings do not exist.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.3.10', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.4.1":
+    title: '1.4.1 | Ensure Idle timeout is less than or equal to 10 minutes for device management'
+    section: 'Authentication Settings (for Device Mgmt)'
+    description: |
+        Set the Idle Timeout value for device management to 10 minutes or less to automatically close inactive sessions.
+    remediation: |
+        Navigate to                  Device > Setup > Management > Authentication Settings
+        .
+        Set                  Idle Timeout
+         to less than or equal to                  10
+        .
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.4.1', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.4.2":
+    title: '1.4.2 | Ensure Failed Attempts and Lockout Time for Authentication Profile are properly configured'
+    section: 'Authentication Settings (for Device Mgmt)'
+    description: |
+        Configure values for Failed Login Attempts and Account Lockout Time set to organizationdefined values for example, 3
+        failed attempts and a 15 minute lockout time. Do not set Failed Attempts and Lockout Time in the Authentication Settings
+        section any Failed Attempts or Lockout Time settings within the selected Authentication Profile do not apply in the
+        Authentication Settings section.
+    remediation: |
+        Navigate to                  Device > Authentication Profile
+        .
+        Set                  Failed Attempts
+         to the non-zero organization-defined value.
+        Set                  Lockout Time
+         to the non-zero organization-defined value.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.4.2', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.5.1":
+    title: '1.5.1 | Ensure V3 is selected for SNMP polling'
+    section: 'SNMP Polling Settings'
+    description: |
+        For SNMP polling, only SNMPv3 should be used.
+    remediation: |
+        Navigate to                  Device > Setup > Operations > Miscellaneous > SNMP Setup
+
+        Select                  V3
+        .
+        In order to be usable, the                  User
+         and                  View
+         sections of this dialog should also be completed.  These settings need to match the settings in the organization's NMS
+        (Network Management System)               Impact: Any clear-text administrative protocol (such as SNMPv2) can expose
+        valuable information to any attacker that is in a position to eavesdrop on that protocol.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.5.1', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.6.1":
+    title: '1.6.1 | Ensure Verify Update Server Identity is enabled'
+    section: 'Device Services Settings'
+    description: |
+        This setting determines whether or not the identity of the update server must be verified before performing an update
+        session. Note that if an SSL Forward Proxy is configured to intercept the update session, this option may need to be
+        disabled because the SSL Certificate will not match.
+    remediation: |
+        Navigate to                  Device > Setup > Services > Services
+        .
+        Set the                  Verify Update Server Identity
+         box to checked.               Impact: This setting protects the device from an "evilgrade" attack, where a successful
+        DNS attack can redirect the firewall to an attacker-controlled update server, which can then serve a modified update.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.6.1', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.6.2":
+    title: '1.6.2 | Ensure redundant NTP servers are configured appropriately'
+    section: 'Device Services Settings'
+    description: |
+        These settings enable use of primary and secondary NTP servers to provide redundancy in case of a failure involving the
+        primary NTP server.
+    remediation: |
+        Navigate to                  Device > Setup > Services > Services
+        .
+        Set                  Primary NTP Server Address
+         appropriately.
+        Set                  Secondary NTP Server Address
+         appropriately.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_1.6.2', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "1.6.3":
+    title: '1.6.3 | Ensure that the Certificate Securing Remote Access VPNs is Valid - manual'
+    section: 'Device Services Settings'
+    description: |
+        The Certificate used to secure Remote Access VPNs should satisfy the following criteria It should be a valid certificate
+        from a trusted source. In almost cases this means a trusted Public Certificate Authority, as in most cases remote access
+        VPN users will not have access to any Private Certificate Authorities for Certificate validation. The certificate should
+        have a valid date. It should not have a to date in the past it should not be expired, and should not have a from date in
+        the future. The key length used to encrypt the certificate should be 2048 bits or more. The hash used to sign the
+        certificate should be SHA2 or better. When the Certificate is applied, the TLS version should be 1.1 or higher 1.2 is
+        recommended
+    remediation: |
+        Create a CSR and install a certificate from a public CA (Certificate Authority) here:
+        Navigate to                  Device > Certificate Management > Certificates
+                              Apply a valid certificate to the HTTPS portal:
+        Navigate to                  Network > GlobalProtect > Portals > Portal Configuration > Authentication > SSL/TLS Profile
+                              Apply a valid certificate to the GlobalProtect Gateway:
+        Navigate to                  Network > GlobalProtect > Gateways > Authentication > SSL/TLS Service Profile
+
+        Configure the Service Profile to use the correct certificate               Ensure that the Minimum TLS version is set to
+        1.1 or 1.2 (1.2 is recommended). Impact: Not using a trusted Certificate, issued by a trusted Public Certificate
+        Authority means that clients establishing VPN sessions will always see an error indicating an untrusted Certificate.
+        This means that they will have no method of validating if their VPN session is being hijacked by a "Monkey in the
+        Middle" (MitM) attack.  It also "trains" them to bypass certificate warnings for other services, making MitM attacks
+        easier for those other services as well.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_1.6.3', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "1.7.1":
+    title: '1.7.1 | Enabling Post-Quantum PQ on IKEv2 VPNs - manual'
+    section: 'VPN Settings'
+    description: |
+        For VPN that has IKEv2 enabled, enable PQ for more secure way to exchange preshared secret to defend against Harvest
+        Now, Decrypt Later attack technique.
+    remediation: |
+        Navigate to                  Network > Network Profiles > IKE Gateways
+        .
+        On gateways that has IKEv2 enabled, click into it and navigate to                  Advanced Options
+        . On IKEv2 section, navigate to                  PQ PPK
+         section.
+        Check                  Enable Post-Quantum Pre-Shared Key (PPK)
+         option.
+        Negotiation mode should be set to                  Mandatory
+         if both sides of VPN supports PQ. Negotiation mode should be set to                  Preferred
+         if you don't know or don't have control over whether the peer supports RFC 8784.                  Preferred
+         mode preserves backward compatibility to ensure connections fall back instead of dropping.               If both sides
+        of VPN supports more than 1 PPK key ID, then multiple PPK key ID should be configured. Configuring multiple PQ PPKs is
+        most secure because it adds a random element to PQ PPK selection.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_1.7.1', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.1":
+    title: '2.1 | Ensure that IP addresses are mapped to usernames - manual'
+    section: 'User Identification'
+    description: |
+        Configure appropriate settings to map IP addresses to usernames. Mapping userids to IP addresses is what permits the
+        firewall to create rules based on userids and groups rather than IP addresses and subnets, as well as log events by
+        userids rather than IP addresses or DNS names. The specifics of how to achieve IPtousername mapping is highly dependent
+        on the environment. It can be enabled by integrating the firewall with a domain controller, Exchange server, captive
+        portal, Terminal Server, UserID Agent, XML API, or syslog data from a variety of devices.
+    remediation: |
+        To Set User-ID Agents:
+        Navigate to                Device > User Identification > User-ID Agents
+                           Set the Name, IP Address and Port of the User-ID Agent` Enable User Identification for each monitored
+        zone that will have user accounts:
+        Navigate to                Network > Zone, for each relevant zone enable User Identification
+                           To Set Terminal Services Agents:
+        Navigate to                Device > Terminal Services Agents
+
+        Set the Name, IP Address and Port of the Terminal Services Agent             Enable User Identification for each
+        monitored zone that will have Terminal Servers:
+        Navigate to                Network > Zone, enable User Identification
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_2.1', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.2":
+    title: '2.2 | Ensure that WMI probing is disabled - manual'
+    section: 'User Identification'
+    description: |
+        Disable WMI probing if it is not required for UserID functionality in the environment.
+    remediation: |
+        Navigate to                Device > User Identification > User Mapping > Palo Alto Networks User ID Agent Setup
+        .
+        Set                Enable Probing
+         so it is unchecked.             Impact: While this removes the exposure of having the WMI user account password being
+        compromised, it also reduces the effectiveness of user identification during operation of the firewall (applying rules
+        and policies). This trade-off should be weighed carefully for all installations.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_2.2', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.3":
+    title: '2.3 | Ensure that User-ID is only enabled for internal trusted interfaces'
+    section: 'User Identification'
+    description: |
+        Only enable the UserID option for interfaces that are both internal and trusted. There is rarely a legitimate need to
+        allow WMI probing or any userid identification on an untrusted interface.
+        The exception to this is identification of remoteaccess VPN users, who are identified as they connect.
+    remediation: |
+        Navigate to                Network > Network Profiles > Interface Management
+        .
+        Set                User-ID
+         to be checked only for interfaces that are both internal and trusted; uncheck it for all other interfaces.
+        Impact: If WMI probing is enabled without limiting the scope, internet hosts that are sources or destinations of traffic
+        will be probed, and the password hash of the configured Domain Admin account can be captured by an outside attacker on
+        such a host.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.3', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.4":
+    title: '2.4 | Ensure that IncludeExclude Networks is used if User-ID is enabled'
+    section: 'User Identification'
+    description: |
+        If UserID is configured, use the Include/Exclude Networks section to limit the UserID scope to operate only on trusted
+        networks. There is rarely a legitimate need to allow WMI probing or other User identification on an untrusted network.
+    remediation: |
+        Navigate to                Device > User Identification > User Mapping > Include/Exclude Networks
+        .
+        Set all trusted internal networks to have a Discovery value of                Include
+        .
+        Set all untrusted external networks to have a Discovery value of                Exclude
+        .  Note that any value in the trusted networks list implies that all other networks are untrusted.             Impact:
+        Not restricting the networks subject to User Identification means that the administrative credentials (userid and
+        password hash) used for this task will transit untrusted networks, or be sent to untrusted hosts.  Capturing these
+        credentials exposes them to offline cracking attacks.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.4', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "2.5":
+    title: '2.5 | Ensure that the User-ID Agent has minimal permissions if User-ID is enabled - manual'
+    section: 'User Identification'
+    description: |
+        If the integrated ondevice UserID Agent is utilized, the Active Directory account for the agent should only be a member
+        of the Event Log Readers group, Distributed COM Users group, and Domain Users group. If the Windows UserID agent is
+        utilized, the Active Directory account for the agent should only be a member of the Event Log Readers group, Server
+        Operators group, and Domain Users group.
+    remediation: |
+        Navigate to                Active Directory Users and Computers
+        .             Set the service account for the User-ID agent so that it is only a member of the Event Log Readers,
+        Distributed COM Users, and Domain Users (for the integrated, on-device User-ID agent) or the Event Log Readers, Server
+        Operators, and Domain Users groups (for the Windows User-ID agent.) Impact: Using accounts with full administrative
+        privileges when those rights are not required is always a bad idea.  This is particularly true for service accounts of
+        this type, which in many organizations do not see strong passwords or frequent password changes.  In addition, service
+        passwords are stored in the Windows Registry, and are recoverable with the user of appropriate malicious tools.  The
+        principal of least privilege means that any compromised accounts of this type have less value to an attacker, and expose
+        fewer assets based on their rights.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_2.5', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.6":
+    title: '2.6 | Ensure that the User-ID service account does not have interactive logon rights - manual'
+    section: 'User Identification'
+    description: |
+        Restrict the UserID service account from interactively logging on to systems in the Active Directory domain.
+    remediation: |
+        Navigate to                Active Directory Group Policies.
+                           Set Group Policies to restrict the interactive logon privilege for the User-ID service account. or
+        Navigate to                Active Directory Managed Service Accounts.
+                           Set Managed Service Accounts to restrict the interactive logon privilege for the User-ID service
+        account.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.6', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.7":
+    title: '2.7 | Ensure remote access capabilities for the User-ID service account are forbidden. - manual'
+    section: 'User Identification'
+    description: |
+        Restrict the UserID service accounts ability to gain remote access into the organization. This capability could be made
+        available through a variety of technologies, such as VPN, Citrix GoToMyPC, or TeamViewer. Remote services that integrate
+        authentication with the organizations Active Directory may unintentionally allow the UserID service account to gain
+        remote access.
+    remediation: |
+        Remove this account from all groups that might grant remote access to the network, or to any network services or hosts.
+        Remediation is operating-system dependent. For instance, in Windows Active Directory, this account should be removed
+        from any group that grants the account access to VPN or Wireless access. In addition, domain administrative accounts by
+        default have remote desktop (RDP) access to all domain member workstations - this should be explicitly denied for this
+        account.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_2.7', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.8":
+    title: '2.8 | Ensure that security policies restrict User-ID Agent traffic from crossing into untrusted zones - manual'
+    section: 'User Identification'
+    description: |
+        Create security policies to deny Palo Alto UserID traffic originating from the interface configured for the UID Agent
+        service that are destined to any untrusted zone.
+    remediation: |
+        Navigate to                Device > Setup > Services > Services Features > Service Route Configuration > Customize
+        .
+        Click on the protocol in use (               IPv4
+        and/or                IPv6
+        ).
+        Click                UID Agent.
+                           Click on the address object for the UID Agent's IP address.
+        Set                SOURCE/NAME
+         to '               Deny msrpc to untrusted
+        '.
+        Set                SOURCE/ZONE
+         to '               INSIDE
+        '.
+        Set                SOURCE/Address
+         to the Address object for the UID Agent.
+        Set                DESTINATION/ZONE
+         to '               GUEST
+        ' and '               OUTSIDE
+        '.
+        Set                DESTINATION/Address
+         to '               any
+        '.
+        Set                DESTINATION/Application
+         to '               msrpc
+        '.
+        Set                DESTINATION/Service
+         to '               application-default
+        '.
+        Set                DESTINATION/Action
+         to '               Block
+        ' (red circle with diagonal line).
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_2.8', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.1":
+    title: '3.1 | Ensure a fully-synchronized High Availability peer is configured - manual'
+    section: 'High Availability'
+    description: |
+        Ensure a High Availability peer is fully synchronized and in a passive or active state.
+    remediation: |
+        Navigate to                Device > High Availability > HA Communications
+        .
+        Click                HA Communications.
+         Click                Data Link (HA2).
+         Select the correct interface. Select the desired                protocol (IPv4 or IPv6).
+         Select the correct Transport. Set the                Enable Session Synchronization
+         box to be checked               .
+
+        Choose                Save Configuration.
+                           Impact: Not configuring High Availability (HA) correctly directly impacts the Availability of the
+        system.  With HA in place, standard maintenance such as OS updates, network and power cabling can be accomplished with
+        no outage or a minimum impact.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.1', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.2":
+    title: '3.2 | Ensure High Availability requires Link Monitoring andor Path Monitoring - manual'
+    section: 'High Availability'
+    description: |
+        Configure Link Monitoring and/or Path Monitoring under High Availability options. If Link Monitoring is utilized, all
+        links critical to traffic flow should be monitored.
+    remediation: |
+        To set Link Monitoring from GUI:
+        Navigate to                Device > High Availability > Link and Path Monitoring
+        .
+        Click                Link Monitoring.
+
+        Set the correct interfaces to the                Link Group
+         and                Group Failure Conditions
+        .
+        Click                Link Monitoring
+        .
+        Set Failure Condition to                Any
+        .
+        Check Enabled button.             To set Path Monitoring from GUI:
+        Navigate to                Device > High Availability > Link and Path Monitoring
+        .
+        Click                Path Monitoring.
+
+        Set                Option
+         correctly.
+        Set                Failure Condition
+         to                Any.
+
+        Set                Name, IP Address, Failure Condition
+         correctly.
+        Set                Default setting
+         to                Any.
+
+        Check Enabled button.             Impact: Not configuring High Availability (HA) correctly directly impacts the
+        Availability of the system.  With HA in place, standard maintenance such as OS updates, network and power cabling can be
+        accomplished with no outage or a minimum impact. Without Link and Path monitoring in particular, failover will only
+        occur when the primary device fails completely.  Link and path monitoring permits failover if a critical interface loses
+        link (either due to cabling or an upstream switch failover), or if a route or path fails (indicating an upstream issue
+        that affects local Layer 3).
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.2', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.3":
+    title: '3.3 | Ensure Passive Link State and Preemptive are configured appropriately'
+    section: 'High Availability'
+    description: |
+        Set the Passive Link State to auto, and uncheck the Preemptive option to disable it.
+    remediation: |
+        To set                Active/Passive Settings
+         correctly:
+        Navigate to                Device > High Availability > General > Active/Passive Settings
+        .
+        Set                Passive Link State
+         to                auto
+        .
+        To set                Election Settings
+         correctly:
+        Navigate to                Device > High Availability > Election Settings
+        .
+        Set                Preemptive
+         to be disabled.             Impact: Incorrectly configuring this setting will adversely affect availability, rather
+        than positively affect it.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_3.3', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.1":
+    title: '4.1 | Ensure Antivirus Update Schedule is set to download and install updates hourly'
+    section: 'Dynamic Updates'
+    description: |
+        Set Antivirus Update Schedule to download and install updates hourly.
+    remediation: |
+        Navigate to                Device > Dynamic Updates > Antivirus Update Schedule
+        .
+        Set                Action
+         to                Download and Install
+        .
+        Set                Recurrence
+         to                Hourly
+        .
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.1', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "4.2":
+    title: '4.2 | Ensure Applications and Threats Update Schedule is set to download and install updates at daily or shorter intervals'
+    section: 'Dynamic Updates'
+    description: |
+        Set the Applications and Threats Update Schedule to download and install updates at daily or shorter intervals.
+    remediation: |
+        Navigate to                Device > Dynamic Updates > Application and Threats Update Schedule
+        .
+        Set                Action
+         to                Download and Install
+        .
+        Set                Recurrence
+         to                Daily
+        ,                Hourly
+         or                Every 30 Minutes
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_4.2', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.1":
+    title: '5.1 | Ensure that WildFire file size upload limits are maximized'
+    section: 'Wildfire'
+    description: |
+        The default file size limits on the firewall are designed to include the majority of malware in the wild which is
+        smaller than the default size limits and to exclude large files that are very unlikely to be malicious and that can
+        impact WildFire fileforwarding capacity.
+    remediation: |
+        Navigate to                Device > Setup > WildFire
+        .
+        Click the                General Settings
+         edit icon.             Set the maximum size for each file type are larger than the defaults, to a size that is as large
+        enough to account for "large" files, but not large enough to affect performance of the hardware. In PAN-OS 9.x and
+        higher, the default file sizes for WildFire are: pe (Portable Executable) - 16MB apk (Android Application)- 10MB pdf
+        (Portable Document Format) - 3072KB ms-office (Microsoft Office) — 16384KB jar (Packaged Java class file) — 5MB flash
+        (Adobe Flash) — 5MB MacOSX (DMG/MAC-APP/MACH-O PKG files) — 10MB archive (RAR and 7z files) — 50MB linux (ELF files) —
+        50MB script (JScript, VBScript, PowerShell, and Shell Script)-  20KB In PAN-OS 9.x and higher, the maximum file sizes
+        for Wildfire are: pe (Portable Executable) - 50MB apk (Android Application)- 50MB pdf (Portable Document Format) -
+        51200KB ms-office (Microsoft Office) — 51200KB jar (Packaged Java class file) — 20MB flash (Adobe Flash) — 10MB MacOSX
+        (DMG/MAC-APP/MACH-O PKG files) — 50MB archive (RAR and 7z files) — 50MB linux (ELF files) — 50MB script (JScript,
+        VBScript, PowerShell, and Shell Script)-  4096KB Impact: Using larger file filtering can cause the system to skip files
+        in the event multiple larger files are sent.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.1', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.2":
+    title: '5.2 | Ensure a WildFire Analysis profile is enabled for all security policies - manual'
+    section: 'Wildfire'
+    description: |
+        Ensure that all files traversing the firewall are inspected by WildFire by setting a Wildfire file blocking profile on
+        all security policies.
+    remediation: |
+        To Set File Blocking Profile:
+        Navigate to                  Objects > Security Profiles > WildFire Analysis Profile
+        .               Create a WildFire profile that has 'Application Any', 'File Types Any', and 'Direction Both' To Set
+        WildFire Analysis Rules:
+        Navigate to                  Policies > Security
+        .
+        For each Security Policy Rule where the action is "Allow", Navigate to                  Actions > Profile Setting >
+        WildFire Analysis
+         and set a WildFire Analysis profile.               Group Profiles
+         can also be used.  To take this approach:
+        Navigate to                  Objects > Security Profile Groups
+        .  Create a Security Profile Group, and ensure that (among other settings) the                  Wildfire Analysis
+        Profile
+         is set to the created profile.
+        Navigate to                  Policies > Security
+        .  For each Security Policy Rule where the action is "Allow", Navigate to                  Actions > Profile Setting
+        .  Modify the                  Profile Type
+         to                  Group
+        , and set the                  Group Profile
+         to the created Security Profile Group.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.2', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.3":
+    title: '5.3 | Ensure forwarding of decrypted content to WildFire is enabled'
+    section: 'Wildfire'
+    description: |
+        Allow the firewall to forward decrypted content to WildFire. Note that SSL ForwardProxy must also be enabled and
+        configured for this setting to take effect on insidetooutside traffic flows.
+    remediation: |
+        Navigate to                Device > Setup > Content-ID > Content-ID Settings
+        .
+        Set                Allow forwarding of decrypted content
+         to be checked.
+        Note that SSL Forward Proxy must be configured for this setting to be effective.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.3', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.4":
+    title: '5.4 | Ensure all WildFire session information settings are enabled - manual'
+    section: 'Wildfire'
+    description: |
+        Enable all options under Session Information Settings for WildFire.
+    remediation: |
+        Navigate to                Device > Setup > WildFire > Session Information Settings
+        .             Set every option to be enabled.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.4', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.5":
+    title: '5.5 | Ensure alerts are enabled for malicious files detected  by WildFire - manual'
+    section: 'Wildfire'
+    description: |
+        Configure WildFire to send an alert when a malicious or greyware file is detected. This alert could be sent by whichever
+        means is preferable, including email, SNMP trap, or syslog message. Alternatively, configure the WildFire cloud to
+        generate alerts for malicious files. The cloud can generate alerts in addition to or instead of the local WildFire
+        implementation. Note that the destination email address of alerts configured in the WildFire cloud portal is tied to the
+        logged in account, and cannot be modified. Also, new systems added to the WildFire cloud portal will not be
+        automatically set to email alerts.
+    remediation: |
+        From GUI, configure some combination of the following Server Profiles:
+        Configure the Email Server:
+        Select                Device > Server Profiles > Email
+
+        Click                Add
+
+        Enter a name for the Profile.
+        Select the virtual system from the Location drop down menu (if applicable)
+        Click                Add
+
+        Configure the Syslog Server:
+        Select                Device > Server Profiles > Syslog > Add
+
+        Enter                Name, Display Name, Syslog Server, Transport, Port, Format, Facility
+
+        Click                OK
+
+        Click                Commit
+         to save the configuration
+        Configure the SMTP Server:
+        Select                Device > Server Profiles > Email
+
+        Select                Add, Name, Display Name, From, To, Additional Recipients, Gateway IP or Hostname
+
+        Click                OK
+
+        Click                Commit
+         to save the configuration
+        Navigate to                Objects, Log Forwarding
+
+        Choose                Add
+        , set the log type to "wildfire", add the filter "(verdict neq benign)", then add log destinations for SNMP, Syslog,
+        Email or HTTP as required.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.5', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.6":
+    title: '5.6 | Ensure WildFire Update Schedule is set to download and install updates in real-time'
+    section: 'Wildfire'
+    description: |
+        Set the WildFire update schedule to download and install updates in realtime.
+    remediation: |
+        Navigate to                Device > Dynamic Updates > WildFire Update Schedule
+        .
+        Set                Recurrence
+         is set to                Real-time
+        .
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_5.6', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "5.7":
+    title: '5.7 | Choosing Wildfire public cloud region - manual'
+    section: 'Wildfire'
+    description: |
+        By default, all relevant files are uploaded to Wildfire datacenter located in US. Palo Alto Networks has been adding
+        more WildFire regional clouds around the world. From having just 3 regional clouds back in PanOS 8.x, now to more than
+        10 regional clouds all over the world.
+    remediation: |
+        Navigate to                Device > Setup > WildFire
+        .
+        Navigate to the                General Settings sections
+        .
+        Click the                General Settings
+         edit icon.
+        Change the                WildFire Public Cloud
+         to your appropriate region.             Impact: With default values, all relevant files are uploaded to
+        wildfire.paloaltonetworks.com which is located in US.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level2', 'rule_5.7', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.8":
+    title: '5.8 | Ensure that Inline Cloud Analysis on Wildfire profiles is enabled'
+    section: 'Wildfire'
+    description: |
+        Enable Advanced WildFire Inline Cloud Analysis on Wildfire profiles and forward PE files for analysis. Palo Alto
+        Networks Advanced WildFire operates a series of cloudbased ML detection engines that provide inline analysis of PE
+        portable executable files traversing your network to detect and prevent advanced malware in realtime.
+    remediation: |
+        Navigate to                Objects > Security Profiles > Wildfire
+
+        On relevant Wildfire profile, checked                Enable cloud inline analysis
+         box.
+        On                Inline cloud analysis
+         tab, configure a rule to forward files with the following settings:             Application
+         set to                  Any
+                              File Type
+         set to                  PE
+                              Direction
+         set to                  Both
+                              Action
+         set to                  Block
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_5.8', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.1":
+    title: '6.1 | Ensure that antivirus profiles are set to reset-both on all decoders except imap and pop3 - manual'
+    section: 'Security Profiles'
+    description: |
+        Configure antivirus profiles to a value of resetboth for all decoders except imap and pop3 under both Action and
+        WildFire Action. If required by the organizations email implementation, configure imap and pop3 decoders to alert under
+        both Action and WildFire Action.
+    remediation: |
+        Navigate to                Objects > Security Profiles > Antivirus.
+
+        Set antivirus profiles to have all decoders set to                reset-both
+         for both                Action
+         and                Wildfire Action
+        .  If                imap
+         and                pop3
+         are required in the organization, set the                imap
+         and                pop3
+         decoders to                alert
+         for both                Action
+         and                Wildfire Action
+        .
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.1', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.2":
+    title: '6.2 | Ensure a secure antivirus profile is applied to all relevant security policies - manual'
+    section: 'Security Profiles'
+    description: |
+        Create a secure antivirus profile and apply it to all security policies that could pass HTTP, SMTP, IMAP, POP3, FTP, or
+        SMB traffic. The antivirus profile may be applied to the security policies directly or through a profile group.
+    remediation: |
+        Navigate to                Policies > Security
+        .
+        For each policy, navigate to                [Policy Name] > Actions
+
+        Set an                Antivirus profile
+         or a                Profile Group
+         containing an AV profile for each security policy passing traffic - regardless of protocol.             Impact: Not
+        having an AV Profile on a Security Policy allows signature-based malware to transit the security boundary without blocks
+        or alerts.  In most cases this leaves only the Endpoint Security application to block or alert malware.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_6.2', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.3":
+    title: '6.3 | Ensure an anti-spyware profile is configured to block on all spyware severity levels categories and threats - manual'
+    section: 'Security Profiles'
+    description: |
+        If a single rule exists within the antispyware profile, configure it to block on any spyware severity level, any
+        category, and any threat. If multiple rules exist within the antispyware profile, ensure all spyware categories,
+        threats, and severity levels are set to be blocked. Additional rules may exist for packet capture or exclusion purposes.
+    remediation: |
+        Navigate to                Objects > Security Profiles > Anti-Spyware
+        .
+        Set a rule within the anti-spyware profile that is configured to perform the                reset-both
+         on                any Severity
+         level,                any Category
+        , and                any Threat Name
+        .
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.3', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.4":
+    title: '6.4 | Ensure DNS sinkholing is configured on all anti-spyware profiles in use'
+    section: 'Security Profiles'
+    description: |
+        Configure DNS sinkholing for all antispyware profiles in use. All internal requests to the selected sinkhole IP address
+        must traverse the firewall. Any device attempting to communicate with the DNS sinkhole IP address should be considered
+        infected.
+    remediation: |
+        Navigate to                Objects > Security Profiles > Anti-Spyware
+        .
+        Within the each anti-spyware profile, under its                DNS Policies
+         tab, set the                Signature Source
+         List:
+                       default-paloalto-dns
+         should have as its                Policy Action
+         set to                sinkhole
+
+        If licensed, the                DNS Security
+         should have as its                Policy Action
+         set to                sinkhole
+
+        Verify the '               Sinkhole IPv4
+        ' IP address is correct.  This should be set to                sinkhole.paloaltnetworks.com
+        , or if an internal host is set then that host IP or FQDN should be in that field
+        Verify the '               Sinkhole IPv6
+        ' IP address is correct.  This should be set to                IPv6 Loopback IP (::1)
+        , or if an internal DNS Sinkhole host is set then that host IP or FQDN should be in that field
+        Navigate to                Policies > Security Policies
+
+        For each outbound security Policy, in the                Actions
+         tab, set the                Anti-Spyware
+         setting to include the Spyware Profile created, either explicitly or as a                Group Profile
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.4', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.5":
+    title: '6.5 | Ensure a secure anti-spyware profile is applied to all security policies permitting traffic to the Internet - manual'
+    section: 'Security Profiles'
+    description: |
+        Create one or more antispyware profiles and collectively apply them to all security policies permitting traffic to the
+        Internet. The antispyware profiles may be applied to the security policies directly or through a profile group.
+    remediation: |
+        Navigate to                Objects > Security Profiles > Anti-Spyware
+        .
+        Also navigate to                Policies > Security
+        .             Set one or more anti-spyware profiles to collectively apply to all inside to outside traffic from any
+        address to any address and any application and service.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.5', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.6":
+    title: '6.6 | Ensure a Vulnerability Protection Profile is set to block attacks against critical and high vulnerabilities and set to default on medium low and informational vulnerabilities'
+    section: 'Security Profiles'
+    description: |
+        Configure a Vulnerability Protection Profile set to block attacks against any critical or high vulnerabilities, at
+        minimum, and set to default on any medium, low, or informational vulnerabilities. Configuring an alert action for low
+        and informational, instead of default, will produce additional information at the expense of greater log utilization.
+    remediation: |
+        Navigate to                Objects > Security Profiles > Vulnerability Protection
+        .             Set a Vulnerability Protection Profile to block attacks against any critical or high vulnerabilities
+        (minimum), and to default on attacks against any medium, low, or informational vulnerabilities. Impact: Not configuring
+        a Vulnerability Protection Profile means that network attacks will not be logged, alerted on or blocked.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.6', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.7":
+    title: '6.7 | Ensure a secure Vulnerability Protection Profile is applied to all security rules allowing traffic - manual'
+    section: 'Security Profiles'
+    description: |
+        For any security rule allowing traffic, apply a securely configured Vulnerability Protection Profile. Careful analysis
+        of the target environment should be performed before implementing this configuration, as outlined by PANs Threat
+        Prevention Deployment Tech Note in the references section.
+    remediation: |
+        Navigate to                Policies > Security
+        .
+        For each Policy, under the                Actions
+         tab, select                Vulnerability Protection
+        .             Set it to use either the 'Strict' or the 'Default' profile, or a custom profile that complies with the
+        organization's policies, legal and regulatory requirements. Impact: Not configuring a Vulnerability Protection Profile
+        means that network attacks will not be logged, alerted on or blocked.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.7', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.8":
+    title: '6.8 | Ensure that PAN-DB URL Filtering is used - manual'
+    section: 'Security Profiles'
+    description: |
+        Configure the device to use PANDB URL Filtering instead of BrightCloud.
+    remediation: |
+        Navigate to                Device > Licenses
+        .
+        Click on                PAN-DB URL Filtering
+        .
+        Set                Active
+         to                Yes
+        .             Impact: Not having an effective URL Filtering configuration can leave an organization open to legal
+        action, internal HR issues, non-compliance with regulatory policies or productivity loss.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.8', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.9":
+    title: '6.9 | Ensure that URL Filtering uses the action of block or override on the enterprise approved value URL categories - manual'
+    section: 'Security Profiles'
+    description: |
+        Ideally, deciding which URL categories to block, and which to allow, is a joint effort between IT and another entity of
+        authority within an organizationsuch as the legal department or administration. For most organizations, blocking or
+        requiring an override on the following categories represents a minimum baseline adult, hacking, commandandcontrol,
+        copyrightinfringement,  extremism, malware, phishing, proxyavoidanceandanonymizers, and parked.  Some organizations may
+        add unknown and dynamicdns to this list, at the expense of some support calls on those topics.
+    remediation: |
+        Navigate to                Objects > Security Profiles > URL Filtering
+        .
+        Set a URL filter so that all URL categories designated by the organization are listed.
+        Navigate to the                Actions
+         tab.
+
+        Set the action to                Block
+        .             Impact: Not having an effective URL Filtering configuration can leave an organization open to legal
+        action, internal HR issues, non-compliance with regulatory policies or productivity loss.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.9', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.10":
+    title: '6.10 | Ensure that access to every URL is logged - manual'
+    section: 'Security Profiles'
+    description: |
+        URL filters should not specify any categories as            Allow Categories
+        .
+    remediation: |
+        Navigate to                Objects > Security Profiles > URL Filtering
+        .
+        For each permitted category, set the                Site Access
+         actioun to                alert
+                           Impact: Not having an effective URL Filtering configuration can leave an organization open to legal
+        action, internal HR issues, non-compliance with regulatory policies or productivity loss.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.10', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.11":
+    title: '6.11 | Ensure all HTTP Header Logging options are enabled - manual'
+    section: 'Security Profiles'
+    description: |
+        Enable all options UserAgent, Referer, and XForwardedFor for HTTP header logging.
+    remediation: |
+        Navigate to                Objects > Security Profiles > URL Filtering > URL Filtering Profile > URL Filtering Settings
+        .             Set the following four settings:
+        a.                Log container page only
+         box is un-checked
+        b. Check the                User-Agent
+         box
+        c. Check the                Referer
+         box
+        d. Check the                X-Forwarded-For
+         box             Impact: Not having an effective URL Filtering configuration can leave an organization open to legal
+        action, internal HR issues, non-compliance with regulatory policies or productivity loss.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.11', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.12":
+    title: '6.12 | Ensure secure URL filtering is enabled for all security policies allowing traffic to the Internet - manual'
+    section: 'Security Profiles'
+    description: |
+        Apply a secure URL filtering profile to all security policies permitting traffic to the Internet. The URL Filtering
+        profile may be applied to the security policies directly or through a profile group.
+    remediation: |
+        To Set URL Filtering:
+        For each Security Profile that transits traffic to the internet, navigate to                Policies > Security >
+        Security Profiles > [Policy Name] > Actions
+        .             Set a URL Filtering profile that complies with the policies of the organization is applied to all Security
+        Policies that transit traffic to the public internet. Impact: Not having an effective URL Filtering configuration can
+        leave an organization open to legal action, internal HR issues, non-compliance with regulatory policies or productivity
+        loss.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.12', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.13":
+    title: '6.13 | Ensure alerting after a threshold of credit card or Social Security numbers is detected is enabled - manual'
+    section: 'Security Profiles'
+    description: |
+        This guideline is highly specific to an organization. While blocking of credit card or Social Security numbers will not
+        occur with the recommended settings below, careful tuning is also recommended.
+    remediation: |
+        Navigate to                Objects > Custom Objects > Data Patterns
+        .
+        Create an appropriate                Data Pattern
+         that accounts for sensitive information within your organization.  In most cases this will include Credit Card Numbers,
+        and your jurisdiction's equivalent of Social Insurance Numbers.  In many cases these can simply be picked from the list
+        of                Predefined Patterns
+        .
+        Navigate to                Objects > Security Profiles > Data Filtering
+        .
+        Create appropriate                Data Filtering Profile
+        , using the created                Data Patterns
+        .  Ensure that an                Alert Threshold
+         is set that generates alerts appropriately.  A typical starting value for                Alert Threshold
+         is                20
+        , but this should be adjusted after appropriate testing.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.13', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.14":
+    title: '6.14 | Ensure a secure Data Filtering profile is applied to all security policies allowing traffic to or from the Internet - manual'
+    section: 'Security Profiles'
+    description: |
+        Create a secure Data Filtering profile and apply it to all security policies permitting traffic to or from the Internet.
+        The Data Filtering profile may be applied to security policies directly or through a profile group.
+    remediation: |
+        Navigate to                Objects > Custom Objects > Data Patterns
+        .  Add patterns to match the various data that you wish to monitor or make blocking decisions on.
+        Navigate to                Objects > Security Profiles > Data Filtering
+
+        Add a                Filtering Profile
+         that matches the data you wish to monitor, with appropriate values for                Alert Threshold
+         (typically 20),                Block Threshold
+         (typically 0) and                Log Serverity
+
+        Finally, apply the Filtering Profile to a Security Profile.
+        Navigate to                Policies > Security
+        .  Edit all appropriate policies, and for each Policy choose the                Actions
+         tab, and add the appropriate                Data Filtering Policy
+         (either as an individual                Profile
+         or as part of a                Group Profile
+        )
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.14', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.15":
+    title: '6.15 | Ensure that a Zone Protection Profile with an enabled SYN Flood Action of SYN Cookies is attached to all untrusted zones'
+    section: 'Security Profiles'
+    description: |
+        Enable the SYN Flood Action of SYN Cookies for all untrusted zones. The Alert, Activate, and Maximum settings for SYN
+        Flood Protection depend highly on the environment and device used. Perform traffic analysis on the specific environment
+        and firewall to determine accurate thresholds. Do not rely on default values to be appropriate for an environment.
+        Setting these values for all interfaces is an approach that should be considered by many organizations, as traffic
+        floods can result from internal testing or malware as well. As a rough ballpark for most environments, an Activate value
+        of 50 of the firewalls maximum New sessions per second/CPS is a conservative setting. The following is a list of maximum
+        new sessions per second for each platform PA4xx series  73,000 CPS PA8xx series  13,100 CPS PA14xx series  140,000 CPS
+        PA32xx series  84,000 CPS PA34xx series  268,000 CPS PA52xx series  500,000 CPS PA54xx series  3,600,000 CPS PA70xx
+        series  6,000,000 CPS
+    remediation: |
+        From GUI:
+        Navigate to                Network > Network Profiles > Zone Protection > Zone Protection Profile > Flood Protection tab
+        .
+        Check the SYN box. Set the Action dropdown to                SYN Cookies
+         Set Alert to                20000
+        (or appropriate for org). Set Activate to                25000
+        (50% of maximum for firewall model). Set Maximum to                1000000
+        (or appropriate for org)
+        Navigate to                Network > Zones
+        .  Open the zone facing any untrusted network, if one does not exist create it.  Set                Zone Protection
+         to the                Zone Protection Profile
+         created.             Impact: Not configuring a Network Zone Protection Profile on untrusted interfaces leaves an
+        organization exposed to common attacks and reconnaissance from those untrusted networks.  Not configuring a Zone
+        Protection Profile for internal networks leaves an organization vulnerable to malware, software or hardware causes of
+        traffic flooding from internal sources.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.15', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.16":
+    title: '6.16 | Ensure that a Zone Protection Profile with tuned Flood Protection settings enabled for all flood types is attached to all untrusted zones'
+    section: 'Security Profiles'
+    description: |
+        Enable all Flood Protection options in the Zone Protection Profile attached to all untrusted zones. The Alert, Activate,
+        and Maximum settings for Flood Protection depend highly on the environment and device used. Perform traffic analysis on
+        the specific environment and firewall to determine accurate thresholds. Do not rely on default values to be appropriate
+        for an environment. Setting these values for all interfaces is an approach that should be considered by many
+        organizations, as traffic floods can result from internal testing or malware as well.
+    remediation: |
+        In the GUI:
+        Navigate to                Network > Network Profiles > Zone Protection > Flood Protection
+        .             Set all settings to "enabled" with at least the default values.
+        Navigate to                Network > Zones
+        , select each untrusted zone in turn, and set the Zone Protection Profile.             Impact: Not configuring and
+        applying a Network Zone Protection Profile leaves an organization exposed to common attacks and reconnaissance from
+        untrusted networks. Not configuring a Zone Protection Profile for internal networks leaves an organization vulnerable to
+        malware, software or hardware causes of traffic flooding from internal sources.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level2', 'rule_6.16', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.17":
+    title: '6.17 | Ensure that all zones have Zone Protection Profiles with all Reconnaissance Protection settings enabled tuned and set to appropriate actions - manual'
+    section: 'Security Profiles'
+    description: |
+        Enable all three scan options in a Zone Protection profile. Do not configure an action of Allow for any scan type. The
+        exact interval and threshold values must be tuned to the specific environment. Less aggressive settings are typically
+        appropriate for trusted zones, such as setting an action of alert for all scan types. Attach appropriate Zone Protection
+        profiles meeting these criteria to all zones. Separate Zone Protection profiles for trusted and untrusted zones is a
+        best practice.
+    remediation: |
+        Navigate to                Network > Network Profiles > Zone Protection > Zone Protection Profile > Reconnaissance
+        Protection
+        .
+        Set                TCP Port Scan
+         to                enabled
+        , its Action to                block-ip
+        , its Interval to                5
+        , and its Threshold to                20
+        . For                block-ip
+        , set the "Track By" is set to                source
+         and "Duration" is set to                600
+         seconds.
+        Set                Host Sweep
+         to                enabled
+        , its Action to                block
+        , its Interval to                10
+        , and its Threshold to                30
+        .
+        Set                UDP Port Scan
+         to                enabled
+        , its Action to                alert
+        , its Interval to                10
+        , and its Threshold to                20
+        .             Impact: Not configuring a Network Zone Protection Profile leaves an organization exposed to common attacks
+        and reconnaissance from untrusted networks.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.17', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.18":
+    title: '6.18 | Ensure all zones have Zone Protection Profiles that drop specially crafted packets'
+    section: 'Security Profiles'
+    description: |
+        For all zones, attach a Zone Protection Profile that is configured to drop packets with a spoofed IP address or a
+        mismatched overlapping TCP segment, and packets with malformed, strict source routing, or loose source routing IP
+        options set.
+    remediation: |
+        Navigate to                Network > Network Profiles > Zone Protection > Zone Protection Profile > Packet Based Attack
+        Protection > TCP/IP Drop
+        .
+        Set                Spoofed IP address
+         to be checked.
+        Set                Mismatched overlapping TCP segment
+         to be checked.
+        Under                IP Option Drop
+        , set                Strict Source Routing
+        ,                Loose Source Routing
+        , and                Malformed
+         to all be checked. Additional options may also be set if desired.             Impact: Not configuring a Network Zone
+        Protection Profile leaves an organization exposed to common attacks and reconnaissance from untrusted networks.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.18', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+
+  "6.19":
+    title: '6.19 | Ensure that User Credential Submission uses the action of block or continue on the URL categories - manual'
+    section: 'Security Profiles'
+    description: |
+        Ideally user names and passwords user within an organization are not used with third party sites. Some sanctioned SAS
+        applications may have connections to the corporate domain, in which case they will need to be exempt from the user
+        credential submission policy through a custom URL category.
+    remediation: |
+        Navigate to                Objects > Security Profiles > URL Filtering
+        .
+        Choose the                Categories
+         tab.  Set the                User Credential Submitting
+         action on all enabled URL categories is either                block
+         or                continue
+        , as appropriate to your organization and the category.
+        Under the                User Credential Detection
+         tab set the                User Credential Detection
+         value to a setting appropriate to your organization, any value except                Disabled
+        .  Set the                Log Severity
+         to a value appropriate to your organization and your logging or SIEM solution.             Impact: Not preventing users
+        from submitting their corporate credentials to the Internet can leave them open to phishing attacks or allow for
+        credential reuse on unauthorized sites.  Using internal email accounts provides malicious actors with intelligence
+        information, which can be used for phishing, credential stuffing and other attacks.  Using internal passwords will often
+        provide authenticated access directly to sensitive information.  Not only that, but a pattern of credential re-use can
+        expose personal information from multiple online sources.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.19', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.20":
+    title: '6.20 | Ensure that Wildfire Inline ML Action on antivirus profiles are set to reset-both on all decoders except imap and pop3 - manual'
+    section: 'Security Profiles'
+    description: |
+        Configure Wildfire Inline ML Action on antivirus profiles to a value of resetboth for all decoders except imap and pop3
+        under Wildfire Inline ML Action. If required by the organizations email implementation, configure imap and pop3 decoders
+        to alert under Wildfire Inline ML Action.
+    remediation: |
+        Navigate to Objects > Security Profiles > Antivirus
+        Set antivirus profiles to have all decoders set to                reset-both
+         for                Wildfire Inline ML Action
+        . If imap and pop3 are required in the organization, set the imap and pop3 decoders are set to                alert
+         for                Wildfire Inline ML Action
+        .
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_6.20', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.21":
+    title: '6.21 | Ensure that Wildfire Inline ML on antivirus profiles are set to enable for all file types - manual'
+    section: 'Security Profiles'
+    description: |
+        Configure Wildfire Inline ML on antivirus profiles to a value of enable for all file types.
+    remediation: |
+        Navigate to                Objects > Security Profiles > Antivirus
+
+        Go to                Wildfire Inline ML
+         tab. Set                 enable (inherit per-protocol actions)
+         for all                Model
+         on                Action Setting
+        .
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.21', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.22":
+    title: '6.22 | Ensure that Inline Cloud Analysis on Vulnerability Protection profiles are enabled if Advanced Threat Prevention is available - manual'
+    section: 'Security Profiles'
+    description: |
+        Enable Inline Cloud Analysis on Vulnerability Protection profiles to combat zeroday threats.
+    remediation: |
+        Navigate to                Objects > Security Profiles > Vulnerability Protection
+
+        Go to                Inline Cloud Analysis
+         tab. Tick the checkbox for                Enable cloud inline analysis
+        .  Verify that all                Model
+         action is set as                alert
+        .             Note that, firewall device certificate is used to authenticate to the Advanced Threat Prevention inline
+        cloud analysis service. This step is required before 'Inline Cloud Analysis' can be used. Refer to reference for
+        detailed guide.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.22', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.23":
+    title: '6.23 | Ensure that Cloud Inline Categorization on URL Filtering profiles are enabled if Advanced Threat Prevention is available - manual'
+    section: 'Security Profiles'
+    description: |
+        Enable both Local Inline Categorization and Cloud Inline Categorization on URL Filtering profiles to evaluate suspicious
+        web page contents in realtime to protect users against zeroday threats.
+    remediation: |
+        Navigate to                Objects > Security Profiles > URL Filtering
+
+        Go to                Inline Categorization
+         tab. Tick the checkbox for both                Enable local inline categorization
+         and                Enable cloud inline categorization
+        .             Note that: Firewall device certificate is used to authenticate to the Advanced Threat Prevention inline
+        cloud analysis service. This step is required before 'Inline Cloud Analysis' can be used. Refer to reference for
+        detailed guide. 'Local Inline Categorization' can be enabled with just the URL Filtering license (no Advanced Threat
+        Prevention is needed).
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.23', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.24":
+    title: '6.24 | Ensure that Inline Cloud Analysis on Anti-Spyware profiles are enabled if Advanced Threat Prevention is available - manual'
+    section: 'Security Profiles'
+    description: |
+        Enable Inline Cloud Analysis on AntiSpyware profiles to detect and protection against advanced, highlyevasive zeroday
+        commandandcontrol C2 threats.
+    remediation: |
+        Navigate to                Objects > Security Profiles > Anti-Spyware
+
+        Go to                Inline Cloud Analysis
+         tab. Tick the checkbox for                Enable cloud inline analysis
+        .  Verify that all                Model
+         action is set as                reset-both
+        .
+        Note that, firewall device certificate is used to authenticate to the Advanced Threat Prevention inline cloud analysis
+        service. This step is required before                Inline Cloud Analysis
+         can be used. Refer to reference for detailed guide.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_6.24', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "6.25":
+    title: '6.25 | Ensure that DNS Policies is configured on Anti-Spyware profiles if DNS Security license is available - manual'
+    section: 'Security Profiles'
+    description: |
+        DNS security is an extensible cloudbased service capable of generating DNS signatures using advanced predictive
+        analytics and machine learning. DNS Security protects from sophisticated DNSbased attacks.
+    remediation: |
+        Navigate to                Objects > Security Profiles > Anti-Spyware
+
+        Go to                DNS Policies
+         tab. Configure policy action to                sinkhole
+         for all DNS Security categories.
+        On                Command and control Domains
+         category, set the packet capture option to                extended-capture
+        .
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_6.25', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "7.1":
+    title: '7.1 | Ensure application security policies exist when allowing traffic from an untrusted zone to a more trusted zone - manual'
+    section: 'Security Policies'
+    description: |
+        When permitting traffic from an untrusted zone, such as the Internet or guest network, to a more trusted zone, such as a
+        DMZ segment, create security policies specifying which specific applications are allowed.
+        Enhanced Security Recommendation
+        Require specific application policies when allowing            any
+         traffic, regardless of the trust level of a zone.  Do not rely solely on port permissions. This may require SSL
+        interception, and may also not be possible in all environments.
+    remediation: |
+        Navigate to                Policies > Security
+        .
+        For all                Security Policies
+         that transit from a less trusted to a more trusted interface, set the                Application
+         and                Service
+         values to match the exposed application.  For instance, for a web server exposed to the internet from a DMZ:
+                       Source
+         tab:                Zone
+         set to                OUTSIDE
+         /                Address
+         set to                Any
+                              Destination
+         tab:                Zone
+         set to                DMZ
+         /                Address
+         set to                [DMZ Host Object]
+                              Application
+         tab: set to                web-browsing
+                              Service/URL Category
+         tab: set                Service
+         to ether:             application-default
+
+        or:               service-http
+         and/or                  service-https
+                              **Enhanced Security Recommendation: **
+        Set these values for Policies on all Interfaces, for traffic in all directions.  For each                Security Policy
+        , set the                Application
+         and                Service
+         values to match the exposed application.             Impact:
+        Setting application based rules on both inbound and outbound traffic ensures that the traffic on the protocol and port
+        being specified is actually the application that you expect.  For outbound traffic, the days of "we trust our users" is
+        well past us, that statement also implies that we trust the malware on the user workstations, which is obviously not the
+        case.
+
+        For traffic from trusted to less trusted interfaces, the applications should be characterized over time, with the end
+        goal being that all applications in in the rules, and a final "block all" rule is in place.
+        Not having this goal gives both attackers and malware the leeway they need to accomplish their goals.
+
+        Trusting only Port permissions to control traffic exposes an organization to "tunneling" style attacks that can
+        exfiltrate data or facilitate Command and Control (C2) sessions.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_7.1', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "7.2":
+    title: '7.2 | Ensure Service setting of ANY in a security policy allowing traffic does not exist - manual'
+    section: 'Security Policies'
+    description: |
+        Create security policies specifying applicationdefault for the Service setting, in addition to the specific ports
+        desired. The Service setting of            any
+         should not be used for any policies that allow traffic.
+    remediation: |
+        Navigate to                Policies > Security
+        .             For each exposed host, set a Security Policy exists with: Source
+         tab:                  Zone
+         set to                  OUTSIDE
+                                 Address
+         set to                  any
+                              Destination
+         tab:                  Zone
+         set to                  DMZ
+         /                  Address
+         set to                  <DMZ Host Object>
+                              Application
+         tab:                  Application
+         set to                  web-browsing
+         (or appropriate application)               Service
+         tab:                  Service
+         set to                  application-default
+        .  The value of                  any
+         should never be used
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_7.2', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "7.3":
+    title: '7.3 | Ensure Security Policy denying anyall traffic tofrom IP addresses on Trusted Threat Intelligence Sources Exists - manual'
+    section: 'Security Policies'
+    description: |
+        Create a pair of security rules at the top of the security policies ruleset to block traffic to and from IP addresses
+        known to be malicious. Note This recommendation as written requires a Palo Alto Networks Threat Prevention License.
+        Third Party and Open Source Threat Intelligence Feeds can also be used for this purpose.
+    remediation: |
+        Navigate to                Policies > Security
+                           Create a Security Policy similar to: General
+         tab:                  Name
+         set to                  Deny to Malicious IP
+                              Source
+         tab:                  Source Zone
+         set to                  Any
+        ,               Destination
+         tab:                  Destination Zone
+         set to                  Any
+        ,                  Destination Address
+         set to                  Palo Alto Networks - Known malicious IP addresses
+        ,                 Palo Alto Networks - High risk IP addresses
+        ,                  Palo Alto Networks - Tor exit IP addresses
+        ,                  Palo Alto Networks - Bulletproof IP addresses
+                              Application
+         tab:                  Application
+         set to                  Any
+                              Service/URL Category
+         tab:                  Service
+         set to                  Any
+                              Actions
+         tab:                  Action
+         set to                  Block
+        ,                   Profile Type
+         set to                  None
+                              Create a Security Policy similar to: General
+         tab:                  Name
+         set to                  Deny from Malicious IP
+                              Source
+         tab:                  Source Zone
+         set to                  Any
+        ,                  Source Address
+         set to                  Palo Alto Networks - Known malicious IP addresses
+        ,                 Palo Alto Networks - High risk IP addresses
+        ,                  Palo Alto Networks - Tor exit IP addresses
+        ,                  Palo Alto Networks - Bulletproof IP addresses
+                              Destination
+         tab:                  Destination Zone
+         set to                  Any
+                              Application
+         tab:                  Application
+         set to                  Any
+                              Service/URL Category
+         tab:                  Service
+         set to                  Any
+                              Actions
+         tab:                  Action
+         set to                  Block
+        ,                   Profile Type
+         set to                  None
+                              Note: This recommendation requires a Palo Alto Networks "Threat Prevention License" Impact: While
+        not foolproof, simply blocking traffic from known malicious hosts allows more resources to be devoted to analyzing
+        traffic from other sources for malicious content.  This approach is a recommended part of most "Defense in Depth"
+        recommendations, allowing defenders to focus more deeply on traffic from uncategorized sources.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_7.3', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "7.4":
+    title: '7.4 | Ensure that logging is enabled on built-in default security policies - manual'
+    section: 'Security Policies'
+    description: |
+        Enable logging on builtin default security policies intrazonedefault and interzonedefault
+    remediation: |
+        Navigate to                Policies > Security
+
+        Go to default policies                intrazone-default
+         and                interzone-default
+        . On                Actions
+         tab, enable                Log at Session End
+         on log setting.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_7.4', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "8.1":
+    title: '8.1 | Ensure SSL Forward Proxy Policy for traffic destined to the Internet is configured - manual'
+    section: 'Decryption'
+    description: |
+        Configure SSL Forward Proxy for all traffic destined to the Internet. In most organizations, including all categories
+        except            financialservices
+        ,            government
+         and            healthandmedicine
+         is recommended.
+    remediation: |
+        Navigate to                Policies > Decryption
+        .
+        Create a Policy for all traffic destined to the Internet. This Policy should include:             Source
+         tab: The                  Source Zone
+         and/or                  Source Address
+         should include all target internal networks.                   Source User
+         should include all target internal users               Destination
+         tab: The                  Destination Zone
+         should include the untrusted target zone (usually the                  internet
+        ).                   Destination Address
+         is typically                  Any
+         for an internet destination.               Service/URL Category
+         tab: all                  URL Category
+         entries should be included except                  financial-services
+        ,                  government
+         and                  health-and-medicine
+         (this list may vary depending on your organization and its policies).               Options
+         tab:                  Type
+         set to                  SSL Forward Proxy
+                              Impact: Failure to decrypt outbound traffic allows attackers to mask attacks, data exfiltration
+        and/or command and control (C2) traffic by simply using standard TLS encryption.
+        Privacy concerns for your organization's users will dictate that some common categories should be exempted from
+        inspection and decryption.  Personal banking or healthcare information is almost always exempted, as are interactions
+        with government entities.  Exemptions and inclusions to decryption policies should be negotiated internally and governed
+        by published Corporate Policies.
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_8.1', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "8.2":
+    title: '8.2 | Ensure SSL Inbound Inspection is required for all untrusted traffic destined for servers using SSL or TLS - manual'
+    section: 'Decryption'
+    description: |
+        Configure SSL Inbound Inspection for all untrusted traffic destined for servers using SSL or TLS.
+    remediation: |
+        Navigate to                Policies > Decryption
+        .
+        Set                SSL Inbound Inspection
+         appropriately for all untrusted traffic destined for servers using SSL or TLS.
+        Navigate to                Policies > Decryption
+        .  For each service published to the internet (or other untrusted zones), create a Policy and set the following options:
+        General
+         tab:                  Name
+         set to a descriptive name               Source
+        :                  Source Zone
+         set to the target zone (Internet in many cases).                   Source Address
+         set to the target address space (                 Any
+         for internet traffic)               Destination
+         tab:                  Destination Zone
+         should be set to the appropriate zone, or                  Any
+        .                   Destination Address
+         set to the target host address               Options
+         tab: Type set to                  SSL Inbound Inspection
+                              Impact: Not decrypting inbound traffic to TLS encrypted services means that inspection for many
+        common attacks cannot occur on the firewall.  This means that all defenses against these attacks are up to the host.
+    type: Undefined
+    impact: '0.0'
+    tags: ['level1', 'rule_8.2', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "8.3":
+    title: '8.3 | Ensure that the Certificate used for Decryption is Trusted - manual'
+    section: 'Decryption'
+    description: |
+        The CA Certificate used for inline HTTP Man in the Middle should be trusted by target users. For            SSL Forward
+        Proxy
+         configurations, there are classes of users that need to be considered.         1 Users that are members of the
+        organization, users of machines under control of the organization. For these people and machines, ensure that the CA
+        Certificate is in one of the Trusted CA certificate stores. This is easily done in Active Directory, using Group
+        Policies for instance. A MDM Mobile Device Manager can be used to accomplish the same task for mobile devices such as
+        telephones or tablets. Other central management or orchestration tools can be used for Linux or IoT Internet of Things
+        devices. 2 Users that are not member of the organization  often these are classed as Visitors in the policies of the
+        organization. If a public CA Certificate is a possibility for your organization, then that is one approach. A second
+        approach is to not decrypt affected traffic  this is easily done, but leaves the majority of visitor traffic uninspected
+        and potentially carrying malicious content. The final approach, and the one most commonly seen, is to use the same
+        certificate as is used for the hosting organization. In this last case, visitors will see a certificate warning, but the
+        issuing CA will be the organization that they are visiting.
+    remediation: |
+        Set the CA Certificate(s):
+        Navigate to                Device > Certificate Management > Certificates
+        .  Import the appropriate CA Certificates from any internal Certificate Authorities.             Alternatively, generate
+        a self-signed certificate for an internal CA on the firewall, and then import the root certificate for that CA into the
+        trusted CA list of target clients.  In an Active Directory environment this can be facilitated using a Group Policy. Set
+        the Certificate Profile needed for the SSL Forward Proxy:
+        Navigate to                  Device > Certificate Management > Certificate Profile
+        .
+        Set the decryption profile to include the settings described in the                SSL Forward Proxy
+         guidance in this document
+    type: Undefined
+    impact: '1.0'
+    tags: ['level1', 'rule_8.3', 'cis_palo_alto_firewall_10_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:

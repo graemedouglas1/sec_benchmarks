@@ -1,0 +1,91 @@
+#TRUSTED a7ff472648d09316f940eb01fc1df59f2d9b54680abb47d4b97db9b8e6b7c569cf800696febb72ca557c8f8d90fd61df2d4fcc5f5c487084ac21da488922264547be776af407c27ba403d7ac25a7a477f4b5ef493177afe6cca776a1e7968d25046149363fc604ebb4a1b72b4575ca50b55266fcbebfabdd4af4f5a0f5f645cf2859b7f8e4deb063014311dc3713b26fb98edd9f2d4d089ba0daf0f175726178b739e7321c5cc7e0d16b0073aee66d40ea6f74c1985355b016541862445184e27259069c1ab705485b7e082dd4a4383789f00259c40614aa9456292f6b2b4c681db9b9056557831c50d3ec17a10d4a4c39de3baf65ec0f70fb2feef1cf672a8d33019b887d7473199bdde5d4ae554ae8325473c7d8a1a7062a3bbbfb86afbe2b476430afdd914039d2d051541f38f3ace002b25d90a54d643a85e8b77a8017d1a3732727d9c5121b371be2034bceb44f456c1c4edb3dea418b45d6eb3885e6274a13e85e94804c78638dc770c3eafd8f7c01becd5fb11d71acb0345458dcabd7bcdafad65f667fe8350c505d1967ea1ea8de876f94c1c6aeac6e075a3a8af5654949e9b3b16c23e68a6996263efe3555263762a879e8a685766263c8c63cef3abf68ea15758e65982a5cf879d4fc0a94157c8daa3941559a18beebcc66c1860cc0c7b43ce1df3d5e9573badae4cc76fc0d848f92e79a5de06f251b189a16be78
+#TRUST-RSA-SHA256 849031e07371ca66b2680077c8617d2523d7e60351ed9a2d441040a2a433a8bcfa17d6e5e9925ae9c0d5c990e696a41f3e8e8369369e44fc2e62284508390305601cc419be506fd3b2dc83927567f0ec494e95589d766be93a0576dd74cc441d730c686a8296eec6b42146e05adc7fd1da5f996d006c6905416b8ca10c304f81eb6061dba0b433f53b4fab3092ac725b82822057d8c7f754cd09688ef734b3ed54fec0a01a70428673bd8ee612dfff7d765c406acecfc7a5957a8f04474f15667e7585af53a7c44cb17228c94ba90528191749288160edd28b9eb65279ae638c284d4a996067e18598d933eebf57a2eb3eccb6c2bfc9a5181ef1b0a968144dcbcff36c5b244220439ca882a432a126197f33a9a2e793f85a1b4c5a96dbd15621825e1eb1eda82849410fadc13cc3f60ef2699cbe9fde3a8e9656b7f2e6036d07f5d189d1c57cb1dadc3583e4f2d8891e59c0ee02c0dd1569968237dba1ffdcce19d213aea3ac6a3ef2dc63ac8e1e3260e97a8cfe0606cf10c390c502436ad64da93ccb0e5ed941ff3e44c3935423f2cbf492fc604209a4b0bb4f765091749acfe526212d7692bc8d7d3e299853abb7e1ef607788ebb29397d4956209ca47c15b485f25e5a3b56da152029fd06061521170729031948117a687b4dc7fbba6f87e49445a82c93cabaa45f822e336c31a9519c8758e612f8042b542db457574e5b2
+#
+# This script is Copyright (C) 2004-2023 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.7 $
+# $Date: 2023/09/21 $
+#
+# Description	: This .audit is designed to look at IE browser history for words
+# 			  or URLs which may indicate that a user has been visiting sites which
+# 			  may be prohibited by corporate policy.
+#
+# 			  An audit has been included for Mozilla Firefox, auditing data files
+# 			  used for logging sites which have passwords saved for them (or explicitly
+# 			  not saved).
+#
+#<ui_metadata>
+#<display_name>TNS File Analysis - Adult Media Browser Usage</display_name>
+#<spec>
+#  <type>TNS</type>
+#  <name>File Analysis - Adult Media Browser Usage</name>
+#  <version>1.0.0</version>
+#</spec>
+#<labels>filecontent,content,windows,browser,usage,update_20230227</labels>
+#</ui_metadata>
+
+<check_type:"FileContent">
+
+#
+# IE History explicit content
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Determine if host has browsed adult content with Internet Explorer."
+  reference      : "800-171|3.1.3,800-53|AC-4(8),800-53r5|AC-4(8),CN-L3|8.1.10.2(c),CSF|DE.AE-1,CSF|ID.AM-3,CSF|PR.AC-5,CSF|PR.PT-4,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ITSG-33|AC-4(8),NESA|T4.2.1,NESA|T4.5.1,NESA|T4.5.3,NESA|T4.5.4,NESA|T5.4.6,NESA|T5.7.2,NESA|T7.5.2,NESA|T7.6.4,NIAv2|GS10a,NIAv2|GS10d,NIAv2|NS12a,NIAv2|NS12b,NIAv2|NS12c,QCSC-v1|4.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|5.2.3,QCSC-v1|6.2,SWIFT-CSCv1|2.1,SWIFT-CSCv1|2.4"
+  file_extension : "dat"
+  regex          : "hustler|playboy|porn|nude|video|lesbian|facial|nude|kink|orgy|babes|threesome|young|fantasy"
+  expect         : "UrlCache"
+  file_name      : "\\documents and settings\\.*\\local settings\\history\\history.ie5\\.*\\index"
+  max_size       : "1M"
+</item>
+
+#
+# IE Bookmarks explicit content
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Determine if host has bookmarked adult content with Internet Explorer."
+  reference      : "800-171|3.1.3,800-53|AC-4(8),800-53r5|AC-4(8),CN-L3|8.1.10.2(c),CSF|DE.AE-1,CSF|ID.AM-3,CSF|PR.AC-5,CSF|PR.PT-4,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ITSG-33|AC-4(8),NESA|T4.2.1,NESA|T4.5.1,NESA|T4.5.3,NESA|T4.5.4,NESA|T5.4.6,NESA|T5.7.2,NESA|T7.5.2,NESA|T7.6.4,NIAv2|GS10a,NIAv2|GS10d,NIAv2|NS12a,NIAv2|NS12b,NIAv2|NS12c,QCSC-v1|4.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|5.2.3,QCSC-v1|6.2,SWIFT-CSCv1|2.1,SWIFT-CSCv1|2.4"
+  file_extension : "url"
+  regex          : "hustler|playboy|porn|nude|video|lesbian|facial|nude|kink|orgy|babes|threesome|young|fantasy"
+  expect         : "BASEURL"
+  file_name      : "\\documents and settings\\.*\\favorites"
+  max_size       : "1M"
+</item>
+
+#
+# IE Bookmarks, other content
+#<item>
+# type			: FILE_CONTENT_CHECK
+# description		: "Determine if server has bookmarked specific content with Internet Explorer."
+# file_extension	: "url"
+# file_name		: "\\documents and settings\\.*\\favorites"
+# expect			: "BASEURL"
+# regex			: "maps.google.com|ebay\.com"
+# max_size		: "1M"
+#</item>
+#
+# FFOX log of site w/w saved passwords.
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "Determine if a host has passwords saved or not saved for specific sites with Mozilla Firefox."
+  reference      : "800-171|3.1.3,800-53|AC-4(8),800-53r5|AC-4(8),CN-L3|8.1.10.2(c),CSF|DE.AE-1,CSF|ID.AM-3,CSF|PR.AC-5,CSF|PR.PT-4,GDPR|32.1.b,HIPAA|164.306(a)(1),HIPAA|164.312(a)(1),ITSG-33|AC-4(8),NESA|T4.2.1,NESA|T4.5.1,NESA|T4.5.3,NESA|T4.5.4,NESA|T5.4.6,NESA|T5.7.2,NESA|T7.5.2,NESA|T7.6.4,NIAv2|GS10a,NIAv2|GS10d,NIAv2|NS12a,NIAv2|NS12b,NIAv2|NS12c,QCSC-v1|4.2,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|5.2.3,QCSC-v1|6.2,SWIFT-CSCv1|2.1,SWIFT-CSCv1|2.4"
+  file_extension : "txt"
+  regex          : "hustler|playboy|porn|nude|video|lesbian|facial|nude|kink|orgy|babes|threesome|young|fantasy|gambling|chat|ebay|flickr|twitter|myspace|livejournal|facebook|blog|share|torrent|proxy"
+  expect         : "http"
+  file_name      : "\\documents and settings\\.*\\Application Data\\Mozilla\\Firefox\\Profiles\\.*\\signons[0-9]"
+  max_size       : "1M"
+</item>
+
+</check_type>

@@ -1,0 +1,270 @@
+#TRUSTED 7eb419dd7b6e18d31f0944475a943bf9c768182ebe7b37e894f072e2cb2c2ceecfd0365c3478f968254c1b2a1e2467bb8331f8fbdb65edc843b2545ff85fe0a256e82a85f79adc34023dcd6e5048906772a637a66e540c317114a2f0ab41b31433bde6ab33943430dbf8e45a4c40bec3916fd90828cb2c2f5c8fb1a8e076b531e171be828d8a8ed67b3d6c4c4e24e3f6a8ab4cf706e211908aa04b489c8f41b51bc15bc8b6eff2b4f32499237018d9500c2266bbe52397fc94998e5ed5c8e29af9c7dfbf0c1981c3aaccbbadb71904db97a8191d31b58eca2d17d8f816ff2d47b4ca7e88960d9af6279a0acc96d611367abe5e73ff915072919154406a9dc1c365c2a81497bd776f08893208453e2ebbd1c6487deeb96b86a14f1db8915e293b63fc6b393ffb09c69f49ef332612ad16b77628f9fbd604ca4d6c34f871b0e2a9c3a01677124d617577e6e0ea3393625afc8b1e654184900fa333bde5ebe198e58a6ea8f1a37d02f6ec6fbce9b4e453a819f149c5e238e69f1731984c09101916ff8f868717f1e36b7f76fbb9e2567caeb26491765d6ad0731591948235235a4e5907b6dd9a89c0335fdf2a6a69794e5797fa04f9ff66dfe1710ed3e5da1c71fe8eff43431a3c65d2003b5cca493b12988ac3b0c5584ff9c7df97301bd62cb913d6038cdcb77013e8b4a1126903e1bf4ecdd8771614dd794f8d49ea45c17e72d8
+#TRUST-RSA-SHA256 61ac8aaf87750b244b843597c4fc025551f5d31412751ccff51fa4f9163731fb4bf6dd7172bb33afb91c54c97383dea1653535c0399d9eaf5978b344b0ee3e313627888d9d7db479901cb38f6d3ab2abf833017ffc62878e473559f643f3b020037ea26e3fa8667a3d5a237c7994b0ef888108305a66d78e502959daacb2a3c0a6786a474ca2ed094a92030b592ea031bd6a467b814d4239a56774c7c701924adae13ea1a327a15097df63c9dc01e63393698834a0a6dbfc6b4d6c1271043f892df22fb178242aca5f8a690983a7af9c3432620b0af95bd720916543a3585655bbff22abfc79cca9d4695ed0452224da4593357090160c6648d451852bc0fcb769020ac6243985200f56e9b015293afa818c6b3dece569e3780c670d9ff4e313060e4bfb978812d2d2a47137c1cadc25711e5be3ae4e119dae436e1ace5251e3bcb3a5426b36887c24c5e0fc4d8546dffa9178dcc1f4d511031b1f5054c96e548e76a9e73f306835f75cdd5506961260634b127af9fb47d7f5f20b98ffdaaa213bffb77803c2c294956214e5e148a19bca4882d9c8979a521480e34fe48973062028687289faf9a941650a048968c17234ae4a61e7b738b1e2f8e58a1db15b693bdb206802bc02fea5494231d309b6c0e5054054271868780040f100bd1ad885bb08d4ffeeee6489e8c5edbff6f15e2afbc2d4e386eb0d6bdb76f6cce771e977
+#
+# This script is Copyright (C) 2004-2024 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.1 $
+# $Date: 2024/05/01 $
+#
+# Description : This document implements the security configuration as recommended by the
+#               DISA Microsoft OneDrive v2r3 STIG.
+#
+#<ui_metadata>
+#<display_name>DISA STIG Microsoft OneDrive v2r3</display_name>
+#<spec>
+#  <type>DISA STIG</type>
+#  <name>Microsoft OneDrive</name>
+#  <version>2.3.0</version>
+#  <link>https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MS_OneDrive_V2R3_STIG.zip</link>
+#</spec>
+#<labels>windows,disa,ms_onedrive</labels>
+#<benchmark_refs>CAT,CCE,CCI,DISA_Benchmark,Group-ID,Rule-ID,STIG-ID,STIG-Legacy,Vuln-ID</benchmark_refs>
+#<variables>
+#  <variable>
+#    <name>TENANT_ID</name>
+#    <default>1111-2222-3333-4444</default>
+#    <description>OneDrive tenant ID for the organization</description>
+#    <info>The Tenant GUID of the organization's DoD instance</info>
+#    <value_type>SAFE_STRING</value_type>
+#  </variable>
+#</variables>
+#</ui_metadata>
+
+<check_type:"Windows" version:"2">
+<group_policy:"Microsoft OneDrive">
+
+<if>
+  <condition type:"OR">
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "Check if OneDrive is installed"
+      value_type  : POLICY_TEXT
+      value_data  : ".+"
+      reg_key     : "HKLM\Software\Microsoft\Office\16.0\Groove\Installroot"
+      reg_item    : "Path"
+      reg_option  : MUST_EXIST
+      check_type  : CHECK_REGEX
+    </custom_item>
+
+    <custom_item>
+      type        : REG_CHECK
+      description : "HKLM\Software\Microsoft\OneDrive:Version exists"
+      value_type  : POLICY_TEXT
+      value_data  : "HKLM\Software\Microsoft\OneDrive"
+      reg_option  : MUST_EXIST
+      key_item    : "Version"
+    </custom_item>
+  </condition>
+
+  <then>
+    <report type:"PASSED">
+      description : "DISA_STIG_Microsoft_OneDrive_v2r3.audit from DISA Microsoft OneDrive v2r3 STIG"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MS_OneDrive_V2R3_STIG.zip"
+    </report>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO104 - Disabling of user name and password syntax from being used in URLs must be enforced."
+      info        : "The Uniform Resource Locator (URL) standard allows user authentication to be included in URL strings in the form http://username:password@example.com. A malicious user might use this URL syntax to create a hyperlink that appears to open a legitimate website but actually opens a deceptive (spoofed) website. For example, the URL http://www.wingtiptoys.com@example.com appears to open http://www.wingtiptoys.com but actually opens http://example.com. To protect users from such attacks, Internet Explorer usually blocks any URLs using this syntax.
+
+This functionality can be controlled separately for instances of Internet Explorer spawned by Office applications (for example, if a user clicks a link in an Office document or selects a menu option that loads a website). If user names and passwords in URLs are allowed, users could be diverted to dangerous Web pages, which could pose a security risk."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2016 (Machine) -> Security Settings -> IE Security 'Disable user name and password' to 'Enabled' and place a check in the 'groove.exe' check box."
+      reference   : "800-171|3.13.13,800-53|SC-18(4),800-53r5|SC-18(4),CAT|II,CCI|CCI-001170,CSF|DE.CM-5,DISA_Benchmark|Microsoft_OneDrive,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(4),NIAv2|SU3,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-215529r879630_rule,STIG-ID|DTOO104,STIG-Legacy|SV-85921,STIG-Legacy|V-71297,Vuln-ID|V-215529"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MS_OneDrive_V2R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Http_Username_Password_Disable"
+      reg_item    : "groove.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO111 - Enabling IE Bind to Object functionality must be present."
+      info        : "Internet Explorer performs a number of safety checks before initializing an ActiveX control. It will not initialize a control if the kill bit for the control is set in the registry, or if the security settings for the zone in which the control is located do not allow it to be initialized.
+This functionality can be controlled separately for instances of Internet Explorer spawned by Office applications (for example, if a user clicks a link in an Office document or selects a menu option that loads a web page). A security risk could occur if potentially dangerous controls are allowed to load."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2016 (Machine) -> Security Settings -> IE Security 'Bind to Object' to 'Enabled' and place a check in the 'groove.exe' check box."
+      reference   : "800-171|3.13.13,800-53|SC-18(3),800-53r5|SC-18(3),CAT|II,CCI|CCI-001695,CSF|DE.CM-5,DISA_Benchmark|Microsoft_OneDrive,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(3),NIAv2|NS26f,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-215530r879573_rule,STIG-ID|DTOO111,STIG-Legacy|SV-85925,STIG-Legacy|V-71301,Vuln-ID|V-215530"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MS_OneDrive_V2R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Safe_Bindtoobject"
+      reg_item    : "groove.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO117 - Saved from URL mark to assure Internet zone processing must be enforced."
+      info        : "Typically, when Internet Explorer loads a web page from a Universal Naming Convention (UNC) share that contains a Mark of the Web (MOTW) comment, indicating the page was saved from a site on the Internet, Internet Explorer runs the page in the Internet security zone instead of the less restrictive Local Intranet security zone. This functionality can be controlled separately for instances of Internet Explorer spawned by Office applications (for example, if a user clicks a link in an Office document or selects a menu option that loads a web page). If Internet Explorer does not evaluate the page for a MOTW, potentially dangerous code could be allowed to run."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2016 (Machine) -> Security Settings -> IE Security 'Saved from URL' to 'Enabled' and place a check in the 'groove.exe' check box."
+      reference   : "800-171|3.13.13,800-53|SC-18(4),800-53r5|SC-18(4),CAT|II,CCI|CCI-001170,CSF|DE.CM-5,DISA_Benchmark|Microsoft_OneDrive,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(4),NIAv2|SU3,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-215531r879630_rule,STIG-ID|DTOO117,STIG-Legacy|SV-85927,STIG-Legacy|V-71303,Vuln-ID|V-215531"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MS_OneDrive_V2R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Unc_Savedfilecheck"
+      reg_item    : "groove.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO123 - Navigation to URLs embedded in Office products must be blocked."
+      info        : "To protect users from attacks, Internet Explorer usually does not attempt to load malformed URLs. This functionality can be controlled separately for instances of Internet Explorer spawned by Office applications (for example, if a user clicks a link in an Office document or selects a menu option that loads a web page). If Internet Explorer attempts to load a malformed URL, a security risk could occur."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2016 (Machine) -> Security Settings -> IE Security 'Navigate URL' to 'Enabled' and place a check in the 'groove.exe' check box."
+      reference   : "800-171|3.13.13,800-53|SC-18(4),800-53r5|SC-18(4),CAT|II,CCI|CCI-001170,CSF|DE.CM-5,DISA_Benchmark|Microsoft_OneDrive,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(4),NIAv2|SU3,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-215532r879630_rule,STIG-ID|DTOO123,STIG-Legacy|SV-85929,STIG-Legacy|V-71305,Vuln-ID|V-215532"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MS_OneDrive_V2R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : "1"
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Validate_Navigate_Url"
+      reg_item    : "groove.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO124 - Scripted Window Security must be enforced."
+      info        : "Malicious websites often try to confuse or trick users into giving a site permission to perform an action allowing the site to take control of the users' computers in some manner. Disabling or not configuring this setting allows unknown websites to:
+-Create browser windows appearing to be from the local operating system.
+-Draw active windows displaying outside of the viewable areas of the screen capturing keyboard input.
+-Overlay parent windows with their own browser windows to hide important system information, choices or prompts."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2016 (Machine) -> Security Settings -> IE Security 'Scripted Window Security Restrictions' to 'Enabled' and place a check in the 'groove.exe' check box."
+      reference   : "800-171|3.13.13,800-53|SC-18(3),800-53r5|SC-18(3),CAT|II,CCI|CCI-001695,CSF|DE.CM-5,DISA_Benchmark|Microsoft_OneDrive,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(3),NIAv2|NS26f,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-215533r879573_rule,STIG-ID|DTOO124,STIG-Legacy|SV-85933,STIG-Legacy|V-71309,Vuln-ID|V-215533"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MS_OneDrive_V2R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Window_Restrictions"
+      reg_item    : "groove.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO126 - Add-on Management functionality must be allowed."
+      info        : "Internet Explorer add-ons are pieces of code, run in Internet Explorer, to provide additional functionality. Rogue add-ons may contain viruses or other malicious code. Disabling or not configuring this setting could allow malicious code or users to become active on user computers or the network. For example, a malicious user can monitor and then use keystrokes users type into Internet Explorer. Even legitimate add-ons may demand resources, compromising the performance of Internet Explorer, and the operating systems for user computers."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2016 (Machine) -> Security Settings -> IE Security 'Add-on Management' to 'Enabled' and place a check in the 'groove.exe' check box."
+      reference   : "800-171|3.13.13,800-53|SC-18(1),800-53r5|SC-18(1),CAT|II,CCI|CCI-001662,CSF|DE.CM-5,DISA_Benchmark|Microsoft_OneDrive,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(1),NIAv2|SU3,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-215534r879628_rule,STIG-ID|DTOO126,STIG-Legacy|SV-85935,STIG-Legacy|V-71311,Vuln-ID|V-215534"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MS_OneDrive_V2R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Addon_Management"
+      reg_item    : "groove.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO129 - Links that invoke instances of Internet Explorer from within an Office product must be blocked."
+      info        : "The Pop-up Blocker feature in Internet Explorer can be used to block most unwanted pop-up and pop-under windows from appearing. This functionality can be controlled separately for instances of Internet Explorer spawned by Office applications (for example, if a user clicks a link in an Office document or selects a menu option that loads a web page). If the Pop-up Blocker is disabled, disruptive and potentially dangerous pop-up windows could load and present a security risk."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2016 (Machine) -> Security Settings -> IE Security 'Block popups' to 'Enabled' and place a check in the 'groove.exe' check box."
+      reference   : "800-171|3.13.13,800-53|SC-18(1),800-53r5|SC-18(1),CAT|II,CCI|CCI-001662,CSF|DE.CM-5,DISA_Benchmark|Microsoft_OneDrive,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(1),NIAv2|SU3,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-215535r879628_rule,STIG-ID|DTOO129,STIG-Legacy|SV-85937,STIG-Legacy|V-71313,Vuln-ID|V-215535"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MS_OneDrive_V2R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Weboc_Popupmanagement"
+      reg_item    : "groove.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO132 - File Downloads must be configured for proper restrictions."
+      info        : "Disabling this setting allows websites to present file download prompts via code without the user specifically initiating the download. User preferences may also allow the download to occur without prompting or interaction with the user. Even if Internet Explorer prompts the user to accept the download, some websites abuse this functionality. Malicious websites may continually prompt users to download a file or present confusing dialog boxes to trick users into downloading or running a file. If the download occurs and it contains malicious code, the code could become active on user computers or the network."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2016 (Machine) -> Security Settings -> IE Security 'Restrict File Download' to 'Enabled' and place a check in the 'groove.exe' check box."
+      reference   : "800-171|3.13.13,800-53|SC-18(3),800-53r5|SC-18(3),CAT|II,CCI|CCI-001169,CSF|DE.CM-5,DISA_Benchmark|Microsoft_OneDrive,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(3),NIAv2|NS26f,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-215536r879629_rule,STIG-ID|DTOO132,STIG-Legacy|SV-85941,STIG-Legacy|V-71317,Vuln-ID|V-215536"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MS_OneDrive_V2R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Restrict_Filedownload"
+      reg_item    : "groove.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO209 - Protection from zone elevation must be enforced."
+      info        : "Internet Explorer places restrictions on each web page users can use the browser to open. Web pages on a user's local computer have the fewest security restrictions and reside in the Local Machine zone, making this security zone a prime target for malicious users and code. Disabling or not configuring this setting could allow pages in the Internet zone to navigate to pages in the Local Machine zone to then run code to elevate privileges. This could allow malicious code or users to become active on user computers or the network."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2016 (Machine) -> Security Settings -> IE Security 'Protection From Zone Elevation' to 'Enabled' and place a check in the 'groove.exe' check box."
+      reference   : "800-171|3.13.13,800-53|SC-18(3),800-53r5|SC-18(3),CAT|II,CCI|CCI-001695,CSF|DE.CM-5,DISA_Benchmark|Microsoft_OneDrive,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(3),NIAv2|NS26f,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-215537r879573_rule,STIG-ID|DTOO209,STIG-Legacy|SV-85943,STIG-Legacy|V-71319,Vuln-ID|V-215537"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MS_OneDrive_V2R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Zone_Elevation"
+      reg_item    : "groove.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO211 - ActiveX Installs must be configured for proper restriction."
+      info        : "Microsoft ActiveX controls allow unmanaged, unprotected code to run on the user computers. ActiveX controls do not run within a protected container in the browser like the other types of HTML or Microsoft Silverlight-based controls. Disabling or not configuring this setting does not block prompts for ActiveX control installations, and these prompts display to users. This could allow malicious code to become active on user computers or the network."
+      solution    : "Set the policy value for Computer Configuration -> Administrative Templates -> Microsoft Office 2016 (Machine) -> Security Settings -> IE Security 'Restrict ActiveX Install' to 'Enabled' and place a check in the 'groove.exe' check box."
+      reference   : "800-171|3.13.13,800-53|SC-18(4),800-53r5|SC-18(4),CAT|II,CCI|CCI-002460,CSF|DE.CM-5,DISA_Benchmark|Microsoft_OneDrive,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|SC-18(4),NIAv2|SU3,QCSC-v1|3.2,QCSC-v1|8.2.1,Rule-ID|SV-215538r879859_rule,STIG-ID|DTOO211,STIG-Legacy|SV-85945,STIG-Legacy|V-71321,Vuln-ID|V-215538"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MS_OneDrive_V2R3_STIG.zip"
+      value_type  : POLICY_DWORD
+      value_data  : 1
+      reg_key     : "HKLM\Software\Microsoft\Internet Explorer\Main\Featurecontrol\Feature_Restrict_Activexinstall"
+      reg_item    : "groove.exe"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type        : REGISTRY_SETTING
+      description : "DTOO605 - OneDrive must only allow synchronizing of accounts for DoD organization instances."
+      info        : "OneDrive provides access to external services for data storage, which must be restricted to authorized instances if enabled. Configuring this setting will restrict synchronizing of OneDrive accounts to DoD organization instances."
+      solution    : "Configure the policy value for Computer Configuration >> Administrative Templates >> OneDrive >> 'Allow syncing OneDrive accounts for only specific organizations', with the Tenant GUID of the organization's DoD instance in the format 1111-2222-3333-4444.
+
+If the organization does not have an instance of OneDrive, configure the Tenant GUID with '1111-2222-3333-4444'.
+
+Group policy files for OneDrive are located on a system with OneDrive in '%localappdata%\Microsoft\OneDrive\BuildNumber\adm\'.
+
+Copy the OneDrive.admx and .adml files to the \Windows\PolicyDefinitions and \Windows\PolicyDefinitions\en-US directories respectively."
+      reference   : "800-171|3.4.2,800-53|CM-6b.,800-53r5|CM-6b.,CAT|II,CCI|CCI-000366,CN-L3|8.1.10.6(d),CSF|PR.IP-1,DISA_Benchmark|Microsoft_OneDrive,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-6b.,NESA|T3.2.1,Rule-ID|SV-230562r879887_rule,STIG-ID|DTOO605,STIG-Legacy|SV-98853,STIG-Legacy|V-88203,SWIFT-CSCv1|2.3,Vuln-ID|V-230562"
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MS_OneDrive_V2R3_STIG.zip"
+      value_type  : POLICY_TEXT
+      value_data  : "@TENANT_ID@"
+      reg_key     : "HKLM\Software\Policies\Microsoft\OneDrive\AllowTenantList"
+      reg_item    : "@TENANT_ID@"
+      reg_option  : CAN_NOT_BE_NULL
+    </custom_item>
+
+    <custom_item>
+      type                 : REGISTRY_SETTING
+      description          : "DTOO607 - The use of personal accounts for OneDrive synchronization must be disabled."
+      info                 : "OneDrive provides access to external services for data storage, which must be restricted to authorized instances. Enabling this setting will prevent the use of personal OneDrive accounts for synchronization."
+      solution             : "Configure the policy value for User Configuration >> Administrative Templates >> OneDrive >> 'Prevent users from syncing personal OneDrive accounts' to 'Enabled'.
+
+Group policy files for OneDrive are located on a system with OneDrive in '%localappdata%\Microsoft\OneDrive\BuildNumber\adm\'.
+
+Copy the OneDrive.admx and .adml files to the \Windows\PolicyDefinitions and \Windows\PolicyDefinitions\en-US directories respectively."
+      reference            : "800-171|3.4.6,800-171|3.4.7,800-53|CM-7a.,800-53r5|CM-7a.,CAT|II,CCI|CCI-000381,CN-L3|7.1.3.5(c),CN-L3|8.1.4.4(a),CSF|PR.IP-1,CSF|PR.PT-3,DISA_Benchmark|Microsoft_OneDrive,GDPR|32.1.b,HIPAA|164.306(a)(1),ITSG-33|CM-7a.,NIAv2|SS15a,PCI-DSSv3.2.1|2.2.1,PCI-DSSv4.0|2.2.3,QCSC-v1|3.2,Rule-ID|SV-230564r918123_rule,STIG-ID|DTOO607,STIG-Legacy|SV-96851,STIG-Legacy|V-82137,SWIFT-CSCv1|2.3,Vuln-ID|V-230564"
+      see_also             : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MS_OneDrive_V2R3_STIG.zip"
+      value_type           : POLICY_DWORD
+      value_data           : 1
+      reg_key              : "HKU\Software\Policies\Microsoft\OneDrive"
+      reg_item             : "DisablePersonalSync"
+      reg_ignore_hku_users : "S-1-5-18,S-1-5-19,S-1-5-20"
+      reg_option           : CAN_NOT_BE_NULL
+    </custom_item>
+  </then>
+
+  <else>
+    <report type:"WARNING">
+      description : "DISA_STIG_Microsoft_OneDrive_v2r3.audit from DISA Microsoft OneDrive v2r3 STIG"
+      info        : "NOTE: Nessus has not identified that the chosen audit applies to the target device."
+      see_also    : "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_MS_OneDrive_V2R3_STIG.zip"
+    </report>
+  </else>
+</if>
+
+</group_policy>
+</check_type>

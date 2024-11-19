@@ -1,0 +1,51 @@
+1.1.1 - Ensure NGINX is installed
+1.1.2 - Ensure NGINX is installed from source - manual
+1.2.1 - Ensure package manager repositories are properly configured - manual
+1.2.2 - Ensure the latest software package is installed - manual
+2.1.1 - Ensure only required modules are installed - manual
+2.1.2 - Ensure HTTP WebDAV module is not installed - manual
+2.1.3 - Ensure modules with gzip functionality are disabled - manual
+2.1.4 - Ensure the autoindex module is disabled
+2.2.1 - Ensure that NGINX is run using a non-privileged dedicated service account - manual
+2.2.2 - Ensure the NGINX service account is locked - manual
+2.2.3 - Ensure the NGINX service account has an invalid shell
+2.3.1 - Ensure NGINX directories and files are owned by root
+2.3.2 - Ensure access to NGINX directories and files is restricted
+2.3.3 - Ensure the NGINX process ID PID file is secured
+2.3.4 - Ensure the core dump directory is secured - manual
+2.4.1 - Ensure NGINX only listens for network connections on authorized ports - manual
+2.4.2 - Ensure requests for unknown host names are rejected
+2.4.3 - Ensure keepalive timeout is 10 seconds or less but not 0
+2.4.4 - Ensure send timeout is set to 10 seconds or less but not 0
+2.5.1 - Ensure server tokens directive is set to off
+2.5.2 - Ensure default error and index.html pages do not reference NGINX
+2.5.3 - Ensure hidden file serving is disabled - manual
+3.1 - Ensure detailed logging is enabled - manual
+3.2 - Ensure access logging is enabled
+3.3 - Ensure error logging is enabled and set to the info logging level
+3.4 - Ensure log files are rotated
+3.5 - Ensure error logs are sent to a remote syslog server - manual
+3.6 - Ensure access logs are sent to a remote syslog server - manual
+4.1.1 - Ensure HTTP is redirected to HTTPS - manual
+4.1.2 - Ensure a trusted certificate and trust chain is installed
+4.1.3 - Ensure private key permissions are restricted
+4.1.4 - Ensure only modern TLS protocols are used
+4.1.5 - Disable weak ciphers - manual
+4.1.6 - Ensure custom Diffie-Hellman parameters are used
+4.1.7 - Ensure Online Certificate Status Protocol OCSP stapling is enabled
+4.1.8 - Ensure HTTP Strict Transport Security HSTS is enabled
+4.1.11 - Ensure your domain is preloaded - manual
+4.1.12 - Ensure session resumption is disabled to enable perfect forward security
+4.1.13 - Ensure HTTP2.0 is used
+4.1.14 - Ensure only Perfect Forward Secrecy Ciphers are Leveraged - manual
+5.1.1 - Ensure allow and deny filters limit access to specific IP addresses - manual
+5.1.2 - Ensure only approved HTTP methods are allowed - manual
+5.2.1 - Ensure timeout values for reading the client header and body are set correctly
+5.2.2 - Ensure the maximum request body size is set correctly
+5.2.3 - Ensure the maximum buffer size for URIs is defined
+5.2.4 - Ensure the number of connections per IP address is limited - manual
+5.2.5 - Ensure rate limits by IP address are set - manual
+5.3.1 - Ensure X-Frame-Options header is configured and enabled
+5.3.2 - Ensure X-Content-Type-Options header is configured and enabled
+5.3.3 - Ensure that Content Security Policy CSP is enabled and configured properly - manual
+5.3.4 - Ensure the Referrer Policy is enabled and configured properly - manual

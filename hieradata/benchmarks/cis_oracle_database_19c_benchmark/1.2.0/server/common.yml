@@ -1,0 +1,2987 @@
+---
+
+inspec_rules:
+  "1.1":
+    title: '1.1 | Ensure the Appropriate VersionPatches for Oracle Software Is Installed - manual'
+    section: 'Oracle Database Installation and Patching Requirements'
+    description: |
+        The Oracle installation version and patches should be the most recent that are compatible with the organizations
+        operational needs.
+    remediation: |
+        Perform the following step for remediation: Download and apply the latest quarterly Critical Patch Update patches.
+    type: Undefined
+    impact: '0.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_1.1', 'cis_oracle_database_19c_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.1.1":
+    title: '2.1.1 | Ensure extproc Is Not Present in listener.ora'
+    section: 'Listener Settings'
+    description: |
+        extproc
+         should be removed from the              listener.ora
+         to mitigate the risk that OS libraries can be invoked by the Oracle instance.
+    remediation: |
+        To remediate this recommendation:
+        Remove                  extproc
+         from the                  listener.ora
+         file.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_2.1.1', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "2.1.2":
+    title: '2.1.2 | Ensure ADMIN RESTRICTIONS listener name Is Set to ON'
+    section: 'Listener Settings'
+    description: |
+        The              adminrestrictions
+                           listenername
+         setting in the              listener.ora
+         file can require that any attempted realtime alteration of the parameters in the listener via the set command file be
+        refused unless the              listener.ora
+         file is manually altered, then restarted by a privileged user.
+    remediation: |
+        To remediate this recommendation:
+        Use a text editor such as                  vi
+         to set the                  admin_restrictions_
+                                 <listener_name>
+         to the value                  ON
+        .
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_2.1.2', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp ON'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "2.2.1":
+    title: '2.2.1 | Ensure AUDIT SYS OPERATIONS Is Set to TRUE'
+    section: 'Database Settings'
+    description: |
+        The              AUDITSYSOPERATIONS
+         setting provides for the auditing of all user activities conducted under the              SYSOPER
+         and              SYSDBA
+         accounts. The setting should be set to              TRUE
+         to enable this auditing.
+    remediation: |
+        To remediate this setting, execute the following SQL statement and restart the instance. ALTER SYSTEM SET
+        AUDIT_SYS_OPERATIONS = TRUE SCOPE=SPFILE;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_2.2.1', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == TRUE'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "2.2.2":
+    title: '2.2.2 | Ensure AUDIT TRAIL Is Set to DB XML OS DBEXTENDED or XMLEXTENDED'
+    section: 'Database Settings'
+    description: |
+        The              audittrail
+         setting determines whether or not Oracles basic audit features are enabled. It can be set to Operating System
+        OS
+                      DB
+                      DB,EXTENDED
+                      XML
+         or              XML,EXTENDED
+        . The value should be set according to the needs of the organization.
+    remediation: |
+        To remediate this setting, execute one of the following SQL statements and restart the instance.
+        ALTER SYSTEM SET AUDIT_TRAIL = DB, EXTENDED SCOPE = SPFILE;
+        ALTER SYSTEM SET AUDIT_TRAIL = OS SCOPE = SPFILE;
+        ALTER SYSTEM SET AUDIT_TRAIL = XML, EXTENDED SCOPE = SPFILE;
+        ALTER SYSTEM SET AUDIT_TRAIL = DB SCOPE = SPFILE;
+        ALTER SYSTEM SET AUDIT_TRAIL = XML SCOPE = SPFILE;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_2.2.2', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp DB'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "2.2.3":
+    title: '2.2.3 | Ensure GLOBAL NAMES Is Set to TRUE'
+    section: 'Database Settings'
+    description: |
+        The              globalnames
+         setting requires that the name of a database link matches that of the remote database it will connect to. This setting
+        should have a value of              TRUE
+        .
+    remediation: |
+        To remediate this setting, execute the following SQL statement. ALTER SYSTEM SET GLOBAL_NAMES = TRUE SCOPE = SPFILE;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_2.2.3', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == TRUE'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "2.2.4":
+    title: '2.2.4 | Ensure OS ROLES Is Set to FALSE'
+    section: 'Database Settings'
+    description: |
+        The              osroles
+         setting permits externally created groups to be applied to database management.
+    remediation: |
+        To remediate this setting, execute the following SQL statement. ALTER SYSTEM SET OS_ROLES = FALSE SCOPE = SPFILE;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_2.2.4', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == FALSE'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "2.2.5":
+    title: '2.2.5 | Ensure REMOTE LISTENER Is Empty'
+    section: 'Database Settings'
+    description: |
+        The              remotelistener
+         setting determines whether or not a valid listener can be established on a system separate from the database instance.
+        This setting should be empty unless the organization specifically needs a valid listener on a separate system or on
+        nodes running Oracle RAC instances.
+    remediation: |
+        To remediate this setting, execute the following SQL statement. ALTER SYSTEM SET REMOTE_LISTENER = '' SCOPE = SPFILE;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_2.2.5', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "2.2.6":
+    title: '2.2.6 | Ensure REMOTE LOGIN PASSWORDFILE Is Set to NONE'
+    section: 'Database Settings'
+    description: |
+        The              remoteloginpasswordfile
+         setting specifies whether or not Oracle checks for a password file during login and how many databases can use the
+        password file. The setting should have a value of              NONE
+         or in the event you are running DR/Data Guard,              EXCLUSIVE
+         is an allowable value.
+    remediation: |
+        To remediate this setting, execute the following SQL statement. ALTER SYSTEM SET REMOTE_LOGIN_PASSWORDFILE = 'NONE'
+        SCOPE = SPFILE;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_2.2.6', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == NONE'
+            - name: Undefined
+              rule: 'Undefined'
+            - name: Undefined
+              rule: 'Undefined'
+            - name: Undefined
+              rule: 'should cmp == EXCLUSIVE'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "2.2.7":
+    title: '2.2.7 | Ensure REMOTE OS AUTHENT Is Set to FALSE'
+    section: 'Database Settings'
+    description: |
+        The              remoteosauthent
+         setting determines whether or not OS roles with the attendant privileges are allowed for remote client connections.
+        This setting should have a value of              FALSE
+        .           Note
+         This parameter has been deprecated in 12.1 and higher versions.
+    remediation: |
+        To remediate this setting, execute the following SQL statement. ALTER SYSTEM SET REMOTE_OS_AUTHENT = FALSE SCOPE =
+        SPFILE;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_2.2.7', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == FALSE'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "2.2.8":
+    title: '2.2.8 | Ensure REMOTE OS ROLES Is Set to FALSE'
+    section: 'Database Settings'
+    description: |
+        The              remoteosroles
+         setting permits remote users OS roles to be applied to database management. This setting should have a value of
+        FALSE
+        .
+    remediation: |
+        To remediate this setting, execute the following SQL statement. ALTER SYSTEM SET REMOTE_OS_ROLES = FALSE SCOPE = SPFILE;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_2.2.8', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == FALSE'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "2.2.9":
+    title: '2.2.9 | Ensure SEC CASE SENSITIVE LOGON Is Set to TRUE'
+    section: 'Database Settings'
+    description: |
+        The              SECCASESENSITIVELOGON
+         information determines whether or not casesensitivity is required for passwords during login.           Note
+         This parameter has been deprecated in 12.1 and higher versions.
+    remediation: |
+        To remediate this setting, execute the following SQL statement. ALTER SYSTEM SET SEC_CASE_SENSITIVE_LOGON = TRUE SCOPE =
+        SPFILE;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_2.2.9', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == TRUE'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "2.2.10":
+    title: '2.2.10 | Ensure SEC MAX FAILED LOGIN ATTEMPTS Is 3 or Less'
+    section: 'Database Settings'
+    description: |
+        The              SECMAXFAILEDLOGINATTEMPTS
+         parameter determines how many failed login attempts are allowed before Oracle closes the login connection.
+    remediation: |
+        To remediate this setting, execute the following SQL statement. ALTER SYSTEM SET SEC_MAX_FAILED_LOGIN_ATTEMPTS = 3 SCOPE
+        = SPFILE;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_2.2.10', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should be <= 3'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "2.2.11":
+    title: '2.2.11 | Ensure SEC PROTOCOL ERROR FURTHER ACTION Is Set to DROP3'
+    section: 'Database Settings'
+    description: |
+        The              SECPROTOCOLERRORFURTHERACTION
+         setting determines the Oracle servers response to bad/malformed packets received from the client. This setting should
+        have a value of              DROP,3
+         or              DROP, 3
+        , which will cause a connection to be dropped after three bad/malformed packets.
+    remediation: |
+        To remediate this setting, execute the following SQL statement. ALTER SYSTEM SET SEC_PROTOCOL_ERROR_FURTHER_ACTION =
+        '(DROP,3)' SCOPE = SPFILE;
+         Or ALTER SYSTEM SET SEC_PROTOCOL_ERROR_FURTHER_ACTION = '(DROP, 3)' SCOPE = SPFILE;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_2.2.11', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp (DROP,3)'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "2.2.12":
+    title: '2.2.12 | Ensure SEC PROTOCOL ERROR TRACE ACTION Is Set to LOG'
+    section: 'Database Settings'
+    description: |
+        The              SECPROTOCOLERRORTRACEACTION
+         setting determines the Oracles servers logging response level to bad/malformed packets received from the client by
+        generating              ALERT
+        ,              LOG
+        , or              TRACE
+         levels of detail in the log files. This setting should have a value of              LOG
+         unless the organization has a compelling reason to use a different value because              LOG
+         should cause the necessary information to be logged. Setting the value as              TRACE
+         can generate an enormous amount of log output and should be reserved for debugging only.
+    remediation: |
+        To remediate this setting, execute the following SQL statement. ALTER SYSTEM SET SEC_PROTOCOL_ERROR_TRACE_ACTION=LOG
+        SCOPE = SPFILE;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_2.2.12', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == LOG'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "2.2.13":
+    title: '2.2.13 | Ensure SEC RETURN SERVER RELEASE BANNER Is Set to FALSE'
+    section: 'Database Settings'
+    description: |
+        The information about patch/update release number provides information about the exact patch/update release that is
+        currently running on the database. This is sensitive information that should not be revealed to anyone who requests it.
+    remediation: |
+        To remediate this setting, execute the following SQL statement. ALTER SYSTEM SET SEC_RETURN_SERVER_RELEASE_BANNER =
+        FALSE SCOPE = SPFILE;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_2.2.13', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == FALSE'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "2.2.14":
+    title: '2.2.14 | Ensure SQL92 SECURITY Is Set to TRUE'
+    section: 'Database Settings'
+    description: |
+        The              SQL92SECURITY
+         parameter setting              TRUE
+         requires that a user must also be granted the              SELECT
+         object privilege before being able to perform              UPDATE
+         or              DELETE
+         operations on tables that have              WHERE
+         or              SET
+         clauses. The setting should have a value of TRUE.
+    remediation: |
+        To remediate this setting, execute the following SQL statement. ALTER SYSTEM SET SQL92_SECURITY = TRUE SCOPE = SPFILE;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_2.2.14', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == TRUE'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "2.2.15":
+    title: '2.2.15 | Ensure  trace files public Is Set to FALSE'
+    section: 'Database Settings'
+    description: |
+        The              tracefilespublic
+         setting determines whether or not the systems trace file is world readable. This setting should have a value of
+        FALSE
+         to restrict trace file access.
+    remediation: |
+        To remediate this setting, execute the following SQL statement. ALTER SYSTEM SET "_trace_files_public" = FALSE SCOPE =
+        SPFILE;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_2.2.15', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == FALSE'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "2.2.16":
+    title: '2.2.16 | Ensure RESOURCE LIMIT Is Set to TRUE'
+    section: 'Database Settings'
+    description: |
+        RESOURCELIMIT
+         determines whether resource limits are enforced in database profiles. This setting should have a value of
+        TRUE
+        .
+    remediation: |
+        To remediate this setting, execute the following SQL statement. ALTER SYSTEM SET RESOURCE_LIMIT = TRUE SCOPE = SPFILE;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_2.2.16', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'should cmp == TRUE'
+            - name: Undefined
+              rule: 'Undefined'
+
+  "2.2.17":
+    title: '2.2.17 | Ensure PDB OS CREDENTIAL is NOT null'
+    section: 'Database Settings'
+    description: |
+        The              pdboscredential
+         setting determines what OS user will be utilized to run jobs at the OS level from within the Oracle database.
+    remediation: |
+        Using the                  DBMS_CREDENTIAL
+         package, ensure credentials are set for stand alone, container and pluggable databases.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_2.2.17', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "2.3.1":
+    title: '2.3.1 | Ensure ENCRYPTION SERVER Is Set to REQUIRED Automated - manual'
+    section: 'SQLNET.ORA Settings'
+    description: |
+        The setting              sqlnet.encryptionserverrequired
+         requires that the connections to the database are encrypted through Oracle SQLNet native encryption. The encryption
+        setting implements dataintransit encryption for the Oracle database connections. This setting is configured in the
+        sqlnet.ora
+         file on the database server.
+    remediation: |
+        To remediate this recommendation: Use a text editor such as vi to set the sqlnet. encryption_server = required
+         Impact:
+        The setting                    sqlnet.encryption_server=required
+         could reject/deny connection requests from those database users who don’t support the Oracle native network encryption.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_2.3.1', 'cis_oracle_database_19c_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "2.3.2":
+    title: '2.3.2 | Ensure SQLNET.CRYPTO CHECKSUM SERVER Is Set to REQUIRED Automated - manual'
+    section: 'SQLNET.ORA Settings'
+    description: |
+        The setting              sqlnet.cryptochecksumserverrequired
+         requires that the connections to the database are encrypted through Oracle SQLNet native encryption. The encryption
+        setting implements dataintransit encryption for the Oracle database connections. This setting is configured in the
+        sqlnet.ora
+         file on the database server.
+    remediation: |
+        To remediate this recommendation: Use a text editor such as vi to set: sqlnet.crypto_checksum_server = required
+         Impact:
+        The setting                    sqlnet.encryption_server=required
+         could reject/deny connection requests from those database users who don’t support the Oracle native network encryption.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_2.3.2', 'cis_oracle_database_19c_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "3.1":
+    title: '3.1 | Ensure FAILED LOGIN ATTEMPTS Is Less than or Equal to 5'
+    section: 'Oracle Connection and Login Restrictions'
+    description: |
+        The            FAILEDLOGINATTEMPTS
+         setting determines how many failed login attempts are permitted before the system locks the users account. While
+        different profiles can have different and more restrictive settings, such as            USERS
+         and            APPS
+        , the minimums recommended here should be set on the            DEFAULT
+         profile.
+    remediation: |
+        Remediate this setting by executing the following SQL statement for each                PROFILE
+         returned by the audit procedure.             ALTER PROFILE <profile_name> LIMIT FAILED_LOGIN_ATTEMPTS 5;
+         Impact: One concern is the possibility of this setting being exploited to craft a DDoS attack by using the row-locking
+        delay between failed login attempts (see Oracle Bug 7715339 – Logon failures causes “row cache lock” waits – Allow
+        disable of logon delay [ID 7715339.8], so the configuration of this setting depends on using the bug workaround).
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_3.1', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "3.2":
+    title: '3.2 | Ensure PASSWORD LOCK TIME Is Greater than or Equal to 1'
+    section: 'Oracle Connection and Login Restrictions'
+    description: |
+        The            PASSWORDLOCKTIME
+         setting determines how many days must pass for the users account to be unlocked after the set number of failed login
+        attempts has occurred. The suggested value for this is one day or greater.
+    remediation: |
+        Remediate this setting by executing the following SQL statement for each                PROFILE
+         returned by the audit procedure.             ALTER PROFILE <profile_name> LIMIT PASSWORD_LOCK_TIME 1;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_3.2', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "3.3":
+    title: '3.3 | Ensure PASSWORD LIFE TIME Is Less than or Equal to 90'
+    section: 'Oracle Connection and Login Restrictions'
+    description: |
+        The            PASSWORDLIFETIME
+         setting determines how long a password may be used before the user is required to be change it. The suggested value for
+        this is 90 days or less.
+    remediation: |
+        Remediate this setting by executing the following SQL statement for each PROFILE returned by the audit procedure. ALTER
+        PROFILE <profile_name> LIMIT PASSWORD_LIFE_TIME 90;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_3.3', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "3.4":
+    title: '3.4 | Ensure PASSWORD REUSE MAX Is Greater than or Equal to 20'
+    section: 'Oracle Connection and Login Restrictions'
+    description: |
+        The            PASSWORDREUSEMAX
+         setting determines how many different passwords must be used before the user is allowed to reuse a prior password. The
+        suggested value for this is 20 passwords or greater.
+    remediation: |
+        Remediate this setting by executing the following SQL statement for each                PROFILE
+         returned by the audit procedure.             ALTER PROFILE <profile_name> LIMIT PASSWORD_REUSE_MAX 20;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_3.4', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "3.5":
+    title: '3.5 | Ensure PASSWORD REUSE TIME Is Greater than or Equal to 365'
+    section: 'Oracle Connection and Login Restrictions'
+    description: |
+        The            PASSWORDREUSETIME
+         setting determines the amount of time in days that must pass before the same password may be reused. The suggested
+        value for this is 365 days or greater.
+    remediation: |
+        Remediate this setting by executing the following SQL statement for each                PROFILE
+         returned by the audit procedure.             ALTER PROFILE <profile_name> LIMIT PASSWORD_REUSE_TIME 365;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_3.5', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "3.6":
+    title: '3.6 | Ensure PASSWORD GRACE TIME Is Less than or Equal to 5'
+    section: 'Oracle Connection and Login Restrictions'
+    description: |
+        The            PASSWORDGRACETIME
+         setting determines how many days can pass after the users password expires before the users login capability is
+        automatically locked out. The suggested value for this is five days or less.
+    remediation: |
+        Remediate this setting by executing the following SQL statement for each                PROFILE
+         returned by the audit procedure.             ALTER PROFILE <profile_name> LIMIT PASSWORD_GRACE_TIME 5;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_3.6', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "3.7":
+    title: '3.7 | Ensure PASSWORD VERIFY FUNCTION Is Set for All Profiles'
+    section: 'Oracle Connection and Login Restrictions'
+    description: |
+        The            PASSWORDVERIFYFUNCTION
+         determines password settings requirements when a user password is changed at the SQL command prompt. It should be set
+        for all profiles. Note that this setting does not apply for users managed by the Oracle password file.
+    remediation: |
+        Create a custom password verification function which fulfills the password requirements of the organization.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_3.7', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "3.8":
+    title: '3.8 | Ensure SESSIONS PER USER Is Less than or Equal to 10'
+    section: 'Oracle Connection and Login Restrictions'
+    description: |
+        The            SESSIONSPERUSER
+         setting determines the maximum number of user sessions that are allowed to be open concurrently. The suggested value
+        for this is 10 or less.
+    remediation: |
+        To remediate this setting, execute the following SQL statement for each                PROFILE
+         returned by the audit procedure.             ALTER PROFILE <profile_name> LIMIT SESSIONS_PER_USER 10;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_3.8', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "3.9":
+    title: '3.9 | Ensure INACTIVE ACCOUNT TIME Is Less than or Equal to 120'
+    section: 'Oracle Connection and Login Restrictions'
+    description: |
+        The            INACTIVEACCOUNTTIME
+         setting determines the maximum number of days of inactivity no logins at all after which the account will be locked.
+        The suggested value for this is 120 or less.
+    remediation: |
+        To remediate this setting, execute the following SQL statement for each                PROFILE
+         returned by the audit procedure.             ALTER PROFILE <profile_name> LIMIT INACTIVE_ACCOUNT_TIME 120;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_3.9', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "4.1":
+    title: '4.1 | Ensure All Default Passwords Are Changed'
+    section: 'Users'
+    description: |
+        Default passwords should not be used by Oracle database users.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke.
+        Manually issue the following SQL statement for each                  USERNAME
+         returned in the Audit Procedure:
+                         PASSWORD <username>
+
+
+        Execute the following SQL script to assign a randomly generated password to each account using a default password:
+                         begin
+             for r_user in (select username
+                            from dba_users_with_defpwd
+                            where username not like '%XS$NULL%')
+             loop
+                 DBMS_OUTPUT.PUT_LINE('Password for user '||r_user.username||' will be changed.');
+                 execute immediate 'alter user "'||r_user.username||'" identified by "'||
+                   DBMS_RANDOM.string('a',16)||'"account lock password expire';
+               end loop;
+        end;
+
+                              Note:
+         Changing the default password for the 'SYS' account may require additional procedures.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_4.1', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "4.2":
+    title: '4.2 | Ensure All Sample Data And Users Have Been Removed'
+    section: 'Users'
+    description: |
+        Oracle sample schemas can be used to create sample users            BI
+        ,           HR
+        ,           IX
+        ,           OE
+        ,           PM
+        ,           SCOTT
+        ,           SH
+        , with wellknown default passwords, particular views, and procedures/functions, in addition to tables and fictitious
+        data. The sample schemas should be removed.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to run the drop script. $ORACLE_HOME/demo/schema/drop_sch.sql
+         Then, execute the following SQL statement. DROP USER SCOTT CASCADE;
+         Note:
+         The                recyclebin
+         is not set to                OFF
+         within the default drop script, which means that the data will still be present in your environment until the
+        recyclebin
+         is emptied.             Impact:
+        The Oracle sample usernames may be in use on a production basis. It is important that you first verify that
+        BI
+        ,                  HR
+        ,                  IX
+        ,                  OE
+        ,                  PM
+        ,                  SCOTT
+        , and/or                  SH
+         are not valid production usernames before executing the dropping SQL scripts. This may be particularly true with the
+        HR
+         and                  BI
+         users.                  If any of these users are present, it is important to be cautious and confirm the schemas
+        present are, in fact, Oracle sample schemas and not production schemas being relied upon by business operations.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_4.2', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "4.3":
+    title: '4.3 | Ensure DBA USERS.AUTHENTICATION TYPE Is Not Set to EXTERNAL for Any User'
+    section: 'Users'
+    description: |
+        The            authenticationtypeEXTERNAL
+         setting determines whether or not a user can be authenticated by a remote OS to allow access to the database with full
+        authorization. This setting should not be used.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke. ALTER USER <username> IDENTIFIED BY <password>;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_4.3', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "4.4":
+    title: '4.4 | Ensure No Users Are Assigned the DEFAULT Profile'
+    section: 'Users'
+    description: |
+        Upon creation database users are assigned to the            DEFAULT
+         profile unless otherwise specified. No users should be assigned to that profile.
+    remediation: |
+        To remediate this recommendation, execute the following SQL statement for each user returned by the audit query using a
+        functional-appropriate profile, keeping in mind if this is granted in both container and pluggable database, you must
+        connect to both places to revoke. ALTER USER <username> PROFILE <appropriate_profile>;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_4.4', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "4.5":
+    title: '4.5 | Ensure SYS.USERMIG Has Been Dropped'
+    section: 'Users'
+    description: |
+        The table            sys.usermig
+         is created during migration and contains the Oracle password hashes before the migration starts. This table should be
+        dropped.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke. DROP TABLE SYS.USER$MIG;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_4.5', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "4.6":
+    title: '4.6 | Ensure No Public Database Links Exist'
+    section: 'Users'
+    description: |
+        Public Database links are used to allow connections between databases.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke. DROP PUBLIC DATABASE LINK <DB_LINK>;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_4.6', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.1.1.1":
+    title: '5.1.1.1 | Ensure EXECUTE is revoked from PUBLIC on Network Packages'
+    section: 'Public Privileges'
+    description: |
+        As described below, Oracle Database PL/SQL Network packages                 DBMSLDAP
+        ,                UTLINADDR
+        ,                UTLTCP
+        ,                UTLMAIL
+        ,                UTLSMTP
+        ,                UTLDBWS
+        ,                UTLORAMTS
+        ,                UTLHTTP
+         and type                HTTPURITYPE
+          provide PL/SQL APIs to interact or access remote servers. The PUBLIC should not be able to execute these packages.
+        The Oracle database                  DBMSLDAP
+         package contains functions and procedures that enable programmers to access data from LDAP servers.
+        The Oracle database                  UTLINADDR
+         package provides an API to retrieve host names and IP addresses of local and remote hosts.
+        The Oracle database                  UTLTCP
+         package can be used to read/write file to TCP sockets on the server where the Oracle instance is installed.
+        The Oracle database                  UTLMAIL
+         package can be used to send email from the server where the Oracle instance is installed.
+        The Oracle database                  UTLSMTP
+         package can be used to send email from the server where the Oracle instance is installed. The user
+        PUBLIC
+         should not be able to execute                  UTLSMTP
+        .
+        The Oracle database                  UTLDBWS
+         package can be used to read/write file to webbased applications on the server where the Oracle instance is installed.
+        This package is not automatically installed for security reasons.
+        The Oracle database                  UTLORAMTS
+         package can be used to perform HTTP requests. This could be used to send information to the outside.
+        The Oracle database                  UTLHTTP
+         package can be used to perform HTTP requests. This could be used to send information to the outside.
+        The Oracle database                  HTTPURITYPE
+         object type can be used to perform HTTP requests.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke.
+        REVOKE EXECUTE ON DBMS_LDAP FROM PUBLIC;
+        REVOKE EXECUTE ON UTL_INADDR FROM PUBLIC;
+        REVOKE EXECUTE ON UTL_TCP FROM PUBLIC;
+        REVOKE EXECUTE ON UTL_MAIL FROM PUBLIC;
+        REVOKE EXECUTE ON UTL_SMTP FROM PUBLIC;
+        REVOKE EXECUTE ON UTL_DBWS FROM PUBLIC;
+        REVOKE EXECUTE ON UTL_ORAMTS FROM PUBLIC;
+        REVOKE EXECUTE ON UTL_HTTP FROM PUBLIC;
+        REVOKE EXECUTE ON HTTPURITYPE FROM PUBLIC;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.1.1.1', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.1.1.2":
+    title: '5.1.1.2 | Ensure EXECUTE is revoked from PUBLIC on File System Packages'
+    section: 'Public Privileges'
+    description: |
+        As described below, Oracle Database PL/SQL File System packages                 DBMSADVISOR
+        ,                DBMSLOB
+         and                UTLFILE
+          provide PL/SQL APIs to access files on the servers. The user                PUBLIC
+         should not be able to execute these packages.
+        The Oracle database                  DBMSADVISOR
+         package can be used to write files located on the server where the Oracle instance is installed. The user PUBLIC should
+        not be able to execute                  DBMSADVISOR
+        .
+        The Oracle database                  DBMSLOB
+         package provides subprograms that can manipulate and read/write on                  BLOB
+        s,                  CLOB
+        s,                  NCLOB
+        s,                  BFILE
+        s, and temporary                  LOB
+        s. The user                  PUBLIC
+         should not be able to execute                  DBMSLOB
+        .
+        The Oracle database                  UTLFILE
+         package can be used to read/write files located on the server where the Oracle instance is installed. The user
+        PUBLIC
+         should not be able to execute                  UTLFILE
+        .
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke.
+        REVOKE EXECUTE ON DBMS_ADVISOR FROM PUBLIC;
+        REVOKE EXECUTE ON DBMS_LOB FROM PUBLIC;
+        REVOKE EXECUTE ON UTL_FILE FROM PUBLIC;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.1.1.2', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.1.1.3":
+    title: '5.1.1.3 | Ensure EXECUTE is revoked from PUBLIC on Encryption Packages'
+    section: 'Public Privileges'
+    description: |
+        As described below, Oracle Database PL/SQL Encryption packages                 DBMSCRYPTO
+        ,                DBMSOBFUSCATIONTOOLKIT
+         and                DBMSRANDOM
+          provide PL/SQL APIs to perform functions related to cryptography. The                PUBLIC
+         should not be able to execute these packages.
+        The                  DBMSCRYPTO
+         settings provide a toolset that determines the strength of the encryption algorithm used to encrypt application data
+        and is part of the                  SYS
+         schema. The                  DES
+         56bit key,                  3DES
+         168bit key,                  3DES2KEY
+         112bit key,                  AES
+         128/192/256bit keys, and                  RC4
+         are available.
+        The                  DBMSOBFUSCATIONTOOLKIT
+         provides one of the tools that determine the strength of the encryption algorithm used to encrypt application data and
+        is part of the SYS schema. The                  DES
+         56bit key and                  3DES
+         168bit key are the only two types available.
+        The Oracle database                  DBMSRANDOM
+         package is used for generating random numbers but should not be used for cryptographic purposes.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke.
+        REVOKE EXECUTE ON DBMS_CRYPTO FROM PUBLIC;
+        REVOKE EXECUTE ON DBMS_OBFUSCATION_TOOLKIT FROM PUBLIC;
+        REVOKE EXECUTE ON DBMS_RANDOM FROM PUBLIC;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.1.1.3', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.1.1.4":
+    title: '5.1.1.4 | Ensure EXECUTE is revoked from PUBLIC on Java Packages'
+    section: 'Public Privileges'
+    description: |
+        As described below, Oracle Database PL/SQL Java packages                 DBMSJAVA
+         and                DBMSJAVATEST
+          provide APIs to run Java classes or grant Java packages. The user                PUBLIC
+         should not be able to execute these packages.
+        The Oracle database                  DBMSJAVA
+         package can run Java classes e.g. OS commands or grant Java privileges. The user                  PUBLIC
+         should not be able to execute                  DBMSJAVA
+        .
+        The Oracle database                  DBMSJAVATEST
+         package can run Java classes e.g. OS commands or grant Java privileges. The user                  PUBLIC
+         should not be able to execute                  DBMSJAVATEST
+        .
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke.
+        REVOKE EXECUTE ON DBMS_JAVA FROM PUBLIC;
+        REVOKE EXECUTE ON DBMS_JAVA_TEST FROM PUBLIC;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.1.1.4', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.1.1.5":
+    title: '5.1.1.5 | Ensure EXECUTE is revoked from PUBLIC on Job Scheduler Packages'
+    section: 'Public Privileges'
+    description: |
+        As described below, Oracle Database PL/SQL Job Scheduler packages                 DBMSSCHEDULER
+         and                DBMSJOB
+          provide APIs to schedule jobs. The user                PUBLIC
+         should not be able to execute these packages.
+        The Oracle database                  DBMSSCHEDULER
+         package schedules and manages the database and operating system jobs. The user                  PUBLIC
+         should not be able to execute                  DBMSSCHEDULER
+        .
+        The Oracle database                  DBMSJOB
+         package schedules and manages the jobs sent to the job queue and has been superseded by the
+        DBMSSCHEDULER
+         package, even though                  DBMSJOB
+         has been retained for backwards compatibility. The user                  PUBLIC
+         should not be able to execute                  DBMSJOB
+        .
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke.
+        REVOKE EXECUTE ON DBMS_JOB FROM PUBLIC;
+        REVOKE EXECUTE ON DBMS_SCHEDULER FROM PUBLIC;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.1.1.5', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.1.1.6":
+    title: '5.1.1.6 | Ensure EXECUTE is revoked from PUBLIC on SQL Injection Helper Packages'
+    section: 'Public Privileges'
+    description: |
+        As described below, Oracle Database PL/SQL SQL Injection Helper Packages packages                 DBMSSQL
+        ,                DBMSXMLGEN
+        ,                DBMSXMLQUERY
+        ,                DBMSXLMSTORE
+        ,                DBMSXLMSAVE
+         and                DBMSREDACT
+          provide APIs to schedule jobs. The user                PUBLIC
+         should not be able to execute these packages.
+        The Oracle database                  DBMSSQL
+         package is used for running dynamic SQL statements.
+        The                  DBMSXMLGEN
+         package takes an arbitrary SQL query as input, converts it to XML format, and returns the result as a
+        CLOB
+        .
+        The Oracle package                  DBMSXMLQUERY
+         takes an arbitrary SQL query, converts it to XML format, and returns the result. This package is similar to
+        DBMSXMLGEN
+        .
+        The                  DBMSXLMSTORE
+         package provides XML functionality. It accepts a table name and XML as input to perform                  DML
+         operations against the table.
+        The                  DBMSXLMSAVE
+         package provides XML functionality. It accepts a table name and XML as input and then inserts into or updates that
+        table.               The DBMSREDACT package provides an interface to Oracle Data Redaction, which enables you to mask
+        redact data that is returned from queries issued by lowprivileged users or an application.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke.
+        REVOKE EXECUTE ON DBMS_SQL FROM PUBLIC;
+        REVOKE EXECUTE ON DBMS_XMLGEN FROM PUBLIC;
+        REVOKE EXECUTE ON DBMS_XMLQUERY FROM PUBLIC;
+        REVOKE EXECUTE ON DBMS_XMLSAVE FROM PUBLIC;
+        REVOKE EXECUTE ON DBMS_XMLSTORE FROM PUBLIC;
+        REVOKE EXECUTE ON DBMS_AW FROM PUBLIC;
+        REVOKE EXECUTE ON OWA_UTIL FROM PUBLIC;
+        REVOKE EXECUTE ON DBMS_REDACT FROM PUBLIC;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.1.1.6', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.1.1.7":
+    title: '5.1.1.7 | Ensure EXECUTE is revoked from PUBLIC on DBMS CREDENTIAL Package - manual'
+    section: 'Public Privileges'
+    description: |
+        As described below, Oracle Database PL/SQL DBMSCREDENTIAL package  should not be granted to                PUBLIC
+        .
+        Use of the                  DBMSCREDENTIAL
+         package could allow an unauthorized user to add, create, drop, enable and update credentials allowing jobs to run on
+        the operating system.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke. REVOKE EXECUTE ON DBMS_CREDENTIAL FROM PUBLIC;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.1.1.7', 'cis_oracle_database_19c_benchmark']
+    enabled: false
+    properties:
+      match: all
+      rules:
+
+  "5.1.2.1":
+    title: '5.1.2.1 | Ensure EXECUTE is not granted to PUBLIC on Non-default Packages'
+    section: 'Non-Default Privileges'
+    description: |
+        The packages described in this control are not granted to                PUBLIC
+         by default Nondefault packages. These packages should not be granted to                PUBLIC
+        .
+        The Oracle database                  DBMSBACKUPRESTORE
+         package is used for applying PL/SQL commands to the native                  RMAN
+         sequences.
+        The Oracle database                  DBMSFILETRANSFER
+         package allows a user to transfer files from one database server to another.
+        The Oracle database                  DBMSSYSSQL
+        ,                 DBMSREPCATSQLUTL
+        ,                  INITJVMAUX
+        ,                  DBMSAQADMSYS
+        ,                  DBMSSTREAMSRPC
+        ,                  DBMSPRVTAQIM
+        ,                  LTADM
+         and                  DBMSIJOB
+         packages are shipped as undocumented.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke.
+        REVOKE EXECUTE ON DBMS_BACKUP_RESTORE FROM PUBLIC;
+        REVOKE EXECUTE ON DBMS_FILE_TRANSFER FROM PUBLIC;
+        REVOKE EXECUTE ON DBMS_SYS_SQL FROM PUBLIC;
+        REVOKE EXECUTE ON DBMS_REPCAT_SQL_UTL FROM PUBLIC;
+        REVOKE EXECUTE ON INITJVMAUX FROM PUBLIC;
+        REVOKE EXECUTE ON DBMS_AQADM_SYS FROM PUBLIC;
+        REVOKE EXECUTE ON DBMS_STREAMS_RPC FROM PUBLIC;
+        REVOKE EXECUTE ON DBMS_PRVTAQIM FROM PUBLIC;
+        REVOKE EXECUTE ON LTADM FROM PUBLIC;
+        REVOKE EXECUTE ON DBMS_IJOB FROM PUBLIC;
+        REVOKE EXECUTE ON DBMS_PDB_EXEC_SQL FROM PUBLIC;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.1.2.1', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.1.3.1":
+    title: '5.1.3.1 | Ensure ALL Is Revoked from Unauthorized GRANTEE on AUD'
+    section: 'Other Privileges'
+    description: |
+        The Oracle database                SYS.AUD
+         table contains all the audit records for the database of the nonData Manipulation Language DML events, such as
+        ALTER
+        ,                DROP
+        , and                CREATE
+        , and so forth. DML changes need triggerbased audit events to record data alterations. Unauthorized grantees should not
+        have full access to that table.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke. REVOKE ALL ON AUD$ FROM <grantee>;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.1.3.1', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.1.3.2":
+    title: '5.1.3.2 | Ensure ALL Is Revoked from Unauthorized GRANTEE on DBA '
+    section: 'Other Privileges'
+    description: |
+        The Oracle database                DBA
+         views show all information which is relevant to administrative accounts. Unauthorized grantees should not have full
+        access to those views.
+    remediation: |
+        Replace                    <Non-DBA/SYS grantee>
+         in the query below, with the Oracle login(s) or role(s) returned from the associated audit procedure and execute,
+        keeping in mind if this is granted in both container and pluggable database, you must connect to both places to revoke:
+        REVOKE ALL ON <DBA_%> FROM <Non-DBA/SYS grantee>;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.1.3.2', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.1.3.3":
+    title: '5.1.3.3 | Ensure ALL Is Revoked on Sensitive Tables'
+    section: 'Other Privileges'
+    description: |
+        The Oracle database tables listed below may contain sensitive information, and should not be accessible to unauthorized
+        users. USER
+        ,                  USERHISTORY
+        ,                  XSVERIFIERS
+         and                  DEFAULTPWD
+         may contain password hashes.               CDBLOCALADMINAUTH
+         and                  PDBSYNC
+         may contain DDLs.               LINK
+         and                  SCHEDULERCREDENTIAL
+         may contain encrypted passwords.               ENC
+         may contains encryption keys.               HISTGRM
+         and                  HISTHEAD
+         may contain sensitive data.
+    remediation: |
+        Execute applicable SQLs listed below to remediate:
+        REVOKE ALL ON SYS.CDB_LOCAL_ADMINAUTH$ FROM <grantee>;
+        REVOKE ALL ON SYS.DEFAULT_PWD$ FROM <grantee>;
+        REVOKE ALL ON SYS.ENC$ FROM <grantee>;
+        REVOKE ALL ON SYS.HISTGRM$ FROM <grantee>;
+        REVOKE ALL ON SYS.HIST_HEAD$ FROM <grantee>;
+        REVOKE ALL ON SYS.LINK$ FROM <grantee>;
+        REVOKE ALL ON SYS.PDB_SYNC$ FROM <grantee>;
+        REVOKE ALL ON SYS.SCHEDULER$_CREDENTIAL FROM <grantee>;
+        REVOKE ALL ON SYS.USER$ FROM <grantee>;
+        REVOKE ALL ON SYS.USER_HISTORY$ FROM <grantee>;
+        REVOKE ALL ON SYS.XS$VERIFIERS FROM <grantee>;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.1.3.3', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.2.1":
+    title: '5.2.1 | Ensure ANY Is Revoked from Unauthorized GRANTEE'
+    section: 'Excessive System Privileges'
+    description: |
+        The Oracle database              ANY
+         keyword provides the user the capability to alter any item in the catalog of the database. Unauthorized grantees should
+        not have that keyword assigned to them.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke. REVOKE '<ANY Privilege>' FROM <grantee>;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.2.1', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.2.2":
+    title: '5.2.2 | Ensure DBA SYS PRIVS. Is Revoked from Unauthorized GRANTEE with ADMIN OPTION Set to YES'
+    section: 'Excessive System Privileges'
+    description: |
+        The Oracle database              WITHADMIN
+         privilege allows the designated user to grant another user the same privileges. Unauthorized grantees should not have
+        that privilege.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke. REVOKE <privilege> FROM <grantee>;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.2.2', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.2.3":
+    title: '5.2.3 | Ensure EXECUTE ANY PROCEDURE Is Revoked from OUTLN'
+    section: 'Excessive System Privileges'
+    description: |
+        Remove unneeded              EXECUTE ANY PROCEDURE
+         privileges from              OUTLN
+        .
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke. REVOKE EXECUTE ANY PROCEDURE FROM OUTLN;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.2.3', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.2.4":
+    title: '5.2.4 | Ensure EXECUTE ANY PROCEDURE Is Revoked from DBSNMP'
+    section: 'Excessive System Privileges'
+    description: |
+        Remove unneeded              EXECUTE ANY PROCEDURE
+         privileges from              DBSNMP
+        .
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke. REVOKE EXECUTE ANY PROCEDURE FROM DBSNMP;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.2.4', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.2.5":
+    title: '5.2.5 | Ensure SELECT ANY DICTIONARY Is Revoked from Unauthorized GRANTEE'
+    section: 'Excessive System Privileges'
+    description: |
+        The Oracle database              SELECT ANY DICTIONARY
+         privilege allows the designated user to access              SYS
+         schema objects. Unauthorized grantees should not have that privilege.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke. REVOKE SELECT ANY DICTIONARY FROM <grantee>;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.2.5', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.2.6":
+    title: '5.2.6 | Ensure SELECT ANY TABLE Is Revoked from Unauthorized GRANTEE'
+    section: 'Excessive System Privileges'
+    description: |
+        The Oracle database              SELECT ANY TABLE
+         privilege allows the designated user to open any table, except              SYS
+        , to view it. Unauthorized grantees should not have that privilege.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke. REVOKE SELECT ANY TABLE FROM <grantee>;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.2.6', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.2.7":
+    title: '5.2.7 | Ensure AUDIT SYSTEM Is Revoked from Unauthorized GRANTEE'
+    section: 'Excessive System Privileges'
+    description: |
+        The Oracle database              AUDIT SYSTEM
+         privilege allows changes to auditing activities on the system. Unauthorized grantees should not have that privilege.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke. REVOKE AUDIT SYSTEM FROM <grantee>;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.2.7', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.2.8":
+    title: '5.2.8 | Ensure EXEMPT ACCESS POLICY Is Revoked from Unauthorized GRANTEE'
+    section: 'Excessive System Privileges'
+    description: |
+        The Oracle database              EXEMPT ACCESS POLICY
+         keyword provides the user the capability to access all the table rows regardless of rowlevel security lockouts.
+        Unauthorized grantees should not have that keyword assigned to them.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke. REVOKE EXEMPT ACCESS POLICY FROM <grantee>;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.2.8', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.2.9":
+    title: '5.2.9 | Ensure BECOME USER Is Revoked from Unauthorized GRANTEE'
+    section: 'Excessive System Privileges'
+    description: |
+        The Oracle database              BECOME USER
+         privilege allows the designated user to inherit the rights of another user. Unauthorized grantees should not have that
+        privilege.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke. REVOKE BECOME USER FROM <grantee>;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.2.9', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.2.10":
+    title: '5.2.10 | Ensure CREATE PROCEDURE Is Revoked from Unauthorized GRANTEE'
+    section: 'Excessive System Privileges'
+    description: |
+        The Oracle database              CREATE PROCEDURE
+         privilege allows the designated user to create a stored procedure that will fire when given the correct command
+        sequence. Unauthorized grantees should not have that privilege.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke. REVOKE CREATE PROCEDURE FROM <grantee>;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.2.10', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.2.11":
+    title: '5.2.11 | Ensure ALTER SYSTEM Is Revoked from Unauthorized GRANTEE'
+    section: 'Excessive System Privileges'
+    description: |
+        The Oracle database              ALTER SYSTEM
+         privilege allows the designated user to dynamically alter the instances running operations. Unauthorized grantees
+        should not have that privilege.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke. REVOKE ALTER SYSTEM FROM <grantee>;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.2.11', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.2.12":
+    title: '5.2.12 | Ensure CREATE ANY LIBRARY Is Revoked from Unauthorized GRANTEE'
+    section: 'Excessive System Privileges'
+    description: |
+        The Oracle database              CREATE ANY LIBRARY
+         privilege allows the designated user to create objects that are associated to the shared libraries. Unauthorized
+        grantees should not have that privilege.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke. REVOKE CREATE ANY LIBRARY FROM <grantee>;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.2.12', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.2.13":
+    title: '5.2.13 | Ensure CREATE LIBRARY Is Revoked from Unauthorized GRANTEE'
+    section: 'Excessive System Privileges'
+    description: |
+        The Oracle database              CREATE LIBRARY
+         privilege allows the designated user to create objects that are associated to the shared libraries. Unauthorized
+        grantees should not have that privilege.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke. REVOKE CREATE LIBRARY FROM <grantee>;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.2.13', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.2.14":
+    title: '5.2.14 | Ensure GRANT ANY OBJECT PRIVILEGE Is Revoked from Unauthorized GRANTEE'
+    section: 'Excessive System Privileges'
+    description: |
+        The Oracle database              GRANT ANY OBJECT PRIVILEGE
+         keyword provides the grantee the capability to grant access to any single or multiple combinations of objects to any
+        grantee in the catalog of the database. Unauthorized grantees should not have that keyword assigned to them.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke. REVOKE GRANT ANY OBJECT PRIVILEGE FROM <grantee>;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.2.14', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.2.15":
+    title: '5.2.15 | Ensure GRANT ANY ROLE Is Revoked from Unauthorized GRANTEE'
+    section: 'Excessive System Privileges'
+    description: |
+        The Oracle database              GRANT ANY ROLE
+         keyword provides the grantee the capability to grant any single role to any grantee in the catalog of the database.
+        Unauthorized grantees should not have that keyword assigned to them.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke. REVOKE GRANT ANY ROLE FROM <grantee>;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.2.15', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.2.16":
+    title: '5.2.16 | Ensure GRANT ANY PRIVILEGE Is Revoked from Unauthorized GRANTEE'
+    section: 'Excessive System Privileges'
+    description: |
+        The Oracle database              GRANT ANY PRIVILEGE
+         keyword provides the grantee the capability to grant any single privilege to any item in the catalog of the database.
+        Unauthorized grantees should not have that privilege.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke. REVOKE GRANT ANY PRIVILEGE FROM <grantee>;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.2.16', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.3.1":
+    title: '5.3.1 | Ensure SELECT CATALOG ROLE Is Revoked from Unauthorized GRANTEE'
+    section: 'Excessive Role Privileges'
+    description: |
+        The Oracle database              SELECTCATALOGROLE
+         provides              SELECT
+         privileges on all data dictionary views held in the              SYS
+         schema. Unauthorized grantees should not have that role.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke. REVOKE SELECT_CATALOG_ROLE FROM <grantee>;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.3.1', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.3.2":
+    title: '5.3.2 | Ensure EXECUTE CATALOG ROLE Is Revoked from Unauthorized GRANTEE'
+    section: 'Excessive Role Privileges'
+    description: |
+        The Oracle database              EXECUTECATALOGROLE
+         provides              EXECUTE
+         privileges for a number of packages and procedures in the data dictionary in the              SYS
+         schema. Unauthorized grantees should not have that role.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke. REVOKE EXECUTE_CATALOG_ROLE FROM <grantee>;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.3.2', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.3.3":
+    title: '5.3.3 | Ensure DBA Is Revoked from Unauthorized GRANTEE'
+    section: 'Excessive Role Privileges'
+    description: |
+        The Oracle database              DBA
+         role is the default database administrator role provided for the allocation of administrative privileges. Unauthorized
+        grantees should not have that role.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke. REVOKE DBA FROM <grantee>;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.3.3', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "5.3.4":
+    title: '5.3.4 | Ensure AUDIT ADMIN Is Revoked from Unauthorized GRANTEE'
+    section: 'Excessive Role Privileges'
+    description: |
+        The Oracle database              AUDITADMIN
+         enables you to create unified and finegrained audit policies, use the AUDIT and NOAUDIT SQL statements, view audit
+        data, and manage the audit trail administration. Grant this role only to trusted users. Unauthorized grantees should not
+        have this role.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this is granted in both container and
+        pluggable database, you must connect to both places to revoke. REVOKE AUDIT_ADMIN FROM <grantee>;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_5.3.4', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.1.1":
+    title: '6.1.1 | Ensure the USER Audit Option Is Enabled'
+    section: 'Traditional Auditing'
+    description: |
+        The              USER
+         object allows for creating accounts that can interact with the database according to the roles and privileges allotted
+        to the account. It may also own database objects. Enabling the audit option causes  auditing of all activities and
+        requests to create, drop or alter a user, including a user changing their own password. The latter is not audited by
+        audit ALTER USER
+        .
+    remediation: |
+        To remediate this setting, execute the following SQL statement in either the non multi-tenant or container database, it
+        does NOT need run in the pluggable. AUDIT USER;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.1.1', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.1.2":
+    title: '6.1.2 | Ensure the ROLE Audit Option Is Enabled'
+    section: 'Traditional Auditing'
+    description: |
+        The              ROLE
+         object allows for the creation of a set of privileges that can be granted to users or other roles. Enabling the audit
+        option causes auditing of all attempts, successful or not, to create, drop, alter or set roles.
+    remediation: |
+        To remediate this setting, execute the following SQL statement in either the non multi-tenant or container database, it
+        does NOT need run in the pluggable. AUDIT ROLE;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.1.2', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.1.3":
+    title: '6.1.3 | Ensure the SYSTEM GRANT Audit Option Is Enabled'
+    section: 'Traditional Auditing'
+    description: |
+        Enabling the audit option for the              SYSTEM GRANT
+         object causes auditing of any attempt, successful or not, to grant or revoke any system privilege or role, regardless
+        of privilege held by the user attempting the operation.
+    remediation: |
+        To remediate this setting, execute the following SQL statement in either the non multi-tenant or container database, it
+        does NOT need run in the pluggable. AUDIT SYSTEM GRANT;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.1.3', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.1.4":
+    title: '6.1.4 | Ensure the PROFILE Audit Option Is Enabled'
+    section: 'Traditional Auditing'
+    description: |
+        The              PROFILE
+         object allows for the creation of a set of database resource limits that can be assigned to a user, so that that user
+        cannot exceed those resource limitations. Enabling the audit option causes auditing of all attempts, successful or not,
+        to create, drop or alter any profile.
+    remediation: |
+        To remediate this setting, execute the following SQL statement in either the non multi-tenant or container database, it
+        does NOT need run in the pluggable. AUDIT PROFILE;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.1.4', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.1.5":
+    title: '6.1.5 | Ensure the DATABASE LINK Audit Option Is Enabled'
+    section: 'Traditional Auditing'
+    description: |
+        Enabling the audit option for the DATABASE LINK object causes all activities on database links to be audited.
+    remediation: |
+        To remediate this setting, execute the following SQL statement in either the non multi-tenant or container database, it
+        does NOT need run in the pluggable. AUDIT DATABASE LINK;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.1.5', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.1.6":
+    title: '6.1.6 | Ensure the PUBLIC DATABASE LINK Audit Option Is Enabled'
+    section: 'Traditional Auditing'
+    description: |
+        The              PUBLIC DATABASE LINK
+         object allows for the creation of a public link for an applicationbased user to access the database for
+        connections/session creation. Enabling the audit option causes all user activities involving the creation, alteration,
+        or dropping of public links to be audited.
+    remediation: |
+        To remediate this setting, execute the following SQL statement in either the non multi-tenant or container database, it
+        does NOT need run in the pluggable. AUDIT PUBLIC DATABASE LINK;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.1.6', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.1.7":
+    title: '6.1.7 | Ensure the PUBLIC SYNONYM Audit Option Is Enabled'
+    section: 'Traditional Auditing'
+    description: |
+        The              PUBLIC SYNONYM
+         object allows for the creation of an alternate description of an object. Public synonyms are accessible by all users
+        that have the appropriate privileges to the underlying object. Enabling the audit option causes all user activities
+        involving the creation or dropping of public synonyms to be audited.
+    remediation: |
+        To remediate this setting, execute the following SQL statement in either the non multi-tenant or container database, it
+        does NOT need run in the pluggable. AUDIT PUBLIC SYNONYM;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.1.7', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.1.8":
+    title: '6.1.8 | Ensure the SYNONYM Audit Option Is Enabled'
+    section: 'Traditional Auditing'
+    description: |
+        The              SYNONYM
+         operation allows for the creation of an alternative name for a database object such as a Java class schema object,
+        materialized view, operator, package, procedure, sequence, stored function, table, view, userdefined object type, or
+        even another synonym. This synonym puts a dependency on its target and is rendered invalid if the target object is
+        changed/dropped. Enabling the audit option causes all user activities involving the creation or dropping of synonyms to
+        be audited.
+    remediation: |
+        To remediate this setting, execute the following SQL statement in either the non multi-tenant or container database, it
+        does NOT need run in the pluggable. AUDIT SYNONYM;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.1.8', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.1.9":
+    title: '6.1.9 | Ensure the DIRECTORY Audit Option Is Enabled'
+    section: 'Traditional Auditing'
+    description: |
+        The              DIRECTORY
+         object allows for the creation of a directory object that specifies an alias for a directory on the server file system,
+        where the external binary file              LOBs
+                      BFILEs
+        / table data are located. Enabling this audit option causes all user activities involving the creation or dropping of a
+        directory alias to be audited.
+    remediation: |
+        To remediate this setting, execute the following SQL statement in either the non multi-tenant or container database, it
+        does NOT need run in the pluggable. AUDIT DIRECTORY;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.1.9', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.1.10":
+    title: '6.1.10 | Ensure the SELECT ANY DICTIONARY Audit Option Is Enabled'
+    section: 'Traditional Auditing'
+    description: |
+        The              SELECT ANY DICTIONARY
+         capability allows the user to view the definitions of all schema objects in the database. Enabling the audit option
+        causes all user activities involving this capability to be audited.
+    remediation: |
+        To remediate this setting, execute the following SQL statement in either the non multi-tenant or container database, it
+        does NOT need run in the pluggable. AUDIT SELECT ANY DICTIONARY;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.1.10', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.1.11":
+    title: '6.1.11 | Ensure the GRANT ANY OBJECT PRIVILEGE Audit Option Is Enabled'
+    section: 'Traditional Auditing'
+    description: |
+        GRANT ANY OBJECT PRIVILEGE
+         allows the user to grant or revoke any object privilege, which includes privileges on tables, directories, mining
+        models, etc. Enabling this audit option causes auditing of all uses of that privilege.
+    remediation: |
+        To remediate this setting, execute the following SQL statement, keeping in mind if this needs to be done in both
+        container and pluggable database, you must connect to both places to do the audit statement. AUDIT GRANT ANY OBJECT
+        PRIVILEGE;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.1.11', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.1.12":
+    title: '6.1.12 | Ensure the GRANT ANY PRIVILEGE Audit Option Is Enabled'
+    section: 'Traditional Auditing'
+    description: |
+        GRANT ANY PRIVILEGE
+         allows a user to grant any system privilege, including the most powerful privileges typically available only to
+        administrators  to change the security infrastructure, to drop/add/modify users and more.
+    remediation: |
+        To remediate this setting, execute the following SQL statement in either the non multi-tenant or container database, it
+        does NOT need run in the pluggable. AUDIT GRANT ANY PRIVILEGE;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.1.12', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.1.13":
+    title: '6.1.13 | Ensure the DROP ANY PROCEDURE Audit Option Is Enabled'
+    section: 'Traditional Auditing'
+    description: |
+        The              AUDIT DROP ANY PROCEDURE
+         command is auditing the dropping of procedures. Enabling the option causes auditing of all such activities.
+    remediation: |
+        To remediate this setting, execute the following SQL statement in either the non multi-tenant or container database, it
+        does NOT need run in the pluggable. AUDIT DROP ANY PROCEDURE;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.1.13', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.1.14":
+    title: '6.1.14 | Ensure the ALL Audit Option on SYS.AUD Is Enabled'
+    section: 'Traditional Auditing'
+    description: |
+        The logging of attempts to alter the audit trail in the              SYS.AUD
+         table open for read/update/delete/view will provide a record of any activities that may indicate unauthorized attempts
+        to access the audit trail. Enabling the audit option will cause these activities to be audited.
+    remediation: |
+        To remediate this setting, execute the following SQL statement in either the non multi-tenant or container database, it
+        does NOT need run in the pluggable. AUDIT ALL ON SYS.AUD$ BY ACCESS;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.1.14', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.1.15":
+    title: '6.1.15 | Ensure the PROCEDURE Audit Option Is Enabled'
+    section: 'Traditional Auditing'
+    description: |
+        In this statement audit,              PROCEDURE
+         means any procedure, function, package or library. Enabling this audit option causes any attempt, successful or not, to
+        create or drop any of these types of objects to be audited, regardless of privilege or lack thereof. Java schema objects
+        sources, classes, and resources are considered the same as procedures for the purposes of auditing SQL statements.
+    remediation: |
+        To remediate this setting, execute the following SQL statement in either the non multi-tenant or container database, it
+        does NOT need run in the pluggable. AUDIT PROCEDURE;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.1.15', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.1.16":
+    title: '6.1.16 | Ensure the ALTER SYSTEM Audit Option Is Enabled'
+    section: 'Traditional Auditing'
+    description: |
+        ALTER SYSTEM
+         allows one to change instance settings, including security settings and auditing options. Additionally,
+        ALTER SYSTEM
+         can be used to run operating system commands using undocumented Oracle functionality. Enabling the audit option will
+        audit all attempts to perform              ALTER SYSTEM
+        , whether successful or not and regardless of whether or not the              ALTER SYSTEM
+         privilege is held by the user attempting the action.
+    remediation: |
+        To remediate this setting, execute the following SQL statement in either the non multi-tenant or container database, it
+        does NOT need run in the pluggable. AUDIT ALTER SYSTEM;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.1.16', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.1.17":
+    title: '6.1.17 | Ensure the TRIGGER Audit Option Is Enabled'
+    section: 'Traditional Auditing'
+    description: |
+        A              TRIGGER
+         may be used to modify              DML
+         actions or invoke other recursive actions when some types of userinitiated actions occur. Enabling this audit option
+        will cause auditing of any attempt, successful or not, to create, drop, enable or disable any schema trigger in any
+        schema regardless of privilege or lack thereof. For enabling and disabling a trigger, it covers both              ALTER
+        TRIGGER
+         and              ALTER TABLE
+        .
+    remediation: |
+        To remediate this setting, execute the following SQL statement in either the non multi-tenant or container database, it
+        does NOT need run in the pluggable. AUDIT TRIGGER;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.1.17', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.1.18":
+    title: '6.1.18 | Ensure the CREATE SESSION Audit Option Is Enabled'
+    section: 'Traditional Auditing'
+    description: |
+        Enabling this audit option will cause auditing of all attempts to connect to the database, whether successful or not, as
+        well as audit session disconnects/logoffs. The commands to audit              SESSION
+        ,              CONNECT
+         or              CREATE SESSION
+         all accomplish the same thing  they initiate statement auditing of the connect statement used to create a database
+        session.
+    remediation: |
+        To remediate this setting, execute the following SQL statement in either the non multi-tenant or container database, it
+        does NOT need run in the pluggable. AUDIT SESSION;
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.1.18', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.1":
+    title: '6.2.1 | Ensure the CREATE USER Action Audit Is Enabled'
+    section: 'Unified Auditing'
+    description: |
+        The              CREATE USER
+         statement is used to create Oracle database accounts and assign database properties to them. Enabling this unified
+        action audit causes logging of all              CREATE USER
+         statements, whether successful or unsuccessful, issued by the users regardless of the privileges held by the users to
+        issue such statements.
+    remediation: |
+        Execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        ACTIONS
+        CREATE USER;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.1', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.2":
+    title: '6.2.2 | Ensure the ALTER USER Action Audit Is Enabled'
+    section: 'Unified Auditing'
+    description: |
+        The              ALTER USER
+         statement is used to change database users password, lock accounts, and expire passwords. In addition, this statement
+        is used to change database properties of user accounts such as database profiles, default and temporary tablespaces, and
+        tablespace quotas. This unified audit action enables logging of all              ALTER USER
+         statements, whether successful or unsuccessful, issued by the users regardless of the privileges held by the users to
+        issue such statements.
+    remediation: |
+        Execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        ACTIONS
+        ALTER USER;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.2', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.3":
+    title: '6.2.3 | Ensure the DROP USER Audit Option Is Enabled'
+    section: 'Unified Auditing'
+    description: |
+        The              DROP USER
+         statement is used to drop Oracle database accounts and schemas associated with them. Enabling this unified action audit
+        enables logging of all              DROP USER
+         statements, whether successful or unsuccessful, issued by the users regardless of the privileges held by the users to
+        issue such statements.
+    remediation: |
+        Execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        ACTIONS
+        DROP USER;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.3', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.4":
+    title: '6.2.4 | Ensure the CREATE ROLE Action Audit Is Enabled'
+    section: 'Unified Auditing'
+    description: |
+        An Oracle database role is a collection or set of privileges that can be granted to users or other roles. Roles may
+        include system privileges, object privileges or other roles. Enabling this unified audit action enables logging of all
+        CREATE ROLE
+         statements, whether successful or unsuccessful, issued by the users regardless of the privileges held by the users to
+        issue such statements.
+    remediation: |
+        Execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        ACTIONS
+        CREATE ROLE;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.4', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.5":
+    title: '6.2.5 | Ensure the ALTER ROLE Action Audit Is Enabled'
+    section: 'Unified Auditing'
+    description: |
+        An Oracle database role is a collection or set of privileges that can be granted to users or other roles. Roles may
+        include system privileges, object privileges or other roles. The              ALTER ROLE
+         statement is used to change the authorization needed to enable a role. Enabling this unified action audit causes
+        logging of all              ALTER ROLE
+         statements, whether successful or unsuccessful, issued by the users regardless of the privileges held by the users to
+        issue such statements.
+    remediation: |
+        Execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        ACTIONS
+        ALTER ROLE;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.5', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.6":
+    title: '6.2.6 | Ensure the DROP ROLE Action Audit Is Enabled'
+    section: 'Unified Auditing'
+    description: |
+        An Oracle database role is a collection or set of privileges that can be granted to users or other roles. Roles may
+        include system privileges, object privileges or other roles. Enabling this unified audit action enables logging of all
+        DROP ROLE
+         statements, successful or unsuccessful, issued by the users regardless of the privileges held by the users to issue
+        such statements.
+    remediation: |
+        Execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        ACTIONS
+        DROP ROLE;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.6', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.7":
+    title: '6.2.7 | Ensure the GRANT Action Audit Is Enabled'
+    section: 'Unified Auditing'
+    description: |
+        GRANT
+         statements are used to grant privileges to Oracle database users and roles, including the most powerful privileges and
+        roles typically available to the database administrators. Enabling this unified action audit enables logging of all
+        GRANT
+         statements, whether successful or unsuccessful, issued by the users regardless of the privileges held by the users to
+        issue such statements.
+    remediation: |
+        Execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        ACTIONS
+        GRANT;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.7', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.8":
+    title: '6.2.8 | Ensure the REVOKE Action Audit Is Enabled'
+    section: 'Unified Auditing'
+    description: |
+        REVOKE
+         statements are used to revoke privileges from Oracle database users and roles. Enabling this unified action audit
+        enables logging of all              REVOKE
+         statements, successful or unsuccessful, issued by the users regardless of the privileges held by the users to issue
+        such statements.
+    remediation: |
+        Execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        ACTIONS
+        REVOKE;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.8', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.9":
+    title: '6.2.9 | Ensure the CREATE PROFILE Action Audit Is Enabled'
+    section: 'Unified Auditing'
+    description: |
+        Oracle database profiles are used to enforce resource usage limits and implement password policies such as password
+        complexity rules and reuse restrictions. Enabling this unified action audit enables logging of all              CREATE
+        PROFILE
+         statements, whether successful or unsuccessful, issued by the users regardless of the privileges held by the users to
+        issue such statements.
+    remediation: |
+        Execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        ACTIONS
+        CREATE PROFILE;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.9', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.10":
+    title: '6.2.10 | Ensure the ALTER PROFILE Action Audit Is Enabled'
+    section: 'Unified Auditing'
+    description: |
+        Oracle database profiles are used to enforce resource usage limits and implement password policies such as password
+        complexity rules and reuse restrictions. Enabling this unified action audit enables logging of all              ALTER
+        PROFILE
+         statements, whether successful or unsuccessful, issued by the users regardless of the privileges held by the users to
+        issue such statements.
+    remediation: |
+        Execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        ACTIONS
+        ALTER PROFILE;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.10', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.11":
+    title: '6.2.11 | Ensure the DROP PROFILE Action Audit Is Enabled'
+    section: 'Unified Auditing'
+    description: |
+        Oracle database profiles are used to enforce resource usage limits and implement password policies such as password
+        complexity rules and reuse restrictions. Enabling this unified action audit enables logging of all              DROP
+        PROFILE
+         statements, whether successful or unsuccessful, issued by the users regardless of the privileges held by the users to
+        issue such statements.
+    remediation: |
+        Execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        ACTIONS
+        DROP PROFILE;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.11', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.12":
+    title: '6.2.12 | Ensure the CREATE DATABASE LINK Action Audit Is Enabled'
+    section: 'Unified Auditing'
+    description: |
+        Oracle database links are used to establish databasetodatabase connections to other databases. These connections are
+        available without further authentication once the link is established. Enabling this unified action audit causes logging
+        of all              CREATE DATABASE
+         and              CREATE PUBLIC DATABASE
+         statements, whether successful or unsuccessful, issued by the users regardless of the privileges held by the users to
+        issue such statements.
+    remediation: |
+        Execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        ACTIONS
+        CREATE DATABASE LINK;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.12', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.13":
+    title: '6.2.13 | Ensure the ALTER DATABASE LINK Action Audit Is Enabled'
+    section: 'Unified Auditing'
+    description: |
+        Oracle database links are used to establish databasetodatabase connections to other databases. These connections are
+        always available without further authentication once the link is established. Enabling this unified action audit causes
+        logging of all              ALTER DATABASE
+         and              ALTER PUBLIC DATABASE
+         statements, whether successful or unsuccessful, issued by the users regardless of the privileges held by the users to
+        issue such statements.
+    remediation: |
+        Execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        ACTIONS
+        ALTER DATABASE LINK;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.13', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.14":
+    title: '6.2.14 | Ensure the DROP DATABASE LINK Action Audit Is Enabled'
+    section: 'Unified Auditing'
+    description: |
+        Oracle database links are used to establish databasetodatabase connections to other databases. These connections are
+        always available without further authentication once the link is established. Enabling this unified action audit causes
+        logging of all              DROP DATABASE
+         and              DROP PUBLIC DATABASE
+        , whether successful or unsuccessful, statements issued by the users regardless of the privileges held by the users to
+        issue such statements.
+    remediation: |
+        Execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        ACTIONS
+        DROP DATABASE LINK;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.14', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.15":
+    title: '6.2.15 | Ensure the CREATE SYNONYM Action Audit Is Enabled'
+    section: 'Unified Auditing'
+    description: |
+        An Oracle database synonym is used to create an alternative name for a database object such as table, view, procedure,
+        java object or even another synonym, etc. Enabling this unified action audit causes logging of all              CREATE
+        SYNONYM
+         and              CREATE PUBLIC SYNONYM
+         statements, whether successful or unsuccessful, issued by the users regardless of the privileges held by the users to
+        issue such statements.
+    remediation: |
+        Execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        ACTIONS
+        CREATE SYNONYM;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.15', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.16":
+    title: '6.2.16 | Ensure the ALTER SYNONYM Action Audit Is Enabled'
+    section: 'Unified Auditing'
+    description: |
+        An Oracle database synonym is used to create an alternative name for a database object such as table, view, procedure,
+        or java object, or even another synonym. Enabling this unified action audit causes logging of all              ALTER
+        SYNONYM
+         and              ALTER PUBLIC SYNONYM
+         statements, whether successful or unsuccessful, issued by the users regardless of the privileges held by the users to
+        issue such statements.
+    remediation: |
+        Execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        ACTIONS
+        ALTER SYNONYM;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.16', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.17":
+    title: '6.2.17 | Ensure the DROP SYNONYM Action Audit Is Enabled'
+    section: 'Unified Auditing'
+    description: |
+        An Oracle database synonym is used to create an alternative name for a database object such as table, view, procedure,
+        or java object, or even another synonym. Enabling his unified action audit causes logging of all              DROP
+        SYNONYM
+         and              DROP PUBLIC SYNONYM
+         statements, whether successful or unsuccessful, issued by the users regardless of the privileges held by the users to
+        issue such statements.
+    remediation: |
+        Execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        ACTIONS
+        DROP SYNONYM;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.17', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.18":
+    title: '6.2.18 | Ensure the SELECT ANY DICTIONARY Privilege Audit Is Enabled'
+    section: 'Unified Auditing'
+    description: |
+        The              SELECT ANY DICTIONARY
+         system privilege allows the user to view the definition of all schema objects in the database. It grants
+        SELECT
+         privileges on the data dictionary objects to the grantees, including              SELECT
+        on              DBA
+         views,              V
+         views,              X
+         views and underlying              SYS
+         tables such as              TAB
+         and              OBJ
+        . This privilege also allows grantees to create stored objects such as procedures, packages and views on the underlying
+        data dictionary objects. Please note that this privilege does not grant              SELECT
+         on tables with password hashes such as              USER
+        ,              DEFAULTPWD
+        ,              LINK
+        , and              USERHISTORY
+        . Enabling this audit causes logging of activities that exercise this privilege.
+    remediation: |
+        Execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        PRIVILEGES
+        SELECT ANY DICTIONARY;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.18', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.19":
+    title: '6.2.19 | Ensure the AUDSYS.AUDUNIFIED Access Audit Is Enabled'
+    section: 'Unified Auditing'
+    description: |
+        The              AUDSYS.AUDUNIFIED
+         holds audit trail records generated by the database. Enabling this audit action causes logging of all access attempts
+        to the              AUDSYS.AUDUNIFIED
+        , whether successful or unsuccessful, regardless of the privileges held by the users to issue such statements.
+    remediation: |
+        For Oracle 12.2 and above, execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        ACTIONS
+        ALL on AUDSYS.AUD$UNIFIED;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.19', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.20":
+    title: '6.2.20 | Ensure the CREATE PROCEDUREFUNCTIONPACKAGEPACKAGE BODY Action Audit Is Enabled'
+    section: 'Unified Auditing'
+    description: |
+        Oracle database procedures, function, packages, and package bodies, which are stored within the database, are created to
+        perform business functions and access database as defined by PL/SQL code and SQL statements contained within these
+        objects. Enabling this unified action audit causes logging of all              CREATE PROCEDURE
+        ,              CREATE FUNCTION
+        ,              CREATE PACKAGE
+         and              CREATE PACKAGE BODY
+         statements, successful or unsuccessful, statements issued by the users regardless of the privileges held by the users
+        to issue such statements.
+    remediation: |
+        Execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        ACTIONS
+        CREATE PROCEDURE,
+        CREATE FUNCTION,
+        CREATE PACKAGE,
+        CREATE PACKAGE BODY;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.20', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.21":
+    title: '6.2.21 | Ensure the ALTER PROCEDUREFUNCTIONPACKAGEPACKAGE BODY Action Audit Is Enabled'
+    section: 'Unified Auditing'
+    description: |
+        Oracle database procedures, functions, packages, and package bodies, which are stored within the database, are created
+        to carry out business functions and access database as defined by PL/SQL code and SQL statements contained within these
+        objects. Enabling this unified action audit causes logging of all              ALTER PROCEDURE
+        ,              ALTER FUNCTION
+        ,              ALTER PACKAGE
+         and              ALTER PACKAGE BODY
+         statements, successful or unsuccessful, issued by the users regardless of the privileges held by the users to issue
+        such statements.
+    remediation: |
+        Execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        ACTIONS
+        ALTER PROCEDURE,
+        ALTER FUNCTION,
+        ALTER PACKAGE,
+        ALTER PACKAGE BODY;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.21', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.22":
+    title: '6.2.22 | Ensure the DROP PROCEDUREFUNCTIONPACKAGEPACKAGE BODY Action Audit Is Enabled'
+    section: 'Unified Auditing'
+    description: |
+        Oracle database procedures, functions, packages, and package bodies, which are stored within the database, are created
+        to carry out business functions and access database as defined by PL/SQL code and SQL statements contained within these
+        objects. Enabling this unified action audit causes logging of all              DROP PROCEDURE
+        ,              DROP FUNCTION
+        ,              DROP PACKAGE
+         or              DROP PACKAGE BODY
+         statements, successful or unsuccessful, issued by the users regardless of the privileges held by the users to issue
+        such statements.
+    remediation: |
+        Execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        ACTIONS
+        DROP PROCEDURE,
+        DROP FUNCTION,
+        DROP PACKAGE,
+        DROP PACKAGE BODY;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.22', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.23":
+    title: '6.2.23 | Ensure the ALTER SYSTEM Action Audit is Enabled'
+    section: 'Unified Auditing'
+    description: |
+        The              ALTER SYSTEM
+         privilege allows the user to change instance settings which could impact security posture, performance or normal
+        operation of the database. Additionally, the              ALTER SYSTEM
+         privilege may be used to run operating system commands using undocumented Oracle functionality. Enabling this unified
+        audit action causes logging of activities that involve the exercise of this privilege, whether successful or
+        unsuccessful, issued by the users regardless of the privileges held by the users to issue such statements.
+    remediation: |
+        Execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        ACTIONS
+        ALTER SYSTEM;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.23', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.24":
+    title: '6.2.24 | Ensure the CREATE TRIGGER Action Audit Is Enabled'
+    section: 'Unified Auditing'
+    description: |
+        Oracle database triggers are executed automatically when specified conditions on the underlying objects occur. Trigger
+        bodies contain the code, quite often to perform data validation, ensure data integrity/security or enforce critical
+        constraints on allowable actions on data. Enabling this unified audit causes logging of all              CREATE TRIGGER
+         statements, whether successful or unsuccessful, issued by the users regardless of the privileges held by the users to
+        issue such statements.
+    remediation: |
+        Execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        ACTIONS
+        CREATE TRIGGER;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.24', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.25":
+    title: '6.2.25 | Ensure the  ALTER TRIGGER Action Audit IS Enabled'
+    section: 'Unified Auditing'
+    description: |
+        Oracle database triggers are executed automatically when specified conditions on the underlying objects occur. Trigger
+        bodies contain the code, quite often to perform data validation, ensure data integrity/security or enforce critical
+        constraints on allowable actions on data. Enabling this unified audit causes logging of all              ALTER TRIGGER
+         statements, whether successful or unsuccessful, issued by the users regardless of the privileges held by the users to
+        issue such statements.
+    remediation: |
+        Execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        ACTIONS
+        ALTER TRIGGER;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.25', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.26":
+    title: '6.2.26 | Ensure the DROP TRIGGER Action Audit Is Enabled'
+    section: 'Unified Auditing'
+    description: |
+        Oracle database triggers are executed automatically when specified conditions on the underlying objects occur. Trigger
+        bodies contain the code, quite often to perform data validation, ensure data integrity/security or enforce critical
+        constraints on allowable actions on data. Enabling this unified audit causes logging of all              DROP TRIGGER
+         statements, whether successful or unsuccessful, issued by the users regardless of the privileges held by the users to
+        issue such statements.
+    remediation: |
+        Execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        ACTIONS
+        DROP TRIGGER;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.26', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'
+
+  "6.2.27":
+    title: '6.2.27 | Ensure the LOGON AND LOGOFF Actions Audit Is Enabled'
+    section: 'Unified Auditing'
+    description: |
+        Oracle database users log on to the database to perform their work. Enabling this unified audit causes logging of all
+        LOGON
+         actions, whether successful or unsuccessful, issued by the users regardless of the privileges held by the users to log
+        into the database. In addition,              LOGOFF
+         action audit captures logoff activities. This audit action also captures logon/logoff to the open database by
+        SYSDBA
+         and              SYSOPER
+        .
+    remediation: |
+        Execute the following SQL statement to remediate this setting.
+        ALTER AUDIT POLICY CIS_UNIFIED_AUDIT_POLICY
+        ADD
+        ACTIONS
+        LOGON,
+        LOGOFF;
+                       Note:
+         If you do not have                  CIS_UNIFIED_AUDIT_POLICY
+        , please create one using the                  CREATE AUDIT POLICY
+         statement.
+    type: Undefined
+    impact: '1.0'
+    tags: ['cis_oracle_database_19c_benchmark', 'rule_6.2.27', 'cis_oracle_database_19c_benchmark']
+    enabled: true
+    properties:
+      match: all
+      rules:
+        - checks:
+            - name: Undefined
+              rule: 'Undefined'

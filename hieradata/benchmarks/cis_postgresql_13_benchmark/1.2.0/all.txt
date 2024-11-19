@@ -1,0 +1,71 @@
+1.1 - Ensure packages are obtained from authorized repositories
+1.2 - Install only required packages
+1.3 - Ensure systemd Service Files Are Enabled
+1.4 - Ensure Data Cluster Initialized Successfully
+1.5 - Ensure the Latest Security Patches are Applied
+1.6 - Verify That PGPASSWORD is Not Set in Users Profiles
+1.7 - Verify That the PGPASSWORD Environment Variable is Not in Use
+2.1 - Ensure the file permissions mask is correct
+2.2 - Ensure extension directory has appropriate ownership and permissions
+2.3 - Disable PostgreSQL Command History
+2.4 - Ensure Passwords are Not Stored in the service file
+3.2 - Ensure the PostgreSQL Audit Extension pgAudit is enabled
+3.1.2 - Ensure the log destinations are set correctly
+3.1.3 - Ensure the logging collector is enabled
+3.1.4 - Ensure the log file destination directory is set correctly
+3.1.5 - Ensure the filename pattern for log files is set correctly
+3.1.6 - Ensure the log file permissions are set correctly
+3.1.7 - Ensure log truncate on rotation is enabled
+3.1.8 - Ensure the maximum log file lifetime is set correctly
+3.1.9 - Ensure the maximum log file size is set correctly
+3.1.10 - Ensure the correct syslog facility is selected
+3.1.11 - Ensure syslog messages are not suppressed
+3.1.12 - Ensure syslog messages are not lost due to size
+3.1.13 - Ensure the program name for PostgreSQL syslog messages is correct
+3.1.14 - Ensure the correct messages are written to the server log
+3.1.15 - Ensure the correct SQL statements generating errors are recorded
+3.1.16 - Ensure debug print parse is disabled
+3.1.17 - Ensure debug print rewritten is disabled
+3.1.18 - Ensure debug print plan is disabled
+3.1.19 - Ensure debug pretty print is enabled
+3.1.20 - Ensure log connections is enabled
+3.1.21 - Ensure log disconnections is enabled
+3.1.22 - Ensure log error verbosity is set correctly
+3.1.23 - Ensure log hostname is set correctly
+3.1.24 - Ensure log line prefix is set correctly
+3.1.25 - Ensure log statement is set correctly
+3.1.26 - Ensure log timezone is set correctly
+4.1 - Ensure Interactive Login is Disabled
+4.2 - Ensure sudo is configured correctly
+4.3 - Ensure excessive administrative privileges are revoked
+4.4 - Lock Out Accounts if Not Currently in Use
+4.5 - Ensure excessive function privileges are revoked
+4.6 - Ensure excessive DML privileges are revoked
+4.7 - Ensure Row Level Security RLS is configured correctly
+4.8 - Ensure the set user extension is installed
+4.9 - Make use of predefined roles
+5.1 - Do Not Specify Passwords in the Command Line
+5.2 - Ensure PostgreSQL is Bound to an IP Address
+5.3 - Ensure login via local UNIX Domain Socket is configured correctly
+5.4 - Ensure login via host TCPIP Socket is configured correctly
+5.5 - Ensure per-account connection limits are used
+5.6 - Ensure Password Complexity is configured
+6.1 - Understanding attack vectors and runtime parameters
+6.2 - Ensure backend runtime parameters are configured correctly
+6.3 - Ensure Postmaster Runtime Parameters are Configured
+6.4 - Ensure SIGHUP Runtime Parameters are Configured
+6.5 - Ensure Superuser Runtime Parameters are Configured
+6.6 - Ensure User Runtime Parameters are Configured
+6.7 - Ensure FIPS 140-2 OpenSSL Cryptography Is Used
+6.8 - Ensure TLS is enabled and configured correctly
+6.9 - Ensure the TLSv1.0 and TLSv1.1 Protocols are Disabled
+6.10 - Ensure Weak SSLTLS Ciphers Are Disabled
+6.11 - Ensure the pgcrypto extension is installed and configured correctly
+7.1 - Ensure a replication-only user is created and used for streaming replication
+7.2 - Ensure logging of replication commands is configured
+7.3 - Ensure base backups are configured and functional
+7.4 - Ensure WAL archiving is configured and functional
+7.5 - Ensure streaming replication parameters are configured correctly
+8.1 - Ensure PostgreSQL subdirectory locations are outside the data cluster
+8.2 - Ensure the backup and restore tool pgBackRest is installed and configured
+8.3 - Ensure miscellaneous configuration settings are correct

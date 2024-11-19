@@ -1,0 +1,45 @@
+#TRUSTED 1a28a5d68398ab82fce05867f17547700d10fea3cfbfa485873637ca2381f697b7a68bacd414abb7786e7afa0774fd9b15f7bd349167c29420e06b1480c2dd0432e8a5e392e5ca09fe02889cc2c2d1a4a098e5a52e52df4b8e0434850a9e47b7c989fe95e7e17e7c4fe091055466f3b8a47824b59ac2136c36fd03ad57d8fc9b538a352743a3789b1b942983002d61b399a3fed9680b7dcdfb155c698e12a6c84facea4db5004cb9b3283624463cc3bb81a221e96a90dd95a373235184d3e189dbd94b15a4849a3db0272808bb04e2742a6dffc270368aa35fecbf901855338deec42dac0952b6b5da4dfefd202a2e3a6debb1af8503abf1c8925f8d9785b2d00b39dcf7bbe83aaee277f3195a0cbe9aa959ee9ee8a2f30aa9485690e24604567a3bf78317fcc4f42be1d0a96225d1a5b79b39b2dafe596fc4aacdff2b8e1e6b9a5c7e776cbf65eec0de03e036eb6d91dfd12360bbe619f8cbd63f0674bb407bd266f43c5b72638d8618a379cc90f2af7c36cc86a2a20e8674a0a600781fccb078e835ab7efb2205876ecd4454b76e511ae542dfd53db0b9943fbfaae82df7b9a0575dd40a8e1d3a21b2166aab818e657925ca44a73ac6bb1fa642f8f283ffebf79d1f3af0c45f32bc6ff20cfca7557719d5e059e663f1f42c7894d0225e057a165bfe4efbbd8df6160bc4952ba187899a91ecf1ee3bbdabbac92f2d80c6272e
+#TRUST-RSA-SHA256 544c410909c6a6814b9a9309483d59ca365f016506c3de279bd98fbde97cbbdfb864a653184dc7b5b9eb18fe1d75f04c447be35548db4952cbbd3cb8703459af8c428686122ba2abb259e122ef3c64ac9045815e7014f03e1efea4183bbef82269dfe8c08f77ed7248c66e4efcffb2c8d5334e5539614af3f1febd21144a2cc3294c74ccccd851d43d13bf3fb74501c0c34461944727e8e05b65b169817e5f1a921b042d6bbd7c40e3f2dcdffb94d0d74cdf68d69f624428b75603baefd3ff97d2a1b416c855e2a8260e3b0a7e3460dfe1343ec7bf46970578ebd3fe34fd8a622eeb9645d270979f1672981a3d080a687193a1a000048a322631e190a0475b77f19af400c5ff6b8cb3bfbfefdae55a772753b9b83fc137920c64f8e83288d1c30101a897a9f7db28f3879806a3ef8941f08888a4a1f1ce6dcfefd1ad82404a090c7cfe3491e2363fadcb9ecd63285e69e31103e92910c7cb04a4ede1fa14f4a0398b2cba90e7bb070b736739b848b9c8681db11b7cee1330cb84ef8009e3040b3f881144bad5837c1098f6bc58e611015611e2ddf6f7949b5c13879b4bd9a6824c5698ca61c4b38bfefebe385f7f2cb4f25cf5a4f5851e6041a52191550847f99a4b74100b909bdd953055021b61a4a9931940a11f0db9f85a6ebc6df018e73d4407877c7714165526c1db98a9273c371a429f7ad8bc0d385f2c97bb5b059e42
+#
+# This script is Copyright (C) 2004-2023 and is owned by Tenable, Inc. or an Affiliate thereof.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.9 $
+# $Date: 2023/03/07 $
+#
+# This .audit file searches the first 50k bytes of all text, Word, Excel,
+# and log files for evidence of a SWIFT-format banking wire transfer.
+# This .audit file should be used for exact matches of specific banking
+# numbers. For a quicker, but generic match, do not use this file but
+# use the content_SWIFT_GENERIC_banking_wire_transfer.audit file.
+#
+#<ui_metadata>
+#<display_name>TNS File Analysis - International Wire Transfer</display_name>
+#<spec>
+#  <type>TNS</type>
+#  <name>File Analysis - International Wire Transfer</name>
+#  <version>1.0.0</version>
+#</spec>
+#<labels>filecontent,content,swift,generic,banking,wire,transfer,update_20230227</labels>
+#</ui_metadata>
+
+<check_type:"FileContent">
+
+<item>
+  type           : FILE_CONTENT_CHECK
+  description    : "DLP - Contains a potential banking wire transfer ID Number"
+  file_extension : "txt" |"doc" |"xls" | "log"
+  regex          : "(([A-Z2-9]{8}[0-9]{10}))"
+  expect         : "ID" | "id" | "wire" | "Wire" | "Routing" | "Bank" | "SWIFT" | "Transfer"
+  max_size       : "50K"
+</item>
+
+</check_type>
